@@ -6,49 +6,89 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/26 15:44:24 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/26 20:33:05 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-void	initialize_tokens(t_cmd_tokens *tokens, char *cmd_line)
+
+static void error_create_cmds(t_cmd **cmd)
+{
+	t_cmd *tmp;
+
+	tmp = *cmd;
+	while (*cmd)
+	{
+		tmp = *cmd;
+		*cmd = (*cmd)->next;
+		free(tmp);
+	}
+	*cmd = NULL;
+}
+
+t_cmd	*create_cmds(char *cmd_line)
 {
 	int		i;
-	char 	*pointer_to_pipe;
+	char 	**cmds_split;
+	t_cmd 	*command;
+	t_cmd	*tmp;
+	int		nbr_of_commands;
 	
+	
+	cmds_split = ft_split(cmd_line, '|');
+	nbr_of_commands = 0;
+	while (cmds_split[nbr_of_commands])
+		nbr_of_commands++;
+	command = ft_calloc(1 , sizeof(t_cmd));
+	if (!command)
+		return (NULL);
 	i = 0;
-	while (ft_strchr(cmd_line, '|') /* && !ft_strchr(cmd_line, START_OF_TEXT) */)
+	command->pre_command = cmds_split[i++];
+	tmp = command;
+	while (i < nbr_of_commands)
 	{
-		pointer_to_pipe = ft_strchr(cmd_line, '|');
-		*pointer_to_pipe = START_OF_TEXT;
-		tokens->nbr_of_cmds += 1;
+		tmp->next = ft_calloc(1 , sizeof(t_cmd));
+		if (!tmp->next)
+			error_create_cmds(&command);
+		tmp->next->pre_command = cmds_split[i];
+		tmp = tmp->next;
+		i++;
 	}
-	if (ft_strchr(cmd_line, START_OF_TEXT))
-		tokens->nbr_of_cmds += 1;
+	return (command);
 }
 
 
+void	free_shell(t_shell *data)
+{
+	free_split(data->cmds_splitted);
+}
+
+t_shell *instance_shell()
+{
+	static t_shell data;
+	return (&data);
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
-	t_data *data;
-	char	*buffer;
-	t_cmd_tokens	tokens;
+	t_cmd		*command;
+	char		*buffer;
 
-	ft_bzero(&tokens, sizeof(t_cmd_tokens));
-	data->running = true;
+	char *cmd_line = get_next_line(0);
+	instance_shell()->cmds_splitted = ft_split(cmd_line, '|');
 
-	while (data->running)
-	{
-		write(1, "minishell-> ", 13);
-		char *cmd_line = get_next_line(0);
-		char **args = get_args(cmd_line);
-		for (int i = 0; i < 20 && args[i]; i++)
-			printf("arg: %s\n", args[i]);
-	}
+	printf("%s\n", instance_shell()->cmds_splitted[0]);
 	
-	// char *cmds[] = {"echo", "'test'", NULL};
-	// execve("/bin/echo", cmds, NULL);
+	// data.cmds_splitted = ft_split(cmd_line, "|");
+	// if (!data.cmds_splitted)
+	// 	return (free_shell(&data), -1); // ! Need better management here.
+		
+	// command = create_cmds(data.cmds_splitted);
+	// if (!command)
+	// 	return (ft_putstr_fd("Error creating commands.\n", 2), 1);
 	
+
+
 	return 0;
 }

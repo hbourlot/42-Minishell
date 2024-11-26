@@ -75,5 +75,5 @@ fclean: 		clean
 re: 			fclean all
 
 r:
-	@make
+	@make -s
 	@./minishell

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 09:41:33 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/10/26 10:13:26 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:10:46 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # define BUFFER_SIZE 42
 #endif
 
-static int	get_line_lenth(char *src)
+static int	get_line_length(char *src)
 {
 	int	i;
 
@@ -38,7 +38,7 @@ static char	*ft_strljoin(char *src1, char *src2)
 
 	if (!src1 && src2[0] == '\0')
 		return (NULL);
-	temp = malloc(sizeof(char) * get_line_lenth(src1) + get_line_lenth(src2)
+	temp = malloc(sizeof(char) * get_line_length(src1) + get_line_length(src2)
 			+ 1);
 	if (!temp)
 		return (NULL);
