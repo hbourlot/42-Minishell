@@ -21,7 +21,7 @@ MSG_MAC 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) *
 MSG_LINUX 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))% ] $(ORANGE)Compiling... $<... $(RESET)"
 NAME			= minishell
 MAIN_FUNCTION	= main.c
-M_FUNCTIONS 	= test
+M_FUNCTIONS 	= args
 VALGRIND		= valgrind --tool=helgrind -s
 LINK			= -L./ -lminishell -L./lib/library/ -lft
 SRC_FILES 		= $(addprefix $(SRC_DIR), $(M_FUNCTIONS:=.c))
@@ -73,3 +73,7 @@ fclean: 		clean
 				@echo " $(GREEN)Cleaned successfully.$(RESET) ✅"
 
 re: 			fclean all
+
+r:
+	@make
+	@./minishell
