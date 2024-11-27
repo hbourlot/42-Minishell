@@ -21,12 +21,12 @@ MSG_MAC 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) *
 MSG_LINUX 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))% ] $(ORANGE)Compiling... $<... $(RESET)"
 NAME			= minishell
 C_FUNCTIONS		= create/command_list \
-					initialize/command_init \
+					initialize/command_init initialize/init_program\
 					process/argument_parser \
 					free/shell_cleanup \
 					utils/debug
 
-VALGRIND		= valgrind -s --leak-check=full
+VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all
 LINK			= -L./ -lminishell -L./lib/library/ -lft -lreadline
 SRC_FILES 		= $(addprefix $(SRC_DIR), $(C_FUNCTIONS:=.c))
 OBJS_SRC 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:%.c=%.o))

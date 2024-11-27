@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/27 17:41:20 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:14:19 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,34 +57,36 @@ typedef struct s_data
 // **						Create Functions							 **
 // ************************************************************************
 
-t_cmd	*create_command_list(char **input_splitted);
+t_cmd		*create_command_list(char **input_splitted);
 
 
 // ************************************************************************
 // **						Initialize Functions						 **
 // ************************************************************************
 
-int		initialize_command(char **input_splitted, t_cmd *command);
+t_shell 	*get_shell();
+int			init_program(t_shell *data);
+int			initialize_command(char **input_splitted, t_cmd *command);
 
 
 // ************************************************************************
 // **						Proccess Functions						 	 **
 // ************************************************************************
 
-char	**get_command_args(char *argv);
+char		**get_command_args(char *argv);
 
 // ************************************************************************
 // **						Free Functions							 	 **
 // ************************************************************************
 
-void	cleanup_shell(t_shell **data);
+void		cleanup_shell(t_shell*data);
 
 // ************************************************************************
 // **						Utils Functions							 	 **
 // ************************************************************************
 
-void	debug_command_precommand(t_shell *data);
-void	debug_command_args(t_shell *data);
+void		debug_command_precommand(t_shell *data);
+void		debug_command_args(t_shell *data);
 
 
 #endif

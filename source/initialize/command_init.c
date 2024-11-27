@@ -6,13 +6,11 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:56:28 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/27 15:36:14 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:42:15 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
-
-
 
 /// @brief Initializes the linked list of commands with input strings and other default values.
 /// @param input_splitted An array of strings representing commands or arguments.
