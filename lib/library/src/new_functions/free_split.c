@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 09:47:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/10/26 10:13:50 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/27 14:44:17 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	free_split(char **split)
 	int	ctd;
 
 	ctd = 0;
+	if (!split || !*split)
+		return ;
 	while (split[ctd])
 		free(split[ctd++]);
 	free(split);

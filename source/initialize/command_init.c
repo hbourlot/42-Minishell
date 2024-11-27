@@ -1,28 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   initialize.c                                       :+:      :+:    :+:   */
+/*   command_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:56:28 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/26 20:12:30 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/27 15:36:14 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-int initialize_cmds(t_cmd *command, char *cmd_line)
+
+
+/// @brief Initializes the linked list of commands with input strings and other default values.
+/// @param input_splitted An array of strings representing commands or arguments.
+/// @param command A pointer to the head of the linked list of commands.
+/// @return 0 on success, -1 if the input is invalid.
+int initialize_command(char **input_splitted, t_cmd *command)
 {
-    char **cmds_split;
     int     i;
     
-    cmds_split = ft_split(cmd_line, '|');
-    if (!cmds_split)
+    i = 0;
+    if (!input_splitted || !*input_splitted)
         return (-1);
     while (command)
     {
-        command->pre_command = cmds_split[i++];
+        command->pre_command = input_splitted[i];
+        command->args = get_command_args(input_splitted[i]);
         command = command->next;
+        i++;
     }
+    return (0);
 }

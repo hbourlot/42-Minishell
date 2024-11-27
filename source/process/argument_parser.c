@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   args.c                                             :+:      :+:    :+:   */
+/*   argument_parser.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/26 15:18:31 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/27 15:35:26 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ static int	duplicate(char **array, const char *s)
 ///	on spaces and quotes.
 /// @param s The string to split.
 /// @return Returns a dynamically allocated array of words split from s.
-char	**get_args(char *argv)
+char	**get_command_args(char *argv)
 {
 	char	**array;
 	int		words;

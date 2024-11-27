@@ -6,23 +6,26 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 17:09:20 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/26 17:13:16 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/27 14:46:49 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-
 /**
- * @brief Calculates the number of elements in a null-terminated array of strings.
+ * @brief Calculates the number of elements in a null-terminated 
+ * 		array of strings.
  *
- * This function iterates through each string in the provided array `src`,
- * counting the number of valid string elements until it encounters a `NULL` pointer.
- * If the input array is `NULL` or the first element of the array is `NULL`,
- * the function returns `-1` to indicate an error or invalid input.
+ * This function iterates through each string in the provided
+ * 	 array `src`, counting the number of valid string elements
+ * 	 until it encounters a `NULL` pointer.
+ * 	 If the input array is `NULL` or the first element of the
+ * 	 array is `NULL`, the function returns `-1` to indicate 
+ * 	 an error or invalid input.
  *
  * @param src A pointer to a null-terminated array of strings.
- * @return The number of elements in the array, or -1 if the input is invalid.
+ * @return The number of elements in the array, or -1 if the
+ * 		 input is invalid.
  */
 int	split_length(char **src)
 {

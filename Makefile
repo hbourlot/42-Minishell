@@ -1,4 +1,4 @@
-# Colors and formatting
+# -- Colors and formatting
 RED				=\033[1;31m
 YELLOW 			= \033[1;33m
 ORANGE 			= \033[1;38;5;214m
@@ -20,11 +20,15 @@ OS				= $(shell uname)
 MSG_MAC 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))%% ] $(ORANGE)Compiling... $<... $(RESET)"
 MSG_LINUX 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))% ] $(ORANGE)Compiling... $<... $(RESET)"
 NAME			= minishell
-MAIN_FUNCTION	= main.c
-M_FUNCTIONS 	= args
-VALGRIND		= valgrind --tool=helgrind -s
-LINK			= -L./ -lminishell -L./lib/library/ -lft
-SRC_FILES 		= $(addprefix $(SRC_DIR), $(M_FUNCTIONS:=.c))
+C_FUNCTIONS		= create/command_list \
+					initialize/command_init \
+					process/argument_parser \
+					free/shell_cleanup \
+					utils/debug
+
+VALGRIND		= valgrind -s --leak-check=full
+LINK			= -L./ -lminishell -L./lib/library/ -lft -lreadline
+SRC_FILES 		= $(addprefix $(SRC_DIR), $(C_FUNCTIONS:=.c))
 OBJS_SRC 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:%.c=%.o))
 
 # -- INCLUDES LIBRARIES
@@ -77,3 +81,7 @@ re: 			fclean all
 r:
 	@make -s
 	@./minishell
+
+v:
+	@make -s
+	@$(VALGRIND) ./minishell
