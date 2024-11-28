@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/27 19:13:39 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/28 18:49:47 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(int argc, char *argv[], char *envp[])
 	char 		*input;
 
 	data = get_shell();
-	if (init_program(data));
+	if (init_program(data))
 		return (1); // ! Error managing here
 	cleanup_shell(data);
 	return 0;

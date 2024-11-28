@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/27 19:14:19 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/28 18:58:52 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,12 @@
 
 typedef struct s_cmd_tokens
 {
-	int			nbr_of_cmds;
+	bool			is_matching_squotes;
+	bool			is_matching_dquotes;
+	bool			is_dq_inside_squotes;
+	bool			is_sq_inside_dquotes;
 
-} 				t_cmd_tokens;
+} 				t_tokens;
 
 typedef struct s_cmd
 {
@@ -59,7 +62,6 @@ typedef struct s_data
 
 t_cmd		*create_command_list(char **input_splitted);
 
-
 // ************************************************************************
 // **						Initialize Functions						 **
 // ************************************************************************
@@ -67,7 +69,6 @@ t_cmd		*create_command_list(char **input_splitted);
 t_shell 	*get_shell();
 int			init_program(t_shell *data);
 int			initialize_command(char **input_splitted, t_cmd *command);
-
 
 // ************************************************************************
 // **						Proccess Functions						 	 **
@@ -87,6 +88,5 @@ void		cleanup_shell(t_shell*data);
 
 void		debug_command_precommand(t_shell *data);
 void		debug_command_args(t_shell *data);
-
 
 #endif
