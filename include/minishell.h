@@ -6,30 +6,30 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/28 16:56:19 by joralves         ###   ########.fr       */
+/*   Updated: 2024/11/28 18:50:13 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <limits.h>
-# include <stdbool.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <signal.h>
-# include <fcntl.h>
 # include "../lib/library/inc/libft.h"
+# include <fcntl.h>
+# include <limits.h>
+# include <signal.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 typedef struct s_data
 {
-	bool running;
-	char *line;
-	char *hostname;
-} 	t_data;
+	bool	running;
+	char	*line;
+	char	*hostname;
+	char	*user;
+}			t_data;
 
-void test();
-
+void		test(void);
 
 #endif
