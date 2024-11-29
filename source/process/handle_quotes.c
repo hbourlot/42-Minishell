@@ -6,13 +6,13 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 17:27:32 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/28 19:41:04 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/29 15:30:38 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-void	process_pre_command(char *pre_command, t_tokens *tokens)
+void	process_pre_command(char *pre_command, t_token *token)
 {
 	int	in_single_quotes;
 	int	int_double_quotes;
