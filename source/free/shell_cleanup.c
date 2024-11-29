@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_split.c                                       :+:      :+:    :+:   */
+/*   shell_cleanup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/26 09:47:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/27 14:44:17 by hbourlot         ###   ########.fr       */
+/*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
+/*   Updated: 2024/11/27 18:44:23 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+# include "minishell.h"
 
-/// @brief Frees the memory allocated for the array of strings.
-/// @param split The array of strings to free.
-void	free_split(char **split)
+void	cleanup_shell(t_shell *data)
 {
-	int	ctd;
-
-	ctd = 0;
-	if (!split || !*split)
-		return ;
-	while (split[ctd])
-		free(split[ctd++]);
-	free(split);
+	t_cmd *tmp;
+	
+	if (data->input_splitted)
+		free_split(data->input_splitted);
+	data->input_splitted = NULL;
+	while(data->command)
+	{
+		tmp = data->command;
+		if (tmp->args)
+			free_split(tmp->args);
+		data->command = data->command->next;
+		free(tmp);
+	}
+	data->command = NULL;
 }

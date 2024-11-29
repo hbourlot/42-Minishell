@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/06 15:05:58 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:08:56 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,6 @@ char				*get_next_line(int fd);
 int					ft_printf(const char *fmt, ...);
 int					ft_putchar(char c);
 int					ft_putstr(char *c);
+int 				split_length(char **src);
 
 #endif
