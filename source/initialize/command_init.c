@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:56:28 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/27 18:42:15 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/29 15:31:22 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int initialize_command(char **input_splitted, t_cmd *command)
         return (-1);
     while (command)
     {
+        // token_init(input_splitted[i], &command->token);
         command->pre_command = input_splitted[i];
         command->args = get_command_args(input_splitted[i]);
         command = command->next;

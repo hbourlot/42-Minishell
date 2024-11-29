@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   argument_parser.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/28 18:53:00 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/29 15:12:17 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ static int	duplicate(char **array, const char *s)
 	int		in_single_quotes;
 	int		i;
 	char	*start;
-
 	i = 0;
 	in_single_quotes = 0;
 	while (*s)

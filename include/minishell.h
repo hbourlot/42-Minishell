@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/28 18:58:52 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/29 15:30:20 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,11 @@
 
 typedef struct s_cmd_tokens
 {
-	bool			is_matching_squotes;
-	bool			is_matching_dquotes;
-	bool			is_dq_inside_squotes;
-	bool			is_sq_inside_dquotes;
-
-} 				t_tokens;
+	bool			here_doc;
+	char			*last_occurrence;
+	char 			*pre_command;
+	
+} 				t_token;
 
 typedef struct s_cmd
 {
@@ -45,7 +44,7 @@ typedef struct s_cmd
 	char					**args;
 	char					*path;
 	char					**envp;
-	struct s_cmd_tokens 	tokens;
+	struct s_cmd_tokens 	token;
 	struct s_cmd			*next;
 }					t_cmd;
 
