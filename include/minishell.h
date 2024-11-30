@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/29 15:30:20 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/30 17:03:33 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,15 @@
 #define START_OF_TEXT	02
 #define END_OF_TEXT		03
 
-typedef struct s_cmd_tokens
+typedef struct s_rules
 {
 	bool			here_doc;
+	bool			or_next;
+	bool			or_prev;
 	char			*last_occurrence;
 	char 			*pre_command;
 	
-} 				t_token;
+} 				t_rules;
 
 typedef struct s_cmd
 {
@@ -44,7 +46,7 @@ typedef struct s_cmd
 	char					**args;
 	char					*path;
 	char					**envp;
-	struct s_cmd_tokens 	token;
+	struct s_rules		 	settings;
 	struct s_cmd			*next;
 }					t_cmd;
 
@@ -67,7 +69,7 @@ t_cmd		*create_command_list(char **input_splitted);
 
 t_shell 	*get_shell();
 int			init_program(t_shell *data);
-int			initialize_command(char **input_splitted, t_cmd *command);
+int			initialize_command(char *input, t_cmd *command);
 
 // ************************************************************************
 // **						Proccess Functions						 	 **

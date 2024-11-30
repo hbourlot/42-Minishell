@@ -13,19 +13,19 @@
 #include "libft.h"
 
 /**
- * @brief Calculates the number of elements in a null-terminated 
+ * @brief Calculates the number of elements in a null-terminated
  * 		array of strings.
  *
  * This function iterates through each string in the provided
- * 	 array `src`, counting the number of valid string elements
- * 	 until it encounters a `NULL` pointer.
- * 	 If the input array is `NULL` or the first element of the
- * 	 array is `NULL`, the function returns `-1` to indicate 
- * 	 an error or invalid input.
+ * 		array `src`, counting the number of valid string elements
+ * 		until it encounters a `NULL` pointer.
+ * 		If the input array is `NULL` or the first element of the
+ * 		array is `NULL`, the function returns `-1` to indicate
+ * 		an error or invalid input.
  *
  * @param src A pointer to a null-terminated array of strings.
  * @return The number of elements in the array, or -1 if the
- * 		 input is invalid.
+ * 			input is invalid.
  */
 int	split_length(char **src)
 {

@@ -6,15 +6,15 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/26 17:08:56 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/30 16:40:04 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+# include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdarg.h>
 
 typedef struct s_list
 {
@@ -89,6 +89,8 @@ char				*get_next_line(int fd);
 int					ft_printf(const char *fmt, ...);
 int					ft_putchar(char c);
 int					ft_putstr(char *c);
-int 				split_length(char **src);
+int					split_length(char **src);
+int					char_cmp(char a, char b);
+char				*ft_strstr(const char *haystack, const char *needle);
 
 #endif
