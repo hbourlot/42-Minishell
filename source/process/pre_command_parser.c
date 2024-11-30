@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 17:27:32 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/29 15:30:49 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/11/30 11:25:50 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,3 +66,12 @@ void	token_init(char *pre_command, t_token *token)
 }
 // * Basically the command might be the start of pre_command until
 // * 	the byte before the last_occurrence.
+
+
+
+int	parsing_input(char *input, char *token)
+{
+	int	i;
+
+	while (input[i])	
+}
