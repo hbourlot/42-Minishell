@@ -6,27 +6,11 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/01 01:10:55 by joralves         ###   ########.fr       */
+/*   Updated: 2024/11/29 23:53:14 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	ft_strchr_index(const char *s, int c)
-{
-	int	len;
-	int	i;
-
-	i = 0;
-	len = ft_strlen(s);
-	while (i <= len)
-	{
-		if (s[i] == (char)c)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
 
 /// @brief Allocates memory for array[idx] based on buffer size.
 /// @param array The array of strings.
@@ -55,7 +39,7 @@ static int	do_malloc(char **array, size_t buffer, size_t idx)
 /// @brief Counts the number of words in the string based on spaces or quotes.
 /// @param s The input string.
 /// @param words Pointer to integer that will hold how many words it has
-static void	count_words(const char *s, int *words, char quotes)
+static void	count_words(const char *s, int *words)
 {
 	int	in_quote;
 	int	in_word;
@@ -64,9 +48,9 @@ static void	count_words(const char *s, int *words, char quotes)
 	in_word = 0;
 	while (*s)
 	{
-		if (*s == quotes)
+		if (*s == '\'')
 			in_quote = !in_quote;
-		if (*(s + 1) && *s == quotes && *(s + 1) == quotes)
+		if (*(s + 1) && *s == '\'' && *(s + 1) == '\'')
 			*words += 1;
 		else if (*s != ' ' || in_quote)
 		{
@@ -82,8 +66,7 @@ static void	count_words(const char *s, int *words, char quotes)
 	}
 }
 
-static int	process_word(char **array, char *start, char *end, int i,
-		char quotes)
+static int	process_word(char **array, char *start, char *end, int i)
 {
 	size_t	len;
 
@@ -92,7 +75,7 @@ static int	process_word(char **array, char *start, char *end, int i,
 		return (1);
 	while (start < end)
 	{
-		if (*start != quotes)
+		if (*start != '\'')
 			array[i][len++] = *start;
 		start++;
 	}
@@ -104,7 +87,7 @@ static int	process_word(char **array, char *start, char *end, int i,
 /// @param array The array to store split words.
 /// @param s The input string.
 /// @return Returns 1 if memory allocation fails, otherwise 0.
-static int	duplicate(char **array, const char *s, char quotes)
+static int	duplicate(char **array, const char *s)
 {
 	int		in_single_quotes;
 	int		i;
@@ -119,13 +102,13 @@ static int	duplicate(char **array, const char *s, char quotes)
 		start = (char *)s;
 		while (*s && (*s != ' ' || in_single_quotes))
 		{
-			if (*s == quotes)
+			if (*s == '\'')
 				in_single_quotes = !in_single_quotes;
 			s++;
 		}
 		if (s > start)
 		{
-			if (process_word(array, start, (char *)s, i, quotes))
+			if (process_word(array, start, (char *)s, i))
 				return (1);
 			i++;
 		}
@@ -136,14 +119,9 @@ static int	duplicate(char **array, const char *s, char quotes)
 static char	*expand_varibles(char *str)
 {
 	char	*temp;
-	char	*res;
 
 	temp = getenv(str + 1);
-	res = ft_strdup(temp);
-	if (!res)
-		return (NULL);
-	// printf("Expanded %s\n", temp);
-	return (res);
+	printf("Expanded %s\n", temp);
 }
 
 /// @brief Splits the string s into an array of words based
@@ -154,28 +132,23 @@ char	**get_command_args(char *argv)
 {
 	char	**array;
 	int		words;
-	char	quotes;
 
-	quotes = '\'';
-	if ((ft_strchr_index(argv, '\"') != -1 &&  ft_strchr_index(argv, '\'') != -1) && (ft_strchr_index(argv, '\"') < ft_strchr_index(argv, '\'')))
-		quotes = '\"';
-	else if ( (ft_strchr_index(argv, '\"') != -1 &&  ft_strchr_index(argv, '\'') != -1) &&(ft_strchr_index(argv, '\"') > ft_strchr_index(argv, '\'')))
-		quotes = '\'';
 	words = 0;
 	if (NULL == argv)
 		return (NULL);
-	count_words(argv, &words, quotes);
+	count_words(argv, &words);
 	if (words == 0)
 		return (NULL);
 	array = (char **)malloc(sizeof(char *) * (words + 1));
 	if (!array)
 		return (NULL);
 	array[words] = NULL;
-	if (duplicate(array, argv, quotes))
+	if (duplicate(array, argv))
 		return (free_split(array), NULL);
-	if (words > 1 && ft_strchr(array[1], '$') && quotes == '\"')
+	if (words > 1 && ft_strchr(array[1], '$'))
 	{
-		array[1] = expand_varibles(array[1]);
+		printf("Found $ %s\n ", array[1]);
+		expand_varibles(array[1]);
 	}
 	return (array);
 }
