@@ -22,3 +22,16 @@
 *
 *
 */
+
+
+// +---------------------------+
+// | Text Segment              | <-- Stores code (read-only)
+// +---------------------------+
+// | Data Segment              | <-- Stores initialized global/static variables
+// +---------------------------+
+// | BSS Segment               | <-- Stores uninitialized global/static variables
+// +---------------------------+
+// | Heap                      | <-- Grows upwards, for dynamic allocation
+// +---------------------------+
+// | Stack                     | <-- Grows downwards, for local variables
+// +---------------------------+

@@ -26,7 +26,7 @@ C_FUNCTIONS		= create/command_list \
 					free/shell_cleanup \
 					utils/debug
 
-VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all
+VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes
 LINK			= -L./ -lminishell -L./lib/library/ -lft -lreadline
 SRC_FILES 		= $(addprefix $(SRC_DIR), $(C_FUNCTIONS:=.c))
 OBJS_SRC 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:%.c=%.o))

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/30 17:03:33 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/01 14:13:43 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,24 @@
 #define START_OF_TEXT	02
 #define END_OF_TEXT		03
 
-typedef struct s_rules
+
+typedef enum s_delimiter
 {
-	bool			here_doc;
-	bool			or_next;
-	bool			or_prev;
-	char			*last_occurrence;
-	char 			*pre_command;
+	PIPE = 1,
+	OR = 2,
+	AND = 2,
+} t_deli;
+
+
+
+typedef struct s_rules
+{	
+	t_deli				delimiter_type;
+	bool				here_doc;
+	bool				or_next;
+	bool				or_prev;
+	char				*last_occurrence;
+	char 				*pre_command;
 	
 } 				t_rules;
 
