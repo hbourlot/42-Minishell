@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/01 14:13:43 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:41:40 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct s_rules
 
 typedef struct s_cmd
 {
-	char					*pre_command;
+	char					*command_input;
 	int						out_fd;
 	int						in_fd;
 	char					**args;
@@ -100,5 +100,6 @@ void		cleanup_shell(t_shell*data);
 
 void		debug_command_precommand(t_shell *data);
 void		debug_command_args(t_shell *data);
+void 		error_msg(void);
 
 #endif

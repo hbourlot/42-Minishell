@@ -6,14 +6,14 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/02 09:28:40 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:44:35 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
 
-char *find_first_delimiter(char *input, const char **delimiters)
+char *find_first_delimiter(char *input, const char *delimiters[])
 {
 	int		j;
 	char 	*occurrence;
@@ -53,7 +53,7 @@ int get_delimiter_size(char *src, const char **to_find)
 	return (size);
 }
 
-int nbr_of_commands(char *input, const char **to_find)
+int get_nbr_of_commands(char *input, const char *delimiters[])
 {
 	int 		i;
 	int			deli;
@@ -61,8 +61,8 @@ int nbr_of_commands(char *input, const char **to_find)
 	i = 0;
 	while (input)
 	{
-		input = find_first_delimiter(input, to_find);
-		deli = get_delimiter_size(input, to_find);
+		input = find_first_delimiter(input, delimiters);
+		deli = get_delimiter_size(input, delimiters);
 		if (deli)
 		{
 			input += deli;
@@ -72,7 +72,7 @@ int nbr_of_commands(char *input, const char **to_find)
 	return (i);
 }
 
-bool	is_delimiters_together(char *input, const char **delimiters)
+bool	is_delimiters_together(char *input, const char *delimiters[])
 {
 	int	i;
 	int	j;
@@ -100,27 +100,61 @@ bool	is_delimiters_together(char *input, const char **delimiters)
 	return (false);
 }
 
+t_cmd *init_command(char *input, char *delimiters[])
+{
+	t_cmd	*cmd;
+
+	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
+		return (NULL);
+	cmd->command_input = find_first_delimiter(input, delimiters);
+	if (!cmd->command_input)
+		return (free(cmd), NULL);
+}
+
+t_cmd *create_command_list(char *input, const char *delimiters[])
+{
+	int	nbr_of_cmds;
+	t_cmd	*head;
+	t_cmd	*tmp;
+	
+	head = malloc(sizeof(head));
+	if (!head)
+		return (NULL);
+	head->command_input = find_first_delimiter(input, delimiters);
+	nbr_of_cmds = get_nbr_of_cmds(input, delimiters);
+	tmp = head;
+	
+	while (nbr_of_cmds--)
+	{
+		tmp->next = malloc()	
+	}
+}
+
+
+/*
+	I'd probably add all parsing functions in this parsing_input function
+*/
+int	parsing_input(char *input, const char **delimiters)
+{
+	if (is_delimiters_together(input, delimiters))
+		return (-1);
+	return (0);
+
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
-	// t_shell		*data;
+	t_shell		*data;
 	char 		*input;
+	const char *delimiters[] = {"|", "||", "&&", NULL};
 
-	const char *to_find[] = {"|", "||", "&&", NULL};
-	char *ex = "|echo 'test'  | ||  la vai ||&&";
-	if (is_delimiters_together(ex, to_find))
-		printf("together\n");
-	else
-	{
-		printf("separate\n");
 
-	}
+	input = "echo 'test'  la vai ";
+	printf("%s\n", find_first_delimiter(input, delimiters));
+	if (parsing_input(input, delimiters))
+		return (error_msg(), 1);	
 	
-	// int	nbr = get_nbr_of_commands(ex, to_find);
-	// printf("nbr: %d\n", nbr);
-	// printf("ex: %s\n", ex);
-	// char *f1 = find_first_delimiter(ex, to_find);
-	
-
 	// data = get_shell();
 	// if (init_program(data))
 	// 	return (1); // ! Error managing here

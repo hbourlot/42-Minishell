@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 18:41:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/02 09:28:24 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/02 14:44:19 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,16 @@ bool	is_delimiters_together(char *input, const char **delimiters)
 		}
 	}
 	return (false);
+}
+
+
+/*
+	I'd probably add all parsing functions in this parsing_input function
+*/
+int	parsing_input(char *input, const char **delimiters)
+{
+	if (is_delimiters_together(input, delimiters))
+		return (-1);
+	return (0);
+
 }

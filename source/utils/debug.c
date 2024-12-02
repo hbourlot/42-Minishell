@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:18:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/27 18:37:03 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/02 14:46:06 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,9 @@ void	debug_command_args(t_shell *data)
 		i++;
 		tmp = tmp->next;
 	}	
+}
+
+void error_msg(void)
+{
+	ft_putstr_fd("Error\n", 2);
 }
