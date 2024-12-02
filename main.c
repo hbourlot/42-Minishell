@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/01 18:47:26 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/02 09:28:40 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,28 +74,28 @@ int nbr_of_commands(char *input, const char **to_find)
 
 bool	is_delimiters_together(char *input, const char **delimiters)
 {
-	int		index1;
-	int		index2;
-	int		len1;
-	int		len2;
-
-	index1 = 0;
-	// input = find_first_delimiter(input, delimiters);
-	while (delimiters[index1])
+	int	i;
+	int	j;
+	int	k;
+	
+	i = -1;
+	while (delimiters[++i])
 	{
-		len1 = ft_strlen(delimiters[index1]);
-		if (!ft_strncmp(input, delimiters[index1], len1))
+		j = -1;
+		while (input[++j])
 		{
-			index2 = 0;
-			while (delimiters[index2])
+			if (!ft_strncmp(input + j, delimiters[i], ft_strlen(delimiters[i])))
 			{
-				len2 = ft_strlen(delimiters[index2]);
-				if (!ft_strncmp(input + len1, delimiters[index2], len2))
-					return (true);		
-				index2++;
-			}
+				k = -1;
+				while (delimiters[++k])
+				{
+					if (k == i)
+						continue;
+					if (!ft_strncmp(input + j + ft_strlen(delimiters[i]), delimiters[k], ft_strlen(delimiters[k])))
+						return (true);
+				}
+			}	
 		}
-		index1++;
 	}
 	return (false);
 }
@@ -106,12 +106,13 @@ int	main(int argc, char *argv[], char *envp[])
 	char 		*input;
 
 	const char *to_find[] = {"|", "||", "&&", NULL};
-	char *ex = "|echo 'test'  |||  la vai ||&&";
+	char *ex = "|echo 'test'  | ||  la vai ||&&";
 	if (is_delimiters_together(ex, to_find))
 		printf("together\n");
 	else
 	{
 		printf("separate\n");
+
 	}
 	
 	// int	nbr = get_nbr_of_commands(ex, to_find);
