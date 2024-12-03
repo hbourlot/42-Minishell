@@ -7,7 +7,7 @@ CYAN 			= \033[1;36m
 RESET 			= \033[0m
 
 CC				= cc
-CFLAGS			= #-Wall -Wextra -Werror #-fsanitize=thread -g -pthread
+CFLAGS			= -g #-Wall -Wextra -Werror #-fsanitize=thread -g -pthread
 LIB				= libminishell.a
 INCLUDE 		= include/
 HEADER_FILE		= $(INCLUDE)minishell.h

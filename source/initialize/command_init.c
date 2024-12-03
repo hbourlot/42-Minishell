@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:56:28 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/30 17:03:08 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/03 11:59:36 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int initialize_command(char *input, t_cmd *command)
 		if (char_cmp(*input, '|') && *(input + 1) && char_cmp(*input, '|'))
 			command->settings.or_next = true;
 		if (char_cmp(*input, '|'))
-			command->pre_command = input_splitted[i++];
+			command->command_input = input_splitted[i++];
 		input++;
 	}
     return (0);

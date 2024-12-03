@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/02 15:44:35 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/03 13:08:35 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,54 +82,110 @@ bool	is_delimiters_together(char *input, const char *delimiters[])
 	while (delimiters[++i])
 	{
 		j = -1;
-		while (input[++j])
+		while (input)
 		{
-			if (!ft_strncmp(input + j, delimiters[i], ft_strlen(delimiters[i])))
+			if (input && *input == ' ')
+				continue;
+			if (!ft_strncmp(input, delimiters[i], ft_strlen(delimiters[i])))
 			{
 				k = -1;
 				while (delimiters[++k])
 				{
 					if (k == i)
 						continue;
-					if (!ft_strncmp(input + j + ft_strlen(delimiters[i]), delimiters[k], ft_strlen(delimiters[k])))
+					if (!ft_strncmp(input + ft_strlen(delimiters[i]), delimiters[k], ft_strlen(delimiters[k])))
 						return (true);
 				}
-			}	
+			}
+			input++;
 		}
 	}
 	return (false);
 }
 
-t_cmd *init_command(char *input, char *delimiters[])
-{
-	t_cmd	*cmd;
+// bool	is_next_delimiter_separate(char *input, const char *delimiters[], int deli_to_skip)
+// {
+// 	int k;
+// 	int	i;
 
-	cmd = malloc(sizeof(t_cmd));
-	if (!cmd)
-		return (NULL);
-	cmd->command_input = find_first_delimiter(input, delimiters);
-	if (!cmd->command_input)
-		return (free(cmd), NULL);
-}
+// 	i = -1;
+// 	k = -1;
+// 	while (input[++i])
+// 	{
+// 		while (delimiters[++k])
+// 		{
+// 			if (k == deli_to_skip)
+// 				continue;
+// 			if (!ft_strncmp(input + ft_strlen(delimi)))
+// 		}
+		
+// 	}
+// }
 
-t_cmd *create_command_list(char *input, const char *delimiters[])
+bool	is_delimiters_together(char *input, const char *delimiters[])
 {
-	int	nbr_of_cmds;
-	t_cmd	*head;
-	t_cmd	*tmp;
+	int	j;
+	int	k;
+	// bool	first_delimiter;
+	// bool	second_delimiter;
 	
-	head = malloc(sizeof(head));
-	if (!head)
-		return (NULL);
-	head->command_input = find_first_delimiter(input, delimiters);
-	nbr_of_cmds = get_nbr_of_cmds(input, delimiters);
-	tmp = head;
-	
-	while (nbr_of_cmds--)
+	// if (input && *input == ' ')
+	// 	continue;
+	while (input && *input++)
 	{
-		tmp->next = malloc()	
+		j = -1;
+		while (delimiters[++j])
+		{
+			if (!ft_strncmp(input, delimiters[j], ft_strlen(delimiters[j])))
+			{
+				
+				is_delimiters_together(input + ft_strlen(delimiters[j]), delimiters);
+				// k = -1;
+				// while (delimiters[++k])
+				// {
+				// 	if (k == j)
+				// 		continue;
+				// 	if (!ft_strncmp(input + ft_strlen(delimiters[i]), delimiters[k], ft_strlen(delimiters[k])))
+				// 		return (true);
+				// }
+			}
+			input++;
+		}
 	}
+	return (false);
 }
+
+// t_cmd *init_command(char *input, const char *delimiters[])
+// {
+// 	t_cmd	*cmd;
+
+// 	cmd = malloc(sizeof(t_cmd));
+// 	if (!cmd)
+// 		return (NULL);
+// 	cmd->command_input = find_first_delimiter(input, delimiters);
+// 	if (!cmd->command_input)
+// 		return (free(cmd), NULL);
+	
+// }
+
+// t_cmd *create_command_list(char *input, const char *delimiters[])
+// {
+// 	int	nbr_of_cmds;
+// 	t_cmd	*head;
+// 	t_cmd	*tmp;
+	
+// 	head = malloc(sizeof(head));
+// 	if (!head)
+// 		return (NULL);
+// 	head->command_input = find_first_delimiter(input, delimiters);
+// 	nbr_of_cmds = get_nbr_of_cmds(input, delimiters);
+// 	tmp = head;
+	
+// 	while (nbr_of_cmds--)
+// 	{
+// 		tmp->next = malloc()	
+// 	}
+// }
 
 
 /*
@@ -138,7 +194,10 @@ t_cmd *create_command_list(char *input, const char *delimiters[])
 int	parsing_input(char *input, const char **delimiters)
 {
 	if (is_delimiters_together(input, delimiters))
+	{
+		printf("is_together\n");
 		return (-1);
+	}
 	return (0);
 
 }
@@ -147,11 +206,11 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	t_shell		*data;
 	char 		*input;
-	const char *delimiters[] = {"|", "||", "&&", NULL};
+	const char *delimiters[] = {"||", "&&", "|", NULL};
 
 
-	input = "echo 'test'  la vai ";
-	printf("%s\n", find_first_delimiter(input, delimiters));
+	input = "echo 'test' |     ||  la vai ";
+	// printf("%s\n", find_first_delimiter(input, delimiters));
 	if (parsing_input(input, delimiters))
 		return (error_msg(), 1);	
 	
