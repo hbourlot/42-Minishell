@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 16:30:43 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/10/26 09:47:20 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:50:06 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 /// @param buffer The size of memory to allocate.
 /// @param idx The index in the array where memory is allocated.
 /// @return Returns 1 if memory allocation fails, otherwise 0.
-static int	do_malloc(char **array, size_t buffer, size_t idx)
+static int	allocate_memory(char **array, size_t buffer, size_t idx)
 {
 	size_t	i;
 
@@ -41,7 +41,7 @@ static int	do_malloc(char **array, size_t buffer, size_t idx)
 /// @param s The string to split.
 /// @param c The delimiter character.
 /// @return Returns 1 if memory allocation fails, otherwise 0.
-static int	duplicate(char **array, char const *s, const char c)
+static int	split_to_array(char **array, char const *s, const char c)
 {
 	size_t	len;
 	size_t	i;
@@ -60,7 +60,7 @@ static int	duplicate(char **array, char const *s, const char c)
 		}
 		if (len)
 		{
-			if (do_malloc(array, len + 1, i))
+			if (allocate_memory(array, len + 1, i))
 				return (1);
 			ft_strlcpy(array[i], s - len, len + 1);
 		}
@@ -73,7 +73,7 @@ static int	duplicate(char **array, char const *s, const char c)
 /// @param s The string to count words in.
 /// @param c The delimiter character.
 /// @return Returns the number of words found in the string.
-static int	count_words(char const *s, char c)
+static int	count_words_in_string(char const *s, char c)
 {
 	size_t	i;
 	size_t	new_word;
@@ -102,12 +102,12 @@ char	**ft_split(char const *s, char c)
 
 	if (NULL == s)
 		return (NULL);
-	words = count_words(s, c);
+	words = count_words_in_string(s, c);
 	array = (char **)malloc(sizeof(char *) * (words + 1));
 	if (!array)
 		return (NULL);
 	array[words] = NULL;
-	if (duplicate(array, s, c))
+	if (split_to_array(array, s, c))
 		return (NULL);
 	return (array);
 }

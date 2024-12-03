@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/02 15:41:40 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:42:22 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void		cleanup_shell(t_shell*data);
 // **						Utils Functions							 	 **
 // ************************************************************************
 
-void		debug_command_precommand(t_shell *data);
+void		debug_command_input(t_shell *data);
 void		debug_command_args(t_shell *data);
 void 		error_msg(void);
 

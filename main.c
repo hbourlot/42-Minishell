@@ -6,12 +6,11 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/03 13:35:46 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:14:28 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
-
 
 char *find_first_delimiter(char *input, const char *delimiters[])
 {
@@ -123,24 +122,88 @@ int	parsing_input(char *input, const char **delimiters)
 
 }
 
+
+char 	*filter_input(char *input, const char *delimiters[])
+{
+	int	i;
+	int	j;
+	int	deli_size;
+
+	i = 0;
+	while (input[i])
+	{
+		j = -1;
+		while (delimiters[++j])
+		{
+			deli_size = ft_strlen(delimiters[j]);
+			if (!ft_strncmp(&input[i], delimiters[j], deli_size))
+			{
+				printf("here\n");
+				// memset(&input[i], 0, deli_size);
+				input += (i + deli_size);
+				printf("input: %s\n", input);
+				return (input);
+			}
+			
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+
+int	create_commands(char *input, const char *delimiters[])
+{
+	t_cmd	*cmd;
+
+	cmd = get_shell()->command;
+	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
+		return (-1); //! Error managing here
+	cmd->command_input = input;
+	input = filter_input(input, delimiters);
+	// while (input)
+	// {
+	// 	cmd->next = malloc(sizeof(t_cmd));
+	// 	if (!cmd->next)
+	// 		return (-1); //! Error managing here
+	// 	cmd = cmd->next;
+	// 	cmd->command_input = input;
+	// 	input = filter_input(input, delimiters);
+	// }
+	return (0);
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_shell		*data;
 	char 		*input;
 	const char *delimiters[] = {"||", "&&", "|", NULL};
 
-
-	input = "echo 'test'  a   la vai ";
-	// printf("%s\n", find_first_delimiter(input, delimiters));
+	get_shell();
+	input = "echo 'test' |  a   la vai ";
 	if (parsing_input(input, delimiters))
 		return (error_msg(), 1);	
-	
+	if (create_commands(input, delimiters))
+		printf("error no create\n");
+	debug_command_input(get_shell());
 	// data = get_shell();
 	// if (init_program(data))
 	// 	return (1); // ! Error managing here
 	// cleanup_shell(data);
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 	// char *test[] = {"echo", "$PATH", NULL};
