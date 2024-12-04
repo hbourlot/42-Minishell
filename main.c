@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/04 15:57:03 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/04 15:57:45 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	expand_var(t_command *command)
 	splited = ft_split_charset(str, " \"");
 	while (splited[i])
 	{
-		printf("Splited %s\n", splited[i]);
+		// printf("Splited %s\n", splited[i]);
 		if (ft_strchr(splited[i], '$'))
 			splited[i] = expand_aux(splited[i]);
 		res = ft_append_and_free_charset(res, splited[i], ' ');
