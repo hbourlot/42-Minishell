@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/01 01:10:55 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/01 01:31:41 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,10 +157,10 @@ char	**get_command_args(char *argv)
 	char	quotes;
 
 	quotes = '\'';
-	if ((ft_strchr_index(argv, '\"') != -1 &&  ft_strchr_index(argv, '\'') != -1) && (ft_strchr_index(argv, '\"') < ft_strchr_index(argv, '\'')))
-		quotes = '\"';
-	else if ( (ft_strchr_index(argv, '\"') != -1 &&  ft_strchr_index(argv, '\'') != -1) &&(ft_strchr_index(argv, '\"') > ft_strchr_index(argv, '\'')))
+	if (ft_strchr_index(argv, '\"') < ft_strchr_index(argv, '\''))
 		quotes = '\'';
+	else if (ft_strchr_index(argv, '\"') > ft_strchr_index(argv, '\''))
+		quotes = '\"';
 	words = 0;
 	if (NULL == argv)
 		return (NULL);

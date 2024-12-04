@@ -1,0 +1,8 @@
+echo -n $USER
+echo -n "$USER ls"
+echo -n '$USER'
+echo -n '"$USER"'
+echo -n "'$USER'" "$HOME"
+cd "/home/jorgealves/Course/minishell_42"
+cd "$HOME"
+cd $HOME

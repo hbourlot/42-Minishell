@@ -3,27 +3,123 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/28 18:49:47 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:52:56 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+// int	main(int argc, char *argv[], char *envp[])
+// {
+// 	t_shell		*data;
+// 	char 		*input;
+
+// 	data = get_shell();
+// 	if (init_program(data))
+// 		return (1); // ! Error managing here
+// 	cleanup_shell(data);
+// 	return (0);
+// }
+
+typedef struct s_command
 {
-	t_shell		*data;
-	char 		*input;
+	char	*command;
+	char	*flag;
+	char	*argument;
+	bool	expand;
+}			t_command;
 
-	data = get_shell();
-	if (init_program(data))
-		return (1); // ! Error managing here
-	cleanup_shell(data);
-	return 0;
+int	split_in_string(t_command *command, char *str)
+{
+	int		i;
+	int		start;
+	bool	in_single;
+	bool	in_double;
+
+	i = 0;
+	start = 0;
+	in_single = false;
+	in_double = false;
+	while (str && str[i])
+	{
+		if (str[i] == '\'' && !in_double)
+			in_single = !in_single;
+		if (str[i] == '\"' && !in_single)
+		{
+			command->expand = true;
+			in_double = !in_double;
+		}
+		if ((str[i] == ' ' && !in_single && !in_double) || str[i + 1] == '\0')
+		{
+			if (!command->command)
+				command->command = ft_substr(str, start, i - start);
+			else if (!command->flag)
+				command->flag = ft_substr(str, start, i - start);
+			else if (!command->argument)
+				command->argument = ft_substr(str, start, i - start);
+			start = i + 1;
+		}
+		i++;
+	}
 }
 
+// void	expand_var(t_command *command)
+// {
+// 	char *expanded;
+// 	char	*str;
+// 	int		i;
 
-	// char *test[] = {"echo", "$PATH", NULL};
-	// execve("/bin/echo", test, NULL);
+// 	i = 0;
+// 	if (!command->argument)
+// 		return ;
+// 	str = command->argument;
+// 	while (str[i])
+// 	{
+// 		if()
+// 	}
+// }
+
+void	expand_var(t_command *command)
+{
+	char	**splited;
+	char	*str;
+	char	*expanded;
+	int		i;
+
+	i = 0;
+	if (!command->argument || command->expand == false || !ft_strchr(command->argument, '$'))
+		return ;
+	str = command->argument;
+	splited = ft_split_charset(str, " $\"");
+	while (splited[i])
+	{
+		printf("Splited %s\n", splited[i]);
+		i++;
+	}
+}
+
+int	main(void)
+{
+	char		*dest;
+	t_command	command;
+	int			fd;
+
+	ft_bzero(&command, sizeof(t_command));
+	command.expand = true;
+	fd = open("test.txt", O_RDONLY);
+	if (fd == -1)
+		return (ft_putstr_fd("Error opening file", 2), 1);
+	// dest = get_next_line(fd);
+	// free(dest);
+	dest = get_next_line(fd);
+	split_in_string(&command, dest);
+	expand_var(&command);
+	printf("%s\n%s\n%s\n", command.command, command.flag, command.argument);
+	free(dest);
+}
+
+// char *test[] = {"echo", "$PATH", NULL};
+// execve("/bin/echo", test, NULL);
