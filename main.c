@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/04 15:57:45 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/04 15:58:28 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,6 @@ int	split_in_string(t_command *command, char *str)
 	}
 }
 
-// void	expand_var(t_command *command)
-// {
-// 	char *expanded;
-// 	char	*str;
-// 	int		i;
-
-// 	i = 0;
-// 	if (!command->argument)
-// 		return ;
-// 	str = command->argument;
-// 	while (str[i])
-// 	{
-// 		if()
-// 	}
-// }
-
 char	*expand_aux(char *str)
 {
 	char	*temp;
@@ -121,7 +105,6 @@ void	expand_var(t_command *command)
 	splited = ft_split_charset(str, " \"");
 	while (splited[i])
 	{
-		// printf("Splited %s\n", splited[i]);
 		if (ft_strchr(splited[i], '$'))
 			splited[i] = expand_aux(splited[i]);
 		res = ft_append_and_free_charset(res, splited[i], ' ');
