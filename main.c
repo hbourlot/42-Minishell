@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/04 14:52:56 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/04 15:30:10 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ int	split_in_string(t_command *command, char *str)
 	while (str && str[i])
 	{
 		if (str[i] == '\'' && !in_double)
-			in_single = !in_single;
-		if (str[i] == '\"' && !in_single)
 		{
-			command->expand = true;
-			in_double = !in_double;
+			command->expand = false;
+			in_single = !in_single;
 		}
+		if (str[i] == '\"' && !in_single)
+			in_double = !in_double;
 		if ((str[i] == ' ' && !in_single && !in_double) || str[i + 1] == '\0')
 		{
 			if (!command->command)
@@ -82,23 +82,51 @@ int	split_in_string(t_command *command, char *str)
 // 	}
 // }
 
+char	*expand_aux(char *str)
+{
+	char	*temp;
+	char	**splited;
+	int		i;
+	char	*res;
+
+	res = NULL;
+	i = 0;
+	splited = ft_split(str, '$');
+	while (splited[i])
+	{
+		temp = getenv(splited[i]);
+		// printf("Expanded %s\n", temp);
+		res = ft_append_and_free(res, temp);
+		i++;
+	}
+	// printf("Res :%s\n", res);
+	return (res);
+}
+
 void	expand_var(t_command *command)
 {
 	char	**splited;
 	char	*str;
 	char	*expanded;
 	int		i;
+	char	*res;
 
+	res = NULL;
 	i = 0;
-	if (!command->argument || command->expand == false || !ft_strchr(command->argument, '$'))
+	if (!command->argument || command->expand == false
+		|| !ft_strchr(command->argument, '$'))
 		return ;
 	str = command->argument;
-	splited = ft_split_charset(str, " $\"");
+	splited = ft_split_charset(str, " \"");
 	while (splited[i])
 	{
 		printf("Splited %s\n", splited[i]);
+		if (ft_strchr(splited[i], '$'))
+			splited[i] = expand_aux(splited[i]);
+		res = ft_append_and_free(res, splited[i]);
 		i++;
 	}
+	printf("Res :%s\n", res);
 }
 
 int	main(void)
@@ -112,8 +140,8 @@ int	main(void)
 	fd = open("test.txt", O_RDONLY);
 	if (fd == -1)
 		return (ft_putstr_fd("Error opening file", 2), 1);
-	// dest = get_next_line(fd);
-	// free(dest);
+	dest = get_next_line(fd);
+	free(dest);
 	dest = get_next_line(fd);
 	split_in_string(&command, dest);
 	expand_var(&command);

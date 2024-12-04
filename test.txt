@@ -1,5 +1,5 @@
 echo -n $USER
-echo -n "$USER ls"
+echo -n "$USER$USER ls"
 echo -n '$USER'
 echo -n '"$USER"'
 echo -n "'$USER'" "$HOME"
