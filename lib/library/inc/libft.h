@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/04 01:26:18 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/04 15:43:18 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ int					ft_printf(const char *fmt, ...);
 int					ft_putchar(char c);
 int					ft_putstr(char *c);
 int					split_length(char **src);
+
 char				**ft_split_charset(char const *s, char *charset);
+char				*ft_append_and_free_charset(char *s1, char *s2, char c);
 
 #endif

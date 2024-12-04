@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:57:58 by joralves          #+#    #+#             */
-/*   Updated: 2024/12/04 01:34:26 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/04 15:55:36 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	count_words(const char *s, char *charset)
 
 static char	**each_alloc(char **dest, int idx, int len)
 {
-	dest[idx] = (char *)malloc((len + 1) * sizeof(char));
+	dest[idx] = ft_calloc((len + 1), sizeof(char));
 	if (!(dest[idx]))
 	{
 		while (idx >= 0)
@@ -110,10 +110,9 @@ char	**ft_split_charset(char const *s, char *charset)
 	int		count;
 
 	count = count_words(s, charset);
-	dest = (char **)malloc(sizeof(char *) * (count + 1));
+	dest = ft_calloc((count + 1), sizeof(char *));
 	if (!(dest))
 		return (NULL);
 	dest_allocation(dest, s, charset);
 	return (dest);
 }
-

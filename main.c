@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/04 15:30:10 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/04 15:57:03 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,12 @@ char	*expand_aux(char *str)
 	while (splited[i])
 	{
 		temp = getenv(splited[i]);
-		// printf("Expanded %s\n", temp);
 		res = ft_append_and_free(res, temp);
+		free(splited[i]);
 		i++;
 	}
-	// printf("Res :%s\n", res);
+	free(splited);
+	free(str);
 	return (res);
 }
 
@@ -123,10 +124,13 @@ void	expand_var(t_command *command)
 		printf("Splited %s\n", splited[i]);
 		if (ft_strchr(splited[i], '$'))
 			splited[i] = expand_aux(splited[i]);
-		res = ft_append_and_free(res, splited[i]);
+		res = ft_append_and_free_charset(res, splited[i], ' ');
+		free(splited[i]);
 		i++;
 	}
-	printf("Res :%s\n", res);
+	free(splited);
+	free(str);
+	command->argument = res;
 }
 
 int	main(void)
@@ -146,6 +150,9 @@ int	main(void)
 	split_in_string(&command, dest);
 	expand_var(&command);
 	printf("%s\n%s\n%s\n", command.command, command.flag, command.argument);
+	free(command.argument);
+	free(command.command);
+	free(command.flag);
 	free(dest);
 }
 
