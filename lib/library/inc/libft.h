@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/01 14:23:50 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/05 19:52:45 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,6 @@ int					char_cmp(char a, char b);
 int					is_longer(char *src1, char *src2);
 int					is_greater(int a, int b);
 char				*ft_strstr(const char *haystack, const char *needle);
+char				**split_by_multiple_tokens(char *src, const char *tokens[]);
 
 #endif

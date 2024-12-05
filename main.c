@@ -6,191 +6,11 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/04 20:07:31 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/05 20:32:06 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
-
-char *find_first_delimiter(char *input, const char *delimiters[])
-{
-	int		j;
-	char 	*occurrence;
-	char 	*first_occur;
-	char 	*tmp;
-	
-	occurrence = NULL;
-	first_occur = NULL;
-	j = 0;
-	while (delimiters[j])
-	{
-		occurrence = ft_strstr(input, delimiters[j]);
-		if (!first_occur)
-			first_occur = occurrence;
-		else if (occurrence && (occurrence <= first_occur))
-			first_occur = occurrence;
-		j++;
-	}
-	return (first_occur);
-}
-int get_delimiter_size(char *src, const char **to_find)
-{
-	int i;
-	int	to_find_size;
-	int	size;
-	
-	i = 0;
-	size = 0;
-	while (src && to_find[i])
-	{
-		to_find_size = ft_strlen(to_find[i]);
-		if (!ft_strncmp(to_find[i], src, to_find_size))
-			if (is_greater(to_find_size, size))
-				size = ft_strlen(to_find[i]);
-		i++;
-	}
-	return (size);
-}
-
-int get_nbr_of_commands(char *input, const char *delimiters[])
-{
-	int 		i;
-	int			deli;
-
-	i = 0;
-	while (input)
-	{
-		input = find_first_delimiter(input, delimiters);
-		deli = get_delimiter_size(input, delimiters);
-		if (deli)
-		{
-			input += deli;
-			i++;
-		}
-	}
-	return (i);
-}
-
-static int match_delimiter(char *input, const char *delimiters[], int first_match)
-{
-    int i = 0;
-	if (first_match != -1)
-	{
-		while (*input && *input == ' ')
-			input++;
-	}
-    while (delimiters[i])
-    {
-        if (!ft_strncmp(input, delimiters[i], ft_strlen(delimiters[i])))
-            return i;
-		i++;
-    }
-    return -1;
-}
-
-bool is_delimiters_together(char *input, const char *delimiters[])
-{
-	int	first_match;
-	int	second_match;
-
-	first_match = -1;
-    if (!input || !*input)
-        return false;
-    first_match = match_delimiter(input, delimiters, first_match);
-    if (first_match != -1)
-    {
-        input += ft_strlen(delimiters[first_match]); 
-        second_match = match_delimiter(input, delimiters, first_match);
-        if (second_match != -1 && second_match != first_match)
-            return true;
-        return is_delimiters_together(input, delimiters);
-    }
-    return is_delimiters_together(input + 1, delimiters);
-}
-
-/*
-	I'd probably add all parsing functions in this parsing_input function
-*/
-int	parsing_input(char *input, const char **delimiters)
-{
-	if (is_delimiters_together(input, delimiters))
-	{
-		printf("is_together\n");
-		return (-1);
-	}
-	return (0);
-
-}
-
-t_cmd	*init_command(char **input, const char *delimiters[], bool *creating)
-{
-	t_cmd	*cmd;
-	char	*delimiter_pos;
-	size_t	delimiter_len;
-
-	// Verificar se a entrada ainda tem conteúdo
-	if (!*input || !**input)
-	{
-		*creating = false;
-		return (NULL);
-	}
-
-	// Alocar memória para o comando
-	cmd = malloc(sizeof(t_cmd));
-	if (!cmd)
-		return (NULL);
-
-	// Encontrar o próximo delimitador na entrada
-	delimiter_pos = find_first_delimiter(*input, delimiters);
-	if (delimiter_pos)
-	{
-		// Obter o tamanho do delimitador
-		delimiter_len = get_delimiter_size(delimiter_pos, delimiters);
-
-		// Separar o comando atual colocando um '\0' no início do delimitador
-		*delimiter_pos = '\0';
-
-		// Configurar o comando com a entrada atual
-		cmd->command_input = *input;
-
-		// Atualizar *input para a próxima posição após o delimitador
-		*input = delimiter_pos + delimiter_len;
-	}
-	else
-	{
-		// Nenhum delimitador encontrado; usar o restante da entrada
-		cmd->command_input = *input;
-
-		// Marcar o final da entrada
-		*input = NULL;
-		*creating = false;
-	}
-
-	// Inicializar o próximo comando como NULL
-	cmd->next = NULL;
-	return (cmd);
-}
-
-int	create_commands(char **input, const char *delimiters[])
-{
-	t_cmd	*cmd;
-	t_cmd	*current;
-	bool	creating;
-
-	creating = true;
-	cmd = init_command(input, delimiters, &creating);
-	if (!cmd)
-		return (1);
-	current = cmd;
-	while (creating)
-	{
-		current->next = init_command(input, delimiters, &creating);
-		if (!cmd->next)
-			return (1);
-		current = current->next;
-	}
-	return (0);
-}
 
 int	main(int argc, char *argv[], char *envp[])
 {
@@ -199,13 +19,10 @@ int	main(int argc, char *argv[], char *envp[])
 	const char *delimiters[] = {"||", "&&", "|", NULL};
 
 	get_shell();
-	input = ft_strdup("echo 'test' |  a   la vai ");
-	if (parsing_input(input, delimiters))
-		return (error_msg(), 1);	
-	if (create_commands(&input, delimiters))
+	if (init_command("echo 'test'   a & b  la vai ", delimiters))
 		printf("error on create\n");
-	printf("%s\n", get_shell()->command->command_input);
-	// debug_command_args(get_shell());
+	debug_command_args(get_shell());
+	debug_command_input(get_shell());
 	return 0;
 }
 

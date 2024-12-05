@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:01:57 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/03 15:43:21 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/05 20:19:52 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static int	run_shell(t_shell *data, char *input)
 	// data->command = create_command_list(data->input_splitted);
 	// if (!data->command)
 		// return (printf("create_command_list Error\n"), -1); // ! Error managing here
-	if (initialize_command(input, data->command))
-		return (printf("initialize_command Error\n"), -1); // ! Error managing here
+	// if (initialize_command(input, data->command))
+		// return (printf("initialize_command Error\n"), -1); // ! Error managing here
 	debug_command_input(data);
 	debug_command_args(data);
 	cleanup_shell(data);

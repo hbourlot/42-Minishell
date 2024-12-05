@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/03 15:42:22 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:15:35 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include "../lib/library/inc/libft.h"
 
 // -- TOKENS
+#define	CMP_OK			0
+#define CMP_ERROR		1
 #define START_OF_TEXT	02
 #define END_OF_TEXT		03
 
@@ -69,6 +71,12 @@ typedef struct s_data
 
 
 // ************************************************************************
+// **						Parsing Functions							 **
+// ************************************************************************
+int			parsing_input(char *input, const char **delimiters);
+
+
+// ************************************************************************
 // **						Create Functions							 **
 // ************************************************************************
 
@@ -80,7 +88,7 @@ t_cmd		*create_command_list(char **input_splitted);
 
 t_shell 	*get_shell();
 int			init_program(t_shell *data);
-int			initialize_command(char *input, t_cmd *command);
+int			init_command(char *input, const char *delimiters[]);
 
 // ************************************************************************
 // **						Proccess Functions						 	 **
