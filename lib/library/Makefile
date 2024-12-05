@@ -40,7 +40,7 @@ BONUS			= ft_lstnew ft_lstadd_front ft_lstsize ft_lstadd_back ft_lstmap ft_lstit
 #Source and Object files
 SRC_FILES 		= $(addprefix $(SRC_DIR)/$(MANDATORY_DIR), $(CFUNCTIONS:=.c)) 	\
 					$(addprefix $(SRC_DIR)$(UPD_DIR), $(UPD_SRC:=.c))			\
-					$(addprefix $(SRC_DIR)$(BONUS_DIR), $(BONUS:=.c))	
+					# $(addprefix $(SRC_DIR)$(BONUS_DIR), $(BONUS:=.c))	
 
 # BONUS_FILES		= $(addprefix $(BONUS_DIR), $(BONUS:=.c))
 

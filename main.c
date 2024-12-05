@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/04 18:46:09 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/04 20:07:31 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,55 +122,73 @@ int	parsing_input(char *input, const char **delimiters)
 
 }
 
-
-char 	*filter_input(char *input, const char *delimiters[])
-{
-	int	i;
-	int	j;
-	int	deli_size;
-
-	i = 0;
-	while (input[i])
-	{
-		j = -1;
-		while (delimiters[++j])
-		{
-			deli_size = ft_strlen(delimiters[j]);
-			if (!ft_strncmp(&input[i], delimiters[j], deli_size))
-			{
-				printf("here\n");
-				// memset(&input[i], 0, deli_size);
-				input += (i + deli_size);
-				printf("input: %s\n", input);
-				return (input);
-			}
-			
-		}
-		i++;
-	}
-	return (NULL);
-}
-
-
-int	create_commands(char *input, const char *delimiters[])
+t_cmd	*init_command(char **input, const char *delimiters[], bool *creating)
 {
 	t_cmd	*cmd;
+	char	*delimiter_pos;
+	size_t	delimiter_len;
 
-	cmd = get_shell()->command;
+	// Verificar se a entrada ainda tem conteúdo
+	if (!*input || !**input)
+	{
+		*creating = false;
+		return (NULL);
+	}
+
+	// Alocar memória para o comando
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
-		return (-1); //! Error managing here
-	cmd->command_input = input;
-	input = filter_input(input, delimiters);
-	// while (input)
-	// {
-	// 	cmd->next = malloc(sizeof(t_cmd));
-	// 	if (!cmd->next)
-	// 		return (-1); //! Error managing here
-	// 	cmd = cmd->next;
-	// 	cmd->command_input = input;
-	// 	input = filter_input(input, delimiters);
-	// }
+		return (NULL);
+
+	// Encontrar o próximo delimitador na entrada
+	delimiter_pos = find_first_delimiter(*input, delimiters);
+	if (delimiter_pos)
+	{
+		// Obter o tamanho do delimitador
+		delimiter_len = get_delimiter_size(delimiter_pos, delimiters);
+
+		// Separar o comando atual colocando um '\0' no início do delimitador
+		*delimiter_pos = '\0';
+
+		// Configurar o comando com a entrada atual
+		cmd->command_input = *input;
+
+		// Atualizar *input para a próxima posição após o delimitador
+		*input = delimiter_pos + delimiter_len;
+	}
+	else
+	{
+		// Nenhum delimitador encontrado; usar o restante da entrada
+		cmd->command_input = *input;
+
+		// Marcar o final da entrada
+		*input = NULL;
+		*creating = false;
+	}
+
+	// Inicializar o próximo comando como NULL
+	cmd->next = NULL;
+	return (cmd);
+}
+
+int	create_commands(char **input, const char *delimiters[])
+{
+	t_cmd	*cmd;
+	t_cmd	*current;
+	bool	creating;
+
+	creating = true;
+	cmd = init_command(input, delimiters, &creating);
+	if (!cmd)
+		return (1);
+	current = cmd;
+	while (creating)
+	{
+		current->next = init_command(input, delimiters, &creating);
+		if (!cmd->next)
+			return (1);
+		current = current->next;
+	}
 	return (0);
 }
 
@@ -181,16 +199,13 @@ int	main(int argc, char *argv[], char *envp[])
 	const char *delimiters[] = {"||", "&&", "|", NULL};
 
 	get_shell();
-	input = "echo 'test' |  a   la vai ";
+	input = ft_strdup("echo 'test' |  a   la vai ");
 	if (parsing_input(input, delimiters))
 		return (error_msg(), 1);	
-	if (create_commands(input, delimiters))
-		printf("error no create\n");
-	debug_command_input(get_shell());
-	// data = get_shell();
-	// if (init_program(data))
-	// 	return (1); // ! Error managing here
-	// cleanup_shell(data);
+	if (create_commands(&input, delimiters))
+		printf("error on create\n");
+	printf("%s\n", get_shell()->command->command_input);
+	// debug_command_args(get_shell());
 	return 0;
 }
 
@@ -200,6 +215,11 @@ int	main(int argc, char *argv[], char *envp[])
 
 
 
+	// debug_command_input(get_shell());
+	// data = get_shell();
+	// if (init_program(data))
+	// 	return (1); // ! Error managing here
+	// cleanup_shell(data);
 
 
 
