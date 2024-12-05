@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/05 18:15:35 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/05 20:53:12 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ typedef struct s_cmd
 typedef struct s_data
 {
 	char			**input_splitted;
+	int				argc;
+	char			**argv;
+	char			**envp;
 	struct s_cmd	*command;
 } 	t_shell;
 

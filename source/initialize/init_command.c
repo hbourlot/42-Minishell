@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/05 20:08:54 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/05 20:50:39 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void *free_cmd_list_on_error(t_cmd *cmd) // ! Need manage this function i
 	return (NULL);
 }
 
-t_cmd	*create_cmd(char *command_input)
+t_cmd	*create_cmd(char *command_input, char *envp[])
 {
 	t_cmd	*tmp;
 
@@ -35,6 +35,7 @@ t_cmd	*create_cmd(char *command_input)
 		return (NULL);
 	ft_memset(tmp, 0, sizeof(t_cmd));
 	tmp->command_input = command_input;
+	tmp->envp = envp;
 
 	return (tmp);
 }
