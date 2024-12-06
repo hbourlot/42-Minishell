@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:26:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/05 20:31:02 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/06 00:41:16 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,35 +42,65 @@ static void	sort_tokens_by_length(const char *tokens[])
 	}
 }
 
+/// @brief Skips tokens in the string and returns a pointer to the first non-token character.
+/// @param src Pointer to the input string.
+/// @param tokens The array of tokens to skip.
+/// @return Pointer to the first non-token character.
+static char	*skip_tokens(char *src, const char *tokens[])
+{
+	int	j;
+	int	token_len;
+
+	while (*src)
+	{
+		j = 0;
+		while (tokens[j])
+		{
+			token_len = ft_strlen(tokens[j]);
+			if (ft_strncmp(src, tokens[j], token_len) == CMP_OK)
+			{
+				src += token_len;
+				j = -1;
+			}
+			j++;
+		}
+		if (j > 0)
+			break;
+	}
+	return (src);
+}
+
 /// @brief Counts the number of parts in the string split by tokens.
 /// @param src The input string.
 /// @param tokens The array of tokens to split by.
 /// @return The number of parts found.
-static int	count_parts(char *src, const char *tokens[])
+static void	count_parts(char *src, const char *tokens[], int *count)
 {
-	int	i;
+	int	part_len;
 	int	j;
-	int	count;
-	int	len;
 
-	count = 1;
-	i = 0;
-	while (src[i])
+	while (*src)
 	{
-		j = -1;
-		while (tokens[++j])
+		src = skip_tokens(src, tokens);
+		if (*src)
 		{
-			len = ft_strlen(tokens[j]);
-			if (ft_strncmp(&src[i], tokens[j], len) == CMP_OK)
+			(*count)++;
+			part_len = 0;
+			while (src[part_len])
 			{
-				count++;
-				i += len - 1;
-				break ;
+				j = -1;
+				while (tokens[++j])
+				{
+					if (ft_strncmp(&src[part_len], tokens[j], ft_strlen(tokens[j])) == CMP_OK)
+						break;
+				}
+				if (tokens[j])
+					break;
+				part_len++;
 			}
+			src += part_len;
 		}
-		i++;
 	}
-	return (count);
 }
 
 /// @brief Extracts the next part of the string split by tokens.
@@ -80,29 +110,26 @@ static int	count_parts(char *src, const char *tokens[])
 static char	*extract_part(char **src, const char *tokens[])
 {
 	char	*result;
+	int		part_len;
 	int		j;
-	int		i;
 
-	i = -1;
-	while ((*src)[++i])
+	*src = skip_tokens(*src, tokens);
+	part_len = 0;
+	while ((*src)[part_len]) 
 	{
-		j = -1;
-		while (tokens[++j])
+		j = 0;
+		while (tokens[j])
 		{
-			if (ft_strncmp(&(*src)[i], tokens[j],
-				ft_strlen(tokens[j])) == CMP_OK)
-			{
-				result = ft_substr(*src, 0, i);
-				if (!result)
-					return (NULL);
-				*src += i + ft_strlen(tokens[j]);
-				return (result);
-			}
+			if (ft_strncmp(&(*src)[part_len], tokens[j], ft_strlen(tokens[j])) == CMP_OK)
+				break;
+			j++;
 		}
+		if (tokens[j])
+			break;
+		part_len++;
 	}
-	result = ft_substr(*src, 0, i);
-	if (!result)
-		return (NULL);
+	result = ft_substr(*src, 0, part_len); 
+	*src += part_len;                      
 	return (result);
 }
 
@@ -119,17 +146,18 @@ char	**split_by_multiple_tokens(char *src, const char *tokens[])
 	if (!src || !tokens)
 		return (NULL);
 	sort_tokens_by_length(tokens);
-	parts = count_parts(src, tokens);
+	count_parts(src, tokens, &parts);
 	split = malloc((parts + 1) * sizeof(char *));
 	if (!split)
 		return (NULL);
 	idx = 0;
-	while (idx < parts)
+	while (*src)
 	{
-		split[idx] = extract_part(&src, tokens);
-		if (!split[idx])
-			return (free_split(split), NULL);
-		idx++;
+		char *part = extract_part(&src, tokens);
+		if (part && *part)
+			split[idx++] = part;
+		else
+			free(part);
 	}
 	split[idx] = NULL;
 	return (split);

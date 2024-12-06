@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/05 20:50:39 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/06 00:14:51 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,14 @@ int	init_command(char *input, const char *delimiters[])
 	split_input = split_by_multiple_tokens(input, delimiters);
 	if (!split_input)
 		return (-1); // ! Error managing here
-	cmd = create_cmd(split_input[i++]);
+	cmd = create_cmd(split_input[i++], get_shell()->envp);
 	if (!cmd)
 		return (free(split_input), -1);
 	get_shell()->command = cmd;
 	current = cmd;
 	while (split_input[i])
 	{
-		current->next = create_cmd(split_input[i++]);
+		current->next = create_cmd(split_input[i++], get_shell()->envp);
 		if (!current->next)
 		{
 			free_cmd_list_on_error(cmd);
