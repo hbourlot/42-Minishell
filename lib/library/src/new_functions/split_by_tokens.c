@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:26:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/06 00:41:16 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/06 20:37:16 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ static void	sort_tokens_by_length(const char *tokens[])
 	}
 }
 
-/// @brief Skips tokens in the string and returns a pointer to the first non-token character.
+/// @brief Skips tokens in the string and returns a pointer to the
+///			 first non-token character.
 /// @param src Pointer to the input string.
 /// @param tokens The array of tokens to skip.
 /// @return Pointer to the first non-token character.
@@ -65,7 +66,7 @@ static char	*skip_tokens(char *src, const char *tokens[])
 			j++;
 		}
 		if (j > 0)
-			break;
+			break ;
 	}
 	return (src);
 }
@@ -85,18 +86,18 @@ static void	count_parts(char *src, const char *tokens[], int *count)
 		if (*src)
 		{
 			(*count)++;
-			part_len = 0;
-			while (src[part_len])
+			part_len = -1;
+			while (src[++part_len])
 			{
 				j = -1;
 				while (tokens[++j])
 				{
-					if (ft_strncmp(&src[part_len], tokens[j], ft_strlen(tokens[j])) == CMP_OK)
-						break;
+					if (ft_strncmp(&src[part_len], tokens[j],
+							ft_strlen(tokens[j])) == CMP_OK)
+						break ;
 				}
 				if (tokens[j])
-					break;
-				part_len++;
+					break ;
 			}
 			src += part_len;
 		}
@@ -115,21 +116,22 @@ static char	*extract_part(char **src, const char *tokens[])
 
 	*src = skip_tokens(*src, tokens);
 	part_len = 0;
-	while ((*src)[part_len]) 
+	while ((*src)[part_len])
 	{
 		j = 0;
 		while (tokens[j])
 		{
-			if (ft_strncmp(&(*src)[part_len], tokens[j], ft_strlen(tokens[j])) == CMP_OK)
-				break;
+			if (ft_strncmp(&(*src)[part_len], tokens[j],
+				ft_strlen(tokens[j])) == CMP_OK)
+				break ;
 			j++;
 		}
 		if (tokens[j])
-			break;
+			break ;
 		part_len++;
 	}
-	result = ft_substr(*src, 0, part_len); 
-	*src += part_len;                      
+	result = ft_substr(*src, 0, part_len);
+	*src += part_len;
 	return (result);
 }
 
@@ -142,6 +144,7 @@ char	**split_by_multiple_tokens(char *src, const char *tokens[])
 	char	**split;
 	int		parts;
 	int		idx;
+	char	*part;
 
 	if (!src || !tokens)
 		return (NULL);
@@ -153,11 +156,12 @@ char	**split_by_multiple_tokens(char *src, const char *tokens[])
 	idx = 0;
 	while (*src)
 	{
-		char *part = extract_part(&src, tokens);
-		if (part && *part)
-			split[idx++] = part;
-		else
-			free(part);
+		split[idx] = extract_part(&src, tokens);
+		if (!split[idx])
+		{
+			free_split(split);
+			return (NULL);
+		}
 	}
 	split[idx] = NULL;
 	return (split);
