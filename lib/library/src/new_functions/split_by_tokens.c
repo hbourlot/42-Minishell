@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:26:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/06 20:37:16 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/08 22:53:44 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,17 +144,17 @@ char	**split_by_multiple_tokens(char *src, const char *tokens[])
 	char	**split;
 	int		parts;
 	int		idx;
-	char	*part;
 
 	if (!src || !tokens)
 		return (NULL);
+	parts = 0;
 	sort_tokens_by_length(tokens);
 	count_parts(src, tokens, &parts);
 	split = malloc((parts + 1) * sizeof(char *));
 	if (!split)
 		return (NULL);
-	idx = 0;
-	while (*src)
+	idx = -1;
+	while (++idx < parts)
 	{
 		split[idx] = extract_part(&src, tokens);
 		if (!split[idx])

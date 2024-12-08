@@ -1,33 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell_cleanup.c                                    :+:      :+:    :+:   */
+/*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/08 22:50:12 by hbourlot         ###   ########.fr       */
+/*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
+/*   Updated: 2024/12/08 22:46:15 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-void	cleanup_shell(t_shell *data)
-{
-	t_cmd *tmp;
+// int	execute_commands(t_cmd *cmd)
+// {
 	
-	if (data->input_splitted)
+// }
+
+int	execute(t_shell *data)
+{
+	int		i;
+	int		status;
+	int		wait_status;
+	pid_t	prev_pid;
+	
+	
+	i = 0;
+	prev_pid = 0;
+	while (i < data->nbr_of_commands)
 	{
-		free_split(data->input_splitted);
+		data->pid = waitpid(-1, &wait_status, 0);
+		if (WIFEXITED(wait_status) && data->pid > prev_pid)
+			status = WEXITSTATUS(wait_status);
+		prev_pid = data->pid;
+		i++;	
 	}
-	data->input_splitted = NULL;
-	while(data->command)
-	{
-		tmp = data->command;
-		if (tmp->args)
-			free_split(tmp->args);
-		data->command = data->command->next;
-		free(tmp);
-	}
-	data->command = NULL;
+	//! Clear all
+	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/05 20:53:12 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/08 22:47:40 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ typedef enum s_delimiter
 	AND = 2,
 } t_deli;
 
-
-
 typedef struct s_rules
 {	
 	t_deli				delimiter_type;
@@ -66,9 +64,11 @@ typedef struct s_cmd
 typedef struct s_data
 {
 	char			**input_splitted;
+	int				nbr_of_commands;
 	int				argc;
 	char			**argv;
 	char			**envp;
+	pid_t			pid;
 	struct s_cmd	*command;
 } 	t_shell;
 
@@ -83,7 +83,7 @@ int			parsing_input(char *input, const char **delimiters);
 // **						Create Functions							 **
 // ************************************************************************
 
-t_cmd		*create_command_list(char **input_splitted);
+// t_cmd		*create_command_list(char **input_splitted);
 
 // ************************************************************************
 // **						Initialize Functions						 **
