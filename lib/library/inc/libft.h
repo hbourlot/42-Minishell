@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/04 15:43:18 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:02:11 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,6 @@ int					split_length(char **src);
 
 char				**ft_split_charset(char const *s, char *charset);
 char				*ft_append_and_free_charset(char *s1, char *s2, char c);
-
+char				**ft_split_keep_sep(char *str, char sep);
+char				**ft_split_keep_charset(char *str, char *charset);
 #endif
