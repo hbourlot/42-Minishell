@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/08 22:54:40 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:24:07 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(int argc, char *argv[], char *envp[])
 
 
 	init_shell(argc, argv, envp);
-	if (init_command("|||||||||||||||||||| la |||||||||||", delimiters))
+	if (init_command("|||||||||||||||||||| la |||| a| b||||||", delimiters))
 		printf("error on create\n");
 	// debug_command_args(get_shell());
 	debug_command_input(get_shell());

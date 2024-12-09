@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/05 19:52:45 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:49:59 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ char				*get_next_line(int fd);
 int					ft_printf(const char *fmt, ...);
 int					ft_putchar(char c);
 int					ft_putstr(char *c);
-int					split_length(char **src);
+int					array_length(char **src);
 int					char_cmp(char a, char b);
-int					is_longer(char *src1, char *src2);
+int					is_str_longer(char *src1, char *src2);
 int					is_greater(int a, int b);
 char				*ft_strstr(const char *haystack, const char *needle);
 char				**split_by_multiple_tokens(char *src, const char *tokens[]);

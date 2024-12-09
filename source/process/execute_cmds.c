@@ -6,16 +6,16 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/08 22:46:15 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:41:45 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-// int	execute_commands(t_cmd *cmd)
-// {
+int	execute_commands(t_cmd *cmd)
+{
 	
-// }
+}
 
 int	execute(t_shell *data)
 {

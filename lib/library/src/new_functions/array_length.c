@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_length.c                                     :+:      :+:    :+:   */
+/*   array_length.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 17:09:20 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/27 14:46:49 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:46:55 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
  * @return The number of elements in the array, or -1 if the
  * 			input is invalid.
  */
-int	split_length(char **src)
+int	array_length(char **src)
 {
 	int	i;
 

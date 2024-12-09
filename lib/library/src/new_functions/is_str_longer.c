@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_longer.c                                        :+:      :+:    :+:   */
+/*   is_str_longer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 12:08:10 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/01 12:18:22 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:49:35 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 /// @param str2 The second string to compare.
 /// @return Returns 1 if the length of str1 is greater than the
 ///		 length of str2, otherwise returns 0.
-int	is_longer(char *src1, char *src2)
+int	is_str_longer(char *src1, char *src2)
 {
 	return (ft_strlen(src1) > ft_strlen(src2));
 }
