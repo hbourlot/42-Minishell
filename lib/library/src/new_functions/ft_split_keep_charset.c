@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split_keep_charset.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/10 16:45:38 by joralves          #+#    #+#             */
+/*   Updated: 2024/12/10 17:18:43 by joralves         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include <stdio.h>
 
@@ -57,40 +69,39 @@ char	**ft_split_keep_charset(char *str, char *charset)
 		return (NULL);
 	while (str && str[i])
 	{
-		while (str && str[i])
+		if (is_charset(str[i], charset) == 0)
 		{
-			if (is_charset(str[i], charset) == 0)
-				start = i;
-			while (is_charset(str[i], charset) == 0)
-			{
+			start = i;
+			while (str[i] && is_charset(str[i], charset) == 0)
 				i++;
-				if (str[i] == '\0' || is_charset(str[i], charset) == 1)
-					array[idx++] = ft_substr(str, start, i - start);
-			}
-			if (is_charset(str[i], charset) == 1)
-				start = i;
-			while (is_charset(str[i], charset) == 1)
-			{
+			array[idx] = ft_substr(str, start, i - start);
+			if (!array[idx++])
+				return (free_split(array), NULL);
+		}
+		if (is_charset(str[i], charset) == 1)
+		{
+			start = i;
+			while (str[i] && is_charset(str[i], charset) == 1)
 				i++;
-				if (str[i] == '\0' || is_charset(str[i], charset) == 0)
-					array[idx++] = ft_substr(str, start, i - start);
-			}
+			array[idx] = ft_substr(str, start, i - start);
+			if (!array[idx++])
+				return (free_split(array), NULL);
 		}
 	}
 	array[idx] = NULL;
 	return (array);
 }
-/* 
-int	main(void)
-{
-	int i = 0;
 
-	char str[] = "'$USER' '$home'' '$path'";
-	// printf("%d", count_str(str, '\''));
-	char **array = ft_split_keep_charset(str, "\' $");
-	while (array[i])
-	{
-		printf("%s\n", array[i]);
-		i++;
-	}
-} */
+// int	main(void)
+// {
+// 	int i = 0;
+
+// 	char str[] = "'$USER' '$home'' '$path'";
+// 	// printf("%d", count_str(str, '\''));
+// 	char **array = ft_split_keep_charset(str, "\' $");
+// 	while (array[i])
+// 	{
+// 		printf("%s\n", array[i]);
+// 		i++;
+// 	}
+// }

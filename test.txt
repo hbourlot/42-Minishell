@@ -1,7 +1,7 @@
+echo -n "$USER$USER ls"
 echo -n "'$USER'"
 echo -n $USER
 echo -n '$USER'
-echo -n "$USER$USER ls"
 echo -n '"$USER"'
 cd "/home/jorgealves/Course/minishell_42"
 cd "$HOME"
