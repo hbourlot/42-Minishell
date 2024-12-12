@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/11 21:47:16 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:39:22 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@
 // **						      MACROS  								 **
 // ************************************************************************
 
-#define READ  0
-#define WRITE 1
-#define ABS_PATH "PATH=/bin:/usr/bin:/usr/local/bin"
+#define READ  			0
+#define WRITE 			1
 #define	CMP_OK			0
 #define CMP_ERROR		1
 #define START_OF_TEXT	02
 #define END_OF_TEXT		03
+#define ABS_PATH 		"PATH=/bin:/usr/bin:/usr/local/bin"
 
 // ************************************************************************
 // **						     STRUCTURES  							 **
@@ -54,7 +54,6 @@ typedef enum e_delimiter
 	REDIRECT_LEFT_DOUBLE   // double left redirection `<<`
 }	t_delimiter;
 
-
 typedef struct s_rules
 {	
 	bool				here_doc;
@@ -63,32 +62,33 @@ typedef struct s_rules
 	char				*last_occurrence;
 	char 				*pre_command;
 	
-} 				t_rules;
+} 					t_rules;
 
 typedef struct s_cmd
 {
-	t_delimiter				delimiter;
-	char					*command_input;
-	char					*file;
-	int						out_fd;
-	int						in_fd;
-	char					**args;
-	char					*path;
-	char					**envp;
-	struct s_rules		 	settings;
-	struct s_cmd			*next;
+	t_delimiter			delimiter;
+	char				*command_input;
+	char				*file;
+	int					out_fd;
+	int					in_fd;
+	char				**args;
+	char				*path;
+	char				**envp;
+	struct s_rules		settings;
+	struct s_cmd		*next;
 }					t_cmd;
 
 typedef struct s_data
 {
 	char			**input_splitted;
+	char			**env_paths;
 	int				nbr_of_commands;
 	int				argc;
 	char			**argv;
 	char			**envp;
 	pid_t			pid;
 	struct s_cmd	*command;
-} 	t_shell;
+} 					t_shell;
 
 
 // ************************************************************************
@@ -108,6 +108,7 @@ int			parsing_input(char *input, const char **delimiters);
 // ************************************************************************
 
 t_shell 	*get_shell();
+t_shell		*init_shell(int argc, char *argv[], char *envp[]);
 int			init_program(t_shell *data);
 int			init_command(char *input, const char *delimiters[]);
 
@@ -117,9 +118,9 @@ int			init_command(char *input, const char *delimiters[]);
 
 char		**get_command_args(char *argv);
 void		execution(t_shell *data);
+char 		*get_path(char *command_input, char **env_paths);
 int			open_folder(char *file, t_cmd *command, bool here_doc);
 int			do_dup2(t_cmd *command, int *pipe_id, int *prev_fd);
-// char	*get_path(char *argv, t_env_info *info);
 
 
 // ************************************************************************
@@ -134,6 +135,8 @@ void		cleanup_shell(t_shell*data);
 
 void		debug_command_input(t_shell *data);
 void		debug_command_args(t_shell *data);
+void		debug_command_path(t_shell *data);
+
 void 		error_msg(void);
 
 #endif

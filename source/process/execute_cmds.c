@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/11 12:48:30 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:59:24 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,11 @@ static void	error_execve(t_shell *data, t_cmd *command)
 	exit (EXIT_FAILURE);
 }
 
-static int child_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev_fd)
+static void child_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev_fd)
 {
 	if (do_dup2(command, pipe_id, prev_fd))
 	{
+		printf("command->path: %s\n", command->path);
 		cleanup_shell(data);
 		exit (EXIT_FAILURE);
 	}
@@ -78,11 +79,17 @@ static void	execute_commands(t_cmd *command, pid_t *pid)
 			return (close_resources(1, pipe_id, "Pipe"));
 		*pid = fork();
 		if (*pid < 0)
+		{
+			printf("pid < 0\n");
 			return (close_resources(1, pipe_id, "PID"));
-		else if (pid == 0)
+		}
+		else if (*pid == 0)
+		{
 			child_process(data, command, pipe_id, &prev_fd);
+		}
 		else
 		{
+			printf("PARENT\n");
 			parent_process(command, pipe_id, &prev_fd);
 			command = command->next;
 		}

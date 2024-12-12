@@ -6,73 +6,51 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:38:12 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/11 22:01:05 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:34:10 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*find_properly_path(char *cmd, char **all_paths)
+static char	*find_executable_path(char *executable, char **env_paths)
 {
 	int		i;
-	char	*total_path;
+	char 	*pre_path;
+	char	*path;
 
 	i = 0;
-	while (all_paths[i])
+	while (env_paths[i])
 	{
-		total_path = ft_append_and_free(ft_strjoin(all_paths[i], "/"), cmd);
-		if (access(total_path, F_OK) == CMP_OK || !all_paths[i + 1])
-			return (total_path);
-		free(total_path);
+		pre_path = ft_strjoin(env_paths[i], "/");
+		if (!pre_path)
+			return (NULL);
+		path = ft_append_and_free(pre_path, executable);
+		if (!path)
+			return (NULL);
+		if (access(path, F_OK) == CMP_OK || !env_paths[i + 1])
+			return (path);
+		free(path);
 		i++;
 	}
 	return (NULL);
 }
 
-char	*find_executable_path(char *path_var, char *cmd)
+char *get_path(char *command_input, char **env_paths)
 {
-	char		**envp_paths;
-	char		*path;
-	const char	*default_paths[] = {BIN, SBIN, UBIN, USBIN, ULBIN, ULSBIN,
-		NULL};
-
-	if (!path_var || !*path_var)
-		return (find_properly_path(cmd, (char **)default_paths));
-	envp_paths = ft_split(path_var, ':');
-	if (!envp_paths)
-		return (NULL);
-	path = find_properly_path(cmd, envp_paths);
-	free_split(envp_paths);
-	return (path);
-}
-
-char	*find_executable_path(char *src, char *envp[])
-{
-	int	i;
-	
-	i = 0;
-	if ()
-}
-
-// char	*get_path(char *argv, t_env_info *info)
-char	*get_path(char *src, char *envp[])
-{
-	char	**split;
+	char	*executable;
+	char	**command_splitted;
+	int		i;
 	char	*path;
 
-	if (!src || !*src)
+	command_splitted = ft_split(command_input, ' ');
+	if (!command_splitted)
 		return (NULL);
-	if (info->is_path_empty)
-		return (ft_strdup(src));
-	if (info->has_path == false)
-		return (ft_strdup(src));
-	split = ft_split(src, ' ');
-	if (!split)
-		return (NULL);
-	if (ft_strchr(split[0], '/'))
-		path = ft_strdup(split[0]);
-	else
-		path = find_executable_path(info->path, split[0]);
-	free_split(split);
-	return (path);
+	executable = ft_strdup(command_splitted[0]);
+	if (!executable)
+		return (free_split(command_splitted), NULL);
+	free_split(command_splitted);
+	if (ft_strchr(executable, '/'))
+		return (executable);
+	path = find_executable_path(executable, env_paths);
+	return (path);	
 }

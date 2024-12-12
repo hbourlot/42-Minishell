@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/11 12:55:27 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:34:31 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 // 	return (NULL);
 // }
 
-t_cmd	*create_command(char *command_input, char *envp[])
+t_cmd	*create_command(char *command_input, char *envp[], char **env_paths)
 {
 	t_cmd	*command;
 
@@ -36,6 +36,7 @@ t_cmd	*create_command(char *command_input, char *envp[])
 	ft_memset(command, 0, sizeof(t_cmd));
 	command->command_input = command_input;
 	command->envp = envp;
+    command->path = get_path(command_input, env_paths);
     command->args = get_command_args(command_input);
     command->in_fd = -1;
     command->out_fd = -1;
@@ -56,13 +57,13 @@ static int create_command_list(t_shell *data)
     int     i;
 	
 	i = 0;
-    data->command = create_command(data->input_splitted[i++], data->envp);
+    data->command = create_command(data->input_splitted[i++], data->envp, data->env_paths);
     if (!data->command)
         return (free(data->input_splitted), -1);
     current = data->command;
     while (data->input_splitted[i])
     {
-        current->next = create_command(data->input_splitted[i++], data->envp);
+        current->next = create_command(data->input_splitted[i++], data->envp, data->env_paths);
         if (!current->next)
         {
             // free_cmd_list_on_error(data->command);
@@ -85,34 +86,3 @@ int init_command(char *input, const char *delimiters[])
         return (-1); // Error in creating command list
     return (0);
 }
-
-
-// int	init_command(char *input, const char *delimiters[])
-// {
-// 	t_cmd	*cmd;
-// 	t_cmd	*current;
-// 	char	**split_input;
-// 	int		i;
-
-// 	i = 0;
-// 	split_input = split_by_multiple_tokens(input, delimiters);
-// 	if (!split_input)
-// 		return (-1); // ! Error managing here
-// 	cmd = create_cmd(split_input[i++], get_shell()->envp);
-// 	if (!cmd)
-// 		return (free(split_input), -1);
-// 	get_shell()->command = cmd;
-//     get_shell()->input_splitted = split_input;
-// 	current = cmd;
-// 	while (split_input[i])
-// 	{
-// 		current->next = create_cmd(split_input[i++], get_shell()->envp);
-// 		if (!current->next)
-// 		{
-// 			free_cmd_list_on_error(cmd);
-// 			return (free_split(split_input), -1); // ! Also need to free all previously struct command;		
-// 		}
-// 		current = current->next;
-// 	}
-// 	return (0);
-// }

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:18:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/03 15:42:10 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:41:45 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,24 @@ void	debug_command_args(t_shell *data)
 		i++;
 		tmp = tmp->next;
 	}	
+}
+
+void	debug_command_path(t_shell *data)
+{
+	int		i;
+	t_cmd	*tmp;
+
+	i = 1;
+	tmp = data->command;
+	while (tmp)
+	{
+		if (tmp->path)
+			printf("Command->path [%d]: %s\n", i, tmp->path);
+		else
+			printf("Command->path [%d]: has no path", i);
+		i++;
+		tmp = tmp->next;
+	}
 }
 
 void error_msg(void)
