@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/29 15:30:20 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/08 22:47:40 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,41 +25,65 @@
 # include "../lib/library/inc/libft.h"
 
 // -- TOKENS
+#define	CMP_OK			0
+#define CMP_ERROR		1
 #define START_OF_TEXT	02
 #define END_OF_TEXT		03
 
-typedef struct s_cmd_tokens
+
+typedef enum s_delimiter
 {
-	bool			here_doc;
-	char			*last_occurrence;
-	char 			*pre_command;
+	PIPE = 1,
+	OR = 2,
+	AND = 2,
+} t_deli;
+
+typedef struct s_rules
+{	
+	t_deli				delimiter_type;
+	bool				here_doc;
+	bool				or_next;
+	bool				or_prev;
+	char				*last_occurrence;
+	char 				*pre_command;
 	
-} 				t_token;
+} 				t_rules;
 
 typedef struct s_cmd
 {
-	char					*pre_command;
+	char					*command_input;
 	int						out_fd;
 	int						in_fd;
 	char					**args;
 	char					*path;
 	char					**envp;
-	struct s_cmd_tokens 	token;
+	struct s_rules		 	settings;
 	struct s_cmd			*next;
 }					t_cmd;
 
 typedef struct s_data
 {
 	char			**input_splitted;
+	int				nbr_of_commands;
+	int				argc;
+	char			**argv;
+	char			**envp;
+	pid_t			pid;
 	struct s_cmd	*command;
 } 	t_shell;
+
+
+// ************************************************************************
+// **						Parsing Functions							 **
+// ************************************************************************
+int			parsing_input(char *input, const char **delimiters);
 
 
 // ************************************************************************
 // **						Create Functions							 **
 // ************************************************************************
 
-t_cmd		*create_command_list(char **input_splitted);
+// t_cmd		*create_command_list(char **input_splitted);
 
 // ************************************************************************
 // **						Initialize Functions						 **
@@ -67,7 +91,7 @@ t_cmd		*create_command_list(char **input_splitted);
 
 t_shell 	*get_shell();
 int			init_program(t_shell *data);
-int			initialize_command(char **input_splitted, t_cmd *command);
+int			init_command(char *input, const char *delimiters[]);
 
 // ************************************************************************
 // **						Proccess Functions						 	 **
@@ -85,7 +109,8 @@ void		cleanup_shell(t_shell*data);
 // **						Utils Functions							 	 **
 // ************************************************************************
 
-void		debug_command_precommand(t_shell *data);
+void		debug_command_input(t_shell *data);
 void		debug_command_args(t_shell *data);
+void 		error_msg(void);
 
 #endif

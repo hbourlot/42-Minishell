@@ -1,31 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_quotes.c                                    :+:      :+:    :+:   */
+/*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/27 17:27:32 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/29 15:30:38 by hbourlot         ###   ########.fr       */
+/*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
+/*   Updated: 2024/12/09 16:41:45 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-void	process_pre_command(char *pre_command, t_token *token)
+int	execute_commands(t_cmd *cmd)
 {
-	int	in_single_quotes;
-	int	int_double_quotes;
-	int	i;
+	
+}
 
+int	execute(t_shell *data)
+{
+	int		i;
+	int		status;
+	int		wait_status;
+	pid_t	prev_pid;
+	
+	
 	i = 0;
-	in_single_quotes = 0;
-	int_double_quotes = 0;
-	while (pre_command[i])
+	prev_pid = 0;
+	while (i < data->nbr_of_commands)
 	{
-		if (pre_command[i] == '\'' && !in_single_quotes)
-		{
-			in_single_quotes = 1;
-		}
+		data->pid = waitpid(-1, &wait_status, 0);
+		if (WIFEXITED(wait_status) && data->pid > prev_pid)
+			status = WEXITSTATUS(wait_status);
+		prev_pid = data->pid;
+		i++;	
 	}
+	//! Clear all
+	return (status);
 }

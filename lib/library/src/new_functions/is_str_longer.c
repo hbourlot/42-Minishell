@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   is_str_longer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/16 10:43:42 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/08 20:51:23 by hbourlot         ###   ########.fr       */
+/*   Created: 2024/12/01 12:08:10 by hbourlot          #+#    #+#             */
+/*   Updated: 2024/12/09 16:49:35 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/// @brief Checks whether the character c is a digit (0 through 9).
-/// @param c The character to be checked.
-/// @return Returns 1 if c is a digit, otherwise returns 0.
-int	ft_isdigit(int c)
+/// @brief Compares the lengths of two strings to determine if the
+// 		 first is longer than the second.
+/// @param str1 The first string to compare.
+/// @param str2 The second string to compare.
+/// @return Returns 1 if the length of str1 is greater than the
+///		 length of str2, otherwise returns 0.
+int	is_str_longer(char *src1, char *src2)
 {
-	if (c >= 48 && c <= 57)
-		return (1);
-	return (0);
+	return (ft_strlen(src1) > ft_strlen(src2));
 }

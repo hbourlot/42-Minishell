@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:01:57 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/27 19:13:46 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/10 18:34:05 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,11 @@
 
 static int	run_shell(t_shell *data, char *input)
 {
-	data->input_splitted = ft_split(input, '|');
-	if (data->input_splitted == NULL)
-		return (printf("data->input_splitted Error\n"), -1); // ! Error managing here
-	data->command = create_command_list(data->input_splitted);
-	if (!data->command)
-		return (printf("create_command_list Error\n"), -1); // ! Error managing here
-	if (initialize_command(data->input_splitted, data->command))
-		return (printf("initialize_command Error\n"), -1); // ! Error managing here
-	debug_command_precommand(data);
+	const char *delimiters[] = {"|", "||", "&&", "&", NULL};
+	
+	if (init_command(input, delimiters))
+		return (-1);
+	debug_command_input(data);
 	debug_command_args(data);
 	cleanup_shell(data);
 	return (0);

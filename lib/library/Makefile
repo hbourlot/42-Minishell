@@ -30,9 +30,10 @@ CFUNCTIONS		= ft_atoi ft_bzero ft_calloc ft_isalnum ft_isalpha ft_isascii ft_isd
 					ft_itoa ft_memcmp ft_putstr_fd ft_strlcat 											\
 			
 UPD_SRC			=  ft_itoa_iter ft_linelen ft_nbrlen ft_strcmp ft_lstduplicate ft_lstidx ft_lstvalue	\
-					ft_free_split ft_strcpy ft_strcat ft_append_and_free  free_split	get_next_line		\
-					ft_printf ft_putchar ft_putstr  split_length \
+					ft_free_split ft_strcpy ft_strcat ft_append_and_free free_split	get_next_line		\
+					ft_printf ft_putchar ft_putstr  array_length char_cmp ft_strstr is_str_longer		\
 					ft_split_charset ft_append_and_free_charset ft_split_keep_sep ft_split_keep_charset ft_strncpy \
+					is_greater split_by_tokens
 
 BONUS			= ft_lstnew ft_lstadd_front ft_lstsize ft_lstadd_back ft_lstmap ft_lstiter ft_lstlast 	\
 					ft_lstdelone ft_lstclear															\
@@ -40,7 +41,7 @@ BONUS			= ft_lstnew ft_lstadd_front ft_lstsize ft_lstadd_back ft_lstmap ft_lstit
 #Source and Object files
 SRC_FILES 		= $(addprefix $(SRC_DIR)/$(MANDATORY_DIR), $(CFUNCTIONS:=.c)) 	\
 					$(addprefix $(SRC_DIR)$(UPD_DIR), $(UPD_SRC:=.c))			\
-					$(addprefix $(SRC_DIR)$(BONUS_DIR), $(BONUS:=.c))	
+					# $(addprefix $(SRC_DIR)$(BONUS_DIR), $(BONUS:=.c))	
 
 # BONUS_FILES		= $(addprefix $(BONUS_DIR), $(BONUS:=.c))
 

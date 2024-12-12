@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell_cleanup.c                                    :+:      :+:    :+:   */
+/*   handle_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/09 16:13:00 by hbourlot         ###   ########.fr       */
+/*   Created: 2024/11/27 17:27:32 by hbourlot          #+#    #+#             */
+/*   Updated: 2024/12/08 22:31:32 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-
-// * All the command->command_input comes from the data->input_splitted
-// * so just need to free input_splitted.
-void	cleanup_shell(t_shell *data)
+void	process_pre_command(char *pre_command, t_token *token)
 {
-	t_cmd *tmp;
-	
-	if (data->input_splitted)
-		free_split(data->input_splitted);
-	data->input_splitted = NULL;
-	while(data->command)
+	int	in_single_quotes;
+	int	int_double_quotes;
+	int	i;
+
+	i = 0;
+	in_single_quotes = 0;
+	int_double_quotes = 0;
+	while (pre_command[i])
 	{
-		tmp = data->command;
-		if (tmp->args)
-			free_split(tmp->args);
-		data->command = data->command->next;
-		free(tmp);
+		if (pre_command[i] == '\'' && !in_single_quotes)
+		{
+			in_single_quotes = 1;
+		}
 	}
-	data->command = NULL;
 }

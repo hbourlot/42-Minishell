@@ -6,14 +6,14 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:18:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/27 18:37:03 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:42:10 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 # include "minishell.h"
 
-void	debug_command_precommand(t_shell *data)
+void	debug_command_input(t_shell *data)
 {
 	t_cmd	*tmp;
 	int	i;
@@ -22,7 +22,7 @@ void	debug_command_precommand(t_shell *data)
 	tmp = data->command;
 	while (tmp)
 	{
-		printf("Command->pre_command [%d]: %s\n", i++, tmp->pre_command);
+		printf("Command->pre_command [%d]: %s\n", i++, tmp->command_input);
 		tmp = tmp->next;
 	}
 }
@@ -54,4 +54,9 @@ void	debug_command_args(t_shell *data)
 		i++;
 		tmp = tmp->next;
 	}	
+}
+
+void error_msg(void)
+{
+	ft_putstr_fd("Error\n", 2);
 }

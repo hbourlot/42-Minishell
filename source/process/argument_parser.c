@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/01 01:31:41 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:35:52 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,21 +106,21 @@ static int	process_word(char **array, char *start, char *end, int i,
 /// @return Returns 1 if memory allocation fails, otherwise 0.
 static int	duplicate(char **array, const char *s, char quotes)
 {
-	int		in_single_quotes;
+	int		in_quotes;
 	int		i;
 	char	*start;
 
 	i = 0;
-	in_single_quotes = 0;
+	in_quotes = 0;
 	while (*s)
 	{
 		while (*s == ' ')
 			s++;
 		start = (char *)s;
-		while (*s && (*s != ' ' || in_single_quotes))
+		while (*s && (*s != ' ' || in_quotes))
 		{
-			if (*s == quotes)
-				in_single_quotes = !in_single_quotes;
+			if (*s == '\'')
+				in_quotes = !in_quotes;
 			s++;
 		}
 		if (s > start)
@@ -153,6 +153,7 @@ static char	*expand_varibles(char *str)
 char	**get_command_args(char *argv)
 {
 	char	**array;
+	char	reference;
 	int		words;
 	char	quotes;
 

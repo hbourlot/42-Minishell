@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   is_greater.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/16 10:43:42 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/08 20:51:23 by hbourlot         ###   ########.fr       */
+/*   Created: 2024/12/01 14:16:12 by hbourlot          #+#    #+#             */
+/*   Updated: 2024/12/01 14:18:08 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/// @brief Checks whether the character c is a digit (0 through 9).
-/// @param c The character to be checked.
-/// @return Returns 1 if c is a digit, otherwise returns 0.
-int	ft_isdigit(int c)
+/// @brief Compares two integers to determine if the first
+///		 is greater than the second.
+/// @param a The first integer to compare.
+/// @param b The second integer to compare.
+/// @return Returns 1 if a is greater than b, otherwise returns 0.
+int	is_greater(int a, int b)
 {
-	if (c >= 48 && c <= 57)
-		return (1);
-	return (0);
+	return (a > b);
 }
