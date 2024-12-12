@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/08 22:47:40 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/11 21:47:16 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,27 +20,43 @@
 # include <stdio.h>
 # include <signal.h>
 # include <fcntl.h>
+# include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../lib/library/inc/libft.h"
 
-// -- TOKENS
+
+// ************************************************************************
+// **						      MACROS  								 **
+// ************************************************************************
+
+#define READ  0
+#define WRITE 1
+#define ABS_PATH "PATH=/bin:/usr/bin:/usr/local/bin"
 #define	CMP_OK			0
 #define CMP_ERROR		1
 #define START_OF_TEXT	02
 #define END_OF_TEXT		03
 
+// ************************************************************************
+// **						     STRUCTURES  							 **
+// ************************************************************************
 
-typedef enum s_delimiter
+typedef enum e_delimiter
 {
-	PIPE = 1,
-	OR = 2,
-	AND = 2,
-} t_deli;
+	PIPE_SINGLE,          // single pipe `|`
+	PIPE_DOUBLE,          // double pipe `||`
+	AND_SINGLE,           // single AND `&`
+	AND_DOUBLE,           // double AND `&&`
+	REDIRECT_RIGHT_SINGLE, // single right redirection `>`
+	REDIRECT_RIGHT_DOUBLE, // double right redirection `>>`
+	REDIRECT_LEFT_SINGLE,  // single left redirection `<`
+	REDIRECT_LEFT_DOUBLE   // double left redirection `<<`
+}	t_delimiter;
+
 
 typedef struct s_rules
 {	
-	t_deli				delimiter_type;
 	bool				here_doc;
 	bool				or_next;
 	bool				or_prev;
@@ -51,7 +67,9 @@ typedef struct s_rules
 
 typedef struct s_cmd
 {
+	t_delimiter				delimiter;
 	char					*command_input;
+	char					*file;
 	int						out_fd;
 	int						in_fd;
 	char					**args;
@@ -76,8 +94,8 @@ typedef struct s_data
 // ************************************************************************
 // **						Parsing Functions							 **
 // ************************************************************************
-int			parsing_input(char *input, const char **delimiters);
 
+int			parsing_input(char *input, const char **delimiters);
 
 // ************************************************************************
 // **						Create Functions							 **
@@ -98,6 +116,11 @@ int			init_command(char *input, const char *delimiters[]);
 // ************************************************************************
 
 char		**get_command_args(char *argv);
+void		execution(t_shell *data);
+int			open_folder(char *file, t_cmd *command, bool here_doc);
+int			do_dup2(t_cmd *command, int *pipe_id, int *prev_fd);
+// char	*get_path(char *argv, t_env_info *info);
+
 
 // ************************************************************************
 // **						Free Functions							 	 **

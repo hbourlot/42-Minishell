@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:01:57 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/10 18:34:05 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:57:29 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ static int	run_shell(t_shell *data, char *input)
 	const char *delimiters[] = {"|", "||", "&&", "&", NULL};
 	
 	if (init_command(input, delimiters))
-		return (-1);
-	debug_command_input(data);
-	debug_command_args(data);
+		return (-1); // TODO: ADD a message that failed to create command :)
+	// execution(data);
+	// debug_command_input(data);
+	// debug_command_args(data);
 	cleanup_shell(data);
 	return (0);
 }

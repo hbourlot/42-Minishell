@@ -20,10 +20,10 @@ OS				= $(shell uname)
 MSG_MAC 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))%% ] $(ORANGE)Compiling... $<... $(RESET)"
 MSG_LINUX 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))% ] $(ORANGE)Compiling... $<... $(RESET)"
 NAME			= minishell
-C_FUNCTIONS		= parsing/parsing \
-					initialize/init_command initialize/init_program\
-					process/argument_parser \
-					free/shell_cleanup \
+C_FUNCTIONS		= parsing/parsing 																\
+					initialize/init_command initialize/init_program								\
+					process/argument_parser process/execute_cmds process/execute_cmds_utils		\
+					free/shell_cleanup 															\
 					utils/debug
 # -L./ -lminishell
 VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes
