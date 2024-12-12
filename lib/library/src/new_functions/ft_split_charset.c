@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:57:58 by joralves          #+#    #+#             */
-/*   Updated: 2024/12/04 15:55:36 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/10 18:55:59 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,6 @@ static char	**each_alloc(char **dest, int idx, int len)
 		free(dest);
 		return (NULL);
 	}
-	return (dest);
-}
-
-static char	*ft_strncpy(char *dest, const char *src, int len)
-{
-	int	i;
-
-	i = 0;
-	while (i < len)
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
 	return (dest);
 }
 

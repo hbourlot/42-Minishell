@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 16:45:38 by joralves          #+#    #+#             */
-/*   Updated: 2024/12/10 17:18:43 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:56:08 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,14 @@ static int	count_str(char *str, char *charset)
 	return (count);
 }
 
-char	**ft_split_keep_charset(char *str, char *charset)
+static char	**string_allocation(char **array, char *str, char *charset,
+		int *idx)
 {
-	char	**array;
-	int		start;
-	int		i;
-	int		idx;
+	int	start;
+	int	i;
 
-	idx = 0;
 	start = 0;
 	i = 0;
-	array = malloc((count_str(str, charset) + 1) * sizeof(char *));
-	if (!array)
-		return (NULL);
 	while (str && str[i])
 	{
 		if (is_charset(str[i], charset) == 0)
@@ -74,20 +69,32 @@ char	**ft_split_keep_charset(char *str, char *charset)
 			start = i;
 			while (str[i] && is_charset(str[i], charset) == 0)
 				i++;
-			array[idx] = ft_substr(str, start, i - start);
-			if (!array[idx++])
-				return (free_split(array), NULL);
 		}
-		if (is_charset(str[i], charset) == 1)
+		else if (is_charset(str[i], charset) == 1)
 		{
 			start = i;
 			while (str[i] && is_charset(str[i], charset) == 1)
 				i++;
-			array[idx] = ft_substr(str, start, i - start);
-			if (!array[idx++])
-				return (free_split(array), NULL);
 		}
+		array[*idx] = ft_substr(str, start, i - start);
+		if (!array[*idx])
+			return (free_split(array), NULL);
+		*idx = *idx + 1;
 	}
+	return (array);
+}
+
+char	**ft_split_keep_charset(char *str, char *charset)
+{
+	char	**array;
+	int		idx;
+
+	idx = 0;
+	array = malloc((count_str(str, charset) + 1) * sizeof(char *));
+	if (!array)
+		return (NULL);
+	if (string_allocation(array, str, charset, &idx) == NULL)
+		return (NULL);
 	array[idx] = NULL;
 	return (array);
 }
@@ -96,12 +103,13 @@ char	**ft_split_keep_charset(char *str, char *charset)
 // {
 // 	int i = 0;
 
-// 	char str[] = "'$USER' '$home'' '$path'";
+// 	char str[] = "'$USER' '$home' '$path'";
 // 	// printf("%d", count_str(str, '\''));
-// 	char **array = ft_split_keep_charset(str, "\' $");
+// 	char **array = ft_split_keep_charset(str, "\'$");
 // 	while (array[i])
 // 	{
 // 		printf("%s\n", array[i]);
 // 		i++;
 // 	}
+// 	free_split(array);
 // }

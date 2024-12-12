@@ -31,7 +31,8 @@ CFUNCTIONS		= ft_atoi ft_bzero ft_calloc ft_isalnum ft_isalpha ft_isascii ft_isd
 			
 UPD_SRC			=  ft_itoa_iter ft_linelen ft_nbrlen ft_strcmp ft_lstduplicate ft_lstidx ft_lstvalue	\
 					ft_free_split ft_strcpy ft_strcat ft_append_and_free  free_split	get_next_line		\
-					ft_printf ft_putchar ft_putstr  split_length ft_split_charset ft_append_and_free_charset ft_split_keep_sep ft_split_keep_charset
+					ft_printf ft_putchar ft_putstr  split_length \
+					ft_split_charset ft_append_and_free_charset ft_split_keep_sep ft_split_keep_charset ft_strncpy \
 
 BONUS			= ft_lstnew ft_lstadd_front ft_lstsize ft_lstadd_back ft_lstmap ft_lstiter ft_lstlast 	\
 					ft_lstdelone ft_lstclear															\
