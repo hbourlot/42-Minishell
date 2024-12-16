@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/12 14:39:22 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:08:48 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ typedef struct s_rules
 typedef struct s_cmd
 {
 	t_delimiter			delimiter;
-	char				*command_input;
+	char				*deli_test;
+	char				*input;
 	char				*file;
 	int					out_fd;
 	int					in_fd;
@@ -118,7 +119,7 @@ int			init_command(char *input, const char *delimiters[]);
 
 char		**get_command_args(char *argv);
 void		execution(t_shell *data);
-char 		*get_path(char *command_input, char **env_paths);
+char 		*get_path(char *input, char **env_paths);
 int			open_folder(char *file, t_cmd *command, bool here_doc);
 int			do_dup2(t_cmd *command, int *pipe_id, int *prev_fd);
 

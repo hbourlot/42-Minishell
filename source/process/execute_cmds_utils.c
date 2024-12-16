@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 11:45:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/11 12:48:33 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:19:53 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ int	do_dup2(t_cmd *command, int *pipe_id, int *prev_fd)
 
 	status = 0;
 	if (*prev_fd != -1)
+	{
 		duplicate_fd(*prev_fd, STDIN_FILENO);
+	}
 	if (command->in_fd == READ)
 	{
 		status = open_folder(command->file, command, command->settings.here_doc);
@@ -69,7 +71,9 @@ int	do_dup2(t_cmd *command, int *pipe_id, int *prev_fd)
 	}
 	else
 		dup2(pipe_id[1], STDOUT_FILENO);
-	close(pipe_id[1]);
-	close(pipe_id[0]);
+	if (pipe_id[1] != -1)
+		close(pipe_id[1]);
+	if (pipe_id[0] != -1)
+		close(pipe_id[0]);
 	return (status);
 }

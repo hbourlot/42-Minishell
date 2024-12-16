@@ -6,14 +6,14 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/11 11:00:04 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:03:43 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
 
-// * All the command->command_input comes from the data->input_splitted
+// * All the command->input comes from the data->input_splitted
 // * so just need to free input_splitted.
 void	cleanup_shell(t_shell *data)
 {

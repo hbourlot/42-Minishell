@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:38:12 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/12 14:34:10 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:03:43 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ static char	*find_executable_path(char *executable, char **env_paths)
 	return (NULL);
 }
 
-char *get_path(char *command_input, char **env_paths)
+char *get_path(char *input, char **env_paths)
 {
 	char	*executable;
 	char	**command_splitted;
 	int		i;
 	char	*path;
 
-	command_splitted = ft_split(command_input, ' ');
+	command_splitted = ft_split(input, ' ');
 	if (!command_splitted)
 		return (NULL);
 	executable = ft_strdup(command_splitted[0]);

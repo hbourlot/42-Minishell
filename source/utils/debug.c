@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:18:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/12 14:41:45 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:03:43 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	debug_command_input(t_shell *data)
 	tmp = data->command;
 	while (tmp)
 	{
-		printf("Command->pre_command [%d]: %s\n", i++, tmp->command_input);
+		printf("Command->pre_command [%d]: %s\n", i++, tmp->input);
 		tmp = tmp->next;
 	}
 }
