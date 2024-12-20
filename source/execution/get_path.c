@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:38:12 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/12 17:03:43 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/18 21:00:28 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,6 @@ char *get_path(char *input, char **env_paths)
 	if (ft_strchr(executable, '/'))
 		return (executable);
 	path = find_executable_path(executable, env_paths);
+	free(executable);
 	return (path);	
 }

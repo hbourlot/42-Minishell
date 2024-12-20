@@ -6,17 +6,16 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:18:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/12 17:03:43 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:13:00 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-# include "minishell.h"
+#include "minishell.h"
 
 void	debug_command_input(t_shell *data)
 {
 	t_cmd	*tmp;
-	int	i;
+	int		i;
 
 	i = 1;
 	tmp = data->command;
@@ -30,9 +29,9 @@ void	debug_command_input(t_shell *data)
 void	debug_command_args(t_shell *data)
 {
 	t_cmd	*tmp;
-	int	i;
-	int	j;
-	
+	int		i;
+	int		j;
+
 	i = 1;
 	tmp = data->command;
 	while (tmp)
@@ -40,7 +39,7 @@ void	debug_command_args(t_shell *data)
 		j = 0;
 		if (tmp->args)
 		{
-			while(tmp->args[j])
+			while (tmp->args[j])
 			{
 				printf("Command->args [%d][%d]: %s\n", i, j + 1, tmp->args[j]);
 				j++;
@@ -49,11 +48,11 @@ void	debug_command_args(t_shell *data)
 		else
 		{
 			printf("args == NULL\n");
-			break;
+			break ;
 		}
 		i++;
 		tmp = tmp->next;
-	}	
+	}
 }
 
 void	debug_command_path(t_shell *data)
@@ -73,8 +72,7 @@ void	debug_command_path(t_shell *data)
 		tmp = tmp->next;
 	}
 }
-
-void error_msg(void)
-{
-	ft_putstr_fd("Error\n", 2);
-}
+// void	error_msg(void)
+// {
+// 	ft_putstr_fd("Error\n", 2);
+// }

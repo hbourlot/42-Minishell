@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 11:45:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/12 16:19:53 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/20 21:39:42 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,13 @@ int	do_dup2(t_cmd *command, int *pipe_id, int *prev_fd)
 	}
 	if (command->in_fd == READ)
 	{
+		// status = open_folder(command->file_list[0], command, command->settings.here_doc);
 		status = open_folder(command->file, command, command->settings.here_doc);
 		duplicate_fd(command->in_fd, STDIN_FILENO);
 	}
 	if (command->out_fd == WRITE)
 	{
+		// status = open_folder(command->file_list[0], command, command->settings.here_doc);
 		status = open_folder(command->file, command, command->settings.here_doc);
 		duplicate_fd(command->out_fd, STDOUT_FILENO);
 	}

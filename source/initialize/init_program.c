@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:01:57 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/12 14:52:22 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:31:31 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 static int	run_shell(t_shell *data, char *input)
 {
-	const char *delimiters[] = {"|", "||", "&&", "&", NULL};
-	
-	if (init_command(input, delimiters))
+	if (init_command(input))
 		return (-1); // TODO: ADD a message that failed to create command :)
 	// printf("-- DEBUG --\n");
 	// debug_command_path(data);
@@ -39,14 +37,10 @@ int	init_program(t_shell *data)
 	while (true)
 	{
 		input = readline("minishell-> ");
-		if (input == NULL)
-		{
-			printf("\nExiting..\n");
-			return (free(input), 0);
-		}
+		// if (input == NULL)
 		// TODO: Need to add input line to the history here!
 		if (run_shell(data, input))
-			return (free(input), -1);
+			return (free(input) , -1);
 		free(input);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/16 12:08:48 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:12:54 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,79 +24,14 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../lib/library/inc/libft.h"
-
-
-// ************************************************************************
-// **						      MACROS  								 **
-// ************************************************************************
-
-#define READ  			0
-#define WRITE 			1
-#define	CMP_OK			0
-#define CMP_ERROR		1
-#define START_OF_TEXT	02
-#define END_OF_TEXT		03
-#define ABS_PATH 		"PATH=/bin:/usr/bin:/usr/local/bin"
-
-// ************************************************************************
-// **						     STRUCTURES  							 **
-// ************************************************************************
-
-typedef enum e_delimiter
-{
-	PIPE_SINGLE,          // single pipe `|`
-	PIPE_DOUBLE,          // double pipe `||`
-	AND_SINGLE,           // single AND `&`
-	AND_DOUBLE,           // double AND `&&`
-	REDIRECT_RIGHT_SINGLE, // single right redirection `>`
-	REDIRECT_RIGHT_DOUBLE, // double right redirection `>>`
-	REDIRECT_LEFT_SINGLE,  // single left redirection `<`
-	REDIRECT_LEFT_DOUBLE   // double left redirection `<<`
-}	t_delimiter;
-
-typedef struct s_rules
-{	
-	bool				here_doc;
-	bool				or_next;
-	bool				or_prev;
-	char				*last_occurrence;
-	char 				*pre_command;
-	
-} 					t_rules;
-
-typedef struct s_cmd
-{
-	t_delimiter			delimiter;
-	char				*deli_test;
-	char				*input;
-	char				*file;
-	int					out_fd;
-	int					in_fd;
-	char				**args;
-	char				*path;
-	char				**envp;
-	struct s_rules		settings;
-	struct s_cmd		*next;
-}					t_cmd;
-
-typedef struct s_data
-{
-	char			**input_splitted;
-	char			**env_paths;
-	int				nbr_of_commands;
-	int				argc;
-	char			**argv;
-	char			**envp;
-	pid_t			pid;
-	struct s_cmd	*command;
-} 					t_shell;
+# include "definitions.h"
 
 
 // ************************************************************************
 // **						Parsing Functions							 **
 // ************************************************************************
 
-int			parsing_input(char *input, const char **delimiters);
+int			parsing_input(char *input);
 
 // ************************************************************************
 // **						Create Functions							 **
@@ -111,7 +46,7 @@ int			parsing_input(char *input, const char **delimiters);
 t_shell 	*get_shell();
 t_shell		*init_shell(int argc, char *argv[], char *envp[]);
 int			init_program(t_shell *data);
-int			init_command(char *input, const char *delimiters[]);
+int			init_command(char *input);
 
 // ************************************************************************
 // **						Proccess Functions						 	 **
@@ -138,6 +73,13 @@ void		debug_command_input(t_shell *data);
 void		debug_command_args(t_shell *data);
 void		debug_command_path(t_shell *data);
 
-void 		error_msg(void);
+// void 		error_msg(void);
+
+// ************************************************************************
+// **						Error Functions							 	 **
+// ************************************************************************
+
+int 		handle_error(void);
+void 		set_error(int code, const char *message, char *token, const char *function);
 
 #endif
