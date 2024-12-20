@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/20 21:41:04 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/20 21:44:31 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int parsing_command_input(t_shell *data, char *input, const char *delimit
     data->input_splitted = split_by_multiple_tokens(input, delimiters);
     if (!data->input_splitted)
         return (-1);
-    while (data->input_splitted[i])
+    // while (data->input_splitted[i])
     return (0);
 }
 
