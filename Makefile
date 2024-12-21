@@ -7,7 +7,7 @@ CYAN 			= \033[1;36m
 RESET 			= \033[0m
 
 CC				= cc
-CFLAGS			= -g#-Wall -Wextra -Werror #-fsanitize=thread -g -pthread
+CFLAGS			= -g -Wall -Wextra #-Werror #-fsanitize=thread -g -pthread
 LIB				= minishell.a
 INCLUDE 		= include/
 HEADER_FILE		= $(INCLUDE)minishell.h
@@ -22,7 +22,7 @@ MSG_LINUX 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES)
 NAME			= minishell
 C_FUNCTIONS		= parsing/parsing \
 					initialize/init_command initialize/init_program\
-					process/argument_parser \
+					process/argument_parser process/expand_args \
 					free/shell_cleanup \
 					utils/debug
 # -L./ -lminishell

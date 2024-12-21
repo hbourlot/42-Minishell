@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/12 16:35:52 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/20 20:46:57 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,3 +180,5 @@ char	**get_command_args(char *argv)
 	}
 	return (array);
 }
+
+

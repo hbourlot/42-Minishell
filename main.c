@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/12 16:27:53 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/14 23:07:17 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,8 @@ static t_shell	*init_shell(int argc, char *argv[], char *envp[])
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	char	*command;
-	char	*flag;
-	char	*argument;
-	bool	expand;
+	t_shell		*data;
+	// char 		*input;
 
 	data = init_shell(argc, argv, envp);
 	if (init_program(data))

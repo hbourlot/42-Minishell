@@ -10,11 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 int	execute_commands(t_cmd *cmd)
 {
-	
 }
 
 int	execute(t_shell *data)
@@ -23,8 +22,7 @@ int	execute(t_shell *data)
 	int		status;
 	int		wait_status;
 	pid_t	prev_pid;
-	
-	
+
 	i = 0;
 	prev_pid = 0;
 	while (i < data->nbr_of_commands)
@@ -33,7 +31,7 @@ int	execute(t_shell *data)
 		if (WIFEXITED(wait_status) && data->pid > prev_pid)
 			status = WEXITSTATUS(wait_status);
 		prev_pid = data->pid;
-		i++;	
+		i++;
 	}
 	//! Clear all
 	return (status);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_program.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:01:57 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/10 18:34:05 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/19 18:52:05 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static int	run_shell(t_shell *data, char *input)
 	
 	if (init_command(input, delimiters))
 		return (-1);
-	debug_command_input(data);
-	debug_command_args(data);
+	// debug_command_input(data);
+	// debug_command_args(data);
 	cleanup_shell(data);
 	return (0);
 }
