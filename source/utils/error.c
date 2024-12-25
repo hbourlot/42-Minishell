@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 18:10:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/20 18:10:55 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/25 13:13:07 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ int	handle_error(void)
 	int		code;
 
 	error = error_context();
+	code = error->code;
+	if (error->archive)
+	{
+		perror(error->archive);
+	}
 	if (error->token)
 	{
 		ft_putstr_fd(SYNTAX_ERROR_MSG, 2);
@@ -55,9 +60,8 @@ int	handle_error(void)
 			error->function);
 		reset_error(error);
 	}
-	code = error->code;
 	reset_error(error);
-	return (error->code);
+	return (code);
 }
 
 /// @brief Sets an error in the error context with the provided details.
@@ -75,4 +79,13 @@ void	set_error(int code, const char *message, char *token,
 	error->token = token;
 	error->message = (char *)message;
 	error->function = (char *)function;
+}
+
+void	set_error_runner(int code, char *archive)
+{
+	t_error	*error;
+	
+	error = error_context();
+	if (archive)
+		error->archive = archive;
 }

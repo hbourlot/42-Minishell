@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmps.c                                       :+:      :+:    :+:   */
+/*   find_string_match.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/19 16:15:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/24 07:26:40 by hbourlot         ###   ########.fr       */
+/*   Created: 2024/12/24 07:24:18 by hbourlot          #+#    #+#             */
+/*   Updated: 2024/12/24 07:39:12 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,16 @@
 /// @param idx_found Pointer to store the index of the matching string,
 ///			 or -1 if no match.
 /// @return 0 if a match is found; -1 otherwise.
-int	ft_strcmps(const char *s1, const char *compers[])
+int	find_string_match(const char *s1, const char *compers[], int *idx_found)
 {
 	size_t			j;
 	unsigned char	*ss1;
 	unsigned char	*ss2;
 
-	if (!s1 || !compers)
+	if (!s1 || !compers || !idx_found)
 		return (-1);
 	j = -1;
+	*idx_found = -1;
 	while (compers[++j])
 	{
 		ss1 = (unsigned char *)s1;
@@ -37,7 +38,10 @@ int	ft_strcmps(const char *s1, const char *compers[])
 			ss2++;
 		}
 		if (!*ss2)
+		{
+			*idx_found = (int)j;
 			return (0);
+		}
 	}
 	return (-1);
 }

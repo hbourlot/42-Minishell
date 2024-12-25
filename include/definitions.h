@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/20 21:39:30 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/25 13:07:40 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 #define WRITE 				1
 #define	CMP_OK				0
 #define CMP_ERROR			1
+#define OK					0
+#define ERROR				-1
+#define SUCCESS				0
 #define START_OF_TEXT		02
 #define END_OF_TEXT			03
 #define ABS_PATH 			"PATH=/bin:/usr/bin:/usr/local/bin"
@@ -48,9 +51,18 @@ typedef struct s_error
 {
 	int		code;
 	char	*token;
+	char	*archive;
 	char 	*message;
 	char	*function;
 }	t_error;
+
+typedef struct s_file
+{
+	char 			*read;
+	char			*write;
+	t_delimiter		redirect;
+	struct s_file	*next;
+}			t_file;
 
 
 typedef struct s_rules
@@ -71,9 +83,9 @@ typedef struct s_cmd
 	char				*input;
 	// char				**file_list;
 	char 				*file;
-	char				**file_list[2];
-	int					out_fd;
+	t_file				*file_list;
 	int					in_fd;
+	int					out_fd;
 	char				**args;
 	char				*path;
 	char				**envp;

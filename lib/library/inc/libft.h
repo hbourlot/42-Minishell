@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/19 19:19:52 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/24 16:14:27 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,10 @@ char				**split_by_multiple_tokens(char *src, const char *tokens[]);
 void				sort_strings_by_length_desc(char **arr);
 char				*ft_strncpy(char *dest, const char *src, size_t n);
 char				*remove_substring(const char *source, char *to_remove);
-int					ft_strcmps(const char *s1, const char *compers[], int *idx_found);
+int					find_string_match(const char *s1, const char *compers[],
+						int *idx_found);
+int					ft_strcmps(const char *s1, const char *compers[]);
 char				*ft_strstr_any(const char *haystack, const char **needles);
-
+void 				free_pointers(size_t count, ...);
 
 #endif

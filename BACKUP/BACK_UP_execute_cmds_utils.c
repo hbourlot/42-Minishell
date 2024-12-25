@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 11:45:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/20 21:39:42 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/25 12:00:29 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,3 +79,4 @@ int	do_dup2(t_cmd *command, int *pipe_id, int *prev_fd)
 		close(pipe_id[0]);
 	return (status);
 }
+

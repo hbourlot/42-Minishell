@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 18:41:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/20 16:34:20 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/24 16:24:39 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ static bool	is_valid_token_sequence(char *input, const char *tokens[])
 	while (source)
 	{
 		source = ft_strstr_any(source, tokens);
-		if (source && ft_strcmps(source, tokens, &idx) == CMP_OK)
+		if (source && find_string_match(source, tokens, &idx) == OK)
 		{
 			len = ft_strlen(tokens[idx]);
 			source += len;
 			while (*source && *source == ' ')
 				source++;
-			if (!*source || ft_strcmps(source, tokens, &idx) == CMP_OK)
+			if (!*source || find_string_match(source, tokens, &idx) == OK)
 			{
 				if (!*source)
 					return (set_error(2, SYNTAX_ERROR_MSG, "newline", __func__),
@@ -52,7 +52,7 @@ static bool	is_valid_token_sequence(char *input, const char *tokens[])
 ///         and reports syntax errors.
 /// @param input The input string to parse.
 /// @return 0 if the input is valid; -1 if a syntax error is detected.
-int	parsing_input(char *input)
+int	parsing_syntax(char *input)
 {
 	const char	*tokens[] = {"|", "||", "&&", ">", ">>", "<", "<<", NULL};
 
@@ -61,52 +61,3 @@ int	parsing_input(char *input)
 		return (-1);
 	return (0);
 }
-
-
-// if (is_delimiters_together(input, delimiters))
-// {
-//     printf("bash: syntax error near unexpected token \n");
-// 	return (-1);
-// }
-/*
-	TODO: Need to add a checker if after redirect there's at least one character different than space
-*/
-
-
-
-
-
-
-// static int	match_delimiter(char *input, const char *delimiters[])
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (delimiters[i])
-// 	{
-// 		if (!ft_strncmp(input, delimiters[i], ft_strlen(delimiters[i])))
-// 			return (i);
-// 		i++;
-// 	}
-// 	return (-1);
-// }
-
-// static bool	is_delimiters_together(char *input, const char *delimiters[])
-// {
-// 	int	first_match;
-// 	int	second_match;
-
-// 	if (!input || !*input)
-// 		return (false);
-// 	first_match = match_delimiter(input, delimiters);
-// 	if (first_match != -1)
-// 	{
-// 		input += ft_strlen(delimiters[first_match]);
-// 		while (*input == ' ')
-// 			input++;
-// 		second_match = match_delimiter(input, delimiters);
-// 		if (second_match != -1)
-// 			return (true);
-// 	}
-// 	return (is_delimiters_together(input + 1, delimiters));
-// }

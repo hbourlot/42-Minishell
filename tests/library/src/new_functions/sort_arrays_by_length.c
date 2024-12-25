@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 17:07:55 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/12 17:12:53 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/24 07:36:12 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	sort_strings_by_length_desc(char **arr)
 {
 	int			i;
 	int			j;
-	char	*temp;
+	char		*temp;
 
 	i = 0;
 	while (arr[i])

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_shell.c                                       :+:      :+:    :+:   */
+/*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 14:10:20 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/12 14:20:01 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/24 20:21:02 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	get_envp(t_shell *data)
 	if (!data->envp || !*data->envp)
 	{
 		data->env_paths = NULL;
-		return (0);
+		return (SUCCESS);
 	}
 	while (data->envp[i])
 	{
@@ -32,13 +32,13 @@ static int	get_envp(t_shell *data)
             {
 				data->env_paths = ft_split(data->envp[i] + 5, ':');
                 if (!data->env_paths)
-                    return (-1); 
+                    return (ERROR); 
             }
 			break ;
 		}
 		i++;
 	}
-    return (0);
+    return (SUCCESS);
 }
 
 t_shell	*init_shell(int argc, char *argv[], char *envp[])
@@ -46,6 +46,8 @@ t_shell	*init_shell(int argc, char *argv[], char *envp[])
 	t_shell *data;
 	
 	data = get_shell();
+	// ft_memset(data, 0, sizeof(t_shell));
+	// data->input_splitted = NULL;
 	data->argc = argc;
 	data->argv = argv;
 	data->envp = envp;
