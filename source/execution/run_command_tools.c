@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 12:00:01 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/25 12:52:35 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/28 13:09:14 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int open_folders(t_cmd *command)
 {
 	t_file 	*file;
 	
-	file = command->file_list;
+	file = command->redir_files;
 	while (file)
 	{
 		if (file->redirect == REDIRECT_LEFT_SINGLE)
@@ -34,17 +34,13 @@ static int open_folders(t_cmd *command)
 			if (command->in_fd < 0)
 				return (ERROR);
 		}
-		// else if (file->redirect == REDIRECT_LEFT_DOUBLE) // TODO: HERE_DOC CASE
-		// 	command->in_fd = open(file->read, O_CREAT | O_RDWR, O_APPEND, 0644);
+		else if (file->redirect == REDIRECT_LEFT_DOUBLE)
+			command->in_fd = open(file->read, O_RDWR, O_APPEND, 0644);
 		else if (file->redirect == REDIRECT_RIGHT_SINGLE)
 		{
-			printf("SINGE_RIGHT\n");
 			command->out_fd = open(file->write, O_CREAT | O_RDWR | O_TRUNC, 0644);
 			if (command->out_fd < 0)
-			{
-				printf("file_name(ERROR): %s\n", file->write);
 				return (close(command->in_fd), ERROR);
-			}
 		}
 		else if (file->redirect == REDIRECT_RIGHT_DOUBLE)
 			command->out_fd = open(file->write, O_CREAT | O_RDWR | O_APPEND, 0644);

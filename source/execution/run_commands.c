@@ -6,12 +6,11 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/25 12:20:42 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/28 18:29:07 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
-
 
 /*
 	* I need to make some logic of error so i send the properly print message
@@ -41,14 +40,32 @@ static void	error_execve(t_shell *data, t_cmd *command)
 	exit (EXIT_FAILURE);
 }
 
+static bool is_safe_to_execute(t_cmd *command)
+{
+	if (command->settings.only_redir_files)
+	{
+		return (false);
+	}
+
+	return (true);
+}
+
 static void child_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev_fd)
 {
+	int	code_parsing;
+	
+	code_parsing = (parsing_file_read_execution(command->redir_files) 
+					|| parsing_command_path_execution(command->path));
+	if (code_parsing)
+		return (cleanup_shell(data), exit(code_parsing));
+
 	if (do_dup2(command, pipe_id, prev_fd))
 	{
 		cleanup_shell(data);
 		exit (EXIT_FAILURE);
 	}
-	execve(command->path, command->args, command->envp);
+	if (is_safe_to_execute(command))
+		execve(command->path, command->args, command->envp);
 	error_execve(data, command);
 }
 
@@ -110,6 +127,7 @@ void	run_commands(t_shell *data)
 		prev_pid = pid;
 		i++;	
 	}
+	data->last_exit_status = status;
 	//! Clear all
 	// return (status);
 }

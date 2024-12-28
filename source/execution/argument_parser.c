@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/30 11:24:25 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/28 15:48:14 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 /// @param buffer The size of memory to allocate.
 /// @param idx The index in the array where memory is allocated.
 /// @return Returns 1 if memory allocation fails, otherwise 0.
-static int	do_malloc(char **array, size_t buffer, size_t idx)
+static int	allocate_word_buffer(char **array, size_t buffer, size_t idx)
 {
 	size_t	i;
 
@@ -66,12 +66,12 @@ static void	count_words(const char *s, int *words)
 	}
 }
 
-static int	process_word(char **array, char *start, char *end, int i)
+static int	store_processed_word(char **array, char *start, char *end, int i)
 {
 	size_t	len;
 
 	len = 0;
-	if (do_malloc(array, (end - start) + 1, i))
+	if (allocate_word_buffer(array, (end - start) + 1, i))
 		return (1);
 	while (start < end)
 	{
@@ -87,7 +87,7 @@ static int	process_word(char **array, char *start, char *end, int i)
 /// @param array The array to store split words.
 /// @param s The input string.
 /// @return Returns 1 if memory allocation fails, otherwise 0.
-static int	duplicate(char **array, const char *s)
+static int	duplicate_word_to_array(char **array, const char *s)
 {
 	int		in_quotes;
 	int		i;
@@ -108,7 +108,7 @@ static int	duplicate(char **array, const char *s)
 		}
 		if (s > start)
 		{
-			if (process_word(array, start, (char *)s, i))
+			if (store_processed_word(array, start, (char *)s, i))
 				return (1);
 			i++;
 		}
@@ -132,11 +132,11 @@ char	**get_command_args(char *argv)
 	count_words(argv, &words);
 	if (words == 0)
 		return (NULL);
-	array = (char **)malloc(sizeof(char *) * (words + 1));
+	array = malloc(sizeof(char *) * (words + 1));
 	if (!array)
 		return (NULL);
 	array[words] = NULL;
-	if (duplicate(array, argv))
+	if (duplicate_word_to_array(array, argv))
 		return (free_split(array), NULL);
 	return (array);
 }

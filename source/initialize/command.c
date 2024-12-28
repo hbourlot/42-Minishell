@@ -6,34 +6,13 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/25 12:28:21 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/28 17:41:49 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-static int  add_command(t_cmd **command, char *input_splitted, t_shell *data, const char *redirects[])
-{
-    *command = ft_calloc(1, sizeof(t_cmd));
-    if (!*command)
-        return (set_error(1, "\"Malloc\"", NULL, __func__), ERROR);
-    (*command)->input = ft_strdup(input_splitted);
-    if (!(*command)->input)
-        return (set_error(1, "\"Malloc\"", NULL, __func__), ERROR);
-    if (init_file_list(input_splitted, redirects, &(*command)->file_list) < 0 ||
-         parsing_and_strip_redirects(&(*command)->input, redirects) < 0)
-        return (set_error(1, "\"Malloc\"", NULL, __func__), ERROR);
-    (*command)->envp = data->envp;
-    (*command)->path = get_path((*command)->input, data->env_paths);
-    (*command)->args = get_command_args((*command)->input);
-    if (!(*command)->path || !(*command)->args)
-        return (set_error(1, "\"Malloc\"", NULL, __func__), ERROR);
-    (*command)->in_fd = -1;
-    (*command)->out_fd = -1;
-    return (SUCCESS);
-}
-
-static int parsing_command_input(t_shell *data, char *input, const char *delimiters[])
+static int split_command_input(t_shell *data, char *input, const char *delimiters[])
 {
     int i;
 
@@ -70,9 +49,12 @@ int init_command(char *input)
     t_shell     *data;
 
 	data = get_shell();
-    if (parsing_command_input(data, input, delimiters) < 0 ||
+    if (split_command_input(data, input, delimiters) < 0 ||
          create_command_list(data, redirects) < 0)
         return (ERROR);
+    return (SUCCESS);
+}
+
     // cleanup_shell(data);
     // debug_command_file_list(get_shell());
     // debug_input_splitted(data);
@@ -80,5 +62,3 @@ int init_command(char *input)
     // cleanup_shell(data);
     // exit(EXIT_SUCCESS);
     // if (set_redirect(data->command))
-    return (SUCCESS);
-}

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 16:11:35 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/24 16:13:15 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/28 18:11:51 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ void free_pointers(size_t count, ...)
 {
     va_list args;
 	size_t	i;
-    void 	*ptr;
+    void 	**ptr;
 
     va_start(args, count);
 	i = 0;
     while (i < count)
     {
-        ptr = va_arg(args, void *);
-        if (ptr)
+        ptr = va_arg(args, void **);
+        if (ptr && *ptr)
         {
-            free(ptr);
-            ptr = NULL;
+            free(*ptr);
+            *ptr = NULL;
         }
 		i++;
     }

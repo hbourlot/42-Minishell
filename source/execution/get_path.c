@@ -6,30 +6,35 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:38:12 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/18 21:00:28 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/28 18:19:18 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*find_executable_path(char *executable, char **env_paths)
+static char	*find_executable_path(char *executable, char **env_paths, bool *only_executable)
 {
 	int		i;
-	char 	*pre_path;
-	char	*path;
+	char 	*partial_path;
+	char	*full_path;
 
 	i = 0;
-	while (env_paths[i])
+	while (ft_strlen(executable) > 0 && env_paths[i])
 	{
-		pre_path = ft_strjoin(env_paths[i], "/");
-		if (!pre_path)
+		partial_path = ft_strjoin(env_paths[i], "/");
+		if (!partial_path)
 			return (NULL);
-		path = ft_append_and_free(pre_path, executable);
-		if (!path)
-			return (NULL);
-		if (access(path, F_OK) == CMP_OK || !env_paths[i + 1])
-			return (path);
-		free(path);
+		full_path = ft_append_and_free(partial_path, executable);
+		if (!full_path)
+			return (free(partial_path), NULL);
+		if (access(full_path, F_OK) == CMP_OK)
+			return (full_path);
+		if (!env_paths[i + 1])
+		{
+			*only_executable = true;
+			return (free(full_path), NULL);
+		}
+		free(full_path);
 		i++;
 	}
 	return (NULL);
@@ -39,19 +44,27 @@ char *get_path(char *input, char **env_paths)
 {
 	char	*executable;
 	char	**command_splitted;
+	bool	only_executable;
 	int		i;
 	char	*path;
 
+	executable = NULL;
+	only_executable = false;
 	command_splitted = ft_split(input, ' ');
 	if (!command_splitted)
-		return (NULL);
+		return (set_error_initialize(1, "Malloc", __func__, true), NULL);
 	executable = ft_strdup(command_splitted[0]);
 	if (!executable)
+	{
+		set_error_initialize(1, "Malloc", __func__, true);
 		return (free_split(command_splitted), NULL);
+	}
 	free_split(command_splitted);
-	if (ft_strchr(executable, '/'))
+	if (ft_strlen(executable) > 0 && ft_strchr(executable, '/'))
 		return (executable);
-	path = find_executable_path(executable, env_paths);
+	path = find_executable_path(executable, env_paths, &only_executable);
+	if (only_executable)
+		return (executable);
 	free(executable);
 	return (path);	
 }

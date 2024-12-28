@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 00:00:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/18 00:01:43 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/28 17:24:09 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ char	*remove_substring(const char *source, char *to_remove)
 	if (!pos)
 		return (ft_strdup(source));
 	len = ft_strlen(source) - ft_strlen(to_remove);
+	if (len == 0)
+		return (ft_strdup(""));
 	new_source = malloc(len + 1);
 	if (!new_source)
 		return (NULL);

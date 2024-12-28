@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/25 12:20:55 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/28 17:41:00 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,20 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../lib/library/inc/libft.h"
+# include "error.h"
 # include "definitions.h"
-
 
 // ************************************************************************
 // **						Parsing Functions							 **
 // ************************************************************************
 
 int			parsing_syntax(char *input);
-int 		parsing_and_strip_redirects(char **input, const char *redirects[]);
+bool 		is_valid_pipe_redirects_tokens(char *source, size_t len, int idx, const char *tokens[]);
 
+
+int 		parsing_and_strip_redirects(char **input, const char *redirects[]);
+int			parsing_file_read_execution(t_file *redir_files);
+int			parsing_command_path_execution(char *command_path);
 
 // ************************************************************************
 // **						Create Functions							 **
@@ -46,10 +50,11 @@ int 		parsing_and_strip_redirects(char **input, const char *redirects[]);
 // ************************************************************************
 
 t_shell 	*get_shell();
-t_shell		*init_shell(int argc, char *argv[], char *envp[]);
-int			init_program(t_shell *data);
 int			init_command(char *input);
-int 		init_file_list(char *input, const char *redirects[], t_file **file_list);
+int			main_shell_loop(t_shell *data);
+t_shell		*init_shell(int argc, char *argv[], char *envp[]);
+int 		init_file_list(char *input, const char *redirects[], t_file **redir_files);
+int 		add_command(t_cmd **command, char *input_splitted, t_shell *data, const char *redirects[]);
 
 // ************************************************************************
 // **						Proccess Functions						 	 **
@@ -69,7 +74,6 @@ void		cleanup_shell(t_shell*data);
 void		refresh_shell_data(t_shell *data);
 void 		free_files(t_file *file_list);
 
-
 // ************************************************************************
 // **						Utils Functions							 	 **
 // ************************************************************************
@@ -79,14 +83,5 @@ void		debug_command_args(t_shell *data);
 void		debug_command_path(t_shell *data);
 void 		debug_command_file_list(t_shell *data);
 void 		debug_input_splitted(t_shell *data);
-
-// void 		error_msg(void);
-
-// ************************************************************************
-// **						Error Functions							 	 **
-// ************************************************************************
-
-int 		handle_error(void);
-void 		set_error(int code, const char *message, char *token, const char *function);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 18:41:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/24 16:24:39 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/28 15:28:57 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,25 +25,27 @@ static bool	is_valid_token_sequence(char *input, const char *tokens[])
 	char	*source;
 
 	source = input;
-	while (source)
-	{
-		source = ft_strstr_any(source, tokens);
-		if (source && find_string_match(source, tokens, &idx) == OK)
-		{
-			len = ft_strlen(tokens[idx]);
-			source += len;
-			while (*source && *source == ' ')
-				source++;
-			if (!*source || find_string_match(source, tokens, &idx) == OK)
-			{
-				if (!*source)
-					return (set_error(2, SYNTAX_ERROR_MSG, "newline", __func__),
-						false);
-				return (set_error(2, SYNTAX_ERROR_MSG, (char *)tokens[idx],
-						__func__), false);
-			}
-		}
-	}
+	if (is_valid_pipe_redirects_tokens(source, len, idx, tokens) == false)
+		return (false);
+	// while (source)
+	// {
+	// 	source = ft_strstr_any(source, tokens);
+	// 	if (source && find_string_match(source, tokens, &idx) == OK)
+	// 	{
+	// 		len = ft_strlen(tokens[idx]);
+	// 		source += len;
+	// 		while (*source && *source == ' ')
+	// 			source++;
+	// 		if (!*source || find_string_match(source, tokens, &idx) == OK)
+	// 		{
+	// 			if (!*source)
+	// 				return (set_error_parsing(2, SYNTAX_ERROR_MSG, "newline", __func__),
+	// 					false);
+	// 			return (set_error_parsing(2, SYNTAX_ERROR_MSG, (char *)tokens[idx],
+	// 					__func__), false);
+	// 		}
+	// 	}
+	// }
 	return (true);
 }
 
@@ -58,6 +60,6 @@ int	parsing_syntax(char *input)
 
 	sort_strings_by_length_desc((char **)tokens);
 	if (is_valid_token_sequence(input, tokens) == false)
-		return (-1);
-	return (0);
+		return (ERROR);
+	return (SUCCESS);
 }

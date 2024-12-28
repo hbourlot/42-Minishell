@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:01:57 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/25 12:26:34 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/27 08:41:53 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,18 @@
 
 static int	run_shell(t_shell *data, char *input)
 {
+	bool run;
+
+	run = true;
 	if (parsing_syntax(input) == ERROR)
-		return (ERROR);
-	if (init_command(input) == ERROR)
-		return (ERROR); // TODO: ADD a message that failed to create command :)
-	run_commands(data);
+	{
+		handle_error_parsing();
+		run = false;
+	}
+	if (run == true && init_command(input) == ERROR)
+		return (ERROR); // TODO: Here i can exit the program: But still need to check deeply in get_path and args case
+	if (run == true)
+		run_commands(data);
 	refresh_shell_data(data);
 	return (SUCCESS);
 }
@@ -32,62 +39,49 @@ static int	run_shell(t_shell *data, char *input)
 /// @brief Main loop of the shell program. Reads user input and processes it.
 /// @param data Pointer to the shell structure.
 /// @return 0 on success, -1 on error or when exiting.
-int	init_program(t_shell *data)
-{
-	char *input;
-
-	input = NULL;
-	while (true)
-	{
-		input = readline("minishell-> ");
-		// if (input == NULL)
-		// TODO: Need to add input line to the history here!
-		if (ft_strlen(input) == 0)
-		{
-			printf("\n");
-			continue;
-		}
-		if (run_shell(data, input))
-			return (free(input), handle_error(), ERROR);
-		free(input);
-	}
-	return (SUCCESS);
-}
-
 // int	init_program(t_shell *data)
 // {
-// 	// char *input;
-// 	static int i = 0;
-// 	// input = NULL;
+// 	char *input;
+
+// 	input = NULL;
 // 	while (true)
 // 	{
-// 		i++;
-// 		if (i == 4)
-// 			break;
-// 		// input = readline("minishell-> ");
+// 		input = readline("minishell-> ");
 // 		// if (input == NULL)
 // 		// TODO: Need to add input line to the history here!
-// 		char *src = "ls > file < file2 < file3 >file4 oi oi >file5>file6<file7 oi oi";
-// 		// char *input = get_next_line(STDIN_FILENO);
-// 		char *input = ft_strdup(src);
-// 		// printf("input: %s\n", input);
 // 		if (ft_strlen(input) == 0)
 // 		{
 // 			printf("\n");
-// 			return (0);
-// 			// continue;
+// 			continue;
 // 		}
 // 		if (run_shell(data, input))
-// 			return (free(input), ERROR);
+// 			return (free(input), handle_error_parsing(), ERROR);
 // 		free(input);
 // 	}
 // 	return (SUCCESS);
 // }
 
-/// @brief Provides access to a singleton instance of the shell structure.
-/// @return A pointer to the singleton `t_shell` instance.
-t_shell *get_shell()
+int	init_program(t_shell *data)
 {
-	static t_shell data;
-	return (&data);
+	// while (true)
+	// {
+		// if (input == NULL)
+		// TODO: Need to add input line to the history here!
+		char *src = "ls";
+		char *input = ft_strdup(src);
+		// char *input = get_next_line(STDIN_FILENO);
+		// printf("input: %s\n", input);
+		if (ft_strlen(input) == 0)
+		{
+			printf("\n");
+			return (0);
+			// continue;
+		}
+		if (run_shell(data, input))
+			return (free(input), ERROR);
+		free(input);
+	// }
+	return (SUCCESS);
 }
+
+

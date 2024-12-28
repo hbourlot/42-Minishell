@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   error_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/27 08:49:59 by hbourlot         ###   ########.fr       */
+/*   Created: 2024/12/28 15:40:33 by hbourlot          #+#    #+#             */
+/*   Updated: 2024/12/28 15:41:23 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+int	handle_error_execution(void)
 {
-	t_shell		*data;
-	char 		*input;
-
-	data = init_shell(argc, argv, envp);
-	if (main_shell_loop(data))
-		return (handle_error());
-	cleanup_shell(get_shell());
-	return 0;
+	
 }
 
+// void	set_error_execut

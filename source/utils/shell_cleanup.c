@@ -6,15 +6,15 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/25 11:34:57 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/28 10:29:51 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void free_files(t_file *file_list)
+void	free_files(t_file *file_list)
 {
-	t_file *tmp;
+	t_file	*tmp;
 
 	while (file_list)
 	{
@@ -29,7 +29,7 @@ void free_files(t_file *file_list)
 }
 
 /*
-	TODO: Still need to implement this function which dont free 
+	TODO: Still need to implement this function which dont free
 	TODO: 	all sources on data ⬇️
 */
 void	refresh_shell_data(t_shell *data)
@@ -44,8 +44,8 @@ void	refresh_shell_data(t_shell *data)
 	while (data->command)
 	{
 		tmp = data->command;
-		free_files(tmp->file_list);
-		tmp->file_list = NULL;
+		free_files(tmp->redir_files);
+		tmp->redir_files = NULL;
 		if (tmp->input)
 			free(tmp->input);
 		if (tmp->args)
@@ -71,7 +71,7 @@ void	cleanup_shell(t_shell *data)
 	while (data->command)
 	{
 		tmp = data->command;
-		free_files(tmp->file_list);
+		free_files(tmp->redir_files);
 		if (tmp->input)
 			free(tmp->input);
 		if (tmp->args)

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/24 16:14:27 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/26 18:54:54 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,7 @@ int					find_string_match(const char *s1, const char *compers[],
 int					ft_strcmps(const char *s1, const char *compers[]);
 char				*ft_strstr_any(const char *haystack, const char **needles);
 void 				free_pointers(size_t count, ...);
+void				ft_printf_error(const char *fmt, ...);
+
 
 #endif

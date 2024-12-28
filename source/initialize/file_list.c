@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/24 20:09:52 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/28 16:53:39 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,19 +69,18 @@ static int handle_file_redirection(t_file **file_list, char **input_tmp, const c
 		redirect = REDIRECT_LEFT_DOUBLE;
 	else if (mode == WRITE && **input_tmp == '>')
 		redirect = REDIRECT_RIGHT_DOUBLE;
-	// file_name = NULL;
 	file_name = get_file_name(*input_tmp, redirects);
 	if (!file_name || add_file(mode, file_name, file_list, redirect) == ERROR)
 	{
 		if (file_name)
 			free(file_name);
-		set_error(1, "Malloc", NULL, __func__);
+		set_error_initialize(1, "Malloc", __func__, true);
 		return (ERROR);
 	}
 	return (SUCCESS);
 }
 
-int	init_file_list(char *input, const char *redirects[], t_file **file_list)
+int	init_file_list(char *input, const char *redirects[], t_file **redir_files)
 {
 	char 			*file_name;
 	char			*input_tmp;
@@ -90,9 +89,9 @@ int	init_file_list(char *input, const char *redirects[], t_file **file_list)
 	input_tmp = input;
 	while (input_tmp && *input_tmp)
 	{
-		if (*input_tmp == '>' && handle_file_redirection(file_list, &input_tmp, redirects, WRITE) == ERROR)
+		if (*input_tmp == '>' && handle_file_redirection(redir_files, &input_tmp, redirects, WRITE) == ERROR)
 			return (ERROR);
-		else if (*input_tmp == '<' && handle_file_redirection(file_list, &input_tmp, redirects, READ) == ERROR)
+		else if (*input_tmp == '<' && handle_file_redirection(redir_files, &input_tmp, redirects, READ) == ERROR)
 			return (ERROR);
 		input_tmp++;
 	}
