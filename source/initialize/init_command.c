@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/14 22:50:55 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/26 22:36:37 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ t_cmd	*create_cmd(char *command_input, char *envp[])
 		return (NULL);
 	ft_memset(tmp, 0, sizeof(t_cmd));
 	tmp->command_input = command_input;
-	tmp->expand = true;
-	tmp->args = split_args(command_input, tmp);
+	tmp->args = get_command_args(command_input);
 	if (!tmp->args)
 		printf("Error\n");
 	tmp->envp = envp;

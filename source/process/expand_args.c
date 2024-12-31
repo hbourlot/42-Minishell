@@ -6,24 +6,76 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:59:00 by joralves          #+#    #+#             */
-/*   Updated: 2024/12/21 02:18:19 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/27 01:52:10 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static int	count_string(char *str, char sep)
+{
+	int	i;
+	int	count;
+
+	count = 0;
+	i = 0;
+	while (str && str[i])
+	{
+		while (str[i] && str[i] != sep)
+			i++;
+		if (str[i] && str[i] == sep)
+			count++;
+		while (str[i] && str[i] == sep)
+			i++;
+	}
+	return (count);
+}
+
+static char	**create_splited(char *str, char sep)
+{
+	char	**temp;
+	int		start;
+	int		i;
+	int		idx;
+
+	idx = 0;
+	start = 0;
+	i = 0;
+	temp = ft_calloc(count_string(str, '$'), sizeof(char *));
+	while (str && str[i])
+	{
+		while (str[i] && str[i] != sep)
+			i++;
+		if (str[i] && str[i] == sep)
+		{
+			temp[idx] = ft_substr(str, start, i - start);
+			start = i;
+			idx++;
+		}
+		while (str[i] && str[i] == sep)
+			i++;
+	}
+	temp[idx] = NULL;
+	return (temp);
+}
+
 static char	*expand_aux(char *str)
 {
-	char	*temp;
 	char	**splited;
 	int		i;
 	char	*res;
+	char	*temp;
 
 	res = NULL;
 	i = 0;
-	splited = ft_split(str, '$');
+	// splited = ft_split(str, '$');
+	printf("Count_str %d\n", count_string(str, '$'));
+	splited = create_splited(str, '$');
+	if (!splited)
+		return (NULL);
 	while (splited[i])
 	{
+		printf("splited %s\n", splited[i]);
 		temp = getenv(splited[i]);
 		res = ft_append_and_free(res, temp);
 		free(splited[i]);
@@ -34,10 +86,9 @@ static char	*expand_aux(char *str)
 	return (res);
 }
 
-static char	*expand_var(char *str)
+char	*expand_var(char *str)
 {
 	char	**splited;
-	char	*temp;
 	int		i;
 	char	*res;
 
@@ -50,8 +101,7 @@ static char	*expand_var(char *str)
 	splited = ft_split_keep_charset(str, " \'");
 	while (splited[i])
 	{
-		temp = ft_strchr(splited[i], '$');
-		if (temp && (*(temp + 1) != '\0' && *(temp + 1) != ' '))
+		if (ft_strchr(splited[i], '$'))
 			splited[i] = expand_aux(splited[i]);
 		res = ft_append_and_free(res, splited[i]);
 		free(splited[i]);
@@ -60,104 +110,4 @@ static char	*expand_var(char *str)
 	free(splited);
 	free(str);
 	return (res);
-}
-
-static int	count_words(char *src)
-{
-	int		count;
-	char	quote;
-
-	count = 0;
-	while (src && *src)
-	{
-		while (*src && *src == ' ')
-			src++;
-		if (*src == '\'' || *src == '\"')
-		{
-			count++;
-			quote = *src++;
-			while (*src && *src != quote)
-				src++;
-			if (*src == quote)
-				src++;
-		}
-		else if (*src && *src != ' ')
-		{
-			count++;
-			while (*src && *src != ' ' && *src != '\'' && *src != '\"')
-				src++;
-		}
-	}
-	return (count);
-}
-
-static int	handle_quotes(char *str, char **temp, int *idx, int *i)
-{
-	int		start;
-	char	quote;
-
-	start = *i;
-	quote = str[*i];
-	(*i)++;
-	while (str[*i] && str[*i] != quote)
-		(*i)++;
-	if (str[*i] == quote)
-		(*i)++;
-	temp[*idx] = ft_substr(str, start, *i - start);
-	if (!temp[*idx])
-		return (free_split(temp), -1);
-	(*idx)++;
-	return (0);
-}
-
-static int	args_aux(char *str, char **temp, int *idx)
-{
-	int	i;
-	int	start;
-
-	i = 0;
-	while (str && str[i])
-	{
-		while (str[i] && str[i] == ' ')
-			i++;
-		if (str[i] == '\'' || str[i] == '\"')
-		{
-			if (handle_quotes(str, temp, idx, &i) == -1)
-				return (-1);
-		}
-		else if (str[i] && str[i] != ' ')
-		{
-			start = i;
-			while (str[i] && str[i] != ' ' && str[i] != '\'' && str[i] != '\"')
-				i++;
-			temp[*idx] = ft_substr(str, start, i - start);
-			if (!temp[*idx])
-				return (free_split(temp), -1);
-			(*idx)++;
-		}
-	}
-	return (0);
-}
-
-char	**split_args(char *input)
-{
-	int		idx;
-	char	**temp;
-	int		i;
-
-	i = 0;
-	idx = 0;
-	temp = ft_calloc(count_words(input) + 1, sizeof(char *));
-	if (!temp)
-		return (NULL);
-	if (args_aux(input, temp, &idx) != 0)
-		return (NULL);
-	temp[idx] = NULL;
-	while (i < idx)
-	{
-		temp[i] = expand_var(temp[i]);
-		printf("%s\n", temp[i]);
-		i++;
-	}
-	return (temp);
 }

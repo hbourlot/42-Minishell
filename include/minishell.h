@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/21 02:18:33 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/26 22:36:37 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,21 +91,21 @@ int					init_program(t_shell *data);
 int					init_command(char *input, const char *delimiters[]);
 
 // ************************************************************************
-// **						Proccess Functions								 **
+// **						Proccess Functions									**
 // ************************************************************************
 
 char				**get_command_args(char *argv);
-char				**split_args(char *input, t_cmd *temp);
-
+char				*expand_var(char *str);
+char				**get_command_args(char *input);
 
 // ************************************************************************
-// **						Free Functions									 **
+// **						Free Functions										**
 // ************************************************************************
 
 void				cleanup_shell(t_shell *data);
 
 // ************************************************************************
-// **						Utils Functions									 **
+// **						Utils Functions										**
 // ************************************************************************
 
 void				debug_command_input(t_shell *data);

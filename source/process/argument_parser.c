@@ -6,179 +6,109 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/20 20:46:57 by joralves         ###   ########.fr       */
+/*   Updated: 2024/12/26 23:09:53 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ft_strchr_index(const char *s, int c)
+static int	count_words_quotes(char *src)
 {
-	int	len;
+	int		count;
+	char	quote;
+
+	count = 0;
+	while (src && *src)
+	{
+		while (*src && *src == ' ')
+			src++;
+		if (*src == '\'' || *src == '\"')
+		{
+			count++;
+			quote = *src++;
+			while (*src && *src != quote)
+				src++;
+			if (*src == quote)
+				src++;
+		}
+		else if (*src && *src != ' ')
+		{
+			count++;
+			while (*src && *src != ' ' && *src != '\'' && *src != '\"')
+				src++;
+		}
+	}
+	return (count);
+}
+
+static int	handle_quotes(char *str, char **temp, int *idx, int *i)
+{
+	int		start;
+	char	quote;
+
+	start = *i;
+	quote = str[*i];
+	(*i)++;
+	while (str[*i] && str[*i] != quote)
+		(*i)++;
+	if (str[*i] == quote)
+		(*i)++;
+	temp[*idx] = ft_substr(str, start, *i - start);
+	if (!temp[*idx])
+		return (free_split(temp), -1);
+	(*idx)++;
+	return (0);
+}
+
+static int	process_word(char *str, char **temp, int *idx)
+{
 	int	i;
+	int	start;
 
 	i = 0;
-	len = ft_strlen(s);
-	while (i <= len)
+	while (str && str[i])
 	{
-		if (s[i] == (char)c)
-			return (i);
+		while (str[i] && str[i] == ' ')
+			i++;
+		if (str[i] == '\'' || str[i] == '\"')
+		{
+			if (handle_quotes(str, temp, idx, &i) == -1)
+				return (-1);
+		}
+		else if (str[i] && str[i] != ' ')
+		{
+			start = i;
+			while (str[i] && str[i] != ' ' && str[i] != '\'' && str[i] != '\"')
+				i++;
+			temp[*idx] = ft_substr(str, start, i - start);
+			if (!temp[*idx])
+				return (free_split(temp), -1);
+			(*idx)++;
+		}
+	}
+	return (0);
+}
+
+char	**get_command_args(char *input)
+{
+	int		idx;
+	char	**temp;
+	int		i;
+
+	i = 0;
+	idx = 0;
+	temp = ft_calloc(count_words_quotes(input) + 1, sizeof(char *));
+	if (!temp)
+		return (NULL);
+	if (process_word(input, temp, &idx) != 0)
+		return (NULL);
+	temp[idx] = NULL;
+	while (i < idx)
+	{
+		temp[i] = expand_var(temp[i]);
+		if(temp[i])
+		printf("%s\n", temp[i]);
 		i++;
 	}
-	return (-1);
+	return (temp);
 }
-
-/// @brief Allocates memory for array[idx] based on buffer size.
-/// @param array The array of strings.
-/// @param buffer The size of memory to allocate.
-/// @param idx The index in the array where memory is allocated.
-/// @return Returns 1 if memory allocation fails, otherwise 0.
-static int	do_malloc(char **array, size_t buffer, size_t idx)
-{
-	size_t	i;
-
-	i = 0;
-	array[idx] = (char *)malloc(sizeof(char) * buffer);
-	if (!array[idx])
-	{
-		while (i < idx)
-		{
-			free(array[i]);
-			i++;
-		}
-		free(array);
-		return (1);
-	}
-	return (0);
-}
-
-/// @brief Counts the number of words in the string based on spaces or quotes.
-/// @param s The input string.
-/// @param words Pointer to integer that will hold how many words it has
-static void	count_words(const char *s, int *words, char quotes)
-{
-	int	in_quote;
-	int	in_word;
-
-	in_quote = 0;
-	in_word = 0;
-	while (*s)
-	{
-		if (*s == quotes)
-			in_quote = !in_quote;
-		if (*(s + 1) && *s == quotes && *(s + 1) == quotes)
-			*words += 1;
-		else if (*s != ' ' || in_quote)
-		{
-			if (!in_word)
-			{
-				*words += 1;
-				in_word = 1;
-			}
-		}
-		else if (*s == ' ' && !in_quote)
-			in_word = 0;
-		s++;
-	}
-}
-
-static int	process_word(char **array, char *start, char *end, int i,
-		char quotes)
-{
-	size_t	len;
-
-	len = 0;
-	if (do_malloc(array, (end - start) + 1, i))
-		return (1);
-	while (start < end)
-	{
-		if (*start != quotes)
-			array[i][len++] = *start;
-		start++;
-	}
-	array[i][len] = '\0';
-	return (0);
-}
-
-/// @brief Duplicates and allocates memory for words inside array.
-/// @param array The array to store split words.
-/// @param s The input string.
-/// @return Returns 1 if memory allocation fails, otherwise 0.
-static int	duplicate(char **array, const char *s, char quotes)
-{
-	int		in_quotes;
-	int		i;
-	char	*start;
-
-	i = 0;
-	in_quotes = 0;
-	while (*s)
-	{
-		while (*s == ' ')
-			s++;
-		start = (char *)s;
-		while (*s && (*s != ' ' || in_quotes))
-		{
-			if (*s == '\'')
-				in_quotes = !in_quotes;
-			s++;
-		}
-		if (s > start)
-		{
-			if (process_word(array, start, (char *)s, i, quotes))
-				return (1);
-			i++;
-		}
-	}
-	return (0);
-}
-
-static char	*expand_varibles(char *str)
-{
-	char	*temp;
-	char	*res;
-
-	temp = getenv(str + 1);
-	res = ft_strdup(temp);
-	if (!res)
-		return (NULL);
-	// printf("Expanded %s\n", temp);
-	return (res);
-}
-
-/// @brief Splits the string s into an array of words based
-///	on spaces and quotes.
-/// @param s The string to split.
-/// @return Returns a dynamically allocated array of words split from s.
-char	**get_command_args(char *argv)
-{
-	char	**array;
-	char	reference;
-	int		words;
-	char	quotes;
-
-	quotes = '\'';
-	if (ft_strchr_index(argv, '\"') < ft_strchr_index(argv, '\''))
-		quotes = '\'';
-	else if (ft_strchr_index(argv, '\"') > ft_strchr_index(argv, '\''))
-		quotes = '\"';
-	words = 0;
-	if (NULL == argv)
-		return (NULL);
-	count_words(argv, &words, quotes);
-	if (words == 0)
-		return (NULL);
-	array = (char **)malloc(sizeof(char *) * (words + 1));
-	if (!array)
-		return (NULL);
-	array[words] = NULL;
-	if (duplicate(array, argv, quotes))
-		return (free_split(array), NULL);
-	if (words > 1 && ft_strchr(array[1], '$') && quotes == '\"')
-	{
-		array[1] = expand_varibles(array[1]);
-	}
-	return (array);
-}
-
-
