@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init_program.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:01:57 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/20 16:31:31 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/02 22:04:50 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 static int	run_shell(t_shell *data, char *input)
 {
@@ -31,16 +31,18 @@ static int	run_shell(t_shell *data, char *input)
 /// @return 0 on success, -1 on error or when exiting.
 int	init_program(t_shell *data)
 {
-	char *input;
+	char	*input;
 
 	input = NULL;
 	while (true)
 	{
 		input = readline("minishell-> ");
+		if (input && *input)
+			add_history(input);
 		// if (input == NULL)
 		// TODO: Need to add input line to the history here!
 		if (run_shell(data, input))
-			return (free(input) , -1);
+			return (free(input), -1);
 		free(input);
 	}
 	return (0);
@@ -48,8 +50,9 @@ int	init_program(t_shell *data)
 
 /// @brief Provides access to a singleton instance of the shell structure.
 /// @return A pointer to the singleton `t_shell` instance.
-t_shell *get_shell()
+t_shell	*get_shell(void)
 {
-	static t_shell data;
+	static t_shell	data;
+
 	return (&data);
 }
