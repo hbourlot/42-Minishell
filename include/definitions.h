@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/28 17:38:47 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/04 10:15:04 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 
 #define ABS_PATH 			"PATH=/bin:/usr/bin:/usr/local/bin"
 #define SYNTAX_ERROR_MSG 	"bash: syntax error near unexpected token `"
+#define	NO_FILE_DIR_MSG		"No such file or directory"
 
 // ************************************************************************
 // **						     STRUCTURES  							 **
@@ -49,15 +50,6 @@ typedef enum e_delimiter
 	REDIRECT_LEFT_DOUBLE   // double left redirection `<<`
 }	t_delimiter;
 
-// typedef struct s_error
-// {
-// 	int		code;
-// 	char	*token;
-// 	char	*archive;
-// 	char 	*message;
-// 	char	*function;
-// }	t_error;
-
 typedef struct s_file
 {
 	char 			*read;
@@ -68,12 +60,13 @@ typedef struct s_file
 
 
 typedef struct s_rules
-{	
+{
 	bool				here_doc;
+	char				**eof;
 	bool				or_next;
 	bool				or_prev;
 	// int					redir_count;
-	bool				only_redir_files;
+	bool				only_tokens;
 	char				*last_occurrence;
 	char 				*pre_command;
 	
@@ -96,9 +89,12 @@ typedef struct s_cmd
 
 typedef struct s_data
 {
+	bool			it_ends_with_single_pipe;
+	bool			it_ends_with_double_pipe;
+	char			*readline;
 	char			**input_splitted;
 	char			**env_paths;
-	int				last_exit_status;
+	int				last_exit_status; // Still doing nothing 🌝
 	int				nbr_of_commands;
 	int				argc;
 	char			**argv;

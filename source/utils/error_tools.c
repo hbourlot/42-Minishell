@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 18:10:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/26 21:07:11 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/29 08:54:28 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int	handle_error(void)
 		code = handle_error_parsing();
 	else if (error->initialize.is_initialized)
 		code = handle_error_initialize();
+	else if (error->execution.is_initialized)
+		code = handle_error_execution();
 	if (error->exit == true)
 	{
 		cleanup_shell(get_shell());

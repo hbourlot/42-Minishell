@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/28 16:53:39 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/02 16:49:59 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static int handle_file_redirection(t_file **file_list, char **input_tmp, const c
 	return (SUCCESS);
 }
 
-int	init_file_list(char *input, const char *redirects[], t_file **redir_files)
+int	initialize_file_list(char *input, const char *redirects[], t_file **redir_files)
 {
 	char 			*file_name;
 	char			*input_tmp;

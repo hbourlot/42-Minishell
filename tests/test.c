@@ -1,161 +1,80 @@
 #include "tests.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
-int	main(int argc, char *argv[], char *envp[]) {
+#define BUFFER_SIZE 1024
 
-	const char *env = "ls";
-	char *r = getenv(env);
-	printf("%s\n", r);
-	return 0;
+static int	cleanup_and_exit(char *text, int error_code)
+{
+	if (text)
+		free(text);
+	write(1, "\n", 1);
+	return (error_code);
 }
 
-// int	main(int argc, char *argv[], char *envp[]) {
-// 	(void)argc;
-// 	(void)argv;
+static int	here_doc(char *limiter, int fd)
+{
+	int		i;
+	char	*text;
 
-// 	int		pipe_id[2];
-// 	pid_t	prev_fd;
-// 	pid_t	pid;
-// 	int		in_fd;
-// 	int		out_fd;
+	i = 0;
+	while (true)
+	{
+		ft_putstr_fd("> ", STDOUT_FILENO);
+		text = get_next_line(STDIN_FILENO);
+		if (!text)
+			return (-1);
+		if (ft_strcmp(limiter, text) == CMP_OK)
+			break ;
+		if (ft_strlen(text) == 0) // TODO: CTRL + D: bash: warning: here-document at line 10 delimited by end-of-file (wanted `EOF')
+			return (free(text), -1);
+		if (!ft_strchr(text, '\n') && !ft_strncmp(text, limiter, ft_strlen(text)
+				- 1))
+			return (free(text), -1);
+		ft_putstr_fd(text, fd);
+		free(text);
+	}
+	return (0);
+}
 
-// 	const char *path = "/bin/ls";
-// 	const char *path1 = "/bin/cat";
-// 	const char *path2 = "/usr/bin/grep";
-
-// 	char **args = ft_split("ls", ' ');
-// 	char **args1 = ft_split("cat", ' ');
-// 	char **args2 = ft_split("grep p", ' ');
-
-// 	if (pipe(pipe_id) < 0) {
-// 		perror("Error creating first pipe");
-// 		exit (EXIT_FAILURE);
-// 	}
-
-// 	pid = fork();
-// 	if (pid < 0) {
-// 		perror("Error on fork");
-// 		exit (EXIT_FAILURE);
-// 	}
-// 	if (pid == 0) {
-// 		in_fd = open("file", O_CREAT | O_RDWR, 0644);
-// 		if (in_fd < 0) {
-// 			perror("Opening file");
-// 			exit (EXIT_FAILURE);
-// 		}
-// 		dup2(in_fd, STDIN_FILENO);
-// 		dup2(pipe_id[1], STDOUT_FILENO);
-// 		close(in_fd);
-// 		close(pipe_id[0]);
-// 		close(pipe_id[1]);
-
-// 		execve(path1, args1, envp);
-// 		perror("Execve path1");
-// 		exit (EXIT_FAILURE);
-// 	}
-
-// 	prev_fd = pipe_id[0];
-// 	close(pipe_id[1]);
+int	main(int argc, char *argv[], char *envp[]) {
 	
-// 	pid = fork();
-// 	if (pid < 0) {
-// 		perror("Error on fork");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	if (pid == 0) {
-// 		dup2(prev_fd, STDIN_FILENO);
-// 		close(prev_fd);
-// 		execve(path, args, envp);
-// 	}
-// 	close(pipe_id[0]);
-// 	return EXIT_SUCCESS;
-// }
+	int 	pipe_id[2];
+	int		prev_fd;
+	char 	*delimiter;
+	pid_t	pid;
 
-// int	main(int argc, char *argv[], char *envp[])
-// {
-// 	(void)argc;
-// 	(void)argv;
+	char *path = "/bin/cat";
+	char **args = ft_split("cat", ' ');
 
-// 	int		pipe_id[2];
-// 	pid_t	prev_id;
-// 	pid_t	pid;
-// 	int		in_fd;
-// 	int		out_fd;
+	prev_fd = -1;
 
-// 	const char *path = "/bin/ls";
-// 	const char *path1 = "/bin/cat";
-// 	const char *path2 = "/usr/bin/grep";
+	// ! FIRST PART
+	if (pipe(pipe_id) < 0) {
+		perror("Pipe process.\n");
+		exit (EXIT_FAILURE);
+	}
 
-// 	char **args = ft_split("ls", ' ');
-// 	char **args1 = ft_split("cat", ' ');
-// 	char **args2 = ft_split("grep p", ' ');
+	pid = fork();
+	if (pid < 0) {
+		perror("Pid process.\n");
+		exit (EXIT_FAILURE);
+	}
 
-// 	if (pipe(pipe_id) < 0)
-// 	{
-// 		perror("Pipe1 creating failed");
-// 		return (EXIT_FAILURE);
-// 	}
-// 	pid = fork();
-// 	if (pid < 0)
-// 	{
-// 		perror("Fork failed for first child");
-// 		return (EXIT_FAILURE);
-// 	}
-// 	if (pid == 0)
-// 	{
-// 		in_fd = open("file", O_CREAT | O_RDWR, 0644);
-// 		if (in_fd < 0) {
-// 			perror("Failed to open file");
-// 			return (EXIT_FAILURE);
-// 		}
-// 		dup2(in_fd, STDIN_FILENO);
-// 		close(in_fd);
+	if (pid == 0) {
+		close(pipe_id[0]);
+		dup2(pipe_id[1], STDOUT_FILENO);
+		delimiter = ft_strjoin("file", "\n");
+		if (here_doc(delimiter, pipe_id[1]) < 0)
+			perror("Here_doc");
+		close(pipe_id[1]);
+		free(delimiter);
+		exit(EXIT_SUCCESS);
+	}
+	close(pipe_id[1]);
+	waitpid(pid, NULL, 0);
+	return (0);
 
-// 		dup2(pipe_id[1], STDOUT_FILENO);
-// 		close(pipe_id[1]);
-// 		close(pipe_id[0]);
 
-// 		execve(path1, args1, envp);
-// 		perror("Execve failed for 'cat'");
-// 		exit (EXIT_FAILURE);
-// 	}
-
-// 	close(pipe_id[1]);
-// 	prev_id = pipe_id[0];
-
-// 	if (pipe(pipe_id) < 0) {
-// 		perror("Pipe2 creation failed");
-// 		return (EXIT_FAILURE);
-// 	}
-
-// 	pid = fork();
-// 	if (pid < 0) {
-// 		perror("Fork failed for second child");
-// 		return (EXIT_FAILURE);
-// 	}
-
-// 	if (pid == 0) {
-// 		dup2(prev_id, STDIN_FILENO);
-// 		close(prev_id);
-// 		close(pipe_id[0]);
-// 		dup2(pipe_id[1], STDOUT_FILENO);
-// 		close(pipe_id[1]);
-// 		execve(path, args, envp);
-// 		perror("ERROR LS\n");
-// 	}
-
-// 	pid = fork();
-// 	if (pid < 0)
-// 		return EXIT_FAILURE;
-// 	if (pid == 0)
-// 	{
-// 		dup2(pipe_id[0], STDIN_FILENO);
-// 		close(pipe_id[0]);
-// 		close(pipe_id[1]);
-// 		execve(path2, args2, envp);
-// 		printf("ERROR\n");
-// 		return (EXIT_FAILURE);
-// 	}
-// 	close(pipe_id[0]);
-// 	close(pipe_id[1]);
-// 	return (EXIT_SUCCESS);
-// }
+}

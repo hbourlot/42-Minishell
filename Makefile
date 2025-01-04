@@ -20,12 +20,13 @@ OS				= $(shell uname)
 MSG_MAC 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))%% ] $(ORANGE)Compiling... $<... $(RESET)"
 MSG_LINUX 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))% ] $(ORANGE)Compiling... $<... $(RESET)"
 NAME			= minishell
-C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redirects parsing/command_execution			\
-					initialize/command initialize/command_tools initialize/shell initialize/file_list						\
-					execution/argument_parser execution/run_commands execution/run_command_tools execution/get_path			\
-					utils/shell_cleanup utils/debug utils/error_tools utils/error_parsing utils/error_initialize
+C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redirects parsing/command_execution													\
+					initialize/command initialize/command_tools initialize/shell initialize/file_list initialize/here_doc initialize/env_paths											\
+					execution/argument_parser execution/run_commands execution/run_command_tools execution/get_path execution/handle_folders execution/run_eof		\
+					utils/shell_cleanup utils/debug utils/error_tools utils/error_parsing utils/error_initialize utils/error_execution
 # -L./ -lminishell
-VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes
+# VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp
+VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=no --gen-suppressions=all --suppressions=readline.supp
 LINK			= ./minishell.a -L./lib/library/ -lft -lreadline
 SRC_FILES 		= $(addprefix $(SRC_DIR), $(C_FUNCTIONS:=.c))
 OBJS_SRC 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:%.c=%.o))

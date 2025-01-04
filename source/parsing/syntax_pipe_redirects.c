@@ -6,57 +6,97 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:21:13 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/28 15:29:15 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/04 10:20:02 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-static bool handle_error_syntax(char *source, const char *tokens[], int idx)
+static void skip_spaces(char **src)
 {
-	int	idx_redirects;
-
-	const char *redirects[] = {">", ">>", "<<", "<", NULL};
-
-	sort_strings_by_length_desc((char **)redirects);
-	if (!*source || find_string_match(source, redirects, &idx_redirects) == OK)
-		return (set_error_parsing(2, SYNTAX_ERROR_MSG, "newline", __func__),
-			false);
-	return (set_error_parsing(2, SYNTAX_ERROR_MSG, (char *)tokens[idx],
-			__func__), false);
+	if (!src || !*src)
+		return;
+	while (**src && **src == ' ')
+		(*src)++;
 }
 
-// static bool not_in_token_case(t_shell *data)
-// {
-		
-// }
-
-bool is_valid_pipe_redirects_tokens(char *source, size_t len, int idx, const char *tokens[])
+bool is_valid_file_and_here_doc_tokens(char *source)
 {
-	bool	in_token;
-
-	in_token = false;	
+	const char *tokens[] = {"<<", ">>", ">", "<", NULL};
+	const char *pipe_tokens[] = {"||", "|", NULL};
+	int			idx;
+	
+	idx = 0;
 	while (source)
 	{
 		source = ft_strstr_any(source, tokens);
-		in_token = !in_token;
 		if (source && find_string_match(source, tokens, &idx) == OK)
 		{
-			len = ft_strlen(tokens[idx]);
-			source += len;
-			while (*source && *source == ' ')
-				source++;
-			if (*source && find_string_match(source, tokens, &idx) == ERROR)
-				in_token = false;
-			if (in_token && !*source)
+			source += ft_strlen(tokens[idx]);
+			skip_spaces(&source);
+			if (find_string_match(source, pipe_tokens, &idx) == OK)
+				return (set_error_parsing(1, SYNTAX_ERROR_MSG, (char *)pipe_tokens[idx], __func__), false);
+			if (!*source)
+				return (set_error_parsing(1, SYNTAX_ERROR_MSG, "newline", __func__), false);
+			if (find_string_match(source, tokens, &idx) == OK)
+				return (set_error_parsing(1, SYNTAX_ERROR_MSG, (char *)tokens[idx], __func__), false);
+			else
+				continue;
+		}
+	}
+	return (true);
+}
+
+static bool is_first_pipe_token_valid(char *source, const char *tokens[])
+{
+	size_t 	length;
+	char 	*tmp;
+	int		idx;
+	
+	length = 0;
+	tmp = ft_strstr_any(source, tokens);
+	if (!tmp)
+		return (true);
+	length = tmp - source;
+	while (length && length--)
+	{
+		if (*source && *source == ' ')
+			source++;
+		if (*source && *source != ' ')
+			break;
+	}
+	if (length)
+		return (true);
+	find_string_match(tmp, tokens, &idx);
+	set_error_parsing(1, SYNTAX_ERROR_MSG, (char *)tokens[idx], __func__);	
+	return (false);
+}
+
+bool is_valid_pipe_tokens(char *source)
+{
+	int			idx;
+	const char *pipe_tokens[] = {"||", "|", NULL};
+
+	idx = 0;
+	if (is_first_pipe_token_valid(source, pipe_tokens) == false)
+		return (false);
+	while (source && *source)
+	{
+		source = ft_strstr_any(source, pipe_tokens);
+		if (source && *source && find_string_match(source, pipe_tokens, &idx) == OK)
+		{
+			source += ft_strlen(pipe_tokens[idx]);
+			skip_spaces(&source);
+			if (*source && find_string_match(source, pipe_tokens, &idx) == OK) // If has and its another pipe ERROR CASE
+				return (set_error_parsing(2, SYNTAX_ERROR_MSG, (char *)pipe_tokens[idx], __func__), false);
+			if (*source && ft_strcmps(source, pipe_tokens) == ERROR) // If has and it's not another pipe
+				continue; // Right case
+			if (!*source)
 			{
-				printf("HERE_DOC CASE\n");	
-				printf("IN_TOKEN MAS ACABOU COM NADA\n");
+				// TODO: might be here_doc, still need to parsing << |
+				printf("HERE_DOC TO append com command list\n");// HERE_DOC CASE
+				continue;
 			}
-			else if (in_token && (!*source || find_string_match(source, tokens, &idx) == OK))
-				return (handle_error_syntax(source, tokens, idx));
-			else if (!in_token && !*source)
-				printf("HERE_DOC CASE\n");
 		}
 	}
 	return (true);

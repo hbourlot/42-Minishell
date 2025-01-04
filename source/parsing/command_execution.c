@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 10:09:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/28 18:28:43 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/02 23:21:25 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,13 @@ int	parsing_command_path_execution(char *command_path)
 {
 	if (command_path)
 	{
+
+		if (ft_strrchr(command_path, '/') && access(command_path, F_OK) == 0)
+			return (ft_printf_error("bash: %s: is a directory\n", command_path), 127);
 		if (!ft_strrchr(command_path, '/'))
+		{
 			return (ft_printf_error("bash: %s: command not found\n", command_path), 127);
+		}
 		if (access(command_path, F_OK) != OK)
 		{
 			return (ft_printf_error("bash: %s: No such file or directory\n",

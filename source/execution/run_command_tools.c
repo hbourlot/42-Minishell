@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 12:00:01 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/28 13:09:14 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/31 09:39:54 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,49 +21,10 @@ static void	duplicate_fd(int fd1, int fd2)
 	}
 }
 
-static int open_folders(t_cmd *command)
-{
-	t_file 	*file;
-	
-	file = command->redir_files;
-	while (file)
-	{
-		if (file->redirect == REDIRECT_LEFT_SINGLE)
-		{
-			command->in_fd = open(file->read, O_RDONLY);
-			if (command->in_fd < 0)
-				return (ERROR);
-		}
-		else if (file->redirect == REDIRECT_LEFT_DOUBLE)
-			command->in_fd = open(file->read, O_RDWR, O_APPEND, 0644);
-		else if (file->redirect == REDIRECT_RIGHT_SINGLE)
-		{
-			command->out_fd = open(file->write, O_CREAT | O_RDWR | O_TRUNC, 0644);
-			if (command->out_fd < 0)
-				return (close(command->in_fd), ERROR);
-		}
-		else if (file->redirect == REDIRECT_RIGHT_DOUBLE)
-			command->out_fd = open(file->write, O_CREAT | O_RDWR | O_APPEND, 0644);
-		if (file->next)
-		{
-			close(command->in_fd);
-			close(command->out_fd);
-			command->in_fd = -1;
-			command->out_fd = -1;
-		}
-		file = file->next;
-	}
-	return (0);
-}
-
 int	do_dup2(t_cmd *command, int *pipe_id, int *prev_fd)
 {
-	t_file	*tmp_file_list;
-	
 	if (*prev_fd != -1)
 		duplicate_fd(*prev_fd, STDIN_FILENO);
-	if (open_folders(command) < 0)
-		return (ERROR);
 	if (command->in_fd != -1)
 		duplicate_fd(command->in_fd, STDIN_FILENO);
 	if (command->out_fd != -1)

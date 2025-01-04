@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/28 10:29:51 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/29 12:11:38 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	refresh_shell_data(t_shell *data)
 {
 	t_cmd	*tmp;
 
+	if (data->readline)
+		free_pointers(1, &data->readline);
 	if (data->input_splitted)
 	{
 		free_split(data->input_splitted);
@@ -64,6 +66,8 @@ void	cleanup_shell(t_shell *data)
 {
 	t_cmd	*tmp;
 
+	if (data->readline)
+		free(data->readline);
 	if (data->input_splitted)
 		free_split(data->input_splitted);
 	if (data->env_paths)

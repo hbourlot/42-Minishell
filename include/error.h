@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 16:35:41 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/26 20:44:22 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/03 11:07:46 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 
 #ifndef ERROR_H
 #define ERROR_H
+
+
+typedef struct s_execution
+{
+	bool					is_initialized;
+	char					*msg;
+	char					*folder;
+
+}		t_execution;
+
 
 typedef struct s_parsing
 {
@@ -34,6 +44,7 @@ typedef struct s_error
 {
 	struct s_parsing		parsing;
 	struct s_initialize		initialize;
+	struct s_execution		execution;
 	int						code;
 	bool					exit;	
 }			t_error;
@@ -52,5 +63,8 @@ void 		set_error_parsing(int code, char *syntax, char *token, const char *functi
 
 int			handle_error_initialize(void);
 void		set_error_initialize(int code, char *msg, const char *function, bool exit);
+
+int			handle_error_execution(void);
+void		set_error_execution(int code, char *msg, const char *folder, bool exit);
 
 #endif

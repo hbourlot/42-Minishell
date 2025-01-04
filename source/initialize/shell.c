@@ -6,40 +6,13 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 14:10:20 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/28 16:26:05 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/04 10:16:55 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	initialize_environment_paths(t_shell *data)
-{
-	int			i;
 
-	i = 0;
-	if (!data->envp || !*data->envp)
-	{
-		data->env_paths = NULL;
-		return (SUCCESS);
-	}
-	while (data->envp[i])
-	{
-		if (ft_strncmp(data->envp[i], "PATH=", 5) == CMP_OK)
-		{
-			if (ft_strlen(data->envp[i] + 5) == 0)
-				data->env_paths = NULL;
-			else
-            {
-				data->env_paths = ft_split(data->envp[i] + 5, ':');
-                if (!data->env_paths)
-                    return (ERROR); 
-            }
-			break ;
-		}
-		i++;
-	}
-    return (SUCCESS);
-}
 
 static int	run_shell(t_shell *data, char *input)
 {
@@ -52,7 +25,7 @@ static int	run_shell(t_shell *data, char *input)
 		run = false;
 	}
 	if (run && init_command(input) == ERROR)
-		return (ERROR);  // TODO: Handle `get_path` and args errors here
+		return (ERROR);
 	if (run)
 		run_commands(data);
 	refresh_shell_data(data);
@@ -70,12 +43,17 @@ int	main_shell_loop(t_shell *data)
 	while (true)
 	{
 		input = readline("[Xitaozinho&Xororo@localhost ~]$ ");
-		// if (input == NULL)
 		// TODO: Need to add input line to the history here!
-		if (ft_strlen(input) == 0)
+		if (ft_strlen(input) == 0 || all_same_char(input, ' '))
 		{
+			free(input);
 			printf("\n");
 			continue;
+		}
+		if (ft_strcmp("exit", input) == CMP_OK)
+		{
+			printf("exit\n");
+			break;
 		}
 		if (run_shell(data, input))
 			return (free(input), handle_error_parsing(), ERROR);
@@ -90,19 +68,20 @@ int	main_shell_loop(t_shell *data)
 // 	// {
 // 		// if (input == NULL)
 // 		// TODO: Need to add input line to the history here!
-// 		char *src = "ls";
-// 		char *input = ft_strdup(src);
+// 		// char *src = " >        file >             file1 >file2 <file3";
+// 		char *src = "<< file";
+// 		data->readline = ft_strdup(src);
 // 		// char *input = get_next_line(STDIN_FILENO);
 // 		// printf("input: %s\n", input);
-// 		if (ft_strlen(input) == 0)
+//		if (ft_strlen(input) == 0 || all_same_char(input, ' '))
+
 // 		{
 // 			printf("\n");
 // 			return (0);
 // 			// continue;
 // 		}
-// 		if (run_shell(data, input))
-// 			return (free(input), ERROR);
-// 		free(input);
+// 		if (run_shell(data, data->readline))
+// 			return (free(data->readline), ERROR);
 // 	// }
 // 	return (SUCCESS);
 // }

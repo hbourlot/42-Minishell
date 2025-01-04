@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 14:51:20 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/26 19:14:03 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/02 23:23:12 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	ft_printf_error(const char *fmt, ...)
 		if (*fmt == '%')
 			ft_format(++fmt, &ap);
 		else
-			ft_putchar(*fmt);
+			ft_putchar_fd(*fmt, 2);
 		fmt++;
 	}
 	va_end(ap);
