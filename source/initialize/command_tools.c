@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/02 17:12:26 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/06 23:18:32 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int initialize_command_struct(t_cmd **command, char *input_splitted)
     (*command)->out_fd = -1;
     return (SUCCESS);
 }
-    
+
 static int handle_redirection(t_cmd *command, char *input_splitted) // Todo: Prob i can remove the input_splitted parameter here
 {
     const char  *file_redirects[] = {">", ">>", "<", NULL};

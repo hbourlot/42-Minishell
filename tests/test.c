@@ -3,78 +3,53 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define BUFFER_SIZE 1024
-
-static int	cleanup_and_exit(char *text, int error_code)
+typedef struct s_lista
 {
-	if (text)
-		free(text);
-	write(1, "\n", 1);
-	return (error_code);
+    void            *content;
+    short           a;
+    short           z;
+    short           l;
+    char            d;
+    char            c;
+    struct s_lista  *next;
+}                   t_list2;
+
+size_t get_offset(void *struct_ptr, void *member_ptr)
+{
+    printf("p: %p\n", (char *)member_ptr);  // Prints the address of member_ptr
+    printf("p1: %p\n", (char *)struct_ptr); // Prints the address of struct_ptr
+    return ((size_t)((char *)member_ptr - (char *)struct_ptr)); // Calculates and returns the offset
 }
 
-static int	here_doc(char *limiter, int fd)
+void *get_last_node(void *node, size_t next_offset)
 {
-	int		i;
-	char	*text;
+    char *tmp;
 
-	i = 0;
-	while (true)
-	{
-		ft_putstr_fd("> ", STDOUT_FILENO);
-		text = get_next_line(STDIN_FILENO);
-		if (!text)
-			return (-1);
-		if (ft_strcmp(limiter, text) == CMP_OK)
-			break ;
-		if (ft_strlen(text) == 0) // TODO: CTRL + D: bash: warning: here-document at line 10 delimited by end-of-file (wanted `EOF')
-			return (free(text), -1);
-		if (!ft_strchr(text, '\n') && !ft_strncmp(text, limiter, ft_strlen(text)
-				- 1))
-			return (free(text), -1);
-		ft_putstr_fd(text, fd);
-		free(text);
-	}
-	return (0);
+    tmp = (char *)node;
+    if (!tmp)
+        return (NULL);
+    while (*(void **)(tmp + next_offset))
+        tmp = *(char **)(tmp + next_offset);
+    return ((void *)tmp);
 }
 
-int	main(int argc, char *argv[], char *envp[]) {
-	
-	int 	pipe_id[2];
-	int		prev_fd;
-	char 	*delimiter;
-	pid_t	pid;
-
-	char *path = "/bin/cat";
-	char **args = ft_split("cat", ' ');
-
-	prev_fd = -1;
-
-	// ! FIRST PART
-	if (pipe(pipe_id) < 0) {
-		perror("Pipe process.\n");
-		exit (EXIT_FAILURE);
-	}
-
-	pid = fork();
-	if (pid < 0) {
-		perror("Pid process.\n");
-		exit (EXIT_FAILURE);
-	}
-
-	if (pid == 0) {
-		close(pipe_id[0]);
-		dup2(pipe_id[1], STDOUT_FILENO);
-		delimiter = ft_strjoin("file", "\n");
-		if (here_doc(delimiter, pipe_id[1]) < 0)
-			perror("Here_doc");
-		close(pipe_id[1]);
-		free(delimiter);
-		exit(EXIT_SUCCESS);
-	}
-	close(pipe_id[1]);
-	waitpid(pid, NULL, 0);
-	return (0);
+int main(int argc, char *argv[], char *envp[]) {
+    
+    t_list2 test;
+    t_list2 test1;
+	t_list2	test2;
+	test.next = &test1;
 
 
+
+    printf("Size of t_list2: %zu\n", sizeof(t_list2));
+    size_t ptr_value = get_offset(&test, &(test.next));
+
+	printf("Offset value: %zu\n", ptr_value);  // Expected: 16
+
+	// t_list2 *tmp = get_last_node(&test, get_offset(&test, &(test.next))); 
+
+	// printf("value: %d\n", tmp->a);
+    
+    return (0);
 }

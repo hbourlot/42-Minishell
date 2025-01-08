@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_split.c                                       :+:      :+:    :+:   */
+/*   get_offset.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/26 09:47:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/06 21:54:45 by hbourlot         ###   ########.fr       */
+/*   Created: 2025/01/04 11:14:19 by hbourlot          #+#    #+#             */
+/*   Updated: 2025/01/06 20:41:47 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/// @brief Frees the memory allocated for the array of strings.
-/// @param split The array of strings to free.
-void	free_split(char **split)
+/// @brief Function to calculate the offset of a struct member
+/// @param struct_ptr Pointer to the struct
+/// @param member_ptr Pointer to the struct member
+/// @return Offset in bytes from the start of the struct to the member
+size_t	get_offset(void *struct_ptr, void *member_ptr)
 {
-	int	ctd;
-
-	ctd = 0;
-	if (!split || !*split)
-		return ;
-	while (split[ctd])
-		free(split[ctd++]);
-	free(split);
+	return ((size_t)((char *)member_ptr - (char *)struct_ptr));
 }

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/28 23:02:21 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/04 15:35:20 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,7 @@ char				*ft_strstr_any(const char *haystack, const char **needles);
 void 				free_pointers(size_t count, ...);
 void				ft_printf_error(const char *fmt, ...);
 bool 				all_same_char(const char *src, char c);
+size_t				get_offset(void *struct_ptr, void *member_ptr);
+void				*get_last_node(void *node, size_t next_offset);
 
 #endif

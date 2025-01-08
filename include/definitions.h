@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/04 10:15:04 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/08 02:45:43 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@
 #define OK					0
 #define ERROR				-1
 #define SUCCESS				0
+
+// Representations
+#define QUOTE_TYPE_SINGLE		1
+#define QUOTE_TYPE_DOUBLE		2
 
 #define ABS_PATH 			"PATH=/bin:/usr/bin:/usr/local/bin"
 #define SYNTAX_ERROR_MSG 	"bash: syntax error near unexpected token `"
@@ -58,13 +62,20 @@ typedef struct s_file
 	struct s_file	*next;
 }			t_file;
 
+typedef struct s_readline
+{
+	char				*literal;
+	char				*non_literal;
+	int					quote;
+	struct s_readline	*next;
+}			t_readline;
 
 typedef struct s_rules
 {
-	bool				here_doc;
 	char				**eof;
 	bool				or_next;
 	bool				or_prev;
+	bool				here_doc;
 	// int					redir_count;
 	bool				only_tokens;
 	char				*last_occurrence;
@@ -90,8 +101,9 @@ typedef struct s_cmd
 typedef struct s_data
 {
 	bool			it_ends_with_single_pipe;
-	bool			it_ends_with_double_pipe;
+	bool			it_ends_with_double_pipe; // Still doing nothing 🌚
 	char			*readline;
+	t_readline		*readline_processed;
 	char			**input_splitted;
 	char			**env_paths;
 	int				last_exit_status; // Still doing nothing 🌝

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/04 10:19:09 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/07 14:45:04 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int 		initialize_file_list(char *input, const char *redirects[], t_file **redir_
 
 void		run_commands(t_shell *data);
 char		**get_command_args(char *argv);
+int			here_doc(int *pipe_id, char *limiter);
 char 		*get_path(char *input, char **env_paths);
 int			do_dup2(t_cmd *command, int *pipe_id, int *prev_fd);
 int			open_folder(char *file, t_cmd *command, bool here_doc);
@@ -81,10 +82,12 @@ void		refresh_shell_data(t_shell *data);
 // **						Utils Functions							 	 **
 // ************************************************************************
 
+void 		skip_spaces(char **src);
 void		debug_command_args(t_shell *data);
 void		debug_command_path(t_shell *data);
 void		debug_command_input(t_shell *data);
 void 		debug_input_splitted(t_shell *data);
 void 		debug_command_file_list(t_shell *data);
+void		debug_readline_processed(t_shell *data);
 
 #endif

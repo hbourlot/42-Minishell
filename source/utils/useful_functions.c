@@ -1,27 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_split.c                                       :+:      :+:    :+:   */
+/*   usefull_functions.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/26 09:47:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/06 21:54:45 by hbourlot         ###   ########.fr       */
+/*   Created: 2025/01/07 11:17:42 by hbourlot          #+#    #+#             */
+/*   Updated: 2025/01/07 11:18:22 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-/// @brief Frees the memory allocated for the array of strings.
-/// @param split The array of strings to free.
-void	free_split(char **split)
+void skip_spaces(char **src)
 {
-	int	ctd;
-
-	ctd = 0;
-	if (!split || !*split)
-		return ;
-	while (split[ctd])
-		free(split[ctd++]);
-	free(split);
+	if (!src || !*src)
+		return;
+	while (**src && **src == ' ')
+		(*src)++;
 }

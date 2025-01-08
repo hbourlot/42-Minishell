@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 10:46:44 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/02 23:32:45 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/07 11:20:22 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,6 @@ static int	get_first_here_doc_occurrence(char **src, const char *hd[])
 	return (0);
 }
 
-static void	skip_spaces(char **src)
-{
-	while (*(*src) && *(*src) == ' ')
-		(*src)++;
-}
-
 static int	allocate_memory(char ***eof, char **src, const char *hd[], int *idx)
 {
 	int	i;
@@ -52,9 +46,7 @@ static int	allocate_memory(char ***eof, char **src, const char *hd[], int *idx)
 		i++;
 	(*eof)[*idx] = ft_substr((*src), 0, i);
 	if (!(*eof)[*idx])
-	{
 		return (free_split((*eof)), -1);
-	}
 	(*eof)[*idx] = ft_append_and_free((*eof)[*idx], "\n");
 	if (!(*eof)[*idx])
 		return (free_split((*eof)), -1);

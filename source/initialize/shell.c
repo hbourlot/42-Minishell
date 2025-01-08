@@ -6,13 +6,11 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 14:10:20 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/04 10:16:55 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/07 12:00:38 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 static int	run_shell(t_shell *data, char *input)
 {
@@ -37,29 +35,29 @@ static int	run_shell(t_shell *data, char *input)
 /// @return 0 on success, -1 on error or when exiting.
 int	main_shell_loop(t_shell *data)
 {
-	char *input;
+	// char *input;
 
-	input = NULL;
+	// input = NULL;
 	while (true)
 	{
-		input = readline("[Xitaozinho&Xororo@localhost ~]$ ");
+		data->readline = readline("[Xitaozinho&Xororo@localhost ~]$ ");
 		// TODO: Need to add input line to the history here!
-		if (ft_strlen(input) == 0 || all_same_char(input, ' '))
+		if (ft_strlen(data->readline) == 0 || all_same_char(data->readline, ' '))
 		{
-			free(input);
+			free(data->readline);
 			printf("\n");
 			continue;
 		}
-		if (ft_strcmp("exit", input) == CMP_OK)
+		if (ft_strcmp("exit", data->readline) == CMP_OK)
 		{
 			printf("exit\n");
 			break;
 		}
-		if (run_shell(data, input))
-			return (free(input), handle_error_parsing(), ERROR);
-		free(input);
+		if (run_shell(data, data->readline))
+			return (free(data->readline), handle_error_parsing(), ERROR);
+		free(data->readline);
 	}
-	return (SUCCESS);
+	return (0);
 }
 
 // int	main_shell_loop(t_shell *data)
@@ -73,7 +71,7 @@ int	main_shell_loop(t_shell *data)
 // 		data->readline = ft_strdup(src);
 // 		// char *input = get_next_line(STDIN_FILENO);
 // 		// printf("input: %s\n", input);
-//		if (ft_strlen(input) == 0 || all_same_char(input, ' '))
+// 		if (ft_strlen(data->readline) == 0 || all_same_char(data->readline, ' '))
 
 // 		{
 // 			printf("\n");

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:51:28 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/02 23:26:33 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/08 03:04:37 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	strip_redirects(char **input, const char *redirects[])
 
 	if (!input)
 		return (-1);
-	if (!*input)
+	if (!*input) // ? Pretty sure i can remove it since already came as NULL
 		return (0);
 	start = 0;
 	while ((*input)[start])
@@ -68,7 +68,7 @@ int	strip_redirects(char **input, const char *redirects[])
 			if (!new_input)
 				return (free(to_remove), ERROR);
 			if (ft_strlen(new_input) == 0)
-				return (free_pointers(2, input, &new_input), EXIT_SUCCESS);
+				return (free_pointers(3, input, &new_input, &to_remove), EXIT_SUCCESS);
 			free_pointers(2, input, &to_remove);
 			*input = new_input;
 		}
@@ -80,48 +80,3 @@ int	strip_redirects(char **input, const char *redirects[])
 	return (EXIT_SUCCESS);
 }
 
-
-// static int strip_redirects_helper(char **input, const char *redirects[], int *start)
-// {
-// 	char	*to_remove;
-// 	char	*new_input;
-// 	int		error;
-
-// 	to_remove = extract_redirect_and_file(input, redirects, start, &error);
-// 	if (error == ERROR)
-// 		return (ERROR);
-// 	if (to_remove)
-// 	{
-// 		new_input = remove_substring(*(const char **)input, to_remove);
-// 		if (!new_input)
-// 			return (free(to_remove), ERROR);
-// 		if (ft_strlen(new_input) == 0)
-// 			return (free_pointers(2, input, &new_input), EXIT_SUCCESS);
-// 		free_pointers(2, input, &to_remove);
-// 		*input = new_input;
-// 	}
-// 	else
-// 		(*start)++;
-// 	return (EXIT_SUCCESS);
-// }
-
-// int	strip_redirects(char **input , const char *redirects[])
-// {
-// 	int	start;
-// 	int	status;
-
-// 	if (!input)
-// 		return (-1);
-// 	if (!*input)
-// 		return (0);
-// 	start = 0;
-// 	while ((*input)[start])
-// 	{
-// 		status = strip_redirects_helper(input, redirects, &start);
-// 		if (status != EXIT_FAILURE)
-// 			return (status);
-// 	}
-// 	if (all_same_char(*input, ' ') == true)
-// 		free_pointers(1, input);
-// 	return (EXIT_SUCCESS);
-// }

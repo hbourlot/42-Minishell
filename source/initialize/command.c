@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/29 13:34:24 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/04 11:34:56 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int split_command_input(t_shell *data, char *input, const char *delimiter
 
 static int create_command_list(t_shell *data)
 {
-    t_cmd   *current;
+    t_cmd   *current; 
     int     i;
 
 	i = 0;

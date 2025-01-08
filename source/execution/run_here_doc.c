@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/02 22:43:29 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/06 20:04:26 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,11 @@ static int	cleanup_and_exit(char *text, int error_code)
 	return (error_code);
 }
 
-static int	read_eof(int *pipe_id, char *limiter)
+int	here_doc(int *pipe_id, char *limiter)
 {
 	char	*text;
 
-	while (1)
+	while (true)
 	{
 		ft_putstr_fd("> ", STDOUT_FILENO);
 		text = get_next_line(STDIN_FILENO);
@@ -121,7 +121,7 @@ static void	handle_child_process(t_cmd *command, int *pipe_id, int *prev_fd)
 	close(pipe_id[0]);
 	while (command->settings.eof[i])
 	{
-		if (read_eof(pipe_id, command->settings.eof[i]) == -1)
+		if (here_doc(pipe_id, command->settings.eof[i]) == -1)
 		{
 			close(pipe_id[1]);
 			perror("read_eof error.");

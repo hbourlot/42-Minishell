@@ -1,30 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   TEMP_set_up_input.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/08 02:20:06 by hbourlot         ###   ########.fr       */
+/*   Created: 2025/01/07 09:42:15 by hbourlot          #+#    #+#             */
+/*   Updated: 2025/01/08 02:36:24 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	signal_handler(int signal)
-{
-	if (signal == SIGINT)
-	{
-		write(1, "\n", 1);
-		rl_on_new_line();
-		// rl_replace_line("", 0);
-		rl_redisplay();
-	}
-}
-
-
-int	initialize_readline_node(t_shell *data, char *readline, const char quotes, bool literal)
+int	initialize_readline_node(t_shell *data, char *readline, const quotes, bool literal)
 {
 	int			i;
 	t_readline	dummy;
@@ -44,7 +32,7 @@ int	initialize_readline_node(t_shell *data, char *readline, const char quotes, b
 		return (-1);
 
 	to_allocate->next = NULL;
-	while (readline[i] && readline[i] != quotes)
+	while (readline[i] != quotes)
 		i++;
 		
 	new_src = ft_substr(readline, 0, i);
@@ -56,34 +44,32 @@ int	initialize_readline_node(t_shell *data, char *readline, const char quotes, b
 		to_allocate->non_literal = new_src;
 		
 	readline += i; // TODO: Need to check if it's moving forward;
-	printf("readline_init: %s\n", readline);
-	printf("ali\n");
-	debug_readline_processed(data);
 	return (0);
 }
 
 static int	handle_non_literal_string(t_shell *data, char *readline)
 {
-	while (readline[*i])
+	int	i;
+	
+	i = 0;
+	while (readline[i])
 	{
-		if (readline[*i] == QUOTE_TYPE_SINGLE)
+		if (readline[i] == '\'')
 		{
-			if (initialize_readline_node(data, readline, QUOTE_TYPE_SINGLE, false) < 0)
+			if (initialize_readline_node(data, readline, '\'') < 0)
 				return (-1);
 			return (0);
 		}
-		else if (readline[i] == QUOTE_TYPE_DOUBLE)
+		else if (readline[i] == '"')
 		{
-			if (initialize_readline_node(data, readline, QUOTE_TYPE_DOUBLE, false) < 0)
+			if (initialize_readline_node(data, readline, '"') < 0)
 				return (-1);
 			return (0);
 		}
 		i++;
 	}
-	printf("readline_nonstring: %s\n", readline);
-	if (initialize_readline_node(data, readline, '\0', false) < 0)
+	if (initialize_new_input(data, readline, '\0') < 0)
 		return (-1);
-	
 	return (0);
 }
 
@@ -114,14 +100,14 @@ int	initialize_input(t_shell *data, char *readline)
 	skip_spaces(&readline);
 	while (readline && readline[i])
 	{
-		if (readline[i] == QUOTE_TYPE_SINGLE && !in_double_quotes)
+		if (readline[i] == '\'')
 			in_single_quotes = !in_single_quotes;
-		else if (readline[i] == QUOTE_TYPE_DOUBLE && !in_single_quotes)
+		else if (readline[i] == '"')
 			in_double_quotes = !in_double_quotes;
-		else if (!in_single_quotes && !in_double_quotes
-			&& handle_non_literal_string(data, &readline[i]))
+		else if (!in_single_quotes && !in_double_quotes 
+			&& handle_non_literal_string(data, readline[i]))
 				return (-1);
-		else if (in_single_quotes && handle_literal_string(data, &readline[i], QUOTE_TYPE_SINGLE))
+		else if (in_double_quotes && handle_literal_string(data, &readline[i], QUOTE_TYPE_DOUBLE))
 				return (-1);
 		else if (in_double_quotes && handle_literal_string(data, &readline[i], QUOTE_TYPE_DOUBLE))
 				return (-1);
@@ -188,6 +174,7 @@ void	identify_and_replace_quotes(char *readline)
 	int	single_quotes_occurrence;
 	int	double_quotes_occurrence;
 
+	
 	i = -1;
 	single_quotes_occurrence = 0;
 	double_quotes_occurrence = 0;
@@ -202,46 +189,10 @@ void	identify_and_replace_quotes(char *readline)
 	handle_non_paired_quotes(readline, single_quotes_occurrence, double_quotes_occurrence);
 }
 
-
 int	set_up_input(t_shell *data)
 {
 	identify_and_replace_quotes(data->readline);
 	if (initialize_input(data, data->readline))
 		return (-1);
 	return (0);
-}
-
-
-int	main(int argc, char *argv[], char *envp[])
-{
-	struct sigaction	sa;
-	t_shell				*data;
-	char				*input;
-
-
-	data = get_shell();
-	data->readline = readline(">");
-	if (set_up_input(data))
-	{
-		printf("ERRROR\n");
-		return (1);
-	}
-	debug_readline_processed(data);
-	return (0);
-
-
-
-
-
-
-	sa.sa_handler = signal_handler;
-	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
-	signal(SIGQUIT, SIG_IGN);
-	data = init_shell(argc, argv, envp);
-	if (main_shell_loop(data))
-		return (handle_error());
-	cleanup_shell(get_shell());
-	return 0;
 }

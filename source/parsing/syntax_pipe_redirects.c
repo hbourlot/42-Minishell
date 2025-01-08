@@ -6,19 +6,11 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:21:13 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/04 10:20:02 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/08 03:05:50 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
-
-static void skip_spaces(char **src)
-{
-	if (!src || !*src)
-		return;
-	while (**src && **src == ' ')
-		(*src)++;
-}
 
 bool is_valid_file_and_here_doc_tokens(char *source)
 {
@@ -93,6 +85,7 @@ bool is_valid_pipe_tokens(char *source)
 				continue; // Right case
 			if (!*source)
 			{
+				get_shell()->it_ends_with_single_pipe = true;
 				// TODO: might be here_doc, still need to parsing << |
 				printf("HERE_DOC TO append com command list\n");// HERE_DOC CASE
 				continue;
