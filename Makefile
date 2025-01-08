@@ -26,7 +26,8 @@ C_FUNCTIONS		= parsing/parsing \
 					free/shell_cleanup \
 					utils/debug
 # -L./ -lminishell
-VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes
+# VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes
+VALGRIND        = valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=readline.supp
 LINK			= ./minishell.a -L./lib/library/ -lft -lreadline
 SRC_FILES 		= $(addprefix $(SRC_DIR), $(C_FUNCTIONS:=.c))
 OBJS_SRC 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:%.c=%.o))

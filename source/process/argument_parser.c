@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/26 23:09:53 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/08 01:26:26 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,8 @@ char	**get_command_args(char *input)
 	while (i < idx)
 	{
 		temp[i] = expand_var(temp[i]);
-		if(temp[i])
-		printf("%s\n", temp[i]);
+		if (temp[i])
+			printf("%s\n", temp[i]);
 		i++;
 	}
 	return (temp);

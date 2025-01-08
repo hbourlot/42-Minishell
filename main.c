@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/14 23:07:17 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/08 01:32:06 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static t_shell	*init_shell(int argc, char *argv[], char *envp[])
 {
 	t_shell *data;
-	
+
 	data = get_shell();
 	data->argc = argc;
 	data->argv = argv;
@@ -33,5 +33,9 @@ int	main(int argc, char *argv[], char *envp[])
 	if (init_program(data))
 		cleanup_shell(get_shell());
 
-	return 0;
+	return (0);
 }
+
+
+
+
