@@ -6,12 +6,11 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/20 21:44:31 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/09 16:13:52 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
-
 
 char **extract_file_list(char *input, const char *redirects[])
 {
