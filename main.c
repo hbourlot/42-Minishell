@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/09 15:49:44 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/09 16:05:10 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,6 @@ int	main(int argc, char *argv[], char *envp[])
 	struct sigaction	sa;
 	t_shell				*data;
 	char				*input;
-
-	data = get_shell();
-	data->readline = readline("[minishell@hostname ~] ");
-	if (prepare_execve_parameters(data, &data->readline))
-	{
-		perror("ERROR");
-		return (1);
-	}
-	return (0);
-
-
-
-
-
 
 	sa.sa_handler = signal_handler;
 	sa.sa_flags = 0;
