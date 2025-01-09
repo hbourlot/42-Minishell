@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_shell.c                                       :+:      :+:    :+:   */
+/*   env_paths.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/12 14:10:20 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/12 14:20:01 by hbourlot         ###   ########.fr       */
+/*   Created: 2025/01/04 10:16:37 by hbourlot          #+#    #+#             */
+/*   Updated: 2025/01/04 10:19:18 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	get_envp(t_shell *data)
+int	initialize_environment_paths(t_shell *data)
 {
 	int			i;
 
@@ -20,7 +20,7 @@ static int	get_envp(t_shell *data)
 	if (!data->envp || !*data->envp)
 	{
 		data->env_paths = NULL;
-		return (0);
+		return (SUCCESS);
 	}
 	while (data->envp[i])
 	{
@@ -32,27 +32,11 @@ static int	get_envp(t_shell *data)
             {
 				data->env_paths = ft_split(data->envp[i] + 5, ':');
                 if (!data->env_paths)
-                    return (-1); 
+                    return (ERROR); 
             }
 			break ;
 		}
 		i++;
 	}
-    return (0);
-}
-
-t_shell	*init_shell(int argc, char *argv[], char *envp[])
-{
-	t_shell *data;
-	
-	data = get_shell();
-	data->argc = argc;
-	data->argv = argv;
-	data->envp = envp;
-    if (get_envp(data))
-    {
-        cleanup_shell(data);
-        exit(EXIT_FAILURE); // TODO: Add a custom message ??
-    }
-	return (data);
+    return (SUCCESS);
 }

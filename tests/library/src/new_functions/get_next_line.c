@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 09:41:33 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/11/26 17:10:46 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/26 20:57:26 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,9 @@ static int	set_buffer(char *buffer)
 	return (k);
 }
 
+/// @brief Reads a line from a file descriptor.
+/// @param fd The file descriptor to read from.
+/// @return The next line from the file descriptor, or NULL on EOF or error.
 char	*get_next_line(int fd)
 {
 	char		*rest;

@@ -1,105 +1,55 @@
-# include <limits.h>
-# include <stdbool.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <signal.h>
-# include <fcntl.h>
-# include <sys/wait.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "tests.h"
+#include "tests.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
-#ifndef CMP_OK
-#define CMP_OK 0
-#endif
-
-
-
-int	count_redirects(char *input, const char *redirects[])
+typedef struct s_lista
 {
-	int i;
-	int	j;
-	int	tot;
-	int	idx_found;
+    void            *content;
+    short           a;
+    short           z;
+    short           l;
+    char            d;
+    char            c;
+    struct s_lista  *next;
+}                   t_list2;
 
-	i = -1;
-	tot = 0;
-	sort_strings_by_length_desc((char **)redirects);
-	while (input[++i])
-	{
-		j = -1;
-		if (ft_strcmps(&input[i], redirects, &idx_found))
-		{
-			i += idx_found;
-			tot++;
-		}
-	}
-	return (tot);
+size_t get_offset(void *struct_ptr, void *member_ptr)
+{
+    printf("p: %p\n", (char *)member_ptr);  // Prints the address of member_ptr
+    printf("p1: %p\n", (char *)struct_ptr); // Prints the address of struct_ptr
+    return ((size_t)((char *)member_ptr - (char *)struct_ptr)); // Calculates and returns the offset
 }
 
-char *get_first_word(char *src)
+void *get_last_node(void *node, size_t next_offset)
 {
-	int		i;
-	int		start;
-	char	*word;
+    char *tmp;
 
-	i = 0;
-	while (src[i] && src[i] == ' ')
-		i++;
-	start = i;
-	while (src[i] && src[i] != ' ')
-		i++;
-	return (ft_substr(&src[start], 0, i - start));
+    tmp = (char *)node;
+    if (!tmp)
+        return (NULL);
+    while (*(void **)(tmp + next_offset))
+        tmp = *(char **)(tmp + next_offset);
+    return ((void *)tmp);
 }
-
-char	*next_word(char *src)
-{
-	int	i;
-
-	while (src[i] && src[i] == ' ')
-		i++;
-	while (src[i] && src[i] != ' ')
-		i++;
-	return (src[i]);
-}
-
-char **get_files(char *input, const char *redirects[])
-{
-	int		i;
-	int		j;
-	int		nbr_of_files;
-	char	**files[2];
-	i = 0;
-	sort_strings_by_length_desc((char **)redirects);
-	nbr_of_files = count_redirects(input, redirects) + 1;
-
-	
-	// while (input[i])
-	// {
-	// 	while (j)
-	// 	if (ft_strncmp(&input[i], redirects[j]))
-	// }
-	return (NULL);
-}
-
-
 
 int main(int argc, char *argv[], char *envp[]) {
-
-	const char *delimiters[] = {"|", "||", "&&", NULL};
-    const char *redirects[] = {">", ">>", "<", "<<", NULL};
     
-    sort_strings_by_length_desc((char **)delimiters);
-    sort_strings_by_length_desc((char **)redirects);
-	if (parsing_input("echo  >echo oi > "))
-		return (handle_error());
-	// printf("NO error");
+    t_list2 test;
+    t_list2 test1;
+	t_list2	test2;
+	test.next = &test1;
 
-	// char	**files[2];
-  	// char 	*args[] = {"cat", "oi", NULL};
-	// get_files("test", redirects);
-	// execve("/bin/cat", args, envp);
 
-    return 0;
+
+    printf("Size of t_list2: %zu\n", sizeof(t_list2));
+    size_t ptr_value = get_offset(&test, &(test.next));
+
+	printf("Offset value: %zu\n", ptr_value);  // Expected: 16
+
+	// t_list2 *tmp = get_last_node(&test, get_offset(&test, &(test.next))); 
+
+	// printf("value: %d\n", tmp->a);
+    
+    return (0);
 }

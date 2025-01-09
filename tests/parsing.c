@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 18:41:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/20 16:23:50 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/24 08:26:20 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ static bool	is_valid_token_sequence(char *input, const char *tokens[])
 	while (source)
 	{
 		source = ft_strstr_any(source, tokens);
-		if (source && ft_strcmps(source, tokens, &idx) == CMP_OK)
+		if (source && find_string_match(source, tokens, &idx) == CMP_OK)
 		{
 			len = ft_strlen(tokens[idx]);
 			source += len;
 			while (*source && *source == ' ')
 				source++;
-			if (!*source || ft_strcmps(source, tokens, &idx) == CMP_OK)
+			if (!*source || find_string_match(source, tokens, &idx) == CMP_OK)
 			{
 				if (!*source)
 					return (set_error(2, SYNTAX_ERROR_MSG, "newline", __func__),

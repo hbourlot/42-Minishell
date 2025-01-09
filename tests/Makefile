@@ -1,8 +1,9 @@
 CC = cc
 LIB = tests.a
 OBJ_DIR = obj/
-C_FUNCTIONS = test parsing error
+C_FUNCTIONS = test
 LINK = -L./library/ -lft
+VALGRIND = valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --track-fds=yes
 NAME = run
 LIBFT = ./library/libft.a
 
@@ -32,3 +33,6 @@ clean:
 
 r: all
 	./$(NAME)
+
+v: clean all
+	$(VALGRIND) --leak-check=full ./$(NAME)

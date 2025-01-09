@@ -33,7 +33,8 @@ UPD_SRC			=  ft_itoa_iter ft_linelen ft_nbrlen ft_strcmp ft_lstduplicate ft_lsti
 					ft_free_split ft_strcpy ft_strcat ft_append_and_free free_split	get_next_line		\
 					ft_printf ft_putchar ft_putstr  array_length char_cmp ft_strstr is_str_longer		\
 					is_greater split_by_tokens sort_arrays_by_length ft_strncpy remove_substring		\
-					ft_strcmps ft_strstr_any
+					ft_strcmps ft_strstr_any find_string_match free_pointers ft_printf_error			\
+					all_same_char get_last_node get_offset
 
 BONUS			= ft_lstnew ft_lstadd_front ft_lstsize ft_lstadd_back ft_lstmap ft_lstiter ft_lstlast 	\
 					ft_lstdelone ft_lstclear															\

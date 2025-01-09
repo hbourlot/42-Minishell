@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_cmds.c                                     :+:      :+:    :+:   */
+/*   run_commands.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/12 16:23:34 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/09 15:36:47 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
-
 
 /*
 	* I need to make some logic of error so i send the properly print message
@@ -41,15 +40,51 @@ static void	error_execve(t_shell *data, t_cmd *command)
 	exit (EXIT_FAILURE);
 }
 
+static bool is_safe_to_execute(t_cmd *command)
+{
+	if (command->settings.only_tokens)
+		return (false);
+
+	return (true);
+}
+
+static void execute_only_tokens(t_shell *data, t_cmd *command)
+{
+	int	code_parsing;
+
+	code_parsing = 0;
+	code_parsing = (parsing_file_read_execution(command->redir_files) 
+					|| parsing_command_path_execution(command->path));
+
+	if (code_parsing)
+		return (cleanup_shell(data), exit(code_parsing));
+}
+
 static void child_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev_fd)
 {
+	int code;
+
+	if (command->settings.only_tokens) // Commands like: < file > file1 <file1 <file2
+		execute_only_tokens(data, command);
+	if (open_folders_safety(&command->in_fd, &command->out_fd, command->redir_files))
+	{
+		if (!command->next) /// No further commands, exit on failure
+			exit(handle_error());
+	}
 	if (do_dup2(command, pipe_id, prev_fd))
 	{
 		cleanup_shell(data);
 		exit (EXIT_FAILURE);
 	}
-	execve(command->path, command->args, command->envp);
-	error_execve(data, command);
+
+	if (is_safe_to_execute(command)) // Execute the command, in case might be only fds to open
+	{
+		execve(command->path, command->args, command->envp);
+	}
+	// error_execve(data, command);
+	code = parsing_command_path_execution(command->path);
+	set_error_execution(code, NULL, NULL, true);
+	handle_error();
 }
 
 static void	parent_process(t_cmd *command, int *pipe_id, int *prev_fd)
@@ -65,7 +100,7 @@ static void	parent_process(t_cmd *command, int *pipe_id, int *prev_fd)
 /* 
 	* Need to see how to capture the pid to send properly to the main run shell
 */
-static void	execute_commands(t_cmd *command, pid_t *pid)
+static void	command_loop(t_cmd *command, pid_t *pid)
 {
 	t_shell	*data;
 	int		pipe_id[2];
@@ -74,6 +109,8 @@ static void	execute_commands(t_cmd *command, pid_t *pid)
 	prev_fd = -1;
 	ft_memset(pipe_id, -1, sizeof(int) * 2);
 	data = get_shell();
+	if (command->settings.eof)
+		run_eof(command, pipe_id, &prev_fd, pid);
 	while (command)
 	{
 		if (command->next && pipe(pipe_id) == -1)
@@ -91,7 +128,7 @@ static void	execute_commands(t_cmd *command, pid_t *pid)
 	}	
 }
 
-void	execution(t_shell *data)
+void	run_commands(t_shell *data)
 {
 	int		i;
 	int		status;
@@ -101,7 +138,7 @@ void	execution(t_shell *data)
 	
 	i = 0;
 	prev_pid = 0;
-	execute_commands(data->command, &pid);
+	command_loop(data->command, &pid);
 	while (i < data->nbr_of_commands)
 	{
 		data->pid = waitpid(-1, &wait_status, 0);
@@ -110,6 +147,7 @@ void	execution(t_shell *data)
 		prev_pid = pid;
 		i++;	
 	}
+	data->last_exit_status = status;
 	//! Clear all
 	// return (status);
 }

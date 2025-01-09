@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:18:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/20 18:13:00 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/28 10:30:31 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,3 +76,38 @@ void	debug_command_path(t_shell *data)
 // {
 // 	ft_putstr_fd("Error\n", 2);
 // }
+
+static void	debug_files(t_file *file_list)
+{
+	while (file_list)
+	{
+		printf("File:\n");
+		if (file_list->read)
+			printf("  Read: %s\n", file_list->read);
+		if (file_list->write)
+			printf("  Write: %s\n", file_list->write);
+		printf("  Delimiter: %d\n", file_list->redirect);
+		file_list = file_list->next;
+	}
+}
+
+void	debug_command_file_list(t_shell *data)
+{
+	int		cmd_num;
+	t_cmd	*tmp;
+	t_file	*tmp_files;
+
+	cmd_num = 1;
+	tmp = data->command;
+	while (tmp)
+	{
+		printf("Command %d:\n", cmd_num++);
+		if (tmp->input)
+			printf("  Input: %s\n", tmp->input);
+		if (tmp->redir_files)
+			debug_files(tmp->redir_files);
+		else
+			printf("  No files associated.\n");
+		tmp = tmp->next;
+	}
+}

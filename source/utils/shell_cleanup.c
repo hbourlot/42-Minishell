@@ -6,35 +6,66 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/20 21:41:39 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/07 12:02:20 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	free_files(t_file *file_list)
+{
+	t_file	*tmp;
+
+	while (file_list)
+	{
+		tmp = file_list;
+		if (tmp->read)
+			free(tmp->read);
+		if (tmp->write)
+			free(tmp->write);
+		file_list = file_list->next;
+		free(tmp);
+	}
+}
+
+static void free_command(t_cmd **command)
+{
+	t_cmd *tmp;
+	
+	while (command && *command)
+	{
+		tmp = *command;
+		free_files(tmp->redir_files);
+		tmp->redir_files = NULL;
+		if (tmp->input)
+			free(tmp->input);
+		if (tmp->settings.eof)
+			free_split(tmp->settings.eof);
+		if (tmp->args)
+			free_split(tmp->args);
+		if (tmp->path)
+			free(tmp->path);
+		(*command) = (*command)->next;
+		free(tmp);
+	}
+}
+
 /*
-	TODO: Still need to implement this function which dont free 
+	TODO: Still need to implement this function which dont free
 	TODO: 	all sources on data ⬇️
 */
 void	refresh_shell_data(t_shell *data)
 {
 	t_cmd	*tmp;
 
+	if (data->readline)
+		free_pointers(1, &data->readline);
 	if (data->input_splitted)
 	{
 		free_split(data->input_splitted);
 		data->input_splitted = NULL;
 	}
-	while (data->command)
-	{
-		tmp = data->command;
-		if (tmp->args)
-			free_split(tmp->args);
-		if (tmp->path)
-			free(tmp->path);
-		data->command = data->command->next;
-		free(tmp);
-	}
+	free_command(&data->command);
 	data->command = NULL;
 }
 
@@ -44,25 +75,12 @@ void	cleanup_shell(t_shell *data)
 {
 	t_cmd	*tmp;
 
+	if (data->readline)
+		free(data->readline);
 	if (data->input_splitted)
-	{
 		free_split(data->input_splitted);
-		data->input_splitted = NULL;
-	}
-	// if (data->env_paths)
-	// {
-	// 	free_split(data->env_paths);
-	// 	data->env_paths = NULL;
-	// }
-	while (data->command)
-	{
-		tmp = data->command;
-		if (tmp->args)
-			free_split(tmp->args);
-		if (tmp->path)
-			free(tmp->path);
-		data->command = data->command->next;
-		free(tmp);
-	}
+	if (data->env_paths)
+		free_split(data->env_paths);
+	free_command(&data->command);
 	data->command = NULL;
 }

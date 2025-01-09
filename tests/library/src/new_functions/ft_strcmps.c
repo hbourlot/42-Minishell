@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 16:15:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/19 19:39:18 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/24 07:26:40 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,15 @@
 /// @param idx_found Pointer to store the index of the matching string,
 ///			 or -1 if no match.
 /// @return 0 if a match is found; -1 otherwise.
-int	ft_strcmps(const char *s1, const char *compers[], int *idx_found)
+int	ft_strcmps(const char *s1, const char *compers[])
 {
 	size_t			j;
 	unsigned char	*ss1;
 	unsigned char	*ss2;
 
-	if (!s1 || !compers || !idx_found)
+	if (!s1 || !compers)
 		return (-1);
 	j = -1;
-	*idx_found = -1;
 	while (compers[++j])
 	{
 		ss1 = (unsigned char *)s1;
@@ -38,10 +37,7 @@ int	ft_strcmps(const char *s1, const char *compers[], int *idx_found)
 			ss2++;
 		}
 		if (!*ss2)
-		{
-			*idx_found = (int)j;
 			return (0);
-		}
 	}
-	return (*ss1 - *ss2);
+	return (-1);
 }
