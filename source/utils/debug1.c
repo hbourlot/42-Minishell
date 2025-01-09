@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 21:36:23 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/07 14:44:51 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/09 15:47:40 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,3 @@ void	debug_input_splitted(t_shell *data)
 	}
 }
 
-void	debug_readline_processed(t_shell *data)
-{
-	t_readline	*temp;
-
-	temp = data->readline_processed;
-	while (temp)
-	{
-		if (temp->literal)
-			printf("readline_processed->literal:%s:\n", temp->literal);
-		if (temp->non_literal)
-			printf("readline_processed->non_literal:%s:\n", temp->non_literal);
-		temp = temp->next;
-	}
-}

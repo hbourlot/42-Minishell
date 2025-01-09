@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/07 14:45:04 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/09 15:47:46 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,12 @@
 
 int			parsing_syntax(char *input);
 bool 		is_valid_pipe_tokens(char *source);
+void		identify_and_replace_sq_tokens(char **input);
 bool 		is_valid_file_and_here_doc_tokens(char *source);
 int			parsing_file_read_execution(t_file *redir_files);
 int			parsing_command_path_execution(char *command_path);
 int 		strip_redirects(char **input, const char *redirects[]);
+
 
 // ************************************************************************
 // **						Create Functions							 **
@@ -88,6 +90,5 @@ void		debug_command_path(t_shell *data);
 void		debug_command_input(t_shell *data);
 void 		debug_input_splitted(t_shell *data);
 void 		debug_command_file_list(t_shell *data);
-void		debug_readline_processed(t_shell *data);
 
 #endif

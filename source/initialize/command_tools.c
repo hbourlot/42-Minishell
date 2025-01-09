@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/06 23:18:32 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/09 15:43:55 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static int handle_redirection(t_cmd *command, char *input_splitted) // Todo: Pro
 static int set_command_path_and_args(t_cmd *command, t_shell *data)
 {
     command->envp = data->envp;
+    
     command->path = get_path(command->input, data->env_paths);
     command->args = get_command_args(command->input);
     if (!command->path || !command->args)
