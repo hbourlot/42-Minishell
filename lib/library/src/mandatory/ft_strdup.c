@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:54:36 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/08/14 14:32:20 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/08 16:58:17 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+// #define malloc(x) NULL
 
 /// @brief Copies the string src to dest including the null terminator.
 /// @param dest The destination string where the copy will be stored.

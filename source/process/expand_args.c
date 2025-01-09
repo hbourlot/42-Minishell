@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:59:00 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/08 01:28:46 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/08 15:50:27 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ char	*expand_var(char *str)
 	tokens = ft_split_keep_charset(str, " \'");
 	while (tokens[i])
 	{
+		printf("Tokens[i] expand_var %s\n", tokens[i]);
 		if (ft_strchr(tokens[i], '$'))
 			tokens[i] = expand_aux(tokens[i]);
 		result = ft_append_and_free(result, tokens[i]);

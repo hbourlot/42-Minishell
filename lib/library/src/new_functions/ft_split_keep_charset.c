@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 16:45:38 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/07 17:12:18 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/08 15:55:37 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	count_str(char *str, char *charset)
 
 	count = 0;
 	i = 0;
-	while (str && str[i])
+	while (str[i])
 	{
 		in_charset = is_charset(str[i], charset);
 		if (!in_charset)
@@ -76,7 +76,7 @@ static char	**string_allocation(char **array, char *str, char *charset,
 			while (str[i] && is_charset(str[i], charset) == 1)
 				i++;
 		}
-		array[*idx] = ft_substr(str, start, i - start + 1);
+		array[*idx] = ft_substr(str, start, i - start);
 		if (!array[*idx])
 			return (free_split(array), NULL);
 		*idx = *idx + 1;
@@ -90,7 +90,7 @@ char	**ft_split_keep_charset(char *str, char *charset)
 	int		idx;
 
 	idx = 0;
-	array = ft_calloc((count_str(str, charset) + 1), sizeof(char *));
+	array = malloc((count_str(str, charset) + 1) * sizeof(char *));
 	if (!array)
 		return (NULL);
 	if (string_allocation(array, str, charset, &idx) == NULL)
