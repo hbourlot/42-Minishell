@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/09 14:37:18 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/09 23:53:27 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,6 @@ typedef struct s_file
 	struct s_file	*next;
 }			t_file;
 
-typedef struct s_readline
-{
-	char				*literal;
-	char				*non_literal;
-	int					quote;
-	struct s_readline	*next;
-}			t_readline;
-
 typedef struct s_rules
 {
 	char				**eof;
@@ -106,7 +98,6 @@ typedef struct s_data
 	bool			it_ends_with_single_pipe;
 	bool			it_ends_with_double_pipe; // Still doing nothing 🌚
 	char			*readline;
-	t_readline		*readline_processed;
 	char			**input_splitted;
 	char			**env_paths;
 	int				last_exit_status; // Still doing nothing 🌝
