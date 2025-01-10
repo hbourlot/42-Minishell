@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 20:04:42 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/07/08 14:39:51 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/28 16:47:59 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ char	*ft_strchr(const char *s, int c)
 
 	i = 0;
 	len = ft_strlen(s);
+	if (len == 0)
+		return (0);
 	while (i <= len)
 	{
 		if (s[i] == (char)c)

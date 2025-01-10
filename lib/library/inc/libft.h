@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/12 16:37:55 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/10 00:23:24 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdbool.h>
 
 typedef struct s_list
 {
@@ -95,10 +96,21 @@ int					is_str_longer(char *src1, char *src2);
 int					is_greater(int a, int b);
 char				*ft_strstr(const char *haystack, const char *needle);
 char				**split_by_multiple_tokens(char *src, const char *tokens[]);
+void				sort_strings_by_length_desc(char **arr);
+char				*ft_strncpy(char *dest, const char *src, size_t n);
+char				*remove_substring(const char *source, char *to_remove);
+int					find_string_match(const char *s1, const char *compers[],
+						int *idx_found);
+int					ft_strcmps(const char *s1, const char *compers[]);
+char				*ft_strstr_any(const char *haystack, const char **needles);
+void 				free_pointers(size_t count, ...);
+void				ft_printf_error(const char *fmt, ...);
+bool 				all_same_char(const char *src, char c);
+size_t				get_offset(void *struct_ptr, void *member_ptr);
+void				*get_last_node(void *node, size_t next_offset);
 
 char				**ft_split_charset(char const *s, char *charset);
 char				*ft_append_and_free_charset(char *s1, char *s2, char c);
 char				**ft_split_keep_sep(char *str, char sep);
 char				**ft_split_keep_charset(char *str, char *charset);
-char				*ft_strncpy(char *dest, const char *src, int len);
 #endif

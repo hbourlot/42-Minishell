@@ -6,7 +6,11 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:56:28 by hbourlot          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/12/12 16:33:57 by joralves         ###   ########.fr       */
+=======
+/*   Updated: 2024/12/12 17:03:43 by hbourlot         ###   ########.fr       */
+>>>>>>> 163381ff135030ec3b4538fa728c4ead98330ae3
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +37,7 @@ int initialize_command(char *input, t_cmd *command)
 		if (char_cmp(*input, '|') && *(input + 1) && char_cmp(*input, '|'))
 			command->settings.or_next = true;
 		if (char_cmp(*input, '|'))
-			command->command_input = input_splitted[i++];
+			command->input = input_splitted[i++];
 		input++;
 	}
     return (0);

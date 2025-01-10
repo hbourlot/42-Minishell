@@ -1,38 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_cmds.c                                     :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/09 16:41:45 by hbourlot         ###   ########.fr       */
+/*   Created: 2024/02/29 12:23:16 by hbourlot          #+#    #+#             */
+/*   Updated: 2024/10/15 13:13:47 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	execute_commands(t_cmd *cmd)
+/// @brief Calculate the length of a null-terminated string.
+/// @param s The string whose length is to be calculated.
+/// @return The length of the string s.
+size_t	ft_strlen(const char *s)
 {
-}
-
-int	execute(t_shell *data)
-{
-	int		i;
-	int		status;
-	int		wait_status;
-	pid_t	prev_pid;
+	size_t	i;
 
 	i = 0;
-	prev_pid = 0;
-	while (i < data->nbr_of_commands)
+	if (s)
 	{
-		data->pid = waitpid(-1, &wait_status, 0);
-		if (WIFEXITED(wait_status) && data->pid > prev_pid)
-			status = WEXITSTATUS(wait_status);
-		prev_pid = data->pid;
-		i++;
+		while (s[i] != '\0')
+			i++;
+		return (i);
 	}
-	//! Clear all
-	return (status);
+	return (0);
 }

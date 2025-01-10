@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 17:27:32 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/03 14:38:02 by hbourlot         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:03:43 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,17 @@ int	parsing_input(char *input, t_cmd *command)
 		if (char_cmp(*input, '|') && *(input + 1) && char_cmp(*input, '|'))
 		{
 			command->settings.or_next = true;
-			command->command_input = ft_substr(input, start, --end);
+			command->input = ft_substr(input, start, --end);
 			start = end + 3;
 		}
 		else if (char_cmp(*input, '|'))
 		{
-			command->command_input = ft_substr(input, start , --end);
+			command->input = ft_substr(input, start , --end);
 			start = end + 2;
 		}
 		else if (*(input + 1) && !ft_strncmp(input, "&&", 2))
 		{
-			command->command_input = ft_substr(input, start, --end);
+			command->input = ft_substr(input, start, --end);
 			start = end + 3;
 		}
 		end++;
