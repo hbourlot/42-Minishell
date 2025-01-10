@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_tools.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/09 15:43:55 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/10 00:37:06 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int handle_redirection(t_cmd *command, char *input_splitted) // Todo: Pro
         command->settings.only_tokens = true;
     return (SUCCESS);
 }
-
+// ! Changes below  ↓↓↓↓
 static int set_command_path_and_args(t_cmd *command, t_shell *data)
 {
     command->envp = data->envp;
