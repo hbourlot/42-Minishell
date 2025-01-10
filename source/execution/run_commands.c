@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/09 16:24:04 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/09 23:44:18 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void child_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev
 		execute_only_tokens(data, command);
 	if (open_folders_safety(&command->in_fd, &command->out_fd, command->redir_files))
 	{
-		// if (!command->next) /// No further commands, exit on failure
+		// if (!command->next) // No further commands, exit on failure
 			exit(handle_error());
 	}
 	if (do_dup2(command, pipe_id, prev_fd))
@@ -113,7 +113,7 @@ static void	command_loop(t_cmd *command, pid_t *pid)
 		run_eof(command, pipe_id, &prev_fd, pid);
 	while (command)
 	{
-		
+		// * Prob handle builting here
 		if (command->next && pipe(pipe_id) == -1)
 			return (close_resources(1, pipe_id, "Pipe"));
 		*pid = fork();
@@ -126,7 +126,7 @@ static void	command_loop(t_cmd *command, pid_t *pid)
 			parent_process(command, pipe_id, &prev_fd);
 			command = command->next;
 		}
-	}	
+	}
 }
 
 void	run_commands(t_shell *data)
