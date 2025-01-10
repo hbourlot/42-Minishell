@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/10 00:15:06 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/10 00:24:25 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,6 @@ void 		skip_character(char **src, char c);
 void		debug_command_input(t_shell *data);
 void 		debug_input_splitted(t_shell *data);
 void 		debug_command_file_list(t_shell *data);
-void		skip_character_diff(char **src, char c)
+void		skip_character_diff(char **src, char c);
 
 #endif

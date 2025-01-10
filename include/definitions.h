@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/09 23:53:27 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/10 00:42:17 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@
 #define REP_SINGLE_QUOTE		1
 #define REP_DOUBLE_QUOTE		2
 #define REP_SPACE				3
-#define QUOTE_TYPE				1
-#define	IS_LITERAL				0
 
 #define ABS_PATH 			"PATH=/bin:/usr/bin:/usr/local/bin"
 #define SYNTAX_ERROR_MSG 	"bash: syntax error near unexpected token `"

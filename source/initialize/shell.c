@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 14:10:20 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/07 12:00:38 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/10 00:33:27 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main_shell_loop(t_shell *data)
 	// input = NULL;
 	while (true)
 	{
-		data->readline = readline("[Xitaozinho&Xororo@localhost ~]$ ");
+		data->readline = readline("[Chitaozinho&Xororo@localhost ~]$ ");
 		// TODO: Need to add input line to the history here!
 		if (ft_strlen(data->readline) == 0 || all_same_char(data->readline, ' '))
 		{
