@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   run_eof.c                                          :+:      :+:    :+:   */
+/*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/06 20:04:26 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/12 14:28:40 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,6 @@
 
 
 
-
-
 static int	cleanup_and_exit(char *text, int error_code)
 {
 	if (text)
@@ -112,22 +110,20 @@ int	here_doc(int *pipe_id, char *limiter)
 	return (cleanup_and_exit(text, 0));
 }
 
-static void	handle_child_process(t_cmd *command, int *pipe_id, int *prev_fd)
+static void	handle_child_process(int *pipe_id, int *prev_fd)
 {
-	int		i;
+	int	i;
 
 	i = 0;
-	// if (*prev_fd != -1)
 	close(pipe_id[0]);
-	while (command->settings.eof[i])
+	while (get_shell()->eof[i])
 	{
-		if (here_doc(pipe_id, command->settings.eof[i]) == -1)
+		if (here_doc(pipe_id, get_shell()->eof[i]) == -1)
 		{
 			close(pipe_id[1]);
 			perror("read_eof error.");
-			cleanup_shell(get_shell());
-			exit(EXIT_FAILURE);
-			// ft_close(1, data, "Error reading EOF");
+			set_error_execution(1, "Failed", "here_doc", true);
+			handle_error();
 		}
 		i++;
 	}
@@ -137,34 +133,28 @@ static void	handle_child_process(t_cmd *command, int *pipe_id, int *prev_fd)
 	exit(EXIT_SUCCESS);
 }
 
-static void	handle_parent_process(int *pipe_id, int *prev_fd, pid_t *pid)
+static void	handle_parent_process(int *pipe_id, pid_t *pid)
 {
 	pid_t	result;
 	int		wait_status;
 	
-	close(pipe_id[1]);
+	close(pipe_id[0]);
 	result = waitpid(*pid, &wait_status, 0);
-	if (wait_status < 0)
-	{
-		perror("Error no status");
-		//! Exit
-		// ft_close(1, data, "Wait error");
-	}
-	*prev_fd = pipe_id[0];
+	if (WIFEXITED(wait_status))
+		get_shell()->last_exit_status = WEXITSTATUS(wait_status);
+	close(pipe_id[1]);
 }
 
-int	run_eof(t_cmd *command, int *pipe_id, int *prev_fd, pid_t *pid)
+int	run_eof(t_shell *data, int *pipe_id, int *prev_fd, pid_t *pid)
 {
 	if (pipe(pipe_id) == -1)
-		perror("ERROR PIPE HERE_DOC");
-		// ft_close(1, data, "Pipe Error");
+		perror("Pipe");
 	*pid = fork();
 	if (*pid == -1)
-		perror("Error fork here_doc");
-		// ft_close(1, data, "Fork Error");
+		perror("Fork");
 	if (*pid == 0)
-		handle_child_process(command, pipe_id, prev_fd);
+		handle_child_process(pipe_id, prev_fd);
 	else
-		handle_parent_process(pipe_id, prev_fd, pid);
+		handle_parent_process(pipe_id, pid);
 	return (0);
 }

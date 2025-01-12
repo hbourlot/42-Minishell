@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 12:20:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/10 12:57:29 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/12 09:15:19 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,25 @@
 /// dynamically allocated or modifiable.
 /// @param start The starting index from which characters will be removed.
 /// Must be non-negative and within the length of the string.
-/// @param n The number of characters to remove. Must be non-negative and such
-/// that `start + n` does not exceed the length of the string.
+/// @param bytes The number of characters to remove. Must be non-negative 
+///	and such that `start + n` does not exceed the length of the string.
 /// @return 0 on success, -1 if the parameters are invalid or out of bounds.
-int	truncate_range(char **src, int start, int n)
+int	truncate_range(char **src, int start, int bytes)
 {
 	int		length;
 	int		i;
 
-	if (!src || !*src || start < 0 || n < 0)
+	if (!src || !*src || start < 0 || bytes < 0)
 		return (-1);
 	length = ft_strlen(*src);
-	if (start >= length || (start + n) > length)
+	if (start >= length || (start + bytes) > length)
 		return (-1);
 	i = start;
-	while ((i + n) < length)
+	while ((i + bytes) < length)
 	{
-		(*src)[i] = (*src)[i + n];
+		(*src)[i] = (*src)[i + bytes];
 		i++;
 	}
-	(*src)[length - n] = '\0';
+	(*src)[length - bytes] = '\0';
 	return (0);
 }

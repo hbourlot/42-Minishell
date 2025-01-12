@@ -1,11 +1,12 @@
 /* 
 * [X] Prob find first how many pipes "|" i got on cmd_line and separate by how many t_cmd structure i'll have
 * [X] Maybe add a boolean logic to clean all address inside struct data but keep variable of history safe?
-* [] in a command order if theres <<, i need to priority HERE_DOC at all, after here doc I make any commands
+* [X] command cat > file4 ( which doest not exist) get stuck on terminal
 * [] I still need to treat the case of ls | which my parsing return error_handling but need to go to here_doc
-* [x] command cat > file4 ( which doest not exist) get stuck on terminal
-*
-*
+* [] in a command order if theres <<, i need to priority HERE_DOC at all, after here doc I make any commands
+* [] Need to add header files into pre-dependence on Makefile 
+* [] Need to treat exit status
+* [] Nees to test exit status on here_doc
 *
 *
 *

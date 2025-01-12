@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:44:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/09 15:46:15 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/11 13:43:58 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static void	set_occurrence(int *occurrence, int *idx)
 
 static void	identify_idx_of_occurrences(char *readline, char *in_quotes, int *occurrence, int *idx)
 {
+	if (!readline[*idx])
+		return;
 	if (readline[*idx] == '\'' && *in_quotes != '"')
 	{
 		*in_quotes = '\'';
@@ -34,8 +36,6 @@ static void	identify_idx_of_occurrences(char *readline, char *in_quotes, int *oc
 	}
 	(*idx)++;
 	if (occurrence[0] != -1 && occurrence[1] != -1)
-		return;
-	if (!readline[*idx])
 		return;
 	identify_idx_of_occurrences(readline, in_quotes, occurrence, idx);
 }
