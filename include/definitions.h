@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/12 12:45:08 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/12 14:59:56 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@
 // **								STRUCTURES  							**
 // ***************************************************************************
 
-typedef int			(*t_access_check_function)(const char *path);
+
+
 
 typedef enum e_delimiter
 {
@@ -105,6 +106,11 @@ typedef struct s_data
 	pid_t			pid;
 	struct s_cmd	*command;
 }					t_shell;
+
+typedef void		(*t_here_doc_handler)(t_shell *, t_cmd *);
+typedef void		(*t_builtin_handler)(t_shell *, t_cmd *);
+typedef void		(*t_command_executor)(t_shell *, t_cmd *);
+typedef int			(*t_access_check_function)(const char *path);
 
 #endif
 
