@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/07 12:02:20 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/12 13:23:04 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ static void free_command(t_cmd **command)
 		tmp->redir_files = NULL;
 		if (tmp->input)
 			free(tmp->input);
-		if (tmp->settings.eof)
-			free_split(tmp->settings.eof);
+		// if (tmp->settings.eof)
+		// 	free_split(tmp->settings.eof);
 		if (tmp->args)
 			free_split(tmp->args);
 		if (tmp->path)
@@ -58,12 +58,20 @@ void	refresh_shell_data(t_shell *data)
 {
 	t_cmd	*tmp;
 
-	if (data->readline)
-		free_pointers(1, &data->readline);
-	if (data->input_splitted)
+	if (data->eof)
 	{
-		free_split(data->input_splitted);
-		data->input_splitted = NULL;
+		free_split(data->eof);
+		data->eof = NULL;
+	}
+	if (data->readline)
+	{
+
+		free_pointers(1, &data->readline);
+	}
+	if (data->readline_splitted)
+	{
+		free_split(data->readline_splitted);
+		data->readline_splitted = NULL;
 	}
 	free_command(&data->command);
 	data->command = NULL;
@@ -77,10 +85,15 @@ void	cleanup_shell(t_shell *data)
 
 	if (data->readline)
 		free(data->readline);
-	if (data->input_splitted)
-		free_split(data->input_splitted);
+	if (data->readline_splitted)
+		free_split(data->readline_splitted);
 	if (data->env_paths)
 		free_split(data->env_paths);
+	if (data->eof)
+	{
+		free_split(data->eof);
+		data->eof = NULL;
+	}
 	free_command(&data->command);
 	data->command = NULL;
 }

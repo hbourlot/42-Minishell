@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/04 15:35:20 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/13 17:24:17 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,39 +74,44 @@ t_list				*ft_lst_map(t_list *lst, void *(*f)(void *),
 						void (*del)(void *));
 
 // * Added functions in "/UPD_SRC/"
+int					ft_putchar(char c);
+int					ft_putstr(char *c);
 int					ft_nbr_len(long nbr);
+char				*get_next_line(int fd);
 int					ft_line_len(char *src);
-int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_itoa_iter(long nbr);
+int					array_length(char **src);
+int					char_cmp(char a, char b);
+void				free_split(char **split);
+int					is_greater(int a, int b);
+long				ft_atol(const char *nptr);
+int					ft_printf(const char *fmt, ...);
+void 				free_pointers(size_t count, ...);
 int					ft_check_duplicate(t_list **lst);
 int					stack_value(t_list **node, int idx);
 int					stack_idx(t_list **node, int value);
-void				free_split(char **split);
-char				*ft_strcpy(char *dest, const char *src);
-char				*ft_strcat(char *dest, const char *src);
-char				*ft_append_and_free(char *s1, char *s2);
-long				ft_atol(const char *nptr);
-char				*get_next_line(int fd);
-int					ft_printf(const char *fmt, ...);
-int					ft_putchar(char c);
-int					ft_putstr(char *c);
-int					array_length(char **src);
-int					char_cmp(char a, char b);
 int					is_str_longer(char *src1, char *src2);
-int					is_greater(int a, int b);
-char				*ft_strstr(const char *haystack, const char *needle);
-char				**split_by_multiple_tokens(char *src, const char *tokens[]);
-void				sort_strings_by_length_desc(char **arr);
-char				*ft_strncpy(char *dest, const char *src, size_t n);
-char				*remove_substring(const char *source, char *to_remove);
-int					find_string_match(const char *s1, const char *compers[],
-						int *idx_found);
-int					ft_strcmps(const char *s1, const char *compers[]);
-char				*ft_strstr_any(const char *haystack, const char **needles);
-void 				free_pointers(size_t count, ...);
 void				ft_printf_error(const char *fmt, ...);
 bool 				all_same_char(const char *src, char c);
+char				*ft_strcpy(char *dest, const char *src);
+char				*ft_strcat(char *dest, const char *src);
+void				sort_strings_by_length_desc(char **arr);
+char				*ft_append_and_free(char *s1, char *s2);
+int					ft_strcmp(const char *s1, const char *s2);
+int					truncate_range(char **src, int start, int n);
 size_t				get_offset(void *struct_ptr, void *member_ptr);
 void				*get_last_node(void *node, size_t next_offset);
+int					ft_strcmps(const char *s1, const char *compers[]);
+char				**ft_split_keep_charset(char *str, char *charset);
+char				*ft_strncpy(char *dest, const char *src, size_t n);
+char				*ft_strstr(const char *haystack, const char *needle);
+char				*insert_string(char *dest, char *src, int idx_to_add);
+char				*remove_substring(const char *source, char *to_remove);
+char				*ft_strstr_any(const char *haystack, const char **needles);
+char				**split_by_multiple_tokens(char *src, const char *tokens[]);
+int					find_string_match(const char *s1, const char *compers[],
+						int *idx_found);
+
+
 
 #endif

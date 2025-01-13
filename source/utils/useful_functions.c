@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:17:42 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/10 00:14:52 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/12 10:46:15 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,38 @@ void	skip_character_diff(char **src, char c)
 		return;
 	while (**src && **src != c)
 		(*src)++;
+}
+
+void	replace_characters(char **src, char to_take, char to_put)
+{
+	int	i;
+
+	i = 0;
+	while (src && (*src)[i])
+	{
+		if ((*src)[i] == to_take)
+			(*src)[i] = to_put;
+		i++;
+	}
+}
+
+void	restore_original_characters(char **src)
+{
+	const char tk[] = {REP_SPACE, REP_SINGLE_QUOTE, REP_DOUBLE_QUOTE, '\0'};
+	const char to_set[] = {' ', '\'', '"'};
+	int	i;
+	int	j;
+
+	i = 0;
+	while (src && (*src)[i])
+	{
+		j = 0;
+		while (tk[j])
+		{
+			if ((*src)[i] == tk[j])
+				(*src)[i] = to_set[j];
+			j++;
+		}
+		i++;
+	}
 }

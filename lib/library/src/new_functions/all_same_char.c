@@ -18,20 +18,18 @@
 /// @param c The character to compare each character of the string against.
 /// @return true if all characters in the string are the same as 'c',
 ///          false otherwise.
-bool all_same_char(const char *src, char c)
+bool	all_same_char(const char *src, char c)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	if (!src || *src == '\0')
-        return (false);
-
-    while (src[i])
+		return (false);
+	while (src[i])
 	{
-        if (src[i] != c)
-            return (false);
-        i++;
-    }
-
-    return (true);
+		if (src[i] != c)
+			return (false);
+		i++;
+	}
+	return (true);
 }

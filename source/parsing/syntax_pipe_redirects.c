@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:21:13 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/08 03:05:50 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/11 12:32:40 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static bool is_first_pipe_token_valid(char *source, const char *tokens[])
 	if (length)
 		return (true);
 	find_string_match(tmp, tokens, &idx);
-	set_error_parsing(1, SYNTAX_ERROR_MSG, (char *)tokens[idx], __func__);	
+	set_error_parsing(1, SYNTAX_ERROR_MSG, (char *)tokens[idx], __func__);
 	return (false);
 }
 

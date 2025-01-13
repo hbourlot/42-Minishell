@@ -13,26 +13,26 @@
 #include "libft.h"
 
 /// @brief Frees multiple dynamically allocated pointers
-///			 and sets them to NULL.
+///				and sets them to NULL.
 /// @param count Number of pointers to free.
 /// @param ... A variable number of pointers to free.
-void free_pointers(size_t count, ...)
+void	free_pointers(size_t count, ...)
 {
-    va_list args;
+	va_list	args;
 	size_t	i;
-    void 	**ptr;
+	void	**ptr;
 
-    va_start(args, count);
+	va_start(args, count);
 	i = 0;
-    while (i < count)
-    {
-        ptr = va_arg(args, void **);
-        if (ptr && *ptr)
-        {
-            free(*ptr);
-            *ptr = NULL;
-        }
+	while (i < count)
+	{
+		ptr = va_arg(args, void **);
+		if (ptr && *ptr)
+		{
+			free(*ptr);
+			*ptr = NULL;
+		}
 		i++;
-    }
-    va_end(args);
+	}
+	va_end(args);
 }
