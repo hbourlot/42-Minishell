@@ -6,13 +6,13 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/10 00:20:33 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/11 17:33:21 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	count_words_quotes(char *src)
+static int	count_tokens(char *src)
 {
 	int		count;
 	char	quote;
@@ -60,7 +60,7 @@ static int	handle_quotes(char *str, char **temp, int *idx, int *i)
 	return (0);
 }
 
-static int	process_word(char *str, char **temp, int *idx)
+static int	split_string_with_quotes(char *str, char **temp, int *idx)
 {
 	int	i;
 	int	start;
@@ -89,7 +89,7 @@ static int	process_word(char *str, char **temp, int *idx)
 	return (0);
 }
 
-char	**get_command_args(char *input)
+char	**process_command_input(char *input)
 {
 	int		idx;
 	char	**temp;
@@ -97,15 +97,15 @@ char	**get_command_args(char *input)
 
 	i = 0;
 	idx = 0;
-	temp = ft_calloc(count_words_quotes(input) + 1, sizeof(char *));
+	temp = ft_calloc(count_tokens(input) + 1, sizeof(char *));
 	if (!temp)
 		return (NULL);
-	if (process_word(input, temp, &idx) != 0)
+	if (split_string_with_quotes(input, temp, &idx) != 0)
 		return (NULL);
 	temp[idx] = NULL;
 	while (i < idx)
 	{
-		temp[i] = expand_var(temp[i]);
+		temp[i] = process_variables(temp[i]);
 		if (temp[i])
 			printf("%s\n", temp[i]);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/10 00:25:45 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/13 15:19:12 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,20 @@ int		initialize_file_list(char *input, const char *redirects[],
 			t_file **redir_files);
 
 // ************************************************************************
-// **						Execution Functions								 **
+// **						Execution Functions									**
 // ************************************************************************
 
 void	run_commands(t_shell *data);
-char	**get_command_args(char *argv);
+char	**process_command_input(char *argv);
 int		here_doc(int *pipe_id, char *limiter);
 char	*get_path(char *input, char **env_paths);
 int		do_dup2(t_cmd *command, int *pipe_id, int *prev_fd);
 int		open_folder(char *file, t_cmd *command, bool here_doc);
 int		run_eof(t_cmd *command, int *pipe_id, int *prev_fd, pid_t *pid);
-int		open_folders_safety(int *in_fd, int *out_fd, t_file *redir_files);
-char	*expand_var(char *str);
+int		open_folders_safety(int *fd_in, int *fd_out, t_file *redir_files);
+char	*process_variables(char *str);
+char	**tokenize_element(char *element);
+char	**tokenize_bash_variables(char *src);
 
 // ************************************************************************
 // **						Free Functions										**
@@ -94,5 +96,12 @@ void	debug_command_input(t_shell *data);
 void	debug_input_splitted(t_shell *data);
 void	debug_command_file_list(t_shell *data);
 void	skip_character_diff(char **src, char c);
+void	print_execve_parameters(char *input);
+
+
+
+// * Bad procesing
+
+void	signal_handler(int signal);
 
 #endif

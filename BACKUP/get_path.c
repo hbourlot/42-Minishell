@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:38:12 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/11 13:11:14 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/11 12:47:42 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*find_executable_path(char *executable, char **env_paths,
 	return (NULL);
 }
 
-char	*get_path(char *command_str, char **env_paths)
+char	*get_path(char *input, char **env_paths)
 {
 	char	*executable;
 	char	**command_splitted;
@@ -49,16 +49,20 @@ char	*get_path(char *command_str, char **env_paths)
 	int		i;
 	char	*path;
 
-
+	if (!*input)
+		return (NULL);
 	executable = NULL;
 	only_executable = false;
-
-	executable = ft_strdup(command_str);
+	command_splitted = ft_split(input, ' ');
+	if (!command_splitted)
+		return (set_error_initialize(1, "Malloc", __func__, true), NULL);
+	executable = ft_strdup(command_splitted[0]);
 	if (!executable)
 	{
 		set_error_initialize(1, "Malloc", __func__, true);
-		return (NULL);
+		return (free_split(command_splitted), NULL);
 	}
+	free_split(command_splitted);
 	if (ft_strlen(executable) > 0 && ft_strchr(executable, '/'))
 		return (executable);
 	path = find_executable_path(executable, env_paths, &only_executable);

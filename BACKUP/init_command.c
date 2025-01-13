@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/09 16:13:52 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/11 16:23:41 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static t_cmd	*add_command(char *input, char *envp[], char **env_paths, const cha
 	command->input = input;
 	command->envp = envp;
     command->path = get_path(input, env_paths);
-    command->args = get_command_args(input);
+    command->args = process_command_input(input);
     // command->file_list = extract_file_list(input, redirects);
     // command->settings.redir_count = 
     command->in_fd = -1;

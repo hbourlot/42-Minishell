@@ -6,13 +6,13 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:59:00 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/08 15:50:27 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/12 00:16:00 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	count_tokens(char *src)
+static int	token_count(char *src)
 {
 	int	i;
 	int	count;
@@ -40,7 +40,7 @@ static int	count_tokens(char *src)
 	return (count);
 }
 
-static int	extract_tokens_aux(char *src, char **dest, int *i, int *idx)
+static int	extract_token(char *src, char **dest, int *i, int *idx)
 {
 	int	start;
 
@@ -55,7 +55,7 @@ static int	extract_tokens_aux(char *src, char **dest, int *i, int *idx)
 	return (0);
 }
 
-static int	extract_tokens(char *src, char **dest)
+static int	tokenize_bash_variables(char *src, char **dest)
 {
 	int	i;
 	int	idx;
@@ -74,17 +74,17 @@ static int	extract_tokens(char *src, char **dest)
 				if (src[i++] == '\0')
 					break ;
 			}
-			else if (extract_tokens_aux(src, dest, &i, &idx) != 0)
+			else if (extract_token(src, dest, &i, &idx) != 0)
 				return (-1);
 		}
-		else if (extract_tokens_aux(src, dest, &i, &idx) != 0)
+		else if (extract_token(src, dest, &i, &idx) != 0)
 			return (-1);
 	}
 	dest[idx] = NULL;
 	return (0);
 }
 
-static int	expand_var_value(char *var_name, char **expanded_value)
+static int	expand_shell_variable(char *var_name, char **expanded_value)
 {
 	char	*temp;
 
@@ -96,7 +96,7 @@ static int	expand_var_value(char *var_name, char **expanded_value)
 	}
 	else if (var_name[1] == '?')
 	{
-		*expanded_value = ft_strdup(""); // Return the value of command before
+		*expanded_value = ft_itoa(get_shell()->last_exit_status);
 		if (!*expanded_value)
 			return (-1);
 	}
@@ -110,7 +110,7 @@ static int	expand_var_value(char *var_name, char **expanded_value)
 	return (0);
 }
 
-static char	*expand_aux(char *str)
+static char	*expand_variables(char *str)
 {
 	char	**tokens;
 	int		i;
@@ -120,8 +120,8 @@ static char	*expand_aux(char *str)
 	expanded_value = NULL;
 	result = NULL;
 	i = 0;
-	tokens = ft_calloc(count_tokens(str) + 1, sizeof(char *));
-	if (!tokens || extract_tokens(str, tokens) != 0)
+	tokens = ft_calloc(token_count(str) + 1, sizeof(char *));
+	if (!tokens || tokenize_bash_variables(str, tokens) != 0)
 		return (NULL);
 	while (tokens[i])
 	{
@@ -129,7 +129,7 @@ static char	*expand_aux(char *str)
 		{
 			if (tokens[i][1] != '\0')
 			{
-				if (expand_var_value(tokens[i], &expanded_value) != 0)
+				if (expand_shell_variable(tokens[i], &expanded_value) != 0)
 					return (free_split(tokens), free(str), NULL);
 				free(tokens[i]);
 				tokens[i] = expanded_value;
@@ -143,12 +143,14 @@ static char	*expand_aux(char *str)
 	return (free_split(tokens), free(str), result);
 }
 
-char	*expand_var(char *str)
+char	*process_variables(char *str)
 {
 	char	**tokens;
 	int		i;
 	char	*result;
 
+	print_execve_parameters(str);
+	printf("HERe\n");
 	result = NULL;
 	i = 0;
 	if (ft_strchr("\'", str[0]))
@@ -163,9 +165,9 @@ char	*expand_var(char *str)
 	tokens = ft_split_keep_charset(str, " \'");
 	while (tokens[i])
 	{
-		printf("Tokens[i] expand_var %s\n", tokens[i]);
+		printf("Tokens[%d] process_variables %s\n", i, tokens[i]);
 		if (ft_strchr(tokens[i], '$'))
-			tokens[i] = expand_aux(tokens[i]);
+			tokens[i] = expand_variables(tokens[i]);
 		result = ft_append_and_free(result, tokens[i]);
 		free(tokens[i]);
 		i++;

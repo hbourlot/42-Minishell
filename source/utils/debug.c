@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:18:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/28 10:30:31 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/10 16:31:45 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,22 @@ void	debug_command_file_list(t_shell *data)
 			printf("  No files associated.\n");
 		tmp = tmp->next;
 	}
+}
+void	print_execve_parameters(char *input) // TODO: from command->input
+{
+	int i = 0;
+	printf("Print_execve ");
+	while (input[i])
+	{
+		if (input[i] == REP_DOUBLE_QUOTE)
+			printf("2");
+		if (input[i] == REP_SINGLE_QUOTE)
+			printf("1");
+		if (input[i] == REP_SPACE)
+			printf("3");
+		else
+			printf("%c", input[i]);
+		i++;
+	}
+	printf("\n");
 }

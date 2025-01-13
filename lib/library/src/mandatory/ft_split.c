@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 16:30:43 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/03 15:50:06 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/10 23:31:22 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	allocate_memory(char **array, size_t buffer, size_t idx)
 	size_t	i;
 
 	i = 0;
-	array[idx] = (char *)malloc(sizeof(char) * buffer);
+	array[idx] = ft_calloc(buffer, sizeof(char));
 	if (!array[idx])
 	{
 		while (i < idx)
@@ -103,7 +103,7 @@ char	**ft_split(char const *s, char c)
 	if (NULL == s)
 		return (NULL);
 	words = count_words_in_string(s, c);
-	array = (char **)malloc(sizeof(char *) * (words + 1));
+	array = ft_calloc((words + 1), sizeof(char *));
 	if (!array)
 		return (NULL);
 	array[words] = NULL;

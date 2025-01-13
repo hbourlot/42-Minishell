@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/10 00:18:51 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/13 15:14:31 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,31 @@ void	signal_handler(int signal)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line();
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
 
+
+// int	print_execve_parameters(char **input) // TODO: from command->input
+// {	
+// 	int	i = 0;
+// 	while ((*input)[i])
+// 	{
+// 		if ((*input)[i] == REP_DOUBLE_QUOTE)
+// 			printf("2");
+// 		if ((*input)[i] == REP_SINGLE_QUOTE)
+// 			printf("1");
+// 		if ((*input)[i] == REP_SPACE)
+// 			printf("3");
+// 		else
+// 			printf("%c", (*input)[i]);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+//
+//
 // int	prepare_execve_parameters(t_shell *data, char **input) // TODO: from command->input
 // {	
 	// identify_and_replace_quotes(input);
@@ -41,15 +61,15 @@ void	signal_handler(int signal)
 // 	}
 // 	return (0);
 // }
-
-
+//
+//
 // int	get_path(char **input)
 // {
 // 	int	start;
 // 	int	end;
 // 	char *file;
 // 	char	*expand;
-
+//
 // 	end = 0;
 // 	start = 0;
 // 	while (input[start] == REP_SPACE)

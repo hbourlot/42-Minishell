@@ -7,7 +7,7 @@ CYAN 			= \033[1;36m
 RESET 			= \033[0m
 
 CC				= cc
-CFLAGS			= -g #-Wall -Wextra #-Werror #-fsanitize=thread -g -pthread
+CFLAGS			= -g #-Wall  -Wextra #-Werror #-fsanitize=thread -g -pthread
 LIB				= minishell.a
 INCLUDE 		= include/
 HEADER_FILE		= $(INCLUDE)minishell.h
@@ -21,8 +21,12 @@ MSG_MAC 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) *
 MSG_LINUX 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))% ] $(ORANGE)Compiling... $<... $(RESET)"
 NAME			= minishell
 C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redirects parsing/command_execution parsing/replace_sq_tokens															\
+					\
 					initialize/command initialize/command_tools initialize/shell initialize/file_list initialize/here_doc initialize/env_paths								\
-					execution/argument_parser execution/run_commands execution/run_command_tools execution/get_path execution/handle_folders execution/run_here_doc	execution/expand_args		\
+					\
+					execution/run_commands execution/run_command_tools execution/get_path execution/handle_folders \
+					execution/run_here_doc execution/process_command_input execution/tokenize_element	execution/process_variables execution/tokenize_bash_variables		\
+					\
 					utils/shell_cleanup utils/debug utils/debug1 utils/error_tools utils/error_parsing utils/error_initialize utils/error_execution utils/useful_functions
 # -L./ -lminishell
 # VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes

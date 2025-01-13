@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_command_tools.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 12:00:01 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/31 09:39:54 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/10 14:59:53 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ int	do_dup2(t_cmd *command, int *pipe_id, int *prev_fd)
 {
 	if (*prev_fd != -1)
 		duplicate_fd(*prev_fd, STDIN_FILENO);
-	if (command->in_fd != -1)
-		duplicate_fd(command->in_fd, STDIN_FILENO);
-	if (command->out_fd != -1)
-		duplicate_fd(command->out_fd, STDOUT_FILENO);
+	if (command->fd_in != -1)
+		duplicate_fd(command->fd_in, STDIN_FILENO);
+	if (command->fd_out != -1)
+		duplicate_fd(command->fd_out, STDOUT_FILENO);
 	else
 		duplicate_fd(pipe_id[1], STDOUT_FILENO);
 	if (pipe_id[1] != -1)

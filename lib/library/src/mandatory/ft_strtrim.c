@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:02:59 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/07/08 14:33:00 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/13 01:00:34 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 /// @brief Checks if a character 'c' is present in the string 'set'.
 /// @param c The character to search for.
@@ -37,23 +38,22 @@ static int	is_in(char const c, char const *set)
 /// @return A newly allocated trimmed string, or NULL if allocation fails.
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	size_t	len;
-	size_t	start;
-	size_t	end;
-	char	*temp;
+	size_t		len;
+	long long	start;
+	long long	end;
+	char		*temp;
 
 	len = ft_strlen(s1);
 	start = 0;
 	end = len - 1;
-	while (is_in(s1[start], set) == 1)
+	while (s1 && is_in(s1[start], set) == 1)
 		start++;
-	while (is_in(s1[end], set) == 1 && end != 0)
+	while (s1 && is_in(s1[end], set) == 1 && end != 0)
 		end--;
-	if (end == 0)
+	if (start >= end)
 		return (ft_strdup(""));
-	temp = (char *)malloc(sizeof(char) * ((end - start) + 2));
+	temp = ft_substr(s1, start, end - start + 2);
 	if (!temp)
 		return (NULL);
-	ft_strlcpy(temp, &s1[start], (end - start + 2));
 	return (temp);
 }
