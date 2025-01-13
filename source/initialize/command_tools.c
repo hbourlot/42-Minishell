@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/12 14:29:49 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/13 17:19:42 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,23 @@ static int handle_file_tokens(t_shell *data, t_cmd *command, char *readline_spli
     return (0);
 }
 
-static int set_command_path_and_args(t_cmd *command, t_shell *data)
+static int	prepare_execve_parameters(t_cmd *command, t_shell *data)
 {
-    command->envp = data->envp;
-    
-    command->path = get_path(command->input, data->env_paths);
-    command->args = get_command_args(command->input);
-    if (!command->path || !command->args)
-        return (set_error_initialize(1, "\"Path/Args\"", __func__, true), ERROR);
-    return (SUCCESS);
+	command->envp = data->envp;
+	identify_and_replace_sq_tokens(&command->input);
+	command->args = process_command_input(command->input);
+
+// ! NEED TO URGENT
+	if (command->args && !*command->args[0])
+	{
+		command->path = NULL;
+		return (set_error_initialize(1, NULL, __func__, false), 2);
+	}
+	command->path = get_path(command->args[0], data->env_paths);
+	if (!command->path || !command->args)
+		return (set_error_initialize(1, "\"Path/Args\"", __func__, true),
+			ERROR);
+	return (SUCCESS);
 }
 
 int add_command(t_cmd **command, char *readline_splitted, t_shell *data)
@@ -60,7 +68,7 @@ int add_command(t_cmd **command, char *readline_splitted, t_shell *data)
     if (handle_file_tokens(data, *command, readline_splitted) < 0)
         return (ERROR);
     if ((*command)->settings.only_tokens == false && 
-        set_command_path_and_args(*command, data) < 0)
+        prepare_execve_parameters(*command, data) < 0)
         return (ERROR);
     return (SUCCESS);
 }

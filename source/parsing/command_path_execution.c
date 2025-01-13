@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 10:09:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/12 15:29:32 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/13 17:23:04 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ int	parsing_command_path_execution(char *command_path)
 {
 	int			i;
 	int			result;
-	const int	(*checks_with_path[])(const char *) = {check_access_fok,
-		check_is_directory, check_access_xok, NULL};
+	const t_access_check_function	checks_with_path[] = {check_access_fok,
+	check_is_directory, check_access_xok, NULL};
+	// const int	(*checks_with_path[])(const char *) = {check_access_fok,
+	// 	check_is_directory, check_access_xok, NULL};
 
 	i = 0;
 	result = 0;

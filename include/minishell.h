@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/12 14:37:49 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/13 17:19:03 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,11 @@ int			init_command(char *input);
 int			main_shell_loop(t_shell *data);
 int			initialize_environment_paths(t_shell *data);
 t_shell		*init_shell(int argc, char *argv[], char *envp[]);
-// int			initialize_eof(char *readline_splitted, char ***eof);
-// int			initialize_eof(char **readline_splitted, char ***eof);
+char		**tokenize_element(char *element);
+char		*process_variables(char *cmd_token);
+char		**tokenize_bash_variables(char *src);
+char		**process_command_input(char *input);
 int			initialize_eof(char *data_readline, char ***data_eof);
-
 int 		add_command(t_cmd **command, char *readline_splitted, t_shell *data);
 int 		initialize_file_list(char *input, const char *redirects[], t_file **redir_files);
 

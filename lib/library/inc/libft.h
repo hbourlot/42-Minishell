@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/10 12:55:34 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/13 17:24:17 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int					truncate_range(char **src, int start, int n);
 size_t				get_offset(void *struct_ptr, void *member_ptr);
 void				*get_last_node(void *node, size_t next_offset);
 int					ft_strcmps(const char *s1, const char *compers[]);
+char				**ft_split_keep_charset(char *str, char *charset);
 char				*ft_strncpy(char *dest, const char *src, size_t n);
 char				*ft_strstr(const char *haystack, const char *needle);
 char				*insert_string(char *dest, char *src, int idx_to_add);
@@ -110,6 +111,7 @@ char				*ft_strstr_any(const char *haystack, const char **needles);
 char				**split_by_multiple_tokens(char *src, const char *tokens[]);
 int					find_string_match(const char *s1, const char *compers[],
 						int *idx_found);
+
 
 
 #endif
