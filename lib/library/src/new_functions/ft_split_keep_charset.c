@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 16:45:38 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/14 15:28:39 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:57:47 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static char	**string_allocation(char **array, char *str, char *charset,
 			while (str[i] && is_charset(str[i], charset) == 1)
 				i++;
 		}
-		array[*idx] = ft_substr(str, start, i - start + 1);
+		array[*idx] = ft_substr(str, start, i - start);
 		if (!array[*idx])
 			return (free_split(array), NULL);
 		*idx = *idx + 1;
