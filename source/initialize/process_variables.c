@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_variables.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:59:00 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/13 16:52:11 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/14 16:02:06 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ char	*process_variables(char *cmd_token)
 		if (!cmd_token)
 			return (NULL);
 	}
-	cmd_parts = ft_split_keep_charset(cmd_token, " '");
+	cmd_parts = ft_split_keep_charset(cmd_token, " '/");
 	if (!cmd_parts)
 		return (free(cmd_token), NULL);
 	result = process_cmd_parts(cmd_parts);
