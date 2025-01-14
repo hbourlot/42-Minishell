@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_command_input.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/13 16:51:46 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/14 16:31:21 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ static char	*process_command_element(char *cmd_element)
 	{
 		cmd_tokens[i] = process_variables(cmd_tokens[i]);
 		rest = ft_append_and_free(rest, cmd_tokens[i]);
-		if (!rest)
-			return (free_split(cmd_tokens), NULL);
+		if (!rest || !cmd_tokens[i])
+			return (free(cmd_element), free_split(cmd_tokens), NULL);
 		free(cmd_tokens[i]);
 		i++;
 	}

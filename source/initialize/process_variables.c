@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:59:00 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/14 15:55:45 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/14 16:35:44 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ static char	*process_cmd_parts(char **cmd_parts)
 	i = 0;
 	while (cmd_parts[i])
 	{
-		printf("cmd_parts[i] %s\n", cmd_parts[i]);
 		if (ft_strchr(cmd_parts[i], '$'))
 		{
 			cmd_parts[i] = expand_variables(cmd_parts[i]);

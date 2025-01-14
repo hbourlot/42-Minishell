@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 14:10:20 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/14 15:29:20 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/14 16:13:13 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	main_shell_loop(t_shell *data)
 		if (ft_strcmp("exit", data->readline) == CMP_OK)
 			return (printf("exit\n"), 0);
 		if (run_shell(data, data->readline))
-			return (free(data->readline), ERROR);
+			return (/* free(data->readline), */ ERROR);
 		free(data->readline);
 	}
 	return (0);
