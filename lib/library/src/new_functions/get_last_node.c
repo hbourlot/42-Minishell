@@ -16,9 +16,9 @@
 /// @param node Pointer to the first node of the list
 /// @param next_offset Offset of the `next` pointer within the struct
 /// @return Pointer to the last node in the list
-void *get_last_node(void *node, size_t next_offset)
+void	*get_last_node(void *node, size_t next_offset)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = (char *)node;
 	if (!tmp)

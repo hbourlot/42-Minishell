@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   process_command_input.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/13 15:41:18 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/13 16:51:46 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*process_command_element(char *cmd_element)
+static char	*process_command_element(char *cmd_element)
 {
 	char	**cmd_tokens;
 	int		i;
@@ -36,7 +36,7 @@ char	*process_command_element(char *cmd_element)
 	return (free(cmd_element), rest);
 }
 
-char	**filter_non_empty(char **array)
+static char	**filter_non_empty(char **array)
 {
 	int	i;
 	int	j;

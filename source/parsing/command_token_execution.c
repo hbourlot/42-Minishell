@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_execution.c                                :+:      :+:    :+:   */
+/*   command_token_execution.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/28 10:09:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/02 23:21:25 by hbourlot         ###   ########.fr       */
+/*   Created: 2025/01/11 11:55:05 by hbourlot          #+#    #+#             */
+/*   Updated: 2025/01/12 15:28:21 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,37 +31,5 @@ int	parsing_file_read_execution(t_file *redir_files)
 			redir_files = redir_files->next;
 		}
 	}
-	return (0);
-}
-
-/// @brief Validates the existence and permissions of a command path.
-/// @param command_path The full path to the command.
-/// @return 0 on success, or an error code on failure
-///				(127 for not found, 126 for permission denied).
-int	parsing_command_path_execution(char *command_path)
-{
-	if (command_path)
-	{
-
-		if (ft_strrchr(command_path, '/') && access(command_path, F_OK) == 0)
-			return (ft_printf_error("bash: %s: is a directory\n", command_path), 127);
-		if (!ft_strrchr(command_path, '/'))
-		{
-			return (ft_printf_error("bash: %s: command not found\n", command_path), 127);
-		}
-		if (access(command_path, F_OK) != OK)
-		{
-			return (ft_printf_error("bash: %s: No such file or directory\n",
-					command_path), 127);
-		}
-		if (access(command_path, X_OK) == OK)
-			return (0);
-		else if (access(command_path, R_OK) != OK || access(command_path, W_OK) != OK
-			|| access(command_path, X_OK))
-		{
-			return (ft_printf_error("bash: %s: Permission denied\n", command_path),
-				126);
-		}	
-	}	
 	return (0);
 }

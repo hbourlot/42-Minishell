@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 21:36:23 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/09 15:47:40 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/12 11:10:08 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	debug_input_splitted(t_shell *data)
 	char	**tmp_split;
 
 	i = 1;
-	tmp_split = data->input_splitted;
+	tmp_split = data->readline_splitted;
 	while (*tmp_split)
 	{
-		printf("Data->input_splitted [%d]: %s\n", i++, *tmp_split);
+		printf("Data->readline_splitted [%d]: %s\n", i++, *tmp_split);
 		tmp_split++;
 	}
 }

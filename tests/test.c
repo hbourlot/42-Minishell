@@ -33,6 +33,7 @@ void *get_last_node(void *node, size_t next_offset)
     return ((void *)tmp);
 }
 
+
 int main(int argc, char *argv[], char *envp[]) {
     
     t_list2 test;
@@ -41,11 +42,10 @@ int main(int argc, char *argv[], char *envp[]) {
 	test.next = &test1;
 
 
+    // printf("Size of t_list2: %zu\n", sizeof(t_list2));
+    // size_t ptr_value = get_offset(&test, &(test.next));
 
-    printf("Size of t_list2: %zu\n", sizeof(t_list2));
-    size_t ptr_value = get_offset(&test, &(test.next));
-
-	printf("Offset value: %zu\n", ptr_value);  // Expected: 16
+	// printf("Offset value: %zu\n", ptr_value);  // Expected: 16
 
 	// t_list2 *tmp = get_last_node(&test, get_offset(&test, &(test.next))); 
 

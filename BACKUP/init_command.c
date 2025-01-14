@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/11 16:23:41 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:27:21 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ static t_cmd	*add_command(char *input, char *envp[], char **env_paths, const cha
     command->args = process_command_input(input);
     // command->file_list = extract_file_list(input, redirects);
     // command->settings.redir_count = 
-    command->in_fd = -1;
-    command->out_fd = -1;
+    command->fd_in = -1;
+    command->fd_out = -1;
 	return (command);
 }
 
@@ -60,8 +60,8 @@ static int parsing_command_input(t_shell *data, char *input, const char *delimit
 
     i = 0;
     // splitted = split_by_multiple_tokens();
-    data->input_splitted = split_by_multiple_tokens(input, delimiters);
-    if (!data->input_splitted)
+    data->readline_splitted = split_by_multiple_tokens(input, delimiters);
+    if (!data->readline_splitted)
         return (-1);
     // while (data->input_splitted[i])
     return (0);
@@ -73,13 +73,13 @@ static int create_command_list(t_shell *data, const char *redirects[])
     int     i;
 
 	i = 0;
-    data->command = add_command(data->input_splitted[i++], data->envp, data->env_paths, redirects);
+    data->command = add_command(data->readline_splitted[i++], data->envp, data->env_paths, redirects);
     if (!data->command)
-        return (free(data->input_splitted), -1);
+        return (free(data->readline_splitted), -1);
     current = data->command;
-    while (data->input_splitted[i])
+    while (data->readline_splitted[i])
     {
-        current->next = add_command(data->input_splitted[i++], data->envp, data->env_paths, redirects);
+        current->next = add_command(data->readline_splitted[i++], data->envp, data->env_paths, redirects);
         if (!current->next)
         {
             // free_cmd_list_on_error(data->command);

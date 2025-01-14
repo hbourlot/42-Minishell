@@ -20,14 +20,21 @@ OS				= $(shell uname)
 MSG_MAC 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))%% ] $(ORANGE)Compiling... $<... $(RESET)"
 MSG_LINUX 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))% ] $(ORANGE)Compiling... $<... $(RESET)"
 NAME			= minishell
-C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redirects parsing/command_execution parsing/replace_sq_tokens															\
+C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redirects parsing/replace_sq_tokens 	\
+					parsing/command_token_execution	parsing/command_path_execution									\
+					 \
+					initialize/command initialize/command_tools initialize/shell initialize/file_list 				\
+					 initialize/eof initialize/env_paths initialize/tokenize_element 								\
+					 initialize/tokenize_bash_variables initialize/process_variables 								\
+					 initialize/process_command_input																\
+					 \
+					 execution/run_commands execution/run_command_tools 					\
+					execution/get_path execution/handle_folders execution/here_doc								\
 					\
-					initialize/command initialize/command_tools initialize/shell initialize/file_list initialize/here_doc initialize/env_paths								\
+					builtin/validate_builtin																		\
 					\
-					execution/run_commands execution/run_command_tools execution/get_path execution/handle_folders \
-					execution/run_here_doc execution/process_command_input execution/tokenize_element	execution/process_variables execution/tokenize_bash_variables		\
-					\
-					utils/shell_cleanup utils/debug utils/debug1 utils/error_tools utils/error_parsing utils/error_initialize utils/error_execution utils/useful_functions
+					utils/shell_cleanup utils/debug utils/debug1 utils/error_tools utils/error_parsing				\
+					 utils/error_initialize utils/error_execution utils/useful_functions
 # -L./ -lminishell
 # VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes
 VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=readline.supp
@@ -42,7 +49,7 @@ LIBFT_LIB = ./lib/library/libft.a
 
 all:			$(NAME)
 
-$(NAME):		$(LIBFT_LIB) $(LIB) main.o $(HEADER_FILE)
+$(NAME):		$(LIBFT_LIB) $(LIB) $(HEADER_FILE) main.o
 				@$(CC) $(CFLAGS) main.o $(LINK) -o $@
 				@echo "$(GREEN)Executable '$(NAME)' created successfully!$(RESET) ✅"
 
@@ -81,6 +88,15 @@ fclean: 		clean
 				@echo " $(GREEN)Cleaned successfully.$(RESET) ✅"
 
 re: 			fclean all
+
+
+TEST =			test_minishell
+
+$(TEST): 		$(LIBFT_LIB) $(LIB) $(HEADER_FILE)
+				$(CC) $(LINK) -o test_minishell
+				./test_minishell
+
+t: $(TEST)
 
 r:
 	@make -s

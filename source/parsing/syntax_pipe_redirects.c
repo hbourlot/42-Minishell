@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:21:13 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/11 12:32:18 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:29:44 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ static bool	is_first_pipe_token_valid(char *source, const char *tokens[])
 		return (true);
 	find_string_match(tmp, tokens, &idx);
 	set_error_parsing(1, SYNTAX_ERROR_MSG, (char *)tokens[idx], __func__);
-	get_shell()->last_exit_status = 2;
 	return (false);
 }
 

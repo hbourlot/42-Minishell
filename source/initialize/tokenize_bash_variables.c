@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_bash_variables.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 01:12:19 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/13 15:03:02 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/13 16:53:41 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
