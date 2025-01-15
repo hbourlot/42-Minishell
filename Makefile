@@ -31,7 +31,7 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redire
 					 execution/run_commands execution/run_command_tools 					\
 					execution/get_path execution/handle_folders execution/here_doc								\
 					\
-					builtin/validate_builtin																		\
+					builtin/validate_builtin	 builtin/cd																	\
 					\
 					utils/shell_cleanup utils/debug utils/debug1 utils/error_tools utils/error_parsing				\
 					 utils/error_initialize utils/error_execution utils/useful_functions

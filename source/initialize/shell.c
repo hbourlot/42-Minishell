@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 14:10:20 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/14 16:13:13 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/15 17:00:59 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	run_shell(t_shell *data, char *input)
 		run = false;
 	}
 	if (run && init_command(input) == ERROR)
-		return (ERROR);	
+		return (ERROR);
 	if (run)
 		run_commands(data);
 	refresh_shell_data(data);
@@ -35,21 +35,31 @@ static int	run_shell(t_shell *data, char *input)
 /// @return 0 on success, -1 on error or when exiting.
 int	main_shell_loop(t_shell *data)
 {
+	char	**args;
+
 	while (true)
 	{
 		data->readline = readline("[Chitãozinho&Xororó@localhost ~]$ ");
 		if (data->readline && *data->readline)
-            add_history(data->readline);
-		if (ft_strlen(data->readline) == 0 || all_same_char(data->readline, ' '))
+			add_history(data->readline);
+		if (!data->readline || ft_strcmp("exit", data->readline) == CMP_OK)
+			return (printf("exit\n"), 0);
+		if (ft_strncmp("cd", data->readline, 2) == CMP_OK)
+		{
+			identify_and_replace_sq_tokens(&data->readline);
+			args = process_command_input(data->readline);
+			ft_cd(args);
+			continue;
+		}
+		if (ft_strlen(data->readline) == 0 || all_same_char(data->readline,
+				' '))
 		{
 			free(data->readline);
 			printf("\n");
 			continue ;
 		}
-		if (ft_strcmp("exit", data->readline) == CMP_OK)
-			return (printf("exit\n"), 0);
 		if (run_shell(data, data->readline))
-			return (/* free(data->readline), */ ERROR);
+			return (ERROR);
 		free(data->readline);
 	}
 	return (0);

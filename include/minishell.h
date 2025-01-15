@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/14 15:27:55 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/15 16:58:54 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int			parsing_command_path_execution(char *command_path);
 int 		strip_redirects(char **input, const char *redirects[]);
 
 // ************************************************************************
-// **						Initialize Functions							**
+// **						Initialize Functions						 **
 // ************************************************************************
 
 t_shell 	*get_shell();
@@ -69,7 +69,7 @@ int 		add_command(t_cmd **command, char *readline_splitted, t_shell *data);
 int 		initialize_file_list(char *input, const char *redirects[], t_file **redir_files);
 
 // ************************************************************************
-// **						Execution Functions									**
+// **						Execution Functions							 **
 // ************************************************************************
 
 void		run_commands(t_shell *data);
@@ -82,7 +82,7 @@ int			run_eof(t_shell *data, int *pipe_id, int *prev_fd, pid_t *pid);
 int			open_folders_safety(int *fd_in, int *fd_out, t_file *redir_files);
 
 // ************************************************************************
-// **						Free Functions										**
+// **						Free Functions								 **
 // ************************************************************************
 
 void	cleanup_shell(t_shell *data);
@@ -90,7 +90,7 @@ void	free_files(t_file *file_list);
 void	refresh_shell_data(t_shell *data);
 
 // ************************************************************************
-// **						Utils Functions										**
+// **						Utils Functions								 **
 // ************************************************************************
 
 void 		skip_spaces(char **src);
@@ -104,5 +104,10 @@ void		skip_character_diff(char **src, char c);
 void		restore_original_characters(char **src);
 void		replace_characters(char **src, char to_take, char to_put);
 
+// ************************************************************************
+// **						BuiltIn										 **
+// ************************************************************************
+
+int	ft_cd(char **command_args);
 
 #endif
