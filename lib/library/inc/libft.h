@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/13 17:24:17 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/15 10:23:05 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void				*get_last_node(void *node, size_t next_offset);
 int					ft_strcmps(const char *s1, const char *compers[]);
 char				**ft_split_keep_charset(char *str, char *charset);
 char				*ft_strncpy(char *dest, const char *src, size_t n);
+int					truncate_character(char *src, const char character);
 char				*ft_strstr(const char *haystack, const char *needle);
 char				*insert_string(char *dest, char *src, int idx_to_add);
 char				*remove_substring(const char *source, char *to_remove);

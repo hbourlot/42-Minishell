@@ -49,3 +49,8 @@
 // Owner: rwx   (Read + Write + Execute)
 // Group: rwx   (Read + Write + Execute)
 // Others: rwx  (Read + Write + Execute)
+
+
+
+// echo oi > file | exit > l
+// exit > l

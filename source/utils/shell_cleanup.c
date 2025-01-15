@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/12 13:23:04 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/15 09:04:08 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ static void free_command(t_cmd **command)
 		tmp->redir_files = NULL;
 		if (tmp->input)
 			free(tmp->input);
-		// if (tmp->settings.eof)
-		// 	free_split(tmp->settings.eof);
 		if (tmp->args)
 			free_split(tmp->args);
 		if (tmp->path)
@@ -64,10 +62,7 @@ void	refresh_shell_data(t_shell *data)
 		data->eof = NULL;
 	}
 	if (data->readline)
-	{
-
 		free_pointers(1, &data->readline);
-	}
 	if (data->readline_splitted)
 	{
 		free_split(data->readline_splitted);

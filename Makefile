@@ -23,13 +23,13 @@ NAME			= minishell
 C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redirects parsing/replace_sq_tokens 	\
 					parsing/command_token_execution	parsing/command_path_execution									\
 					 \
-					initialize/command initialize/command_tools initialize/shell initialize/file_list 				\
-					 initialize/eof initialize/env_paths initialize/tokenize_element 								\
-					 initialize/tokenize_bash_variables initialize/process_variables 								\
-					 initialize/process_command_input																\
+					initialize/command initialize/command_aux initialize/shell initialize/file_list 				\
+					 initialize/eof initialize/env_paths initialize/tokenize_element_aux 							\
+					 initialize/tokenize_variables_aux initialize/process_variables_aux 							\
+					 initialize/input_expansion																		\
 					 \
-					execution/argument_parser execution/run_commands execution/run_command_tools 					\
-					execution/get_path execution/handle_folders execution/here_doc								\
+					execution/argument_parser execution/run_commands execution/run_command_aux	 					\
+					execution/get_path execution/handle_folders execution/here_doc									\
 					\
 					builtin/validate_builtin																		\
 					\

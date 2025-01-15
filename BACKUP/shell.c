@@ -5,30 +5,29 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/15 23:04:20 by hbourlot         ###   ########.fr       */
+/*   Created: 2024/12/12 14:10:20 by hbourlot          #+#    #+#             */
+/*   Updated: 2025/01/15 08:56:22 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-static bool verify_and_prepare_input(t_shell *data)
+static int	run_shell(t_shell *data, char *input)
 {
+	bool run;
 
-	if (data->readline && *data->readline)
-		add_history(data->readline);
-	if (ft_strlen(data->readline) == 0 || all_same_char(data->readline, ' '))
+	run = true;
+	if (parsing_syntax(input) == -1)
 	{
-		free_pointers(1, &data->readline);
-		printf("\n");
-		return (false);
+		handle_error_parsing();
+		run = false;
 	}
-	if (parsing_syntax(data->readline) == -1)
-		return (false);
-	if (init_command(data->readline) == -1)
-		return (false);
-	return (true);
+	if (run && init_command(input) == -1)
+		return (ERROR);	
+	if (run)
+		run_commands(data);
+	refresh_shell_data(data);
+	return (SUCCESS);
 }
 
 int	main_shell_loop(t_shell *data)
@@ -36,13 +35,19 @@ int	main_shell_loop(t_shell *data)
 	while (true)
 	{
 		data->readline = readline("[Chitãozinho&Xororó@localhost ~]$ ");
-		if (!data->readline || ft_strcmp("exit", data->readline) == CMP_OK)
-            return (printf("exit\n"), 0);
-		if (verify_and_prepare_input(data) == false)
-			handle_error();
-		if (data->command)
-			run_commands(data);
-		refresh_shell_data(data);
+		if (data->readline && *data->readline)
+            add_history(data->readline);
+		if (ft_strlen(data->readline) == 0 || all_same_char(data->readline, ' '))
+		{
+			free(data->readline);
+			printf("\n");
+			continue;
+		}
+		if (ft_strcmp("exit", data->readline) == CMP_OK)
+			return (printf("exit\n"), 0);
+		if (run_shell(data, data->readline))
+			return (ERROR);
+		free(data->readline);
 	}
 	return (0);
 }
@@ -50,8 +55,9 @@ int	main_shell_loop(t_shell *data)
 t_shell	*init_shell(int argc, char *argv[], char *envp[])
 {
 	t_shell *data;
-
+	
 	data = get_shell();
+	// ft_memset(data, 0, sizeof(t_shell));
 	data->argc = argc;
 	data->argv = argv;
 	data->envp = envp;

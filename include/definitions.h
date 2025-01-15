@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/12 14:59:56 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/15 10:45:11 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,6 @@
 // **								STRUCTURES  							**
 // ***************************************************************************
 
-
-
-
 typedef enum e_delimiter
 {
 	PIPE_SINGLE,
@@ -72,6 +69,7 @@ typedef struct s_rules
 	bool			or_next;
 	bool			only_tokens;
 	bool			builtin_echo;
+	bool			builtin_exit;
 }					t_rules;
 
 typedef struct s_cmd

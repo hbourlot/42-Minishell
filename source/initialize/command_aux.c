@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_tools.c                                    :+:      :+:    :+:   */
+/*   command_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/13 17:19:42 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/15 23:19:00 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,16 @@ static int	prepare_execve_parameters(t_cmd *command, t_shell *data)
 // ! NEED TO URGENT
 	if (command->args && !*command->args[0])
 	{
+        perror("HERE\n");
 		command->path = NULL;
-		return (set_error_initialize(1, NULL, __func__, false), 2);
+		return (set_error_initialize(1, NULL, __func__, false), -1);
 	}
 	command->path = get_path(command->args[0], data->env_paths);
+    printf("path: %s\n", command->path);
+    for (int i = 0; command->args[i]; i++)
+    {
+        printf("args: %d- %s\n", i, command->args[i]);
+    }
 	if (!command->path || !command->args)
 		return (set_error_initialize(1, "\"Path/Args\"", __func__, true),
 			ERROR);
@@ -67,8 +73,11 @@ int add_command(t_cmd **command, char *readline_splitted, t_shell *data)
         return (ERROR);
     if (handle_file_tokens(data, *command, readline_splitted) < 0)
         return (ERROR);
-    if ((*command)->settings.only_tokens == false && 
-        prepare_execve_parameters(*command, data) < 0)
-        return (ERROR);
+    
+    if ((*command)->settings.only_tokens == false)
+    {
+        if (prepare_execve_parameters(*command, data) < 0)
+            return (ERROR);
+    }
     return (SUCCESS);
 }
