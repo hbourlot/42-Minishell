@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:17:42 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/15 13:17:31 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/16 11:28:44 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void skip_character_by_idx(char *src, char c, int *i)
 	if (!src)
 		return;
 	while (src[*i] && src[*i] == c)
-		*i++;
+		(*i)++;
 }
 
 void	skip_character_diff(char **src, char c)

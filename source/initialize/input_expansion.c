@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process_command_input.c                            :+:      :+:    :+:   */
+/*   input_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/14 16:45:25 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/16 15:26:41 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*process_command_element(char *cmd_element)
 	{
 		cmd_tokens[i] = process_variables(cmd_tokens[i]);
 		rest = ft_append_and_free(rest, cmd_tokens[i]);
-		if (!rest)
+		if (!rest || !cmd_tokens[i])
 			return (free(cmd_element), free_split(cmd_tokens), NULL);
 		free(cmd_tokens[i]);
 		i++;

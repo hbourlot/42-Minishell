@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   run_command_tools.c                                :+:      :+:    :+:   */
+/*   run_command_aux.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 12:00:01 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/12 14:37:05 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/16 11:37:56 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	do_dup2(int *fd_in, int *fd_out,  int *pipe_id, int *prev_fd)
 	return (0);
 }
 
-// typedef enum e_delimiter
+// typedef enum e_token
 // {
 // 	PIPE_SINGLE,          // single pipe `|`
 // 	PIPE_DOUBLE,          // double pipe `||`
@@ -48,4 +48,4 @@ int	do_dup2(int *fd_in, int *fd_out,  int *pipe_id, int *prev_fd)
 // 	REDIRECT_RIGHT_DOUBLE, // double right redirection `>>`
 // 	REDIRECT_LEFT_SINGLE,  // single left redirection `<`
 // 	REDIRECT_LEFT_DOUBLE   // double left redirection `<<`
-// }	t_delimiter;
+// }	t_token;

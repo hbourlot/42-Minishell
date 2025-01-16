@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/15 13:18:16 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/16 13:50:22 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int			parsing_syntax(char *input);
 bool 		is_valid_pipe_tokens(char *source);
 void		identify_and_replace_sq_tokens(char **input);
 bool 		is_valid_file_and_here_doc_tokens(char *source);
-int			parsing_file_read_execution(t_file *redir_files);
-int			parsing_command_path_execution(char *command_path);
+int			validate_file_read_execution(t_file *redir_files);
+int			validate_command_path_access(char *command_path);
 int 		strip_redirects(char **input, const char *redirects[]);
 
 // ************************************************************************
@@ -55,7 +55,7 @@ char		*process_variables(char *cmd_token);
 char		**tokenize_bash_variables(char *src);
 char		**process_command_input(char *input);
 int			initialize_eof(char *data_readline, char ***data_eof);
-int 		add_command(t_cmd **command, char *readline_splitted, t_shell *data);
+int 		add_command(t_cmd **command, char *readline_splitted, t_shell *data, t_token token_type);
 int 		initialize_file_list(char *input, const char *redirects[], t_file **redir_files);
 
 // ************************************************************************
@@ -83,11 +83,13 @@ void		refresh_shell_data(t_shell *data);
 // **						Utils Functions							 	 **
 // ************************************************************************
 
+
 void 		skip_spaces(char **src);
 void		debug_command_args(t_shell *data);
 void		debug_command_path(t_shell *data);
 void		debug_command_input(t_shell *data);
 void 		debug_input_splitted(t_shell *data);
+t_token		get_t_token(char *src, size_t size);
 void 		debug_command_file_list(t_shell *data);
 void		skip_character_diff(char **src, char c);
 void		restore_original_characters(char **src);

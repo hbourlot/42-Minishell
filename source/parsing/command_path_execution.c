@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 10:09:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/14 19:20:10 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/16 14:11:32 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	check_is_directory(const char *path)
 	return (0);
 }
 
-int	parsing_command_path_execution(char *command_path)
+int	validate_command_path_access(char *command_path)
 {
 	int			i;
 	int			result;

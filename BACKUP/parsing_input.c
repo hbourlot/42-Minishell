@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 17:27:32 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/12 17:03:43 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/16 11:23:50 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,10 @@ char *find_first_occurrence(char *src, char **to_find)
 	
 	occurrence = NULL;
 	first_occur = NULL;
-	while (src[i])
+	while (src && src[i])
 	{
 		j = 0;
-		while (to_find[j])
+		while (to_find && to_find[j])
 		{
 			char *occurrence = ft_strstr(src + i, to_find[j]);
 			if (!first_occur)

@@ -34,7 +34,7 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redire
 					builtin/validate_builtin																		\
 					\
 					utils/shell_cleanup utils/debug utils/debug1 utils/error_tools utils/error_parsing				\
-					 utils/error_initialize utils/error_execution utils/useful_functions
+					utils/error_initialize utils/error_execution utils/useful_functions utils/useful_functions2
 # -L./ -lminishell
 # VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes
 VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=readline.supp

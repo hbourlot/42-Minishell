@@ -6,13 +6,13 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 00:07:41 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/16 11:37:31 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	add_file(int mode, char *file_name, t_file **file_list, t_delimiter redirect)
+static int	add_file(int mode, char *file_name, t_file **file_list, t_token redirect)
 {
 	t_file	*current;
 	t_file	*new_file;
@@ -57,7 +57,7 @@ static char	*get_file_name(char *src, const char *redirects[])
 
 static int handle_file_redirection(t_file **file_list, char **input_tmp, const char *redirects[], int mode)
 {
-	t_delimiter redirect;
+	t_token redirect;
 	char		*file_name;
 
 	if (mode == READ)
@@ -84,7 +84,7 @@ int	initialize_file_list(char *input, const char *redirects[], t_file **redir_fi
 {
 	char 			*file_name;
 	char			*input_tmp;
-	t_delimiter 	redirect;
+	t_token 	redirect;
 
 	input_tmp = input;
 	while (input_tmp && *input_tmp)

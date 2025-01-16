@@ -6,39 +6,50 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/12 14:31:35 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/16 13:57:35 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-static int split_command_input(t_shell *data, char *input, const char *delimiters[])
+static int split_command_input(t_shell *data, const char *delimiters[])
 {
     int i;
 
     i = 0;
-    data->readline_splitted = split_by_multiple_tokens(input, delimiters);
+    sort_strings_by_length_desc((char **)delimiters);
+    data->readline_splitted = split_by_multiple_tokens(data->readline, delimiters);
     if (!data->readline_splitted)
         return (ERROR);
     return (SUCCESS);
 }
 
-static int create_command_list(t_shell *data)
+static int create_command_list(t_shell *data, const char *delimiters[])
 {
-    t_cmd   *current; 
+    t_token token_type;
     int     i;
+    int     idx;
+    char    *src;
 
-	i = 0;
-    if (add_command(&data->command, data->readline_splitted[i++], data) < 0)
-        return (ERROR);
-    current = data->command;
+    i = 0;
+    src = ft_strstr_any(data->readline, delimiters);
     while (data->readline_splitted[i])
-    {   
-        if (add_command(&current->next, data->readline_splitted[i++], data) < 0)
-            return (ERROR);
-        current = current->next;
+    {
+        if (find_string_match(src, delimiters, &idx) == CMP_OK)
+        {
+            src = ft_strstr_any(src, delimiters);
+            src += ft_strlen(delimiters[idx]);
+            token_type = get_t_token((char *)delimiters[idx], ft_strlen(delimiters[idx]));
+            if (add_command(&data->command, data->readline_splitted[i++], data, token_type) < 0)
+                return (ERROR);
+        }
+        else
+        {
+            if (add_command(&data->command, data->readline_splitted[i++], data, TOKEN_COMMAND) < 0)
+                return (ERROR);
+        }
     }
-	data->nbr_of_commands = i;
+    data->nbr_of_commands = i;
     return (SUCCESS);
 }
 
@@ -81,14 +92,14 @@ static int handle_eof(t_shell *data)
 
 int init_command(char *input)
 {
-	const char  *delimiters[] = {"|", "||", "&&", "&", NULL};
+	const char  *delimiters[] = {"|", "||", "&&", NULL};
     t_shell     *data;
 
 	data = get_shell();
     if (handle_eof(data))
         return -1;
-    if (data->readline && (split_command_input(data, data->readline, delimiters) < 0 ||
-        create_command_list(data) < 0))
+    if (data->readline && (split_command_input(data, delimiters) < 0 ||
+        create_command_list(data, delimiters) < 0))
             return -1;
-    return (SUCCESS);
+    return SUCCESS;
 }

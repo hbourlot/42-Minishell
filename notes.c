@@ -54,3 +54,13 @@
 
 // echo oi > file | exit > l
 // exit > l
+
+
+//* Only tokens commands
+// > file
+// >> file
+// << file
+// < file
+// <
+// >
+// > file
