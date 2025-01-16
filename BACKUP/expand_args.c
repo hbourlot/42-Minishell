@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_args.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:59:00 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/12 00:16:00 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:33:36 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static int	expand_shell_variable(char *var_name, char **expanded_value)
 	}
 	else if (var_name[1] == '?')
 	{
-		*expanded_value = ft_itoa(get_shell()->last_exit_status);
+		*expanded_value = ft_itoa(get_shell()->exit_status);
 		if (!*expanded_value)
 			return (-1);
 	}

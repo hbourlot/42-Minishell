@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:59:00 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/16 15:27:14 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:33:36 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*expand_shell_variable(char *var_name)
 	}
 	else if (var_name[1] == '?')
 	{
-		expanded_value = ft_itoa(get_shell()->last_exit_status);
+		expanded_value = ft_itoa(get_shell()->exit_status);
 	}
 	else
 	{
