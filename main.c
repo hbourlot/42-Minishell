@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/13 15:14:31 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/16 00:41:22 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,8 @@ void	signal_handler(int signal)
 	}
 }
 
-
 // int	print_execve_parameters(char **input) // TODO: from command->input
-// {	
+// {
 // 	int	i = 0;
 // 	while ((*input)[i])
 // 	{
@@ -43,9 +42,10 @@ void	signal_handler(int signal)
 // }
 //
 //
-// int	prepare_execve_parameters(t_shell *data, char **input) // TODO: from command->input
-// {	
-	// identify_and_replace_quotes(input);
+// int	prepare_execve_parameters(t_shell *data, char **input)
+// TODO: from command->input
+// {
+// identify_and_replace_quotes(input);
 // 	int	i = 0;
 // 	while ((*input)[i])
 // 	{
@@ -96,5 +96,5 @@ int	main(int argc, char *argv[], char *envp[])
 	if (main_shell_loop(data))
 		return (handle_error());
 	cleanup_shell(get_shell());
-	return 0;
+	return (0);
 }
