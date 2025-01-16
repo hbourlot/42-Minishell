@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:38:12 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/15 23:58:28 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/16 00:34:30 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ char	*get_path(char *command_str, char **env_paths)
 		set_error_initialize(1, "Malloc", __func__, true);
 		return (NULL);
 	}
+	if (!*env_paths)
+		return (executable);
 	if (ft_strlen(executable) > 0 && ft_strchr(executable, '/'))
 		return (executable);
 	path = find_executable_path(executable, env_paths, &only_executable);
