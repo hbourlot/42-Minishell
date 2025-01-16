@@ -28,7 +28,7 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redire
 					 initialize/tokenize_variables_aux initialize/process_variables_aux 							\
 					 initialize/input_expansion																		\
 					 \
-					execution/argument_parser execution/run_commands execution/run_command_aux	 					\
+					execution/run_commands execution/run_command_aux	 					\
 					execution/get_path execution/handle_folders execution/here_doc									\
 					\
 					builtin/validate_builtin	 builtin/cd																	\
