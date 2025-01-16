@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/14 15:29:00 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/16 15:39:24 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ static bool is_safe_to_execute(t_cmd *command)
 {
 	if (command->settings.only_tokens)
 		return (false);
+	if (command->settings.expansion && ft_strlen(command->path) == 0)
+		return (false);
+
 	return (true);
 }
 
@@ -39,10 +42,16 @@ static void	execute_only_tokens(t_shell *data, t_cmd *command)
 	int	code_parsing;
 
 	code_parsing = 0;
-	code_parsing = (parsing_file_read_execution(command->redir_files) 
-					|| parsing_command_path_execution(command->path));
+	code_parsing = (validate_file_read_execution(command->redir_files) 
+					|| validate_command_path_access(command->path));
+	// ! Pretty sure dont need to validate command_path_access since its only files to handle;
 	if (code_parsing)
-		return (cleanup_shell(data), exit(code_parsing));
+	{
+		set_error_execution(code_parsing, NULL, NULL, true);
+		cleanup_shell(data);
+		handle_error();
+	}
+	return;
 }
 
 static void	child_process(t_shell *data, t_cmd *command, int *pipe_id,
@@ -64,11 +73,9 @@ static void	child_process(t_shell *data, t_cmd *command, int *pipe_id,
 		exit(EXIT_FAILURE);
 	}
 	if (is_safe_to_execute(command)) // Execute the command, in case might be only fds to open
-	{
 		execve(command->path, command->args, command->envp);
-	}
 	// error_execve(data, command);
-	code = parsing_command_path_execution(command->path);
+	code = validate_command_path_access(command->path);
 	set_error_execution(code, NULL, NULL, true);
 	handle_error();
 }
@@ -97,7 +104,7 @@ static void	command_loop(t_shell *data, t_cmd *command, pid_t *pid)
 		run_eof(data, pipe_id, &prev_fd, pid);
 	while (command)
 	{
-		// * Prob handle builting here
+		// * Probably handle builting here
 		if (command->next && pipe(pipe_id) == -1)
 			return (set_error_execution(1, "Pipe", NULL, false));
 		*pid = fork();

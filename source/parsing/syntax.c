@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 18:41:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/04 10:13:27 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/16 11:16:01 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ int	parsing_syntax(char *input)
 	const char *pipe_tokens[] = {"||", "|", NULL};
 	const char *redirect_tokens[] = {"<<", ">>", ">", "<", NULL};
 
-	// if (is_valid_tokens(input, pipe_tokens, redirect_tokens))
-	// 	return (-1);
 	if (is_valid_pipe_tokens(input) == false)
 		return (-1);
 	if (is_valid_file_and_here_doc_tokens(input) == false)

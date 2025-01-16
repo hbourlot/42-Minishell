@@ -23,18 +23,18 @@ NAME			= minishell
 C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redirects parsing/replace_sq_tokens 	\
 					parsing/command_token_execution	parsing/command_path_execution									\
 					 \
-					initialize/command initialize/command_tools initialize/shell initialize/file_list 				\
-					 initialize/eof initialize/env_paths initialize/tokenize_element 								\
-					 initialize/tokenize_bash_variables initialize/process_variables 								\
-					 initialize/process_command_input																\
+					initialize/command initialize/command_aux initialize/shell initialize/file_list 				\
+					 initialize/eof initialize/env_paths initialize/tokenize_element_aux 							\
+					 initialize/tokenize_variables_aux initialize/process_variables_aux 							\
+					 initialize/input_expansion																		\
 					 \
-					 execution/run_commands execution/run_command_tools 					\
-					execution/get_path execution/handle_folders execution/here_doc								\
+					execution/argument_parser execution/run_commands execution/run_command_aux	 					\
+					execution/get_path execution/handle_folders execution/here_doc									\
 					\
 					builtin/validate_builtin	 builtin/cd																	\
 					\
 					utils/shell_cleanup utils/debug utils/debug1 utils/error_tools utils/error_parsing				\
-					 utils/error_initialize utils/error_execution utils/useful_functions
+					utils/error_initialize utils/error_execution utils/useful_functions utils/useful_functions2
 # -L./ -lminishell
 # VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes
 VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=readline.supp

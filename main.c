@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 01:07:40 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/15 23:03:47 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,64 +23,8 @@ void	signal_handler(int signal)
 	}
 }
 
-// int	print_execve_parameters(char **input) // TODO: from command->input
-// {
-// 	int	i = 0;
-// 	while ((*input)[i])
-// 	{
-// 		if ((*input)[i] == REP_DOUBLE_QUOTE)
-// 			printf("2");
-// 		if ((*input)[i] == REP_SINGLE_QUOTE)
-// 			printf("1");
-// 		if ((*input)[i] == REP_SPACE)
-// 			printf("3");
-// 		else
-// 			printf("%c", (*input)[i]);
-// 		i++;
-// 	}
-// 	return (0);
-// }
-//
-//
-// int	prepare_execve_parameters(t_shell *data, char **input)
-// TODO: from command->input
-// {
-// identify_and_replace_quotes(input);
-// 	int	i = 0;
-// 	while ((*input)[i])
-// 	{
-// 		if ((*input)[i] == REP_DOUBLE_QUOTE)
-// 			printf("2");
-// 		if ((*input)[i] == REP_SINGLE_QUOTE)
-// 			printf("1");
-// 		if ((*input)[i] == REP_SPACE)
-// 			printf("3");
-// 		else
-// 			printf("%c", (*input)[i]);
-// 		i++;
-// 	}
-// 	return (0);
-// }
-//
-//
-// int	get_path(char **input)
-// {
-// 	int	start;
-// 	int	end;
-// 	char *file;
-// 	char	*expand;
-//
-// 	end = 0;
-// 	start = 0;
-// 	while (input[start] == REP_SPACE)
-// 		start++;
-// 	end = start;
-// 	while (input[end] && input[end] != REP_SPACE)
-// 		end++;
-// 	file = ft_substr(input, start, end - start);
-// 	return (0);
-// }
 
+// Todo: Need to fix case of cat then CTRL+C :  undefined behavior
 int	main(int argc, char *argv[], char *envp[])
 {
 	struct sigaction	sa;
@@ -94,7 +38,7 @@ int	main(int argc, char *argv[], char *envp[])
 	signal(SIGQUIT, SIG_IGN);
 	data = init_shell(argc, argv, envp);
 	if (main_shell_loop(data))
-		return (handle_error());
-	cleanup_shell(get_shell());
-	return (0);
+		return (cleanup_shell(data), handle_error());
+	cleanup_shell(data);
+	return 0;
 }

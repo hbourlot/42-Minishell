@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/14 15:27:44 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/16 14:45:13 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,26 +43,23 @@
 // **								STRUCTURES  							**
 // ***************************************************************************
 
-
-
-
-typedef enum e_delimiter
+typedef enum e_token
 {
+	TOKEN_COMMAND,
 	PIPE_SINGLE,
 	PIPE_DOUBLE,
-	AND_SINGLE,
 	AND_DOUBLE,
 	REDIRECT_RIGHT_SINGLE,
 	REDIRECT_RIGHT_DOUBLE,
 	REDIRECT_LEFT_SINGLE,
 	REDIRECT_LEFT_DOUBLE
-}					t_delimiter;
+}					t_token;
 
 typedef struct s_file
 {
 	char			*read;
 	char			*write;
-	t_delimiter		redirect;
+	t_token			redirect;
 	struct s_file	*next;
 }					t_file;
 
@@ -70,16 +67,18 @@ typedef struct s_rules
 {
 	char			**eof;
 	bool			or_next;
+	bool			expansion;
 	bool			only_tokens;
 	bool			builtin_echo;
+	bool			builtin_exit;
 }					t_rules;
 
 typedef struct s_cmd
 {
-	t_delimiter		delimiter;
+	t_token			delimiter;
+	t_file			*redir_files;
 	char			*input;
 	char			*file;
-	t_file			*redir_files;
 	int				fd_in;
 	int				fd_out;
 	char			**args;

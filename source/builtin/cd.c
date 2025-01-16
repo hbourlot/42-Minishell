@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:57:27 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/15 17:13:45 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/16 00:02:54 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // #include <stdio.h>
 // #include <unistd.h>
 
-int	ft_cd(char **command_args)
+int	builtin_cd(char **command_args)
 {
 	int	i;
 

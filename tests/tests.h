@@ -33,7 +33,7 @@ typedef struct s_error
 	char	*function;
 }	t_error;
 
-typedef enum e_delimiter
+typedef enum e_token
 {
 	PIPE_SINGLE,          // single pipe `|`
 	PIPE_DOUBLE,          // double pipe `||`
@@ -43,13 +43,13 @@ typedef enum e_delimiter
 	REDIRECT_RIGHT_DOUBLE, // double right redirection `>>`
 	REDIRECT_LEFT_SINGLE,  // single left redirection `<`
 	REDIRECT_LEFT_DOUBLE   // double left redirection `<<`
-}	t_delimiter;
+}	t_token;
 
 typedef struct s_file
 {
 	char 			*read;
 	char 			*write;
-	t_delimiter 	delimiter;
+	t_token 	delimiter;
 	struct s_file 	*next;
 }		t_file;
 
