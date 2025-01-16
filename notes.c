@@ -1,4 +1,6 @@
-/* 
+/*
+* Cat and ^c should be treat 
+* 
 * [X] Prob find first how many pipes "|" i got on cmd_line and separate by how many t_cmd structure i'll have
 * [X] Maybe add a boolean logic to clean all address inside struct data but keep variable of history safe?
 * [X] command cat > file4 ( which doest not exist) get stuck on terminal
@@ -49,3 +51,6 @@
 // Owner: rwx   (Read + Write + Execute)
 // Group: rwx   (Read + Write + Execute)
 // Others: rwx  (Read + Write + Execute)
+
+
+
