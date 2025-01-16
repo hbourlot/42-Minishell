@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:59:00 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/16 00:52:17 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/16 14:45:43 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,15 @@ static char	*expand_variables(char *str)
 static char	*remove_quotes(char *cmd_token)
 {
 	char	*result;
+	size_t	len;
 
-	result = ft_substr(cmd_token, 1, ft_strlen(cmd_token) - 2);
+	len = ft_strlen(cmd_token);
+	if (len == 2)
+	{
+		result = ft_strdup("");
+		return (free(cmd_token), result);
+	}
+	result = ft_substr(cmd_token, 1, len - 2);
 	free(cmd_token);
 	if (!result)
 		return (NULL);
@@ -111,6 +118,8 @@ char	*process_variables(char *cmd_token)
 		if (!cmd_token)
 			return (NULL);
 	}
+	if (ft_strchr(cmd_token, '$') == NULL)
+		return (cmd_token);
 	cmd_parts = ft_split_keep_charset(cmd_token, " /'");
 	if (!cmd_parts)
 		return (free(cmd_token), NULL);
