@@ -7,10 +7,12 @@ CYAN 			= \033[1;36m
 RESET 			= \033[0m
 
 CC				= cc
-CFLAGS			= -g #-Wall -Wextra -Werror #-fsanitize=thread -g -pthread
+CFLAGS			= -g #-Wall  -Wextra #-Werror #-fsanitize=thread -g -pthread
 LIB				= minishell.a
 INCLUDE 		= include/
-HEADER_FILE		= $(INCLUDE)minishell.h
+HEADER_MINI		= $(INCLUDE)minishell.h
+HEADER_ERROR	= $(INCLUDE)error.h
+HEADER_DEF		= $(INCLUDE)definitions.h
 SRC_DIR 		= source/
 BONUS_DIR 		= bonus/
 OBJ_DIR 		= objects/
@@ -28,10 +30,11 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redire
 					 initialize/tokenize_variables_aux initialize/process_variables_aux 							\
 					 initialize/input_expansion																		\
 					 \
-					execution/argument_parser execution/run_commands execution/run_command_aux	 					\
-					execution/get_path execution/handle_folders execution/here_doc									\
+					execution/run_commands execution/run_command_aux	 											\
+					execution/get_path execution/handle_folders execution/here_doc execution/child					\
+					execution/or																				\
 					\
-					builtin/validate_builtin																		\
+					builtin/validate_builtin	 builtin/cd																	\
 					\
 					utils/shell_cleanup utils/debug utils/debug1 utils/error_tools utils/error_parsing				\
 					utils/error_initialize utils/error_execution utils/useful_functions utils/useful_functions2
@@ -49,7 +52,7 @@ LIBFT_LIB = ./lib/library/libft.a
 
 all:			$(NAME)
 
-$(NAME):		$(LIBFT_LIB) $(LIB) $(HEADER_FILE) main.o
+$(NAME):		$(LIBFT_LIB) $(LIB) $(HEADER_MINI) $(HEADER_DEF) $(HEADER_ERROR) main.o
 				@$(CC) $(CFLAGS) main.o $(LINK) -o $@
 				@echo "$(GREEN)Executable '$(NAME)' created successfully!$(RESET) ✅"
 
@@ -92,7 +95,7 @@ re: 			fclean all
 
 TEST =			test_minishell
 
-$(TEST): 		$(LIBFT_LIB) $(LIB) $(HEADER_FILE)
+$(TEST): 		$(LIBFT_LIB) $(LIB) $(HEADER_MINI)
 				$(CC) $(LINK) -o test_minishell
 				./test_minishell
 

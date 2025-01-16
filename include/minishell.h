@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 13:50:22 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/20 12:29:23 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,21 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../lib/library/inc/libft.h"
-# include "error.h"
 # include "definitions.h"
+# include "error.h"
+# include <fcntl.h>
+# include <limits.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
 // ************************************************************************
-// **						Parsing Functions							 **
+// **						Parsing Functions								**
 // ************************************************************************
 
 int			parsing_syntax(char *input);
@@ -59,28 +69,36 @@ int 		add_command(t_cmd **command, char *readline_splitted, t_shell *data, t_tok
 int 		initialize_file_list(char *input, const char *redirects[], t_file **redir_files);
 
 // ************************************************************************
-// **						Execution Functions						 	 **
+// **						Execution Functions							 **
 // ************************************************************************
 
+
+int			print_command_on_terminal(t_shell *data, pid_t *pid);
+
+
+// int			do_pipe(int *pipe_id);
+int			do_fork(pid_t *pid);
 void		run_commands(t_shell *data);
-char		**get_command_args(char *argv);
+// char		**get_command_args(char *argv);
+
 int			here_doc(int *pipe_id, char *limiter);
 char 		*get_path(char *input, char **env_paths);
 int			open_folder(char *file, t_cmd *command, bool here_doc);
 int			do_dup2(int *fd_in, int *fd_out,  int *pipe_id, int *prev_fd);
 int			run_eof(t_shell *data, int *pipe_id, int *prev_fd, pid_t *pid);
 int			open_folders_safety(int *fd_in, int *fd_out, t_file *redir_files);
+void		child_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev_fd);
 
 // ************************************************************************
-// **						Free Functions							 	 **
+// **						Free Functions								 **
 // ************************************************************************
 
-void		cleanup_shell(t_shell*data);
-void 		free_files(t_file *file_list);
-void		refresh_shell_data(t_shell *data);
+void	cleanup_shell(t_shell *data);
+void	free_files(t_file *file_list);
+void	refresh_shell_data(t_shell *data);
 
 // ************************************************************************
-// **						Utils Functions							 	 **
+// **						Utils Functions								 **
 // ************************************************************************
 
 
@@ -96,5 +114,10 @@ void		restore_original_characters(char **src);
 void 		skip_character_by_idx(char *src, char c, int *i);
 void		replace_characters(char **src, char to_take, char to_put);
 
+// ************************************************************************
+// **						BuiltIn										 **
+// ************************************************************************
+
+int	ft_cd(char **command_args);
 
 #endif

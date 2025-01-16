@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/12 14:28:40 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:33:36 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ static void	handle_parent_process(int *pipe_id, pid_t *pid)
 	close(pipe_id[0]);
 	result = waitpid(*pid, &wait_status, 0);
 	if (WIFEXITED(wait_status))
-		get_shell()->last_exit_status = WEXITSTATUS(wait_status);
+		get_shell()->exit_status = WEXITSTATUS(wait_status);
 	close(pipe_id[1]);
 }
 

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:18:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/28 10:30:31 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:40:11 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,11 @@ void	debug_command_path(t_shell *data)
 		if (tmp->path)
 			printf("Command->path [%d]: %s\n", i, tmp->path);
 		else
-			printf("Command->path [%d]: has no path", i);
+			printf("Command->path [%d]: (has no path)\n", i);
 		i++;
 		tmp = tmp->next;
 	}
 }
-// void	error_msg(void)
-// {
-// 	ft_putstr_fd("Error\n", 2);
-// }
 
 static void	debug_files(t_file *file_list)
 {
@@ -110,4 +106,22 @@ void	debug_command_file_list(t_shell *data)
 			printf("  No files associated.\n");
 		tmp = tmp->next;
 	}
+}
+void	print_execve_parameters(char *input) // TODO: from command->input
+{
+	int i = 0;
+	printf("Print_execve ");
+	while (input[i])
+	{
+		if (input[i] == REP_DOUBLE_QUOTE)
+			printf("2");
+		if (input[i] == REP_SINGLE_QUOTE)
+			printf("1");
+		if (input[i] == REP_SPACE)
+			printf("3");
+		else
+			printf("%c", input[i]);
+		i++;
+	}
+	printf("\n");
 }

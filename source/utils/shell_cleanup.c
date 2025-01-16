@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/15 09:04:08 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:41:12 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void	refresh_shell_data(t_shell *data)
 {
 	t_cmd	*tmp;
 
+	data->commands_ran = 0;
+	data->nbr_of_commands = 0;
 	if (data->eof)
 	{
 		free_split(data->eof);

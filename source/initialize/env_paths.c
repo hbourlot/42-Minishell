@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   env_paths.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 10:16:37 by hbourlot          #+#    #+#             */
 /*   Updated: 2025/01/16 00:34:11 by hbourlot         ###   ########.fr       */

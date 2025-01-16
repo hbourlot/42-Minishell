@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
 /*   Updated: 2025/01/15 10:23:05 by hbourlot         ###   ########.fr       */
@@ -115,4 +115,8 @@ int					find_string_match(const char *s1, const char *compers[],
 
 
 
+char				**ft_split_charset(char const *s, char *charset);
+char				*ft_append_and_free_charset(char *s1, char *s2, char c);
+char				**ft_split_keep_sep(char *str, char sep);
+char				**ft_split_keep_charset(char *str, char *charset);
 #endif

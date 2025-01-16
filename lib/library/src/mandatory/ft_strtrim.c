@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:02:59 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/13 17:35:31 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:28:02 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 /// @brief Checks if a character 'c' is present in the string 'set'.
 /// @param c The character to search for.

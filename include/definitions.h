@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 14:45:13 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/20 15:53:17 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@
 
 typedef enum e_token
 {
-	TOKEN_COMMAND,
 	PIPE_SINGLE,
 	PIPE_DOUBLE,
 	AND_DOUBLE,
@@ -97,13 +96,17 @@ typedef struct s_data
 	char			**eof;
 	char			**readline_splitted;
 	char			**env_paths;
-	int				last_exit_status;
+	int				exit_status;
 	int				nbr_of_commands;
+	int				commands_ran;
 	int				argc;
 	char			**argv;
 	char			**envp;
-	pid_t			pid;
-	struct s_cmd	*command;
+	int				pipe_id[2];
+	int				prev_fd;
+	pid_t			pid; // LEts try to introduce
+	t_cmd			*command;
+	t_cmd			*last_cmd_executed;
 }					t_shell;
 
 typedef void		(*t_here_doc_handler)(t_shell *, t_cmd *);
@@ -114,4 +117,4 @@ typedef int			(*t_access_check_function)(const char *path);
 #endif
 
 // * [] it_ends_with_single_pipe and it_ends_with_double_pipe
-// * [X] last_exit_status prob is working
+// * [X] exit_status prob is working

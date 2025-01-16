@@ -1,61 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split_keep_charset.c                            :+:      :+:    :+:   */
+/*   ft_split_keep_sep.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/10 16:45:38 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/16 00:51:39 by joralves         ###   ########.fr       */
+/*   Created: 2024/12/12 14:54:31 by joralves          #+#    #+#             */
+/*   Updated: 2024/12/12 15:53:58 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
 
-static int	is_charset(char c, char *charset)
+static int	count_str(char *str, char sep)
 {
 	int	i;
-
-	i = 0;
-	while (charset && charset[i])
-	{
-		if (c == charset[i])
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-static int	count_str(char *str, char *charset)
-{
 	int	count;
-	int	i;
-	int	in_charset;
 
 	count = 0;
 	i = 0;
 	while (str && str[i])
 	{
-		in_charset = is_charset(str[i], charset);
-		if (!in_charset)
-		{
+		if (str[i] != sep)
 			count++;
-			while (str[i] && !is_charset(str[i], charset))
-				i++;
-		}
-		else
-		{
+		while (str[i] != sep)
+			i++;
+		if (str[i] == sep)
 			count++;
-			while (str[i] && is_charset(str[i], charset))
-				i++;
-		}
+		while (str[i] == sep)
+			i++;
 	}
 	return (count);
 }
 
-static char	**string_allocation(char **array, char *str, char *charset,
-		int *idx)
+static char	**string_allocation(char **array, char *str, char sep, int *idx)
 {
 	int	start;
 	int	i;
@@ -64,16 +43,16 @@ static char	**string_allocation(char **array, char *str, char *charset,
 	i = 0;
 	while (str && str[i])
 	{
-		if (is_charset(str[i], charset) == 0)
+		if (str[i] != sep)
 		{
 			start = i;
-			while (str[i] && is_charset(str[i], charset) == 0)
+			while (str[i] != sep)
 				i++;
 		}
-		else if (is_charset(str[i], charset) == 1)
+		else if (str[i] == sep)
 		{
 			start = i;
-			while (str[i] && is_charset(str[i], charset) == 1)
+			while (str[i] == sep)
 				i++;
 		}
 		array[*idx] = ft_substr(str, start, i - start);
@@ -84,17 +63,32 @@ static char	**string_allocation(char **array, char *str, char *charset,
 	return (array);
 }
 
-char	**ft_split_keep_charset(char *str, char *charset)
+char	**ft_split_keep_sep(char *str, char sep)
 {
 	char	**array;
 	int		idx;
 
 	idx = 0;
-	array = ft_calloc((count_str(str, charset) + 1), sizeof(char *));
+	array = malloc((count_str(str, sep) + 1) * sizeof(char *));
 	if (!array)
 		return (NULL);
-	if (string_allocation(array, str, charset, &idx) == NULL)
+	if (string_allocation(array, str, sep, &idx) == NULL)
 		return (NULL);
 	array[idx] = NULL;
 	return (array);
 }
+
+// int	main(void)
+// {
+// 	int i = 0;
+
+// 	char str[] = "'%USER' '%home'' '%path'";
+// 	// printf("%d", count_str(str, '\''));
+// 	char **array = ft_split_keep_sep(str, '\'');
+// 	while (array[i])
+// 	{
+// 		printf("%s\n", array[i]);
+// 		i++;
+// 	}
+// 	free_split(array);
+// }

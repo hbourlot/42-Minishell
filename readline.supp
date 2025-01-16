@@ -58,3 +58,10 @@
     ...
     fun:readline_internal_char
 }
+{
+    readline_leak
+    Memcheck:Leak
+    ...
+    fun:malloc
+    obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+}

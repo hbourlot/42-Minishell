@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/15 23:04:20 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/20 16:09:39 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static bool verify_and_prepare_input(t_shell *data)
 
 int	main_shell_loop(t_shell *data)
 {
+	char	**args;
+
 	while (true)
 	{
 		data->readline = readline("[Chitãozinho&Xororó@localhost ~]$ ");
@@ -55,18 +57,19 @@ t_shell	*init_shell(int argc, char *argv[], char *envp[])
 	data->argc = argc;
 	data->argv = argv;
 	data->envp = envp;
-    if (initialize_environment_paths(data))
-    {
-        cleanup_shell(data);
-        exit(EXIT_FAILURE); // TODO: Add a custom message ??
-    }
+	if (initialize_environment_paths(data))
+	{
+		cleanup_shell(data);
+		exit(EXIT_FAILURE); // TODO: Add a custom message ??
+	}
 	return (data);
 }
 
 /// @brief Provides access to a singleton instance of the shell structure.
 /// @return A pointer to the singleton `t_shell` instance.
-t_shell *get_shell()
+t_shell	*get_shell(void)
 {
-	static t_shell data;
+	static t_shell	data;
+
 	return (&data);
 }

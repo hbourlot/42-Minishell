@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 13:57:35 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/20 16:08:26 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,20 @@ static int create_command_list(t_shell *data, const char *delimiters[])
     char    *src;
 
     i = 0;
-    src = ft_strstr_any(data->readline, delimiters);
+    src = data->readline;
     while (data->readline_splitted[i])
     {
+        src = ft_strstr_any(src, delimiters);
         if (find_string_match(src, delimiters, &idx) == CMP_OK)
         {
-            src = ft_strstr_any(src, delimiters);
-            src += ft_strlen(delimiters[idx]);
             token_type = get_t_token((char *)delimiters[idx], ft_strlen(delimiters[idx]));
+            src += ft_strlen(delimiters[idx]);
             if (add_command(&data->command, data->readline_splitted[i++], data, token_type) < 0)
                 return (ERROR);
         }
         else
         {
-            if (add_command(&data->command, data->readline_splitted[i++], data, TOKEN_COMMAND) < 0)
+            if (add_command(&data->command, data->readline_splitted[i++], data, PIPE_SINGLE) < 0)
                 return (ERROR);
         }
     }
@@ -94,6 +94,7 @@ int init_command(char *input)
 {
 	const char  *delimiters[] = {"|", "||", "&&", NULL};
     t_shell     *data;
+    sort_strings_by_length_desc((char **)delimiters);
 
 	data = get_shell();
     if (handle_eof(data))

@@ -10,3 +10,5 @@ objects/
 lib/library/obj/
 
 .vscode/
+
+minishell
