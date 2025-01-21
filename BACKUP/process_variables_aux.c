@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:59:00 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/17 16:39:37 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/17 16:27:36 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,35 @@ static char	*remove_quotes(char *cmd_token)
 	return (result);
 }
 
+static char	*process_cmd_parts(char **cmd_parts)
+{
+	int		i;
+	char	*result;
+
+	result = NULL;
+	i = 0;
+	while (cmd_parts[i])
+	{
+		if (ft_strchr(cmd_parts[i], '$'))
+		{
+			cmd_parts[i] = expand_variables(cmd_parts[i]);
+			if (!cmd_parts[i])
+				return (NULL);
+		}
+		result = ft_append_and_free(result, cmd_parts[i]);
+		if (!result)
+			return (NULL);
+		i++;
+	}
+	return (result);
+}
+
 char	*process_variables(char *cmd_token)
 {
+	char	**cmd_parts;
+	char	*result;
+
+	result = NULL;
 	if (cmd_token[0] == REP_SINGLE_QUOTE)
 		return (remove_quotes(cmd_token));
 	if (cmd_token[0] == REP_DOUBLE_QUOTE)
@@ -93,8 +120,11 @@ char	*process_variables(char *cmd_token)
 	}
 	if (ft_strchr(cmd_token, '$') == NULL)
 		return (cmd_token);
-	cmd_token = expand_variables(cmd_token);
-	if (!cmd_token)
-		return (NULL);
-	return (cmd_token);
+	cmd_parts = ft_split_keep_charset(cmd_token, " /'");
+	if (!cmd_parts)
+		return (free(cmd_token), NULL);
+	result = process_cmd_parts(cmd_parts);
+	if (!result)
+		return (free_split(cmd_parts), free(cmd_token), NULL);
+	return (free_split(cmd_parts), free(cmd_token), result);
 }

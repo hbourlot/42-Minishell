@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 15:39:24 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/17 18:03:28 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,12 @@ void	close_resources(int exit_code, int *pipe_id, char *msg)
 	exit(exit_code);
 }
 
-static bool is_safe_to_execute(t_cmd *command)
+static bool	is_safe_to_execute(t_cmd *command)
 {
 	if (command->settings.only_tokens)
 		return (false);
 	if (command->settings.expansion && ft_strlen(command->path) == 0)
 		return (false);
-
 	return (true);
 }
 
@@ -42,8 +41,8 @@ static void	execute_only_tokens(t_shell *data, t_cmd *command)
 	int	code_parsing;
 
 	code_parsing = 0;
-	code_parsing = (validate_file_read_execution(command->redir_files) 
-					|| validate_command_path_access(command->path));
+	code_parsing = (validate_file_read_execution(command->redir_files)
+			|| validate_command_path_access(command->path));
 	// ! Pretty sure dont need to validate command_path_access since its only files to handle;
 	if (code_parsing)
 	{
@@ -51,7 +50,7 @@ static void	execute_only_tokens(t_shell *data, t_cmd *command)
 		cleanup_shell(data);
 		handle_error();
 	}
-	return;
+	return ;
 }
 
 static void	child_process(t_shell *data, t_cmd *command, int *pipe_id,
@@ -59,10 +58,12 @@ static void	child_process(t_shell *data, t_cmd *command, int *pipe_id,
 {
 	int	code;
 
+	// restore_signals();
 	if (command->settings.only_tokens)
 		// Commands like: < file > file1 <file1 <file2
 		execute_only_tokens(data, command);
-	if (open_folders_safety(&command->fd_in, &command->fd_out, command->redir_files))
+	if (open_folders_safety(&command->fd_in, &command->fd_out,
+			command->redir_files))
 	{
 		// if (!command->next) // No further commands, exit on failure
 		exit(handle_error());
@@ -72,7 +73,8 @@ static void	child_process(t_shell *data, t_cmd *command, int *pipe_id,
 		cleanup_shell(data);
 		exit(EXIT_FAILURE);
 	}
-	if (is_safe_to_execute(command)) // Execute the command, in case might be only fds to open
+	if (is_safe_to_execute(command)) // Execute the command,
+		// in case might be only fds to open
 		execve(command->path, command->args, command->envp);
 	// error_execve(data, command);
 	code = validate_command_path_access(command->path);
@@ -90,13 +92,13 @@ static void	parent_process(t_cmd *command, int *pipe_id, int *prev_fd)
 		*prev_fd = pipe_id[0];
 }
 
-/* 
-	* Need to see how to capture the pid to send properly to the main run shell
-*/
+/*
+ * Need to see how to capture the pid to send properly to the main run shell
+ */
 static void	command_loop(t_shell *data, t_cmd *command, pid_t *pid)
 {
-	int		pipe_id[2];
-	int		prev_fd;
+	int	pipe_id[2];
+	int	prev_fd;
 
 	prev_fd = -1;
 	ft_memset(pipe_id, -1, sizeof(int) * 2);
@@ -115,6 +117,7 @@ static void	command_loop(t_shell *data, t_cmd *command, pid_t *pid)
 		else
 		{
 			parent_process(command, pipe_id, &prev_fd);
+			// setup_signals();
 			command = command->next;
 		}
 	}
