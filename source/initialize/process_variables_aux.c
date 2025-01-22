@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:59:00 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/17 16:39:37 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/21 23:39:31 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*expand_shell_variable(char *var_name)
 	}
 	else if (var_name[1] == '?')
 	{
-		expanded_value = ft_itoa(get_shell()->last_exit_status);
+		expanded_value = ft_itoa(get_shell()->exit_status);
 	}
 	else
 	{

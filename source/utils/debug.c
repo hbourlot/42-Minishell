@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:18:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/10 16:31:45 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:40:11 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,11 @@ void	debug_command_path(t_shell *data)
 		if (tmp->path)
 			printf("Command->path [%d]: %s\n", i, tmp->path);
 		else
-			printf("Command->path [%d]: has no path", i);
+			printf("Command->path [%d]: (has no path)\n", i);
 		i++;
 		tmp = tmp->next;
 	}
 }
-// void	error_msg(void)
-// {
-// 	ft_putstr_fd("Error\n", 2);
-// }
 
 static void	debug_files(t_file *file_list)
 {
