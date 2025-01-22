@@ -6,6 +6,10 @@
 */*.a
 */*/*.a
 
+a.out
+
+test\ 
+
 objects/
 lib/library/obj/
 
