@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/15 10:23:05 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/22 23:47:47 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char				*ft_strcat(char *dest, const char *src);
 void				sort_strings_by_length_desc(char **arr);
 char				*ft_append_and_free(char *s1, char *s2);
 int					ft_strcmp(const char *s1, const char *s2);
-int					truncate_range(char **src, int start, int n);
+int					truncate_range(char *src, int start, int bytes);
 size_t				get_offset(void *struct_ptr, void *member_ptr);
 void				*get_last_node(void *node, size_t next_offset);
 int					ft_strcmps(const char *s1, const char *compers[]);

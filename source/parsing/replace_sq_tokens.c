@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_sq_tokens.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:44:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/14 15:29:31 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/22 20:34:59 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,46 @@ static void	identify_idx_of_occurrences(char *readline, char *in_quotes,
 	identify_idx_of_occurrences(readline, in_quotes, occurrence, idx);
 }
 
-static void	replace_non_literal_spaces(char **input)
+static void	replace_non_literal_spaces(char *input)
 {
 	int		i;
 	bool	in_quotes;
 
 	in_quotes = false;
 	i = 0;
-	while ((*input)[i])
+	while (input[i])
 	{
-		if ((*input)[i] == REP_DOUBLE_QUOTE || (*input)[i] == REP_SINGLE_QUOTE)
+		if (input[i] == REP_DOUBLE_QUOTE || input[i] == REP_SINGLE_QUOTE)
 			in_quotes = !in_quotes;
-		else if ((*input)[i] == ' ' && !in_quotes)
-			(*input)[i] = REP_SPACE;
+		else if (input[i] == ' ' && !in_quotes)
+			input[i] = REP_SPACE;
 		i++;
 	}
 }
 
-void	identify_and_replace_sq_tokens(char **input)
+static void replace_pa_tokens_in_literal(char *input)
+{
+	int		i;
+	bool	in_quotes;
+
+	i = 0;
+	in_quotes = false;
+	while (input && input[i])
+	{
+		if (input[i] == REP_DOUBLE_QUOTE || input[i] == REP_SINGLE_QUOTE)
+			in_quotes = !in_quotes;
+		if (in_quotes)
+		{
+			if (input[i] == '|')
+				input[i] = REP_PIPE;
+			else if (input[i] == '&')
+				input[i] = REP_AND;
+		}
+		i++;
+	}
+}
+
+void	identify_and_replace_sqpa_tokens(char *input)
 {
 	int idx;
 	char in_quotes;
@@ -68,7 +90,7 @@ void	identify_and_replace_sq_tokens(char **input)
 	idx = 0;
 	in_quotes = '\0';
 	ft_memset(occurrence, -1, 8);
-	identify_idx_of_occurrences((*input), &in_quotes, occurrence, &idx);
+	identify_idx_of_occurrences(input, &in_quotes, occurrence, &idx);
 	while (occurrence[0] != -1 && occurrence[1] != -1)
 	{
 		if (in_quotes == '\'')
@@ -76,11 +98,12 @@ void	identify_and_replace_sq_tokens(char **input)
 		else if (in_quotes == '"')
 			tag = REP_DOUBLE_QUOTE;
 
-		(*input)[occurrence[0]] = tag;
-		(*input)[occurrence[1]] = tag;
+		input[occurrence[0]] = tag;
+		input[occurrence[1]] = tag;
 		in_quotes = '\0';
 		ft_memset(occurrence, -1, 8);
-		identify_idx_of_occurrences((*input), &in_quotes, occurrence, &idx);
+		identify_idx_of_occurrences(input, &in_quotes, occurrence, &idx);
 	}
 	replace_non_literal_spaces(input);
+	replace_pa_tokens_in_literal(input);
 }

@@ -6,25 +6,25 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/20 16:09:39 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/23 23:30:06 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 static bool verify_and_prepare_input(t_shell *data)
 {
 
 	if (data->readline && *data->readline)
 		add_history(data->readline);
-	if (ft_strlen(data->readline) == 0 || all_same_char(data->readline, ' '))
+	identify_and_replace_sqpa_tokens(data->readline);
+	if (ft_strlen(data->readline) == 0 || all_same_char(data->readline, REP_SPACE))
 	{
 		free_pointers(1, &data->readline);
 		printf("\n");
 		return (false);
 	}
-	if (parsing_syntax(data->readline) == -1)
+	if (parsing_syntax(data) == -1)
 		return (false);
 	if (init_command(data->readline) == -1)
 		return (false);
@@ -37,13 +37,15 @@ int	main_shell_loop(t_shell *data)
 
 	while (true)
 	{
-		data->readline = readline("[Chitãozinho&Xororó@localhost ~]$ ");
+		data->readline = readline(PROMPT);
 		if (!data->readline || ft_strcmp("exit", data->readline) == CMP_OK)
             return (printf("exit\n"), 0);
 		if (verify_and_prepare_input(data) == false)
 			handle_error();
-		if (data->command)
+		else if (data->command || data->eof)
+		{
 			run_commands(data);
+		}
 		refresh_shell_data(data);
 	}
 	return (0);

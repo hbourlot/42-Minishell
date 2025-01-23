@@ -1,27 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   &&.c                                               :+:      :+:    :+:   */
+/*   syntax_quotes_matching.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/19 18:05:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/21 21:14:51 by hbourlot         ###   ########.fr       */
+/*   Created: 2025/01/22 16:29:40 by hbourlot          #+#    #+#             */
+/*   Updated: 2025/01/22 20:38:24 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+# include "minishell.h"
 
-int	handle_and(t_cmd *command, pid_t *pid, int *pipe_id, int *prev_fd)
+bool is_quotes_maching(char *input)
 {
-	if (command->next && command->next->next && do_pipe(pipe_id))
+	int	i;
+	bool in_quotes;
+
+	i = 0;
+	in_quotes = false;
+	while (input[i])
 	{
-		// ? ERROR case from do_pipe();
+		if (input[i] == REP_DOUBLE_QUOTE || input[i] == REP_SINGLE_QUOTE)
+			in_quotes = !in_quotes;
+		if (!in_quotes && input[i] == '"' || input[i] == '\'')
+		{
+			set_error_initialize(1, "Opened quotes", __func__, false);
+			return (false);
+		}
+		i++;
 	}
-	if (do_fork(pid))
-		return (-1);
-	else if (*pid == 0)
-	{
-		do_dup2(&command->fd_in, &command->fd_out, pipe_id, prev_fd);
-	}
+	return (true);
 }

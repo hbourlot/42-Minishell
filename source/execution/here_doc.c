@@ -6,78 +6,11 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 16:33:36 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/23 23:33:32 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// static int	cleanup_and_exit(char *text, int error_code)
-// {
-// 	if (text)
-// 		free(text);
-// 	write(1, "\n", 1);
-// 	return (error_code);
-// }
-
-// static int	here_doc(char **eof, int fd)
-// {
-// 	int		i;
-// 	char	*text;
-// 	char	*limiter;
-
-// 	i = 0;
-// 	while (eof && eof[i])
-// 	{
-// 		limiter = eof[i];
-// 		while (true)
-// 		{
-// 			ft_putstr_fd("> ", STDOUT_FILENO);
-// 			text = get_next_line(STDIN_FILENO);
-// 			if (!text)
-// 				return (-1);
-// 			if (ft_strcmp(limiter, text) == CMP_OK)
-// 				break ;
-// 			if (ft_strlen(text) == 0) // TODO: CTRL + D: bash: warning: here-document at line 10 delimited by end-of-file (wanted `EOF')
-// 				return (free(text), -1);
-// 			if (!ft_strchr(text, '\n') && !ft_strncmp(text, limiter, ft_strlen(text)
-// 					- 1))
-// 				return (free(text), -1);
-// 			ft_putstr_fd(text, fd);
-// 			free(text);
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-// int	run_eof(t_cmd *command, int *pipe_id, int *prev_fd)
-// {
-// 	if (pipe_id[0] != -1)
-// 	{
-// 		printf("FECHEI PIPE_ID[0]\n");
-// 		close(pipe_id[0]);
-// 	}
-// 	here_doc(command->settings.eof, pipe_id[1]);
-// 	close(pipe_id[1]);
-// 	// Dont know what to do
-// 	return (0);
-// }
-
-
-//* typedef struct s_pipe_info
-//* {
-//* 	int				pipe_id[2];
-//* 	int				prev_fd;
-//* }					t_pipe_info;
-
-//* typedef struct s_process_info
-//* {
-//* 	int				wait;
-//* 	int				w_status;
-//* 	pid_t			pid;
-//* }					t_process_info;
-
 
 
 static int	cleanup_and_exit(char *text, int error_code)
@@ -103,37 +36,44 @@ int	here_doc(int *pipe_id, char *limiter)
 			return (cleanup_and_exit(text, -1));
 		if (!ft_strchr(text, '\n') && !ft_strncmp(text, limiter, ft_strlen(text)
 				- 1))
-			return (cleanup_and_exit(text, -1));
+				return (cleanup_and_exit(text, -1));
 		ft_putstr_fd(text, pipe_id[1]);
 		free(text);
 	}
 	return (cleanup_and_exit(text, 0));
 }
 
-static void	handle_child_process(int *pipe_id, int *prev_fd)
+static void	handle_child_process(t_shell *data, int *pipe_id, int *prev_fd)
 {
 	int	i;
 
 	i = 0;
-	close(pipe_id[0]);
-	while (get_shell()->eof[i])
+	while (data->eof && data->eof[i])
 	{
+		for (int h = 0; data->eof[h]; h++)
+		{
+			ft_printf_error("eof[%d]:", h);;
+			for (int j = 0; data->eof[i][j]; j++)
+				ft_printf_error("(%c-%d)", data->eof[i][j], data->eof[i][j]);
+			ft_printf_error("\n");
+		}
 		if (here_doc(pipe_id, get_shell()->eof[i]) == -1)
 		{
 			close(pipe_id[1]);
-			perror("read_eof error.");
 			set_error_execution(1, "Failed", "here_doc", true);
 			handle_error();
 		}
 		i++;
 	}
-	write(1, "\n", 1);
+	if (!data->command) // TODO: Still need to make sure about it
+		write(1, "\n", 1);
+	close(pipe_id[0]);
 	close(pipe_id[1]);
-	cleanup_shell(get_shell());
+	cleanup_shell(data);
 	exit(EXIT_SUCCESS);
 }
 
-static void	handle_parent_process(int *pipe_id, pid_t *pid)
+static void	handle_parent_process(t_shell *data, int *pipe_id, pid_t *pid)
 {
 	pid_t	result;
 	int		wait_status;
@@ -153,8 +93,7 @@ int	run_eof(t_shell *data, int *pipe_id, int *prev_fd, pid_t *pid)
 	if (*pid == -1)
 		perror("Fork");
 	if (*pid == 0)
-		handle_child_process(pipe_id, prev_fd);
-	else
-		handle_parent_process(pipe_id, pid);
+		handle_child_process(data, pipe_id, prev_fd);
+	handle_parent_process(data, pipe_id, pid);
 	return (0);
 }

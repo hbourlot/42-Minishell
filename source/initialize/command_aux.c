@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/20 16:07:16 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/23 12:55:19 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,23 @@ static int initialize_command_struct(t_cmd **command, char *readline_splitted, t
 
 static int handle_file_tokens(t_shell *data, t_cmd *command, char *readline_splitted) // Todo: Prob i can remove the readline_splitted parameter here
 {
-    const char  *file_tokens[] = {">", ">>", "<", NULL};
+    const char  *file_tokens[] = {">>", ">", "<", NULL};
 
-    if (initialize_file_list(command->input, file_tokens, &command->redir_files) < 0 ||
-        strip_redirects(&command->input, file_tokens) < 0)
+    if (initialize_file_list(command->input, file_tokens, &command->redir_files))
     {
         set_error_initialize(1, "\"File Redirection\"", __func__, true);
-        return (ERROR);
+        return (-1);
     }
-    if (!command->input) // ? which means might only be files to open or here_doc
+    strip_redirects(command->input, file_tokens);
+    if (ft_strlen(command->input) == 0 || all_same_char(command->input, REP_SPACE))
         command->settings.only_tokens = true;
+    // debug_command_file_list(data);
     return (0);
 }
 
 static int	prepare_execve_parameters(t_cmd *command, t_shell *data)
 {
 	command->envp = data->envp;
-	identify_and_replace_sq_tokens(&command->input);
 	command->args = process_command_input(command->input);
     if (!command->args)
     {
@@ -93,3 +93,36 @@ int add_command(t_cmd **command, char *readline_splitted, t_shell *data, t_token
     }    
     return (SUCCESS);
 }
+
+// void process_eof_truncation(t_shell *data)
+// {
+//     int i;
+//     const char *to_compare[] = {"<<", ">>", "<", ">", "||", "|", "&&", " ", NULL};
+
+//     i = 0;
+//     skip_character_by_idx(data->readline, ' ', &i); // TODO: Maybe change this
+//     if (data->readline)
+//     {
+//         // printf("data->readline: \"%s\"\n", data->readline);
+//         if (ft_strncmp(&data->readline[i], "||", 2) == CMP_OK)
+//         {
+//             printf("trun 2\n");
+//             truncate_range(&data->readline, 0, i + 2);
+//         }
+//         else if (ft_strncmp(&data->readline[i], "|", 1) == CMP_OK)
+//         {
+//             printf("trun 1\n");
+//             truncate_range(&data->readline, 0, i + 1);
+//         }
+//         sort_strings_by_length_desc((char **)to_compare);
+//         i = 0;
+//         while (data->readline && data->readline[i])
+//         {
+//             if (ft_strcmps(&data->readline[i], to_compare) < 0)
+//                 return;
+//             i++;
+//         }
+//         free_pointers(1, &data->readline);
+//     }
+//     // printf("data->readline (apos): \"%s\"\n", data->readline);
+// }

@@ -9,7 +9,7 @@
 * [] Need to add header files into pre-dependence on Makefile 
 * [] Need to treat exit status
 * [] Nees to test exit status on here_doc
-*
+* [] Need to check file handle_folders, with error ze told on zap :)
 *
 *
 *
@@ -25,6 +25,12 @@
 *
 *
 */
+
+when i end with ^d
+hbourlot@c65c2c36c642:~/Projects/minishell_42$ << eof
+>
+bash: warning: here-document at line 10 delimited by end-of-file (wanted `eof')
+hbourlot@c65c2c36c642:~/Projects/minishell_42$
 
 
 // +---------------------------+
@@ -66,3 +72,18 @@
 // <
 // >
 // > file
+
+
+
+// TESTS
+// << eof
+// << eof "
+// << eof " |
+// << eof " | "
+// << eof " | " |
+// << eof " | " | ls
+// << eof |||
+// << eof | |
+// << eof + ^d
+/// << eof + ^d | ls
+// | |

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_pipe_redirects.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:21:13 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/14 15:29:44 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/23 00:33:00 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 bool	is_valid_file_and_here_doc_tokens(char *source)
 {
@@ -25,7 +26,8 @@ bool	is_valid_file_and_here_doc_tokens(char *source)
 		if (source && find_string_match(source, tokens, &idx) == OK)
 		{
 			source += ft_strlen(tokens[idx]);
-			skip_spaces(&source);
+			while (*source && *source == REP_SPACE)
+				source++;
 			if (find_string_match(source, pipe_tokens, &idx) == OK)
 				return (set_error_parsing(1, SYNTAX_ERROR_MSG,
 						(char *)pipe_tokens[idx], __func__), false);
@@ -55,9 +57,9 @@ static bool	is_first_pipe_token_valid(char *source, const char *tokens[])
 	length = tmp - source;
 	while (length && length--)
 	{
-		if (*source && *source == ' ')
+		if (*source && *source == REP_SPACE)
 			source++;
-		if (*source && *source != ' ')
+		if (*source && *source != REP_SPACE)
 			break ;
 	}
 	if (length)
@@ -90,10 +92,10 @@ bool	is_valid_pipe_tokens(char *source)
 			if (*source && ft_strcmps(source, pipe_tokens) == ERROR)
 				// If has and it's not another pipe
 				continue ;                                           
-					// Right case
+				// Right case
 			if (!*source)
 			{
-				get_shell()->it_ends_with_single_pipe = true;
+				get_shell()->it_ends_with_delimiter = true;
 				// TODO: might be here_doc, still need to parsing << |
 				printf("HERE_DOC TO append com command list\n");
 					// HERE_DOC CASE
