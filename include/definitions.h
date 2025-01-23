@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   definitions.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 16:51:22 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/22 22:36:32 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@
 # define ABS_PATH "PATH=/bin:/usr/bin:/usr/local/bin"
 # define SYNTAX_ERROR_MSG "bash: syntax error near unexpected token `"
 # define NO_FILE_DIR_MSG "No such file or directory"
+# define PROMPT "\033[1;32m[Chitãozinho&Xororó\033[1;31m@localhost ~]$ \033[0m"
+
+# define HASHMAP_SIZE 10
 
 // ***************************************************************************
 // **								STRUCTURES  							**
@@ -53,64 +56,78 @@ typedef enum e_token
 	REDIRECT_RIGHT_DOUBLE,
 	REDIRECT_LEFT_SINGLE,
 	REDIRECT_LEFT_DOUBLE
-}					t_token;
+}						t_token;
 
 typedef struct s_file
 {
-	char			*read;
-	char			*write;
-	t_token			redirect;
-	struct s_file	*next;
-}					t_file;
+	char				*read;
+	char				*write;
+	t_token				redirect;
+	struct s_file		*next;
+}						t_file;
 
 typedef struct s_rules
 {
-	char			**eof;
-	bool			or_next;
-	bool			expansion;
-	bool			only_tokens;
-	bool			builtin_echo;
-	bool			builtin_exit;
-}					t_rules;
+	char				**eof;
+	bool				or_next;
+	bool				expansion;
+	bool				only_tokens;
+	bool				builtin_echo;
+	bool				builtin_exit;
+}						t_rules;
 
 typedef struct s_cmd
 {
-	t_token			delimiter;
-	t_file			*redir_files;
-	char			*input;
-	char			*file;
-	int				fd_in;
-	int				fd_out;
-	char			**args;
-	char			*path;
-	char			**envp;
-	struct s_rules	settings;
-	struct s_cmd	*next;
-}					t_cmd;
+	t_token				delimiter;
+	t_file				*redir_files;
+	char				*input;
+	char				*file;
+	int					fd_in;
+	int					fd_out;
+	char				**args;
+	char				*path;
+	char				**envp;
+	struct s_rules		settings;
+	struct s_cmd		*next;
+}						t_cmd;
+
+typedef struct s_hashnode
+{
+	char				*key;
+	char				*value;
+	struct s_hashnode	*next;
+}						t_hashnode;
+
+typedef struct s_hashmap
+{
+	t_hashnode			*slots[HASHMAP_SIZE];
+	size_t				total_size;
+}						t_hashmap;
 
 typedef struct s_data
 {
-	bool			it_ends_with_single_pipe;
-	bool			it_ends_with_double_pipe;
-	bool			its_only_eof;
-	char			*readline;
-	char			**eof;
-	char			**readline_splitted;
-	char			**env_paths;
-	int				exit_status;
-	int				nbr_of_commands;
-	int				commands_ran;
-	t_cmd			*last_cmd_executed;
-	int				argc;
-	char			**argv;
-	char			**envp;
-	struct s_cmd	*command;
-}					t_shell;
+	bool				it_ends_with_single_pipe;
+	bool				it_ends_with_double_pipe;
+	bool				its_only_eof;
+	char				*readline;
+	char				**eof;
+	char				**readline_splitted;
+	char				**env_paths;
+	int					exit_status;
+	int					nbr_of_commands;
+	int					commands_ran;
+	t_cmd				*last_cmd_executed;
+	int					argc;
+	char				**argv;
+	char				**envp;
+	t_hashmap			*map;
+	struct s_cmd		*command;
+}						t_shell;
 
-typedef void		(*t_here_doc_handler)(t_shell *, t_cmd *);
-typedef void		(*t_builtin_handler)(t_shell *, t_cmd *);
-typedef void		(*t_command_executor)(t_shell *, t_cmd *);
-typedef int			(*t_access_check_function)(const char *path);
+typedef void			(*t_here_doc_handler)(t_shell *, t_cmd *);
+typedef void			(*t_builtin_handler)(t_shell *, t_cmd *);
+typedef void			(*t_command_executor)(t_shell *, t_cmd *);
+typedef int				(*t_access_check_function)(const char *path);
 
 #endif
 

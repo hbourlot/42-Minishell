@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   truncate_range.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 12:20:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/15 22:12:19 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/23 00:20:26 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,22 @@
 /// @param bytes The number of characters to remove. Must be non-negative 
 ///	and such that `start + n` does not exceed the length of the string.
 /// @return 0 on success, -1 if the parameters are invalid or out of bounds.
-int	truncate_range(char **src, int start, int bytes)
+int	truncate_range(char *src, int start, int bytes)
 {
 	int		length;
 	int		i;
 
-	if (!src || !*src || start < 0 || bytes < 0)
+	if (!src || start < 0 || bytes < 0)
 		return (-1);
-	length = ft_strlen(*src);
+	length = ft_strlen(src);
 	if (start >= length || (start + bytes) > length)
 		return (-1);
 	i = start;
 	while ((i + bytes) < length)
 	{
-		(*src)[i] = (*src)[i + bytes];
+		src[i] = src[i + bytes];
 		i++;
 	}
-	(*src)[length - bytes] = '\0';
+	src[length - bytes] = '\0';
 	return (0);
 }

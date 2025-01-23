@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 18:07:08 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/23 00:32:26 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ static int initialize_command_struct(t_cmd **command, char *readline_splitted, t
 static int handle_file_tokens(t_shell *data, t_cmd *command, char *readline_splitted) // Todo: Prob i can remove the readline_splitted parameter here
 {
     const char  *file_tokens[] = {">", ">>", "<", NULL};
-
-    if (initialize_file_list(command->input, file_tokens, &command->redir_files) < 0 ||
-        strip_redirects(&command->input, file_tokens) < 0)
+	sort_strings_by_length_desc(file_tokens);
+    if (initialize_file_list(command->input, file_tokens, &command->redir_files) < 0)
     {
         set_error_initialize(1, "\"File Redirection\"", __func__, true);
         return (ERROR);
     }
-    if (!command->input) // ? which means might only be files to open or here_doc
+	strip_redirects(command->input, file_tokens);
+    if (ft_strlen(command->input) == 0 || all_same_char(command->input, ' ') ) // ? which means might only be files to open or here_doc
         command->settings.only_tokens = true;
     return (0);
 }
@@ -93,3 +93,5 @@ int add_command(t_cmd **command, char *readline_splitted, t_shell *data, t_token
     }    
     return (SUCCESS);
 }
+
+ source/initialize/command.c source/initialize/command_aux.c

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 18:07:58 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/23 00:08:56 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,7 @@ static int handle_eof(t_shell *data)
         set_error_initialize(1, "\"EOF Redirection\"", __func__, true);
         return -1;
     }
-    if (strip_redirects(&data->readline, eof_token) < 0)
-    {
-        set_error_initialize(1, "\"Strip redirects\"", __func__, true);
-        return -1;
-    }
+  strip_redirects(data->readline, eof_token);
     if (there_no_more_command(data))
         free_pointers(1, &data->readline);
     return (0);
