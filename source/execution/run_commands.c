@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 18:15:50 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/26 21:44:01 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	close_resources(int exit_code, int *pipe_id, char *msg)
 
 static int	parent_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev_fd)
 {
+
 	data->commands_ran += 1;
 	data->last_cmd_executed = command;
 	if (command->next)
@@ -37,7 +38,7 @@ static int	parent_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev
 		close(*prev_fd);
 	if (command->next)
 		*prev_fd = pipe_id[0];
-	if (command->delimiter == PIPE_DOUBLE)
+	if (command->delimiter == PIPE_DOUBLE || command->delimiter == AND_DOUBLE)
 		return (1);
 	return (0);
 }
@@ -47,26 +48,20 @@ static int	parent_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev
 */
 static void	command_loop(t_shell *data, t_cmd *command, pid_t *pid)
 {
-	int		pipe_id[2];
-	int		prev_fd;
-
-	prev_fd = -1;
-	ft_memset(pipe_id, -1, sizeof(int) * 2);
 	if ((data->eof))
-		run_eof(data, pipe_id, &prev_fd, pid);
+		run_eof(data, data->pipe_id, &data->prev_fd, pid);
 	while (command)
 	{
 		// * Probably handle builting here
-		if (command->next && pipe(pipe_id) == -1)
+		if (command->next && pipe(data->pipe_id) == -1)
 			return (set_error_execution(1, "Pipe", NULL, false));
-		*pid = fork();
-		if (*pid < 0)
+		if (do_fork(pid))
 			return (set_error_execution(1, "Fork", NULL, false));
 		else if (*pid == 0)
-			child_process(data, command, pipe_id, &prev_fd);
+			child_process(data, command, data->pipe_id, &data->prev_fd);
 		else
 		{
-			if (parent_process(data, command, pipe_id, &prev_fd))
+			if (parent_process(data, command, data->pipe_id, &data->prev_fd))
 				break;
 			command = command->next;
 		}
@@ -81,6 +76,7 @@ static void	set_last_status(t_shell *data, pid_t *pid)
 	int		i;
 
 	i = 0;
+	prev_pid = 0;	
 	while (i < data->commands_ran)
 	{
 		*pid = waitpid(-1, &wait_status, 0);
@@ -96,12 +92,21 @@ void	run_commands(t_shell *data)
 {
 	pid_t	pid;
 
+	data->prev_fd = -1;
+	ft_memset(data->pipe_id, -1, sizeof(int) * 2);
 	command_loop(data, data->command, &pid);
 	while (data->nbr_of_commands != data->commands_ran)
 	{
 		set_last_status(data, &pid);
 		if (data->exit_status == 0)
+		{
+			if (print_command_on_terminal(data, &pid) < 0)
+			{
+				set_error_execution(1, "Read", NULL, 0);
+				handle_error();
+			}
 			return;
+		}
 		command_loop(data, data->last_cmd_executed->next, &pid);
 	}
 	set_last_status(data, &pid);

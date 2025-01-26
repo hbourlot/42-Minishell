@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 17:41:12 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/23 15:09:17 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ static void free_command(t_cmd **command)
 			free_split(tmp->args);
 		if (tmp->path)
 			free(tmp->path);
+		if (tmp->fd_in != -1) // TODO: DO I NEED??
+			close(tmp->fd_in);
+		if (tmp->fd_out != -1)
+			close(tmp->fd_out);
 		(*command) = (*command)->next;
 		free(tmp);
 	}
@@ -58,6 +62,7 @@ void	refresh_shell_data(t_shell *data)
 
 	data->commands_ran = 0;
 	data->nbr_of_commands = 0;
+	data->it_ends_with_delimiter = false;
 	if (data->eof)
 	{
 		free_split(data->eof);

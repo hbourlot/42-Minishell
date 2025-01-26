@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:56:36 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/15 23:27:10 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/23 00:34:08 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	main(void)
 	char	*tmp;
 
 	cmd.input = ft_strdup("'echo' -n -nnnnnnnn -n -n -nnnnnnnnnnnnnnn $PATH nnnn oi");
-	identify_and_replace_sq_tokens(&cmd.input);
+	identify_and_replace_sqpa_tokens(cmd.input);
 	if (is_echo_initialized(&cmd))
 	{
 		truncate_character(cmd.input, REP_SPACE);

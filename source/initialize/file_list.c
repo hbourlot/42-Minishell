@@ -6,94 +6,62 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 11:37:31 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/25 13:01:47 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	add_file(int mode, char *file_name, t_file **file_list, t_token redirect)
+static int add_file(char *input, int *position, t_token token, t_file **redir_files)
 {
+	t_file	*new;
 	t_file	*current;
-	t_file	*new_file;
+	char	*src;
 
-	if (!file_list || !file_name || !*file_name)
-		return (ERROR);
-	new_file = ft_calloc(1, sizeof(t_file));
-	if (!new_file)
+	new = ft_calloc(1, sizeof(t_file));
+	if (!new)
 		return (-1);
-	if (mode == READ)
-		new_file->read = file_name;
-	else if (mode == WRITE)
-		new_file->write = file_name;
-	new_file->redirect = redirect;
-	if (!*file_list)
-		*file_list = new_file;
+	src = ft_substr(input, position[0], position[1] - position[0]);
+	if (!src)
+		return (-1);
+    new->redirect = token;
+    if (token == REDIRECT_LEFT_SINGLE)
+        new->read = src;
+    else if (token == REDIRECT_RIGHT_SINGLE || token == REDIRECT_RIGHT_DOUBLE)
+        new->write = src;
+	current = *redir_files;
+	if (!current)
+		*redir_files = new;
 	else
 	{
-		current = *file_list;
 		while (current->next)
 			current = current->next;
-		current->next = new_file;
+		current->next = new;
 	}
-	return (SUCCESS);
-}
-
-static char	*get_file_name(char *src, const char *redirects[])
-{
-	int	i;
-
-	i = 0;
-	while (src && *src)
-	{
-		while (*src && *src == ' ' || ft_strcmps(&src[i], redirects) == CMP_OK)
-			src++;
-		while (src[i] && src[i] != ' ' && ft_strcmps(&src[i], redirects) < 0)
-			i++;
-		return (ft_substr(src, 0, i));
-	}
-	return (NULL);
-}
-
-static int handle_file_redirection(t_file **file_list, char **input_tmp, const char *redirects[], int mode)
-{
-	t_token redirect;
-	char		*file_name;
-
-	if (mode == READ)
-		redirect = REDIRECT_LEFT_SINGLE;
-	else
-		redirect = REDIRECT_RIGHT_SINGLE;
-	(*input_tmp)++;
-	if (mode == READ && **input_tmp == '<')
-		redirect = REDIRECT_LEFT_DOUBLE;
-	else if (mode == WRITE && **input_tmp == '>')
-		redirect = REDIRECT_RIGHT_DOUBLE;
-	file_name = get_file_name(*input_tmp, redirects);
-	if (!file_name || add_file(mode, file_name, file_list, redirect) == ERROR)
-	{
-		if (file_name)
-			free(file_name);
-		set_error_initialize(1, "Malloc", __func__, true);
-		return (ERROR);
-	}
-	return (SUCCESS);
+	return (0);
 }
 
 int	initialize_file_list(char *input, const char *redirects[], t_file **redir_files)
 {
-	char 			*file_name;
-	char			*input_tmp;
-	t_token 	redirect;
+	int		idx;
+	int		position[2];
+	t_token	token;
+	bool	in_quotes;
 
-	input_tmp = input;
-	while (input_tmp && *input_tmp)
+	in_quotes = false;
+	while (input && *input)
 	{
-		if (*input_tmp == '>' && handle_file_redirection(redir_files, &input_tmp, redirects, WRITE) == ERROR)
-			return (ERROR);
-		else if (*input_tmp == '<' && handle_file_redirection(redir_files, &input_tmp, redirects, READ) == ERROR)
-			return (ERROR);
-		input_tmp++;
+		if (*input && (*input == REP_DOUBLE_QUOTE || *input == REP_SINGLE_QUOTE))
+			in_quotes = !in_quotes;
+		else if (!in_quotes && find_string_match(input, redirects, &idx) == OK)
+		{
+			token = get_t_token(input, ft_strlen(redirects[idx]));
+			get_redirect_complement(input, &position[0], &position[1], ft_strlen(redirects[idx]));
+			if (add_file(input, position, token, redir_files) < 0)
+				return (-1);
+			input += ft_strlen(redirects[idx]);
+		}
+		input++;
 	}
-	return (SUCCESS);
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_folders.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 08:00:37 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/14 15:28:46 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/26 20:52:57 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	open_folders_safety(int *fd_in, int *fd_out, t_file *redir_files)
 			*fd_out = open(redir_files->write, O_CREAT | O_RDWR | O_TRUNC,
 					0644);
 			if (*fd_out < 0)
-				return (close(*fd_in), -1);
+				return (set_error_execution(1, "File Creation", NULL, true), -1);
 		}
 		else if (redir_files->redirect == REDIRECT_RIGHT_DOUBLE)
 			*fd_out = open(redir_files->write, O_CREAT | O_RDWR | O_APPEND,

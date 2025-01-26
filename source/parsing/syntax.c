@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 18:41:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 11:16:01 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/22 16:42:59 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,29 @@
 ///         and reports syntax errors.
 /// @param input The input string to parse.
 /// @return 0 if the input is valid; -1 if a syntax error is detected.
-int	parsing_syntax(char *input)
+int	parsing_syntax(t_shell *data)
 {
 	const char *pipe_tokens[] = {"||", "|", NULL};
 	const char *redirect_tokens[] = {"<<", ">>", ">", "<", NULL};
+	// int			fd_id[2];
 
-	if (is_valid_pipe_tokens(input) == false)
-		return (-1);
-	if (is_valid_file_and_here_doc_tokens(input) == false)
-		return (-1);
+	// fd_id[1] = STDOUT_FILENO;
+	if (is_valid_pipe_tokens(data->readline) == false || 
+		is_valid_file_and_here_doc_tokens(data->readline) == false ||
+		is_quotes_maching(data->readline) == false)
+		{
+			data->exit_status = 2;
+			return (-1);
+		}
+	
+	// if (data->it_ends_with_delimiter)
+	// {
+	// 	data->eof = ft_split(" ", ' ');
+	// 	if (!data->eof)
+	// 	{
+	// 		return (-1);
+	// 	}
+	// 	here_doc(fd_id, NULL);
+	// }
 	return (0);
 }
