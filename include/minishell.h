@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/23 21:38:50 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/26 21:03:06 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void		strip_redirects(char *input, const char *redirects[]);
 // ************************************************************************
 
 t_shell 	*get_shell();
-int			init_command(char *input);
+int			init_command(t_shell *data);
 int			main_shell_loop(t_shell *data);
 bool		 is_quotes_maching(char *input);
 char		**tokenize_element(char *element);
@@ -115,8 +115,8 @@ void 		debug_command_file_list(t_shell *data);
 void		restore_original_characters(char **src);
 void 		skip_character_by_idx(char *src, char c, int *i);
 void		skip_character_diff_by_idx(char *src, char c, int *i);
-void		get_redirect_complement(char *src, int *start, int *end);
 void		replace_characters(char *src, char to_take, char to_put);
+void		get_redirect_complement(char *src, int *start, int *end, int redirect_size);
 
 // ************************************************************************
 // **						BuiltIn										 **

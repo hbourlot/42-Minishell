@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/23 23:20:51 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/26 21:21:22 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static int split_command_input(t_shell *data, const char *delimiters[])
     data->readline_splitted = split_by_multiple_tokens(data->readline, delimiters);
     if (!data->readline_splitted)
         return (ERROR);
-    replace_characters(data->readline, REP_PIPE, '|');
-    replace_characters(data->readline, REP_AND, '&');
+    // replace_characters(data->readline, REP_PIPE, '|');
+    // replace_characters(data->readline, REP_AND, '&');
     return (SUCCESS);
 }
 
@@ -73,17 +73,14 @@ static int handle_eof(t_shell *data)
     return (0);
 }
 
-int init_command(char *input)
+int init_command(t_shell *data)
 {
-	const char  *delimiters[] = {"|", "||", "&&", NULL};
-    t_shell     *data;
-    sort_strings_by_length_desc((char **)delimiters);
+	const char  *delimiters[] = {"||", "|", "&&", NULL};
 
-	data = get_shell();
     if (handle_eof(data))
         return -1;
     if (data->readline && (split_command_input(data, delimiters) < 0 ||
         create_command_list(data, delimiters) < 0))
-            return -1;
-    return SUCCESS;
+            return -1;  
+    return (SUCCESS);
 }

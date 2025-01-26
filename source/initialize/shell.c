@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/23 23:30:06 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/26 21:02:56 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static bool verify_and_prepare_input(t_shell *data)
 	}
 	if (parsing_syntax(data) == -1)
 		return (false);
-	if (init_command(data->readline) == -1)
+	if (init_command(data) == -1)
 		return (false);
 	return (true);
 }

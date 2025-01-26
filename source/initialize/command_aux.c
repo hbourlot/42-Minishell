@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/23 12:55:19 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/26 21:17:26 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static int handle_file_tokens(t_shell *data, t_cmd *command, char *readline_spli
     strip_redirects(command->input, file_tokens);
     if (ft_strlen(command->input) == 0 || all_same_char(command->input, REP_SPACE))
         command->settings.only_tokens = true;
-    // debug_command_file_list(data);
     return (0);
 }
 
@@ -73,11 +72,18 @@ static int	prepare_execve_parameters(t_cmd *command, t_shell *data)
 	return (SUCCESS);
 }
 
+void    replace_special_chars_in_literals(char *readline_splitted)
+{
+        replace_characters(readline_splitted, REP_AND, '&');
+        replace_characters(readline_splitted, REP_PIPE, '|');   
+}
+
 int add_command(t_cmd **command, char *readline_splitted, t_shell *data, t_token token_type)
 {
     t_cmd   dummy;
     t_cmd   *last_node;
     
+    replace_special_chars_in_literals(readline_splitted);
     if (initialize_command_struct(command, readline_splitted, token_type) < 0)
         return (ERROR);
 

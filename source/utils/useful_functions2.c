@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:33:57 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/23 22:09:01 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/25 12:25:05 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,17 @@ t_token get_t_token(char *src, size_t size)
 		return REDIRECT_RIGHT_SINGLE;
 	else if (ft_strncmp(src, ">>", size) == CMP_OK)
 		return REDIRECT_RIGHT_DOUBLE;
-	return (0);
+	return (-1);
 }
 
-void get_redirect_complement(char *src, int *start, int *end)
+void get_redirect_complement(char *src, int *start, int *end, int redirect_size)
 {
 	int		i;
 
 	i = 0;
+	if (!src)
+		return ;
+	i += redirect_size;
 	while (src[i] && src[i] == REP_SPACE)
 		i++;
 	if (src[i] && (src[i] == REP_SINGLE_QUOTE || src[i] == REP_DOUBLE_QUOTE))

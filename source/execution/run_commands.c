@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/22 15:22:07 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/26 21:44:01 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	parent_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev
 		close(*prev_fd);
 	if (command->next)
 		*prev_fd = pipe_id[0];
-	if (command->delimiter == PIPE_DOUBLE)
+	if (command->delimiter == PIPE_DOUBLE || command->delimiter == AND_DOUBLE)
 		return (1);
 	return (0);
 }
