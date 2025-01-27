@@ -6,26 +6,11 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/26 21:44:01 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/27 16:24:36 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*
- * I need to make some logic of error so i send the properly print message
- * and the properly error number but dont exit since the program needs to
- * keep working
- */
-void	close_resources(int exit_code, int *pipe_id, char *msg)
-{
-	if (pipe_id[0] != 1)
-		close(pipe_id[0]);
-	if (pipe_id[1] != -1)
-		close(pipe_id[1]);
-	perror(msg);
-	exit(exit_code);
-}
 
 static int	parent_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev_fd)
 {
@@ -38,8 +23,10 @@ static int	parent_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev
 		close(*prev_fd);
 	if (command->next)
 		*prev_fd = pipe_id[0];
-	if (command->delimiter == PIPE_DOUBLE || command->delimiter == AND_DOUBLE)
+	if (command->delimiter == PIPE_DOUBLE)
 		return (1);
+	if (command->delimiter == AND_DOUBLE)
+		handle_double_and(data, command);
 	return (0);
 }
 
@@ -94,13 +81,13 @@ void	run_commands(t_shell *data)
 
 	data->prev_fd = -1;
 	ft_memset(data->pipe_id, -1, sizeof(int) * 2);
-	command_loop(data, data->command, &pid);
+	command_loop(data, data->command, &data->pid);
 	while (data->nbr_of_commands != data->commands_ran)
 	{
 		set_last_status(data, &pid);
 		if (data->exit_status == 0)
 		{
-			if (print_command_on_terminal(data, &pid) < 0)
+			if (print_command_on_terminal(data, &data->pid) < 0)
 			{
 				set_error_execution(1, "Read", NULL, 0);
 				handle_error();

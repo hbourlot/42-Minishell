@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/26 21:03:06 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/27 16:24:20 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int			do_fork(pid_t *pid);
 void		run_commands(t_shell *data);
 int			here_doc(int *pipe_id, char *limiter);
 char 		*get_path(char *input, char **env_paths);
+int			handle_double_and(t_shell *data, t_cmd *command);
 int			open_folder(char *file, t_cmd *command, bool here_doc);
 int			do_dup2(int *fd_in, int *fd_out,  int *pipe_id, int *prev_fd);
 int			run_eof(t_shell *data, int *pipe_id, int *prev_fd, pid_t *pid);
