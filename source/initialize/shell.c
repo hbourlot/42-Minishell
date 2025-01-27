@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/21 23:39:36 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/23 01:19:56 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static bool	verify_and_prepare_input(t_shell *data)
 {
-	if (/* ft_strlen(data->readline) == 0 || */ all_same_char(data->readline, ' '))
+	if (/* ft_strlen(data->readline) == 0 || */ all_same_char(data->readline,
+			' '))
 	{
 		free_pointers(1, &data->readline);
 		return (false);
@@ -34,12 +35,12 @@ int	main_shell_loop(t_shell *data)
 
 	while (true)
 	{
-		data->readline = readline("\033[1;32m[Chitãozinho&Xororó\033[1;31m@localhost ~]$ \033[0m");
+		data->readline = readline(PROMPT);
 		if (!data->readline || ft_strcmp("exit", data->readline) == CMP_OK)
 			return (printf("exit\n"), 0);
 		if (verify_and_prepare_input(data) == false)
 			handle_error();
-		if (data->command)
+		else if (data->command || data->eof)
 			run_commands(data);
 		refresh_shell_data(data);
 	}
@@ -53,7 +54,13 @@ t_shell	*init_shell(int argc, char *argv[], char *envp[])
 	data = get_shell();
 	data->argc = argc;
 	data->argv = argv;
-	data->envp = envp;
+	data->map = create_map();
+	if (import_env_to_hashmap(data->map, envp) == -1
+		|| hashmap_to_env_array(data, data->map) == -1)
+	{
+		cleanup_shell(data);
+		exit(EXIT_FAILURE);
+	}
 	if (initialize_environment_paths(data))
 	{
 		cleanup_shell(data);

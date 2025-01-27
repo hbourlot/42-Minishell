@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/23 00:01:38 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/25 18:03:15 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void		identify_and_replace_sq_tokens(char **input);
 bool		is_valid_file_and_here_doc_tokens(char *source);
 int			validate_file_read_execution(t_file *redir_files);
 int			validate_command_path_access(char *command_path);
-void	strip_redirects(char *input, const char *redirects[]);
+void		strip_redirects(char *input, const char *redirects[]);
 
 // ************************************************************************
 // **						Initialize Functions							**
@@ -67,6 +67,7 @@ void		hashmap_display(t_hashmap *map);
 void		hashmap_free(t_hashmap *map);
 int			hashmap_to_env_array(t_shell *data, t_hashmap *map);
 int			import_env_to_hashmap(t_hashmap *map, char *envp[]);
+int			update_envp_and_envpath(t_shell *data);
 
 // ************************************************************************
 // **						Execution Functions								**
@@ -112,6 +113,7 @@ void		setup_signals(void);
 // **						BuiltIn											**
 // ************************************************************************
 
-int			ft_cd(char **command_args);
+int			builtin_cd(t_shell *data,char **command_args);
+void		check_if_is_builtin(t_shell *data, t_cmd *last_node);
 
 #endif

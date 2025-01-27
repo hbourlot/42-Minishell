@@ -22,19 +22,19 @@ OS				= $(shell uname)
 MSG_MAC 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))%% ] $(ORANGE)Compiling... $<... $(RESET)"
 MSG_LINUX 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))% ] $(ORANGE)Compiling... $<... $(RESET)"
 NAME			= minishell
-C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redirects parsing/replace_sq_tokens 	\
+C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redirects parsing/replace_sq_tokens	\
 					parsing/command_token_execution	parsing/command_path_execution									\
-					 \
+																							             			\
 					initialize/command initialize/command_aux initialize/shell initialize/file_list 				\
 					 initialize/eof initialize/env_paths initialize/tokenize_element_aux 							\
 					 initialize/tokenize_variables_aux initialize/process_variables_aux 							\
-					 initialize/input_expansion																		\
-					 \
+					 initialize/input_expansion	initialize/hashmap initialize/hashmap_aux							\
+																							             			\
 					execution/run_commands execution/run_command_aux	 											\
 					execution/get_path execution/handle_folders execution/here_doc execution/child					\
-					\
-					builtin/validate_builtin	 builtin/cd																	\
-					\
+																													\
+					builtin/validate_builtin builtin/cd	/builtin/handler											\
+																													\
 					utils/shell_cleanup utils/debug utils/debug1 utils/error_tools utils/error_parsing				\
 					utils/error_initialize utils/error_execution utils/useful_functions utils/useful_functions2
 # -L./ -lminishell

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_cleanup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 17:41:12 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/23 01:16:36 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ void	free_files(t_file *file_list)
 	}
 }
 
-static void free_command(t_cmd **command)
+static void	free_command(t_cmd **command)
 {
-	t_cmd *tmp;
-	
+	t_cmd	*tmp;
+
 	while (command && *command)
 	{
 		tmp = *command;
@@ -91,6 +91,10 @@ void	cleanup_shell(t_shell *data)
 		free_split(data->eof);
 		data->eof = NULL;
 	}
+	if (data->map)
+		hashmap_free(data->map);
+	if (data->envp)
+		free_split(data->envp);
 	free_command(&data->command);
 	data->command = NULL;
 }

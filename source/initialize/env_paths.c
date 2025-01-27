@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 10:16:37 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 00:34:11 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/23 00:41:26 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // int	initialize_environment_paths(t_shell *data)
 // {
 // 	int			i;
-
+// 
 // 	i = 0;
 // 	if (!data->envp || !*data->envp)
 // 	{
@@ -32,7 +32,7 @@
 //             {
 // 				data->env_paths = ft_split(data->envp[i] + 5, ':');
 //                 if (!data->env_paths)
-//                     return (ERROR); 
+//                     return (ERROR);
 //             }
 // 			break ;
 // 		}
@@ -41,20 +41,20 @@
 //     return (SUCCESS);
 // }
 
-int    initialize_environment_paths(t_shell *data)
+int	initialize_environment_paths(t_shell *data)
 {
-    int        i;
-    char    *path;
+	int i;
+	char *path;
 
-    i = 0;
-    path = getenv("PATH");
-    if (!data->envp || !data->envp || !path)
-    {
-        data->env_paths = NULL;
-        return (SUCCESS);
-    }
-    data->env_paths = ft_split(path, ':');
-    if (!data->env_paths)
-        return (ERROR);
-    return (SUCCESS);
+	i = 0;
+	path = hashmap_search(data->map, "PATH");
+	if (!data->envp || !data->envp || !path)
+	{
+		data->env_paths = NULL;
+		return (SUCCESS);
+	}
+	data->env_paths = ft_split(path, ':');
+	if (!data->env_paths)
+		return (ERROR);
+	return (SUCCESS);
 }

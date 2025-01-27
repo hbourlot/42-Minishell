@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:59:00 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/21 23:39:31 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/23 14:43:24 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ static char	*expand_shell_variable(char *var_name)
 	}
 	else
 	{
-		temp = getenv(var_name + 1);
+		temp = hashmap_search(create_map(), var_name + 1);
 		expanded_value = ft_strtrim(temp, " ");
+		free(temp);
 	}
 	free(var_name);
 	if (!expanded_value)

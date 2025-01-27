@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/21 23:40:45 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/23 01:11:28 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	close_resources(int exit_code, int *pipe_id, char *msg)
 	exit(exit_code);
 }
 
-static int	parent_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev_fd)
+static int	parent_process(t_shell *data, t_cmd *command, int *pipe_id,
+		int *prev_fd)
 {
 	data->commands_ran += 1;
 	data->last_cmd_executed = command;
@@ -67,7 +68,7 @@ static void	command_loop(t_shell *data, t_cmd *command, pid_t *pid)
 		else
 		{
 			if (parent_process(data, command, pipe_id, &prev_fd))
-				break;
+				break ;
 			command = command->next;
 		}
 	}
@@ -81,6 +82,7 @@ static void	set_last_status(t_shell *data, pid_t *pid)
 	int		i;
 
 	i = 0;
+	prev_pid = 0;
 	while (i < data->commands_ran)
 	{
 		*pid = waitpid(-1, &wait_status, 0);
@@ -101,7 +103,7 @@ void	run_commands(t_shell *data)
 	{
 		set_last_status(data, &pid);
 		if (data->exit_status == 0)
-			return;
+			return ;
 		command_loop(data, data->last_cmd_executed->next, &pid);
 	}
 	set_last_status(data, &pid);

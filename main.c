@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/25 17:02:19 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/17 17:50:29 by joralves         ###   ########.fr       */
+/*   Created: 2025/01/22 15:58:02 by joralves          #+#    #+#             */
+/*   Updated: 2025/01/22 17:18:41 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,14 @@ void	sigint_heredoc_handler(int signal)
 }
 void	setup_signals(void)
 {
-	struct sigaction	sa;
-
-	sa.sa_handler = sigint_handler;
-	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
+	signal(SIGINT, &sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 }
 
 void	restore_signals(void)
 {
-	signal(SIGINT, sigint_heredoc_handler);
+	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	printf("SIGnal resotres\n");
 }
 
 // Todo: Need to fix case of cat then CTRL+C :  undefined behavior
