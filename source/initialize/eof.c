@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 10:46:44 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/26 20:53:02 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/27 15:08:55 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static int	allocate_eof(char **data_eof, char **data_readline, int *idx)
 	(*idx)++;
 	return (0);
 }
-
 
 int	initialize_eof(char *data_readline, char ***data_eof)
 {

@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   &&.c                                               :+:      :+:    :+:   */
+/*   double_and.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 18:05:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/21 21:14:51 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/27 16:26:02 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_and(t_cmd *command, pid_t *pid, int *pipe_id, int *prev_fd)
+int	handle_double_and(t_shell *data, t_cmd *command)
 {
-	if (command->next && command->next->next && do_pipe(pipe_id))
-	{
-		// ? ERROR case from do_pipe();
-	}
-	if (do_fork(pid))
+	if (do_fork(&data->pid))
 		return (-1);
-	else if (*pid == 0)
+	else if (data->pid == 0)
 	{
-		do_dup2(&command->fd_in, &command->fd_out, pipe_id, prev_fd);
+		child_process(data, command, data->pipe_id, &data->prev_fd);
 	}
+	
 }

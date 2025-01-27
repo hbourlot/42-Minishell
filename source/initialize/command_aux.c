@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/26 21:17:26 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/27 16:12:19 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ static int initialize_command_struct(t_cmd **command, char *readline_splitted, t
     new_command->fd_in = -1;
     new_command->fd_out = -1;
     new_command->next = NULL;
+    if (ft_strlen(readline_splitted) == 0 || all_same_char(readline_splitted, REP_SPACE))
+        new_command->settings.only_tokens = true;
     if (!(*command))
-    {
         *command = new_command;
-    }
     else
     {
         last = *command;
@@ -59,6 +59,7 @@ static int handle_file_tokens(t_shell *data, t_cmd *command, char *readline_spli
 static int	prepare_execve_parameters(t_cmd *command, t_shell *data)
 {
 	command->envp = data->envp;
+    
 	command->args = process_command_input(command->input);
     if (!command->args)
     {
@@ -78,6 +79,7 @@ void    replace_special_chars_in_literals(char *readline_splitted)
         replace_characters(readline_splitted, REP_PIPE, '|');   
 }
 
+
 int add_command(t_cmd **command, char *readline_splitted, t_shell *data, t_token token_type)
 {
     t_cmd   dummy;
@@ -86,49 +88,15 @@ int add_command(t_cmd **command, char *readline_splitted, t_shell *data, t_token
     replace_special_chars_in_literals(readline_splitted);
     if (initialize_command_struct(command, readline_splitted, token_type) < 0)
         return (ERROR);
-
     last_node = get_last_node(data->command, get_offset(&dummy, &dummy.next));
-    
+
     if (handle_file_tokens(data, last_node, readline_splitted) < 0)
         return (ERROR);
     
-    if ((*command)->settings.only_tokens == false)
+    if (last_node->settings.only_tokens == false)
     {
         if (prepare_execve_parameters(last_node, data) < 0)
             return (ERROR);
     }    
     return (SUCCESS);
 }
-
-// void process_eof_truncation(t_shell *data)
-// {
-//     int i;
-//     const char *to_compare[] = {"<<", ">>", "<", ">", "||", "|", "&&", " ", NULL};
-
-//     i = 0;
-//     skip_character_by_idx(data->readline, ' ', &i); // TODO: Maybe change this
-//     if (data->readline)
-//     {
-//         // printf("data->readline: \"%s\"\n", data->readline);
-//         if (ft_strncmp(&data->readline[i], "||", 2) == CMP_OK)
-//         {
-//             printf("trun 2\n");
-//             truncate_range(&data->readline, 0, i + 2);
-//         }
-//         else if (ft_strncmp(&data->readline[i], "|", 1) == CMP_OK)
-//         {
-//             printf("trun 1\n");
-//             truncate_range(&data->readline, 0, i + 1);
-//         }
-//         sort_strings_by_length_desc((char **)to_compare);
-//         i = 0;
-//         while (data->readline && data->readline[i])
-//         {
-//             if (ft_strcmps(&data->readline[i], to_compare) < 0)
-//                 return;
-//             i++;
-//         }
-//         free_pointers(1, &data->readline);
-//     }
-//     // printf("data->readline (apos): \"%s\"\n", data->readline);
-// }
