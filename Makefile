@@ -33,7 +33,7 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redire
 					 \
 					execution/run_commands execution/run_command_aux	 											\
 					execution/get_path execution/handle_folders execution/here_doc execution/child					\
-					execution/or execution/double_and																			\
+					execution/double_pipe execution/double_and execution/parent	execution/utils								\
 					\
 					builtin/validate_builtin	 builtin/cd																	\
 					\

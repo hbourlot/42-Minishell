@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/27 16:24:20 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/28 21:29:22 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,18 @@ int			print_command_on_terminal(t_shell *data, pid_t *pid);
 // int			do_pipe(int *pipe_id);
 int			do_fork(pid_t *pid);
 void		run_commands(t_shell *data);
+void		set_last_status(t_shell *data);
+int			handle_double_pipe(t_shell *data);
 int			here_doc(int *pipe_id, char *limiter);
 char 		*get_path(char *input, char **env_paths);
-int			handle_double_and(t_shell *data, t_cmd *command);
+void		command_loop(t_shell *data, t_cmd *command);
+void		handle_double_and(t_shell *data, t_cmd *command);
 int			open_folder(char *file, t_cmd *command, bool here_doc);
 int			do_dup2(int *fd_in, int *fd_out,  int *pipe_id, int *prev_fd);
 int			run_eof(t_shell *data, int *pipe_id, int *prev_fd, pid_t *pid);
 int			open_folders_safety(int *fd_in, int *fd_out, t_file *redir_files);
 void		child_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev_fd);
+int			parent_process(t_shell *data, t_cmd *command);
 
 // ************************************************************************
 // **						Free Functions								 **

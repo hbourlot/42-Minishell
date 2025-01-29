@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/23 15:08:37 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:05:50 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ void	child_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev_fd)
 		cleanup_shell(data);
 		exit(EXIT_FAILURE);
 	}
-	if (is_safe_to_execute(command)) // Execute the command, in case might be only fds to open
+	// if (command->delimiter == AND_DOUBLE) // !!!!!
+	// 	execve(command->next->path, command->next->args, command->next->envp);
+	else if (is_safe_to_execute(command)) // Execute the command, in case might be only fds to open
 		execve(command->path, command->args, command->envp);
 	code = validate_command_path_access(command->path);
 	set_error_execution(code, NULL, NULL, true);
