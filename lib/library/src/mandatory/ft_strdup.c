@@ -6,11 +6,12 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:54:36 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/08 16:58:17 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/29 16:31:27 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
 // #define malloc(x) NULL
 
 /// @brief Copies the string src to dest including the null terminator.
@@ -39,6 +40,8 @@ char	*ft_strdup(const char *s)
 {
 	char	*dup;
 
+	if (!s)
+		return (NULL);
 	dup = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
 	if (!dup)
 		return (NULL);

@@ -33,7 +33,8 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redire
 					execution/run_commands execution/run_command_aux	 											\
 					execution/get_path execution/handle_folders execution/here_doc execution/child					\
 																													\
-					builtin/validate_builtin builtin/cd	/builtin/handler											\
+					builtin/cd builtin/echo builtin/env builtin/exit builtin/export builtin/handler builtin/pwd     \
+					builtin/unset builtin/validate_builtin															\
 																													\
 					utils/shell_cleanup utils/debug utils/debug1 utils/error_tools utils/error_parsing				\
 					utils/error_initialize utils/error_execution utils/useful_functions utils/useful_functions2

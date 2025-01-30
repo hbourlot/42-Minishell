@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/25 18:05:22 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:57:08 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,13 @@ typedef struct s_rules
 	bool				or_next;
 	bool				expansion;
 	bool				only_tokens;
-	// bool				builtin_echo;
 	bool				builtin_cd;
-	bool				builtin_export;
-	bool				builtin_display;
-	bool				builtin_unset;
+	bool				builtin_echo;
+	bool				builtin_env;
 	bool				builtin_exit;
+	bool				builtin_export;
+	bool				builtin_unset;
+	bool				builtin_pwd;
 }						t_rules;
 
 typedef struct s_cmd

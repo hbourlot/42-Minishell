@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/23 01:19:56 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/29 01:07:56 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main_shell_loop(t_shell *data)
 	while (true)
 	{
 		data->readline = readline(PROMPT);
-		if (!data->readline || ft_strcmp("exit", data->readline) == CMP_OK)
+		if (!data->readline)
 			return (printf("exit\n"), 0);
 		if (verify_and_prepare_input(data) == false)
 			handle_error();

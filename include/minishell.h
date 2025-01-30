@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/25 18:03:15 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/29 15:30:39 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,14 @@ void		setup_signals(void);
 // **						BuiltIn											**
 // ************************************************************************
 
-int			builtin_cd(t_shell *data,char **command_args);
-void		check_if_is_builtin(t_shell *data, t_cmd *last_node);
+void		builtin_pwd(t_shell *data);
+void		set_builtin_flag(t_cmd *last_node);
+void		builtin_exit(t_shell *data, t_cmd *cmd);
+int			builtin_cd(t_shell *data, char **command_args);
+void		builtin_env(t_shell *data, char **command_args);
+void		builtin_echo(t_shell *data, char **command_args);
+int			process_builtin(t_shell *data, t_cmd *last_node);
+int			builtin_unset(t_shell *data, char **command_args);
+int			builtin_export(t_shell *data, char **command_args);
 
 #endif

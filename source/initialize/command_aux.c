@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/25 18:07:14 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/29 01:11:41 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,21 +92,9 @@ int	add_command(t_cmd **command, char *readline_splitted, t_shell *data,
 			return (ERROR);
 	}
 	// !!!!!!!!! Flag built in
-	check_if_is_builtin(data, last_node);
+	set_builtin_flag(last_node);
 	//* To remove, just testing builtins
-	if (last_node->settings.builtin_cd)
-		builtin_cd(data, last_node->args);
-	if (last_node->settings.builtin_display)
-	{
-		hashmap_display(data->map);
-		// return (ERROR);
-	}
-	if (last_node->settings.builtin_export)
-		// call_function;
-		if (last_node->settings.builtin_unset)
-			// call_function;
-			if (last_node->settings.builtin_exit)
-				// call_function;
-				//* ↑↑↑↑↑↑↑↑↑↑↑↑
-				return (SUCCESS);
+	process_builtin(data, last_node);
+	//* ↑↑↑↑↑↑↑↑↑↑↑
+	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:48:06 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/25 18:12:47 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/29 16:32:04 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static t_hashnode	*find_node(t_hashmap *map, char *key)
 	return (NULL);
 }
 
-// Have to enter strings already allocated, its mandatory
 int	hashmap_insert(t_hashmap *map, char *key, char *value)
 {
 	size_t		index;
@@ -54,8 +53,7 @@ int	hashmap_insert(t_hashmap *map, char *key, char *value)
 	if (current)
 	{
 		free(current->value);
-		// free(key);
-		current->value = value;
+		current->value = ft_strdup(value);
 		if (!current->value)
 			return (-1);
 		return (0);
@@ -63,9 +61,13 @@ int	hashmap_insert(t_hashmap *map, char *key, char *value)
 	index = hash(key);
 	new_node = malloc(sizeof(t_hashnode));
 	if (!new_node)
-		return (free(key), free(value), -1);
-	new_node->key = key;
-	new_node->value = value;
+		return (/* free(key), free(value), */ -1);
+	new_node->key = ft_strdup(key);
+	new_node->value = ft_strdup(value);
+	if (!new_node->key)
+		return (free(new_node), -1);
+	if (!new_node->value && value)
+		return (free(new_node->key), free(new_node), -1);
 	new_node->next = map->slots[index];
 	map->slots[index] = new_node;
 	map->total_size += 1;
@@ -105,11 +107,13 @@ void	hashmap_delete(t_hashmap *map, char *key)
 				prev->next = current->next;
 			else
 				map->slots[index] = current->next;
+			free(current->key);
+			free(current->value);
 			free(current);
 			return ;
 		}
 		prev = current;
 		current = current->next;
 	}
-	printf("Key not found\n");
+	// printf("Key not found\n");
 }
