@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:38:12 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 15:34:00 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:02:46 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*get_path(char *command_str, char **env_paths)
 		set_error_initialize(1, "Malloc", __func__, true);
 		return (NULL);
 	}
-	if (!*env_paths || ft_strlen(executable) == 0)
+	if (!env_paths ||!*env_paths || ft_strlen(executable) == 0)
 		return (executable);
 	if (ft_strlen(executable) > 0 && ft_strchr(executable, '/'))
 		return (executable);

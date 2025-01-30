@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/26 21:02:56 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/30 15:46:50 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@ static bool verify_and_prepare_input(t_shell *data)
 	if (data->readline && *data->readline)
 		add_history(data->readline);
 	identify_and_replace_sqpa_tokens(data->readline);
-	if (ft_strlen(data->readline) == 0 || all_same_char(data->readline, REP_SPACE))
+	if (/* ft_strlen(data->readline) == 0 || */ all_same_char(data->readline, REP_SPACE))
 	{
 		free_pointers(1, &data->readline);
-		printf("\n");
 		return (false);
 	}
 	if (parsing_syntax(data) == -1)
@@ -53,12 +52,18 @@ int	main_shell_loop(t_shell *data)
 
 t_shell	*init_shell(int argc, char *argv[], char *envp[])
 {
-	t_shell *data;
+	t_shell	*data;
 
 	data = get_shell();
 	data->argc = argc;
 	data->argv = argv;
-	data->envp = envp;
+	data->map = create_map();
+	if (import_env_to_hashmap(data->map, envp) == -1
+		|| hashmap_to_env_array(data, data->map) == -1)
+	{
+		cleanup_shell(data);
+		exit(EXIT_FAILURE);
+	}
 	if (initialize_environment_paths(data))
 	{
 		cleanup_shell(data);
@@ -71,7 +76,7 @@ t_shell	*init_shell(int argc, char *argv[], char *envp[])
 /// @return A pointer to the singleton `t_shell` instance.
 t_shell	*get_shell(void)
 {
-	static t_shell	data;
+	static t_shell data;
 
 	return (&data);
 }

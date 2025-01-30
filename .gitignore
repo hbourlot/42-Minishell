@@ -16,3 +16,7 @@ lib/library/obj/
 .vscode/
 
 minishell
+file
+file*
+
+BACKUP/
