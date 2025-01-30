@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:52:16 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/30 17:34:00 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/30 20:57:14 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ int	import_env_to_hashmap(t_hashmap *map, char *envp[])
 	char	*delimeter;
 	size_t	len;
 	char	*key;
-	char	*value;
 
 	i = 0;
 	while (envp[i])

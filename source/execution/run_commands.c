@@ -3,38 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   run_commands.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 17:17:42 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/30 21:19:52 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool is_builtin(t_cmd *command)
+bool	is_builtin(t_cmd *command)
 {
-	bool		*builtin_flags[] = {&command->settings.builtin_cd,
-				&command->settings.builtin_export,
-				&command->settings.builtin_echo,
-				&command->settings.builtin_env,
-				&command->settings.builtin_unset,
-				&command->settings.builtin_exit,
-				&command->settings.builtin_pwd,
-				NULL};
-	int	i;
+	bool	*builtin_flags[] = {&command->settings.builtin_cd,
+			&command->settings.builtin_export, &command->settings.builtin_echo,
+			&command->settings.builtin_env, &command->settings.builtin_unset,
+			&command->settings.builtin_exit, &command->settings.builtin_pwd,
+			NULL};
+	int		i;
 
 	i = 0;
 	while (builtin_flags[i])
 	{
 		if (*builtin_flags[i])
-			return true;
+			return (true);
 		i++;
 	}
-	return false;
+	return (false);
 }
-
-
 
 void	command_loop(t_shell *data, t_cmd *command)
 {
@@ -49,7 +44,8 @@ void	command_loop(t_shell *data, t_cmd *command)
 			}
 			return ;
 		}
-		if (command->delimiter != AND_DOUBLE && command->next && pipe(data->pipe_id) == -1)
+		if (command->delimiter != AND_DOUBLE && command->next
+			&& pipe(data->pipe_id) == -1)
 			return (set_error_execution(1, "Pipe", NULL, false));
 		if (do_fork(&data->pid))
 			return (set_error_execution(1, "Fork", NULL, false));
@@ -58,7 +54,7 @@ void	command_loop(t_shell *data, t_cmd *command)
 		else
 		{
 			if (parent_process(data, command))
-				break;
+				break ;
 			command = command->next;
 		}
 	}
@@ -66,20 +62,18 @@ void	command_loop(t_shell *data, t_cmd *command)
 
 void	run_commands(t_shell *data)
 {
-
 	data->prev_fd = -1;
 	ft_memset(data->pipe_id, -1, sizeof(int) * 2);
 	if ((data->eof))
 		run_eof(data, data->pipe_id, &data->prev_fd, &data->pid);
 	command_loop(data, data->command);
-
-	if (data->last_cmd_executed 
+	if (data->last_cmd_executed
 		&& data->last_cmd_executed->delimiter == PIPE_DOUBLE)
 	{
 		if (handle_double_pipe(data))
 			return ;
 	}
-	else if (data->last_cmd_executed 
+	else if (data->last_cmd_executed
 		&& data->last_cmd_executed->delimiter == AND_DOUBLE)
 	{
 		handle_double_and(data, data->last_cmd_executed);

@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 15:37:26 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/30 20:59:58 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,10 @@ static int create_command_list(t_shell *data, const char *delimiters[])
 
 static int handle_eof(t_shell *data)
 {
-    int i;
     const char *eof_token[] = {"<<", NULL};
     const char  *delimiters_tokens[] = {"||", "|", NULL};
 
-    i = 0;
+    
     if (initialize_eof(data->readline, &data->eof) < 0)
     {
         set_error_initialize(1, "\"EOF_HERE_DOC\"", __func__, true);
