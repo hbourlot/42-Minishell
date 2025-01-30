@@ -3,32 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   run_commands.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/28 23:59:24 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:17:42 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+bool is_builtin(t_cmd *command)
+{
+	bool		*builtin_flags[] = {&command->settings.builtin_cd,
+				&command->settings.builtin_export,
+				&command->settings.builtin_echo,
+				&command->settings.builtin_env,
+				&command->settings.builtin_unset,
+				&command->settings.builtin_exit,
+				&command->settings.builtin_pwd,
+				NULL};
+	int	i;
 
-/* 
-	* Need to see how to capture the pid to send properly to the main run shell
-*/
+	i = 0;
+	while (builtin_flags[i])
+	{
+		if (*builtin_flags[i])
+			return true;
+		i++;
+	}
+	return false;
+}
+
+
+
 void	command_loop(t_shell *data, t_cmd *command)
 {
 	while (command)
 	{
-		// * Probably handle builting here
+		if (is_builtin(command) && !command->next && !command->redir_files)
+		{
+			if (process_builtin(data, command) < 0)
+			{
+				set_error_execution(1, "Malloc", NULL, true);
+				handle_error();
+			}
+			return ;
+		}
 		if (command->delimiter != AND_DOUBLE && command->next && pipe(data->pipe_id) == -1)
 			return (set_error_execution(1, "Pipe", NULL, false));
 		if (do_fork(&data->pid))
 			return (set_error_execution(1, "Fork", NULL, false));
 		else if (data->pid == 0)
-		{
 			child_process(data, command, data->pipe_id, &data->prev_fd);
-		}
 		else
 		{
 			if (parent_process(data, command))

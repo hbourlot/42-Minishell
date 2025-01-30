@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/28 16:05:50 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:16:13 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ static bool is_safe_to_execute(t_cmd *command)
 		return (false);
 	if (command->settings.expansion && ft_strlen(command->path) == 0)
 		return (false);
+	if (command->settings.is_builtin)
+		return (false);
 
 	return (true);
 }
@@ -44,7 +46,7 @@ void	child_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev_fd)
 	int	code;
 
 	if (command->settings.only_tokens)
-		execute_only_tokens(data, command); // Commands like: < file > file1 <file1 <file2
+		execute_only_tokens(data, command);
 	if (open_folders_safety(&command->fd_in, &command->fd_out, command->redir_files))
 		exit(handle_error());
 	if (do_dup2(&command->fd_in, &command->fd_out, pipe_id, prev_fd))
@@ -52,11 +54,15 @@ void	child_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev_fd)
 		cleanup_shell(data);
 		exit(EXIT_FAILURE);
 	}
-	// if (command->delimiter == AND_DOUBLE) // !!!!!
-	// 	execve(command->next->path, command->next->args, command->next->envp);
-	else if (is_safe_to_execute(command)) // Execute the command, in case might be only fds to open
+	if (is_safe_to_execute(command))
+	{
 		execve(command->path, command->args, command->envp);
-	code = validate_command_path_access(command->path);
-	set_error_execution(code, NULL, NULL, true);
-	handle_error();
+		code = validate_command_path_access(command->path);
+		set_error_execution(code, NULL, NULL, true);
+		handle_error();
+	}
+	if (command->settings.is_builtin)
+		process_builtin(data, command);
+	cleanup_shell(data);
+	exit(0);
 }

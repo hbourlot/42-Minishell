@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 15:40:53 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/30 16:24:54 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void		builtin_exit(t_shell *data, t_cmd *cmd);
 int			builtin_cd(t_shell *data, char **command_args);
 void		builtin_env(t_shell *data, char **command_args);
 void		builtin_echo(t_shell *data, char **command_args);
-int			process_builtin(t_shell *data, t_cmd *last_node);
+int			process_builtin(t_shell *data, t_cmd *command);
 int			builtin_unset(t_shell *data, char **command_args);
 int			builtin_export(t_shell *data, char **command_args);
 
