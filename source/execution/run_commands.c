@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_commands.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/27 16:24:36 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/30 15:36:40 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static int	parent_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev
 	return (0);
 }
 
-/* 
-	* Need to see how to capture the pid to send properly to the main run shell
-*/
+/*
+ * Need to see how to capture the pid to send properly to the main run shell
+ */
 static void	command_loop(t_shell *data, t_cmd *command, pid_t *pid)
 {
 	if ((data->eof))

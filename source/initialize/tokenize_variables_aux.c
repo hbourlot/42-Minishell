@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_variables_aux.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 01:12:19 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/16 15:28:44 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/17 16:48:27 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static int	token_count(char *src)
 			if (src[i] == '$' || src[i] == '?')
 				i++;
 			else
-				while (src[i] && src[i] != '$')
+				while ((src[i] && ft_isalnum(src[i]) && src[i] != '$')
+					|| src[i] == '_')
 					i++;
 		}
 		else
@@ -46,7 +47,7 @@ static int	extract_token(char *src, char **dest, int *i, int *idx)
 
 	start = *i;
 	(*i)++;
-	while (src[*i] && src[*i] != '$')
+	while ((src[*i] && ft_isalnum(src[*i]) && src[*i] != '$') || src[*i] == '_')
 		(*i)++;
 	dest[*idx] = ft_substr(src, start, *i - start);
 	if (!dest[*idx])
@@ -80,7 +81,7 @@ char	**tokenize_bash_variables(char *src)
 	while (src && src[i])
 	{
 		if (src[i] == '$' && (src[i + 1] == '$' || src[i + 1] == '?' || src[i
-					+ 1] == '\0'))
+				+ 1] == '\0'))
 		{
 			tokens[idx] = extract_special_token(src, &i);
 			if (!tokens[idx++])
