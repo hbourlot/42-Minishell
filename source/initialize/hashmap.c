@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hashmap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:48:06 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/30 16:35:16 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/31 18:28:46 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,19 +55,19 @@ int	hashmap_insert(t_hashmap *map, char *key, char *value)
 		free(current->value);
 		current->value = ft_strdup(value);
 		if (!current->value)
-			return (-1);
+			return (ERROR);
 		return (0);
 	}
 	index = hash(key);
 	new_node = malloc(sizeof(t_hashnode));
 	if (!new_node)
-		return (/* free(key), free(value), */ -1);
+		return (ERROR);
 	new_node->key = ft_strdup(key);
-	new_node->value = ft_strdup(value);
 	if (!new_node->key)
-		return (free(new_node), -1);
+		return (free(new_node), ERROR);
+	new_node->value = ft_strdup(value);
 	if (!new_node->value && value)
-		return (free(new_node->key), free(new_node), -1);
+		return (free(new_node->key), free(new_node), ERROR);
 	new_node->next = map->slots[index];
 	map->slots[index] = new_node;
 	map->total_size += 1;

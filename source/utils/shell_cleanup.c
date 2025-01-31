@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 21:26:12 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/31 17:55:41 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ void	cleanup_shell(t_shell *data)
 		free(data->readline);
 	if (data->readline_splitted)
 		free_split(data->readline_splitted);
-	if (data->env_paths)
-		free_split(data->env_paths);
 	if (data->eof)
 	{
 		free_split(data->eof);
@@ -99,6 +97,8 @@ void	cleanup_shell(t_shell *data)
 		hashmap_free(data->map);
 	if (data->envp)
 		free_split(data->envp);
+	if (data->env_paths)
+		free_split(data->env_paths);
 	free_command(&data->command);
 	data->command = NULL;
 }
