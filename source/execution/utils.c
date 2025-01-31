@@ -1,23 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/16 11:56:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/06/29 20:04:01 by hbourlot         ###   ########.fr       */
+/*   Created: 2025/01/28 10:23:56 by hbourlot          #+#    #+#             */
+/*   Updated: 2025/01/28 21:38:16 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-/// @brief Checks whether the character c is a 7-bit ASCII character (0 to 127).
-/// @param c The character to be checked.
-/// @return Returns 1 if c is a 7-bit ASCII character, otherwise returns 0.
-int	ft_isascii(int c)
+void	set_last_status(t_shell *data)
 {
-	if (c >= 0 && c <= 127)
-		return (1);
-	return (0);
+	int		status;
+	int		wait_status;
+	pid_t	prev_pid;
+	int		i;
+
+	i = 0;
+	prev_pid = 0;	
+	wait_status = 0;
+	while (i < data->commands_ran)
+	{
+		data->pid = waitpid(-1, &wait_status, 0);
+		if (WIFEXITED(wait_status) && data->pid > prev_pid)
+			status = WEXITSTATUS(wait_status);
+		prev_pid = data->pid;
+		i++;
+	}
+	data->exit_status = status;
 }

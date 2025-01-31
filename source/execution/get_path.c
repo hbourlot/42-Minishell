@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:38:12 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/28 16:02:46 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/30 20:56:58 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,7 @@ static char	*find_executable_path(char *executable, char **env_paths,
 char	*get_path(char *command_str, char **env_paths)
 {
 	char	*executable;
-	char	**command_splitted;
 	bool	only_executable;
-	int		i;
 	char	*path;
 
 	executable = NULL;

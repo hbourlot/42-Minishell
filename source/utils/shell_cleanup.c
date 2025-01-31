@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 15:38:59 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/30 21:26:12 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ static void	free_command(t_cmd **command)
 */
 void	refresh_shell_data(t_shell *data)
 {
-	t_cmd	*tmp;
-
+	// t_cmd	*tmp;
 	data->commands_ran = 0;
 	data->nbr_of_commands = 0;
 	data->it_ends_with_delimiter = false;
@@ -77,14 +76,14 @@ void	refresh_shell_data(t_shell *data)
 	}
 	free_command(&data->command);
 	data->command = NULL;
+	data->last_cmd_executed = NULL;
 }
 
 // * All the command->input comes from the data->input_splitted
 // * so just need to free input_splitted.
 void	cleanup_shell(t_shell *data)
 {
-	t_cmd	*tmp;
-
+	// t_cmd	*tmp;
 	if (data->readline)
 		free(data->readline);
 	if (data->readline_splitted)

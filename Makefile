@@ -7,7 +7,7 @@ CYAN 			= \033[1;36m
 RESET 			= \033[0m
 
 CC				= cc
-CFLAGS			= -g #-Wall  -Wextra #-Werror #-fsanitize=thread -g -pthread
+CFLAGS			= -g #-Wall -Wextra -Werror  -pthread #-fsanitize=address,undefined 
 LIB				= minishell.a
 INCLUDE 		= include/
 HEADER_MINI		= $(INCLUDE)minishell.h
@@ -25,17 +25,18 @@ NAME			= minishell
 C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redirects parsing/replace_sq_tokens 	\
 					parsing/command_token_execution	parsing/command_path_execution 									\
 					parsing/syntax_quotes_matching																	\
-					 \
+					 																								\
 					initialize/command initialize/command_aux initialize/shell initialize/file_list 				\
-					 initialize/eof initialize/env_paths initialize/tokenize_element_aux 							\
-					 initialize/tokenize_variables_aux initialize/process_variables_aux 							\
-					 initialize/input_expansion	initialize/hashmap initialize/hashmap_aux							\
+					initialize/eof initialize/env_paths initialize/tokenize_element_aux 							\
+					initialize/tokenize_variables_aux initialize/process_variables_aux 							\
+					initialize/input_expansion	initialize/hashmap initialize/hashmap_aux							\
 																							             			\
-					execution/run_commands execution/run_command_aux execution/double_and							\
-					execution/get_path execution/handle_folders execution/here_doc execution/child execution/or 	\
+					execution/double_pipe execution/double_and execution/parent	execution/utils						\
+					execution/get_path execution/handle_folders execution/here_doc execution/child					\
+					execution/run_commands execution/run_command_aux	 											\
 																													\
 					builtin/cd builtin/echo builtin/env builtin/exit builtin/export builtin/handler builtin/pwd     \
-					builtin/unset builtin/validate_builtin															\
+					builtin/unset																					\
 																													\
 					utils/shell_cleanup utils/debug utils/debug1 utils/error_tools utils/error_parsing				\
 					utils/error_initialize utils/error_execution utils/useful_functions utils/useful_functions2

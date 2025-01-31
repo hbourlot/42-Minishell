@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:58:02 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/30 15:45:21 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/30 20:53:18 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	sigint_handler(int signal)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line();
-		rl_replace_line("", 0);
+		// rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
@@ -44,7 +44,6 @@ void	restore_signals(void)
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_shell	*data;
-	char	*input;
 
 	setup_signals();
 	data = init_shell(argc, argv, envp);

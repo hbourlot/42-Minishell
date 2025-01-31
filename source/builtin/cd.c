@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:57:27 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/28 13:00:12 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:40:20 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,13 @@ static int	change_directory(t_shell *data, const char *dir)
 	if (!temp_cwd)
 		return (-1);
 	hashmap_insert(data->map, "OLDPWD", temp_cwd);
+	free(temp_cwd);
 	getcwd(cwd, PATH_MAX);
 	temp_cwd = ft_strdup(cwd);
 	if (!temp_cwd)
 		return (-1);
 	hashmap_insert(data->map, "PWD", temp_cwd);
+	free(temp_cwd);
 	if (hashmap_to_env_array(data, data->map) == -1)
 		return (-1);
 	return (0);

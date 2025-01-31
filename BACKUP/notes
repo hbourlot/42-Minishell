@@ -1,5 +1,0 @@
-
-
-[🆗] Prob find first how many pipes "|" i got on cmd_line and separate by how many t_cmd structure i'll have
-[🆗] Need to create a get the input and separate into *file[2] where 0 is READ 1 is WRITE and remove from it original input
-[] Need to treat exit code from execution (a builtin)
