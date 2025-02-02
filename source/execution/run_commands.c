@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 17:17:42 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 09:54:15 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,37 @@ bool is_builtin(t_cmd *command)
 	return false;
 }
 
+bool run_builting_separately(t_shell *data, t_cmd *command)
+{
+	bool 	cond_1;
+	bool	cond_2;
+	bool	cond_3;
+
+	cond_1 = data->nbr_of_commands == 2 && data->command->delimiter == AND_DOUBLE && !command->redir_files;
+	cond_2 = data->nbr_of_commands == 1 && !command->redir_files;
+	if ((cond_1 || cond_2) && is_builtin(command))
+	{
+		if (process_builtin(data, command) < 0)
+		{
+			set_error_execution(1, "Malloc", NULL, true);
+			handle_error();
+		}
+	
+		return true;
+	}
+	
+	return false;
+}
+
 
 
 void	command_loop(t_shell *data, t_cmd *command)
 {
 	while (command)
 	{
-		if (is_builtin(command) && !command->next && !command->redir_files)
+		if (run_builting_separately(data, command))
 		{
-			if (process_builtin(data, command) < 0)
-			{
-				set_error_execution(1, "Malloc", NULL, true);
-				handle_error();
-			}
+			ft_printf_error("command->path: %s\n", command->path);
 			return ;
 		}
 		if (command->delimiter != AND_DOUBLE && command->next && pipe(data->pipe_id) == -1)
@@ -54,10 +72,10 @@ void	command_loop(t_shell *data, t_cmd *command)
 		if (do_fork(&data->pid))
 			return (set_error_execution(1, "Fork", NULL, false));
 		else if (data->pid == 0)
-			child_process(data, command, data->pipe_id, &data->prev_fd);
+			child_process(data, command);
 		else
 		{
-			if (parent_process(data, command))
+			if (parent_process(data, &command))
 				break;
 			command = command->next;
 		}
@@ -66,23 +84,18 @@ void	command_loop(t_shell *data, t_cmd *command)
 
 void	run_commands(t_shell *data)
 {
+	pid_t	*pid;
 
 	data->prev_fd = -1;
 	ft_memset(data->pipe_id, -1, sizeof(int) * 2);
 	if ((data->eof))
-		run_eof(data, data->pipe_id, &data->prev_fd, &data->pid);
-	command_loop(data, data->command);
-
-	if (data->last_cmd_executed 
-		&& data->last_cmd_executed->delimiter == PIPE_DOUBLE)
-	{
-		if (handle_double_pipe(data))
+		if (run_eof(data, &data->pid))
+		{
 			return ;
-	}
-	else if (data->last_cmd_executed 
-		&& data->last_cmd_executed->delimiter == AND_DOUBLE)
-	{
-		handle_double_and(data, data->last_cmd_executed);
-	}
+		}
+	command_loop(data, data->command);
 	set_last_status(data);
 }
+
+
+// echo -n oi >> file && echo -n laele

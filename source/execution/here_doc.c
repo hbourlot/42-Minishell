@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 15:35:31 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 09:16:37 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,18 @@ int	here_doc(int *pipe_id, char *limiter)
 	return (cleanup_and_exit(text, 0));
 }
 
-static void	handle_child_process(t_shell *data, int *pipe_id, int *prev_fd)
+static void	handle_child_process(t_shell *data)
 {
 	int	i;
 
 	i = 0;
+	
+	handle_signals(data, 1);
 	while (data->eof && data->eof[i])
 	{
-		for (int h = 0; data->eof[h]; h++)
+		if (here_doc(data->pipe_id, data->eof[i]) == -1)
 		{
-			ft_printf_error("eof[%d]:", h);;
-			for (int j = 0; data->eof[i][j]; j++)
-				ft_printf_error("(%c-%d)", data->eof[i][j], data->eof[i][j]);
-			ft_printf_error("\n");
-		}
-		if (here_doc(pipe_id, get_shell()->eof[i]) == -1)
-		{
-			close(pipe_id[1]);
+			close(data->pipe_id[1]);
 			set_error_execution(1, "Failed", "here_doc", true);
 			handle_error();
 		}
@@ -67,33 +62,44 @@ static void	handle_child_process(t_shell *data, int *pipe_id, int *prev_fd)
 	}
 	if (!data->command) // TODO: Still need to make sure about it
 		write(1, "\n", 1);
-	close(pipe_id[0]);
-	close(pipe_id[1]);
+	close(data->pipe_id[0]);
+	close(data->pipe_id[1]);
 	cleanup_shell(data);
 	exit(EXIT_SUCCESS);
 }
 
-static void	handle_parent_process(t_shell *data, int *pipe_id, pid_t *pid)
+static int	handle_parent_process(t_shell *data, pid_t *pid)
 {
-	pid_t	result;
 	int		wait_status;
 	
-	close(pipe_id[0]);
-	result = waitpid(*pid, &wait_status, 0);
+	if (data->command)
+		data->prev_fd = data->pipe_id[0];
+	else
+		close(data->pipe_id[0]);
+	*pid = waitpid(-1, &wait_status, 0);
 	if (WIFEXITED(wait_status))
-		get_shell()->exit_status = WEXITSTATUS(wait_status);
-	close(pipe_id[1]);
+	{
+		data->exit_status = WEXITSTATUS(wait_status);
+		if (data->exit_status == 130)
+		{
+			setup_signals();
+			return -1;
+		}
+	}
+	close(data->pipe_id[1]);
+	return 0;
 }
 
-int	run_eof(t_shell *data, int *pipe_id, int *prev_fd, pid_t *pid)
+int	run_eof(t_shell *data, pid_t *pid)
 {
-	if (pipe(pipe_id) == -1)
+	if (pipe(data->pipe_id) == -1)
 		perror("Pipe");
 	*pid = fork();
 	if (*pid == -1)
 		perror("Fork");
 	if (*pid == 0)
-		handle_child_process(data, pipe_id, prev_fd);
-	handle_parent_process(data, pipe_id, pid);
+		handle_child_process(data);
+	if (handle_parent_process(data, pid))
+		return (-1);
 	return (0);
 }

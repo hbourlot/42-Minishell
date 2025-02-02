@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:48:06 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/30 16:35:16 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/01 18:27:38 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ int	hashmap_insert(t_hashmap *map, char *key, char *value)
 	if (!new_node)
 		return (/* free(key), free(value), */ -1);
 	new_node->key = ft_strdup(key);
-	new_node->value = ft_strdup(value);
+	if (!value)
+		new_node->value = NULL;
+	else
+		new_node->value = ft_strdup(value);
 	if (!new_node->key)
 		return (free(new_node), -1);
 	if (!new_node->value && value)

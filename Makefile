@@ -28,15 +28,17 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redire
 					 																								\
 					initialize/command initialize/command_aux initialize/shell initialize/file_list 				\
 					initialize/eof initialize/env_paths initialize/tokenize_element_aux 							\
-					initialize/tokenize_variables_aux initialize/process_variables_aux 							\
+					initialize/tokenize_variables_aux initialize/process_variables_aux 								\
 					initialize/input_expansion	initialize/hashmap initialize/hashmap_aux							\
 																							             			\
-					execution/double_pipe execution/double_and execution/parent	execution/utils						\
+					execution/parent	execution/utils																\
 					execution/get_path execution/handle_folders execution/here_doc execution/child					\
 					execution/run_commands execution/run_command_aux	 											\
 																													\
 					builtin/cd builtin/echo builtin/env builtin/exit builtin/export builtin/handler builtin/pwd     \
 					builtin/unset																					\
+																													\
+					signals/signal      																			\
 																													\
 					utils/shell_cleanup utils/debug utils/debug1 utils/error_tools utils/error_parsing				\
 					utils/error_initialize utils/error_execution utils/useful_functions utils/useful_functions2
