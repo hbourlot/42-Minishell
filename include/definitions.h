@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/01 20:59:12 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 14:12:34 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@
 
 typedef enum e_token
 {
+	NO_TOKEN,
 	PIPE_SINGLE,
 	PIPE_DOUBLE,
 	AND_DOUBLE,

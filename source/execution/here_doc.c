@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:13:29 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:31:32 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	handle_child_process(t_shell *data)
 		if (here_doc(data->pipe_id, data->eof[i]) == -1)
 		{
 			close(data->pipe_id[1]);
-			set_error_execution(1, "Failed", "here_doc", true);
+			set_error_ex(1, "Failed", "here_doc", true);
 			handle_error();
 		}
 		i++;

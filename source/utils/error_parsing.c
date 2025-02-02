@@ -6,13 +6,13 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 18:32:37 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/03 11:07:58 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 14:21:19 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_error_parsing(void)
+int	handle_error_pa(void)
 {
 	t_error	*error;
 	int		code;
@@ -33,7 +33,7 @@ int	handle_error_parsing(void)
 	return (code);
 }
 
-void	set_error_parsing(int code, char *syntax, char *token,
+void	set_error_pa(int code, char *syntax, char *token,
 		const char *function)
 {
 	t_error	*error;

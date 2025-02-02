@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	handle_error_execution(void)
+int	handle_error_ex(void)
 {
 	t_error	*error;
 	int		code;
@@ -26,7 +26,7 @@ int	handle_error_execution(void)
 	return (code);
 }
 
-void set_error_execution(int code, char *msg, const char *folder, bool exit)
+void set_error_ex(int code, char *msg, const char *folder, bool exit)
 {
 	t_error	*error;
 

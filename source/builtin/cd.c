@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:57:27 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/01 20:16:07 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 14:41:32 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	change_directory(t_shell *data, const char *dir)
 	getcwd(cwd, PATH_MAX);
 	if (chdir(dir) != 0)
 	{
-		printf("bash: cd: %s: Not a directory\n", dir);
+		ft_printf_error("bash: cd: %s: Not a directory\n", dir);
 		data->exit_status = 1;
 		return (1);
 	}

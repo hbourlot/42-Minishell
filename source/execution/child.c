@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 18:13:40 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:28:52 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	execute_only_tokens(t_shell *data, t_cmd *command)
 	// ! Pretty sure dont need to validate command_path_access since its only files to handle;
 	if (code_parsing)
 	{
-		set_error_execution(code_parsing, NULL, NULL, true);
+		set_error_ex(code_parsing, NULL, NULL, true);
 		cleanup_shell(data);
 		handle_error();
 	}
@@ -56,13 +56,24 @@ void	child_process(t_shell *data, t_cmd *command)
 	}
 	if (is_safe_to_execute(command))
 	{
+		// ft_printf_error("Am i here????\n");
 		execve(command->path, command->args, command->envp);
 		code = validate_command_path_access(command->path);
-		set_error_execution(code, NULL, NULL, true);
+		set_error_ex(code, NULL, NULL, true);
 		handle_error();
 	}
-	if (command->settings.is_builtin)
-		process_builtin(data, command);
+
+	// TODO: Added this part
+	if ((command->delimiter == PIPE_SINGLE && command->settings.is_builtin) 
+		|| command->redir_files)
+	{
+		if (process_builtin(data, command) < 0)
+		{
+			set_error_ex(1, "Malloc", NULL, true);
+			handle_error();
+		}
+	}
+	
 	cleanup_shell(data);
 	exit(0);
 }

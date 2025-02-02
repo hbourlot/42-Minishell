@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strip_redirects.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:51:28 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 15:38:53 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 20:12:44 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	strip_redirects(char *input, const char *tokens[])
 {
+	const char *all_tokens[] = {"||", "|", "&&", ">>", "<<", "<", ">", NULL};
 	int	start;
 	int	i;
 	int	idx;
@@ -31,7 +32,7 @@ void	strip_redirects(char *input, const char *tokens[])
 			i += ft_strlen(tokens[idx]);
 			while (input[i] && input[i] == REP_SPACE)
 				i++;
-			while (input[i] && input[i] != REP_SPACE)
+			while (input[i] && input[i] != REP_SPACE && find_string_match(&input[i], all_tokens, &idx) != OK)
 				i++;
 			truncate_range(input, start, i - start);
 			i = 0;

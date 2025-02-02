@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/25 13:01:47 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 20:13:51 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	initialize_file_list(char *input, const char *redirects[], t_file **redir_fi
 	int		position[2];
 	t_token	token;
 	bool	in_quotes;
-
 	in_quotes = false;
 	while (input && *input)
 	{
@@ -60,6 +59,7 @@ int	initialize_file_list(char *input, const char *redirects[], t_file **redir_fi
 			if (add_file(input, position, token, redir_files) < 0)
 				return (-1);
 			input += ft_strlen(redirects[idx]);
+			
 		}
 		input++;
 	}

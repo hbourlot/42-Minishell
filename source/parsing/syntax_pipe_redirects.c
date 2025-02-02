@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:21:13 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/23 00:33:00 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 14:21:19 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ bool	is_valid_file_and_here_doc_tokens(char *source)
 			while (*source && *source == REP_SPACE)
 				source++;
 			if (find_string_match(source, pipe_tokens, &idx) == OK)
-				return (set_error_parsing(1, SYNTAX_ERROR_MSG,
+				return (set_error_pa(1, SYNTAX_ERROR_MSG,
 						(char *)pipe_tokens[idx], __func__), false);
 			if (!*source)
-				return (set_error_parsing(1, SYNTAX_ERROR_MSG, "newline",
+				return (set_error_pa(1, SYNTAX_ERROR_MSG, "newline",
 						__func__), false);
 			if (find_string_match(source, tokens, &idx) == OK)
-				return (set_error_parsing(1, SYNTAX_ERROR_MSG,
+				return (set_error_pa(1, SYNTAX_ERROR_MSG,
 						(char *)tokens[idx], __func__), false);
 			else
 				continue ;
@@ -65,7 +65,7 @@ static bool	is_first_pipe_token_valid(char *source, const char *tokens[])
 	if (length)
 		return (true);
 	find_string_match(tmp, tokens, &idx);
-	set_error_parsing(1, SYNTAX_ERROR_MSG, (char *)tokens[idx], __func__);
+	set_error_pa(1, SYNTAX_ERROR_MSG, (char *)tokens[idx], __func__);
 	return (false);
 }
 
@@ -87,7 +87,7 @@ bool	is_valid_pipe_tokens(char *source)
 			skip_spaces(&source);
 			if (*source && find_string_match(source, pipe_tokens, &idx) == OK)
 				// If has and its another pipe ERROR CASE
-				return (set_error_parsing(2, SYNTAX_ERROR_MSG,
+				return (set_error_pa(2, SYNTAX_ERROR_MSG,
 						(char *)pipe_tokens[idx], __func__), false);
 			if (*source && ft_strcmps(source, pipe_tokens) == ERROR)
 				// If has and it's not another pipe

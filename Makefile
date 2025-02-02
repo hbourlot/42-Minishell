@@ -22,7 +22,7 @@ OS				= $(shell uname)
 MSG_MAC 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))%% ] $(ORANGE)Compiling... $<... $(RESET)"
 MSG_LINUX 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))% ] $(ORANGE)Compiling... $<... $(RESET)"
 NAME			= minishell
-C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redirects parsing/replace_sq_tokens 	\
+C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redirects parsing/replace_sqpa_tokens 	\
 					parsing/command_token_execution	parsing/command_path_execution 									\
 					parsing/syntax_quotes_matching																	\
 					 																								\
@@ -33,7 +33,7 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redire
 																							             			\
 					execution/parent	execution/utils																\
 					execution/get_path execution/handle_folders execution/here_doc execution/child					\
-					execution/run_commands execution/run_command_aux	 											\
+					execution/run_commands execution/child_aux	 											\
 																													\
 					builtin/cd builtin/echo builtin/env builtin/exit builtin/export builtin/handler builtin/pwd     \
 					builtin/unset																					\
