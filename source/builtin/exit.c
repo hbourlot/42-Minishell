@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:43:23 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 20:55:38 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:52:26 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@ static int	is_numeric(char *str)
 	return (1);
 }
 
-/// @brief Handles the `exit` built-in command to terminate the shell.
-/// @param data The shell structure containing environment and state.
-/// @param cmd The command structure with arguments for `exit`.
-/// @details Exits the shell, handling optional numeric exit codes.
-///          - If more than one argument is provided, sets `exit_status` to 1 and returns.
-///          - If a non-numeric argument is given, prints an error, cleans up, and exits with status 2.
-///          - Otherwise, exits with the provided numeric value or 0 if none is given.
+/// @brief Handles `exit` to terminate the shell.  
+/// @param data The shell structure with environment and state.  
+/// @param cmd The command structure with arguments.  
+/// @details Exits with an optional numeric code.  
+///          - Multiple args set `exit_status` to 1 and return.  
+///          - Non-numeric args print an error, clean up, and exit with 2.  
+///          - Otherwise, exits with the given code or 0.  
+
 void	builtin_exit(t_shell *data, t_cmd *cmd)
 {
 	int	len;

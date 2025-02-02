@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:11:13 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/31 17:38:59 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:54:36 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void	print_key_value(t_hashmap *map)
 		idx++;
 	}
 }
+
 static int	add_new_variable_on_hashmap(t_shell *data, char *command_arg)
 {
 	char	*value;
@@ -50,6 +51,11 @@ static int	add_new_variable_on_hashmap(t_shell *data, char *command_arg)
 	return (free(temp_key), 0);
 }
 
+/// @brief Handles the `export` command.
+/// @param data The shell structure.
+/// @param command_args The arguments array.
+/// @details Prints variables if no args are given. Otherwise, adds new ones
+///          and updates the environment. Returns 0 or ERROR.
 int	builtin_export(t_shell *data, char **command_args)
 {
 	int	idx;
