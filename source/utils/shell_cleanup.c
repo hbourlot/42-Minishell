@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/31 17:55:41 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 18:16:26 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,20 @@ static void	free_command(t_cmd **command)
 */
 void	refresh_shell_data(t_shell *data)
 {
-	// t_cmd	*tmp;
+	t_cmd	*tmp;
+
+	if (data->prev_fd != -1)
+		close(data->prev_fd);
+	if (data->pipe_id[0] != -1)
+		close(data->pipe_id[0]);
+	if (data->pipe_id[1] != -1)
+		close(data->pipe_id[1]);
+
 	data->commands_ran = 0;
 	data->nbr_of_commands = 0;
+	data->pid = -1;
 	data->it_ends_with_delimiter = false;
+	data->last_cmd_executed = NULL;
 	if (data->eof)
 	{
 		free_split(data->eof);

@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 16:52:36 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 18:13:40 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,22 @@ static bool	is_safe_to_execute(t_cmd *command)
 	return (true);
 }
 
-void	child_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev_fd)
+void	child_process(t_shell *data, t_cmd *command)
 {
 	int	code;
 
-	// default_signals();
 	if (command->settings.only_tokens)
 		execute_only_tokens(data, command);
 	if (open_folders_safety(&command->fd_in, &command->fd_out,
 			command->redir_files))
 		exit(handle_error());
-	if (do_dup2(&command->fd_in, &command->fd_out, pipe_id, prev_fd))
+	if (do_dup2(&command->fd_in, &command->fd_out, data->pipe_id, &data->prev_fd))
 	{
 		cleanup_shell(data);
 		exit(EXIT_FAILURE);
 	}
 	if (is_safe_to_execute(command))
 	{
-		restore_signals();
 		execve(command->path, command->args, command->envp);
 		code = validate_command_path_access(command->path);
 		set_error_execution(code, NULL, NULL, true);

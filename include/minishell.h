@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 17:15:41 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 18:12:53 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ t_hashmap	*create_map(void);
 int			hashmap_insert(t_hashmap *map, char *key, char *value);
 char		*hashmap_search(t_hashmap *map, char *key);
 void		hashmap_delete(t_hashmap *map, char *key);
-void		hashmap_display(t_hashmap *map);
 void		hashmap_free(t_hashmap *map);
 int			hashmap_to_env_array(t_shell *data, t_hashmap *map);
 int			import_env_to_hashmap(t_hashmap *map, char *envp[]);
@@ -78,22 +77,18 @@ int			update_envp_and_envpath(t_shell *data);
 
 int			print_command_on_terminal(t_shell *data, pid_t *pid);
 
-// int			do_pipe(int *pipe_id);
 int			do_fork(pid_t *pid);
 void		run_commands(t_shell *data);
 void		set_last_status(t_shell *data);
-int			handle_double_pipe(t_shell *data);
 int			here_doc(int *pipe_id, char *limiter);
 char		*get_path(char *input, char **env_paths);
 void		command_loop(t_shell *data, t_cmd *command);
-void		handle_double_and(t_shell *data, t_cmd *command);
-int			open_folder(char *file, t_cmd *command, bool here_doc);
 int			do_dup2(int *fd_in, int *fd_out, int *pipe_id, int *prev_fd);
-int			run_eof(t_shell *data, int *pipe_id, int *prev_fd, pid_t *pid);
+int			run_eof(t_shell *data, pid_t *pid);
 int			open_folders_safety(int *fd_in, int *fd_out, t_file *redir_files);
-void		child_process(t_shell *data, t_cmd *command, int *pipe_id,
-				int *prev_fd);
-int			parent_process(t_shell *data, t_cmd *command);
+void		child_process(t_shell *data, t_cmd *command);
+int			parent_process(t_shell *data, t_cmd **command_ref);
+
 
 // ************************************************************************
 // **						Free Functions									**
@@ -137,5 +132,19 @@ void		builtin_echo(t_shell *data, char **command_args);
 int			process_builtin(t_shell *data, t_cmd *command);
 int			builtin_unset(t_shell *data, char **command_args);
 int			builtin_export(t_shell *data, char **command_args);
+
+// ************************************************************************
+// **						Execution Functions								**
+// ************************************************************************
+
+void	restore_signals(void);
+void	setup_signals(void);
+void	sigint_heredoc_handler(int signal);
+void	sigint_handler(int signal);
+void	handle_signals(t_shell *data, int status);
+
+
+
+
 
 #endif

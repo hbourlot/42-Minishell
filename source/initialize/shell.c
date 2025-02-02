@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 17:53:06 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 18:16:08 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,7 @@ int	main_shell_loop(t_shell *data)
 		if (verify_and_prepare_input(data) == false)
 			handle_error();
 		else if (data->command || data->eof)
-		{
 			run_commands(data);
-		}
 		refresh_shell_data(data);
 	}
 	return (0);
@@ -57,7 +55,9 @@ t_shell	*init_shell(int argc, char *argv[], char *envp[])
 	data->argc = argc;
 	data->argv = argv;
 	data->map = create_map();
-	// data->last_cmd_executed = NULL;
+	data->pid = -1;
+	data->prev_fd = -1;
+	ft_memset(data->pipe_id, -1, 8);
 	if (import_env_to_hashmap(data->map, envp) == -1
 		|| hashmap_to_env_array(data, data->map) == -1)
 	{

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 12:00:01 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 16:54:22 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/01 18:44:51 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,3 @@ int	do_fork(pid_t *pid)
 		return (-1);
 	return (0);
 }
-
-
-// typedef enum e_token
-// {
-// 	PIPE_SINGLE,          // single pipe `|`
-// 	PIPE_DOUBLE,          // double pipe `||`
-// 	AND_SINGLE,           // single AND `&`
-// 	AND_DOUBLE,           // double AND `&&`
-// 	REDIRECT_RIGHT_SINGLE, // single right redirection `>`
-// 	REDIRECT_RIGHT_DOUBLE, // double right redirection `>>`
-// 	REDIRECT_LEFT_SINGLE,  // single left redirection `<`
-// 	REDIRECT_LEFT_DOUBLE   // double left redirection `<<`
-// }	t_token;

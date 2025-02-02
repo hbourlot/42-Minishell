@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   hashmap_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:52:16 by joralves          #+#    #+#             */
 /*   Updated: 2025/02/01 23:20:19 by joralves         ###   ########.fr       */
