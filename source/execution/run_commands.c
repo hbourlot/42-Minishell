@@ -3,98 +3,99 @@
 /*                                                        :::      ::::::::   */
 /*   run_commands.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 15:36:40 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 09:54:15 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	parent_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev_fd)
+bool is_builtin(t_cmd *command)
 {
+	bool		*builtin_flags[] = {&command->settings.builtin_cd,
+				&command->settings.builtin_export,
+				&command->settings.builtin_echo,
+				&command->settings.builtin_env,
+				&command->settings.builtin_unset,
+				&command->settings.builtin_exit,
+				&command->settings.builtin_pwd,
+				NULL};
+	int	i;
 
-	data->commands_ran += 1;
-	data->last_cmd_executed = command;
-	if (command->next)
-		close(pipe_id[1]);
-	if (*prev_fd != -1)
-		close(*prev_fd);
-	if (command->next)
-		*prev_fd = pipe_id[0];
-	if (command->delimiter == PIPE_DOUBLE)
-		return (1);
-	if (command->delimiter == AND_DOUBLE)
-		handle_double_and(data, command);
-	return (0);
+	i = 0;
+	while (builtin_flags[i])
+	{
+		if (*builtin_flags[i])
+			return true;
+		i++;
+	}
+	return false;
 }
 
-/*
- * Need to see how to capture the pid to send properly to the main run shell
- */
-static void	command_loop(t_shell *data, t_cmd *command, pid_t *pid)
+bool run_builting_separately(t_shell *data, t_cmd *command)
 {
-	if ((data->eof))
-		run_eof(data, data->pipe_id, &data->prev_fd, pid);
+	bool 	cond_1;
+	bool	cond_2;
+	bool	cond_3;
+
+	cond_1 = data->nbr_of_commands == 2 && data->command->delimiter == AND_DOUBLE && !command->redir_files;
+	cond_2 = data->nbr_of_commands == 1 && !command->redir_files;
+	if ((cond_1 || cond_2) && is_builtin(command))
+	{
+		if (process_builtin(data, command) < 0)
+		{
+			set_error_execution(1, "Malloc", NULL, true);
+			handle_error();
+		}
+	
+		return true;
+	}
+	
+	return false;
+}
+
+
+
+void	command_loop(t_shell *data, t_cmd *command)
+{
 	while (command)
 	{
-		// * Probably handle builting here
-		if (command->next && pipe(data->pipe_id) == -1)
+		if (run_builting_separately(data, command))
+		{
+			ft_printf_error("command->path: %s\n", command->path);
+			return ;
+		}
+		if (command->delimiter != AND_DOUBLE && command->next && pipe(data->pipe_id) == -1)
 			return (set_error_execution(1, "Pipe", NULL, false));
-		if (do_fork(pid))
+		if (do_fork(&data->pid))
 			return (set_error_execution(1, "Fork", NULL, false));
-		else if (*pid == 0)
-			child_process(data, command, data->pipe_id, &data->prev_fd);
+		else if (data->pid == 0)
+			child_process(data, command);
 		else
 		{
-			if (parent_process(data, command, data->pipe_id, &data->prev_fd))
+			if (parent_process(data, &command))
 				break;
 			command = command->next;
 		}
 	}
 }
 
-static void	set_last_status(t_shell *data, pid_t *pid)
-{
-	int		status;
-	int		wait_status;
-	pid_t	prev_pid;
-	int		i;
-
-	i = 0;
-	prev_pid = 0;	
-	while (i < data->commands_ran)
-	{
-		*pid = waitpid(-1, &wait_status, 0);
-		if (WIFEXITED(wait_status) && *pid > prev_pid)
-			status = WEXITSTATUS(wait_status);
-		prev_pid = *pid;
-		i++;
-	}
-	data->exit_status = status;
-}
-
 void	run_commands(t_shell *data)
 {
-	pid_t	pid;
+	pid_t	*pid;
 
 	data->prev_fd = -1;
 	ft_memset(data->pipe_id, -1, sizeof(int) * 2);
-	command_loop(data, data->command, &data->pid);
-	while (data->nbr_of_commands != data->commands_ran)
-	{
-		set_last_status(data, &pid);
-		if (data->exit_status == 0)
+	if ((data->eof))
+		if (run_eof(data, &data->pid))
 		{
-			if (print_command_on_terminal(data, &data->pid) < 0)
-			{
-				set_error_execution(1, "Read", NULL, 0);
-				handle_error();
-			}
-			return;
+			return ;
 		}
-		command_loop(data, data->last_cmd_executed->next, &pid);
-	}
-	set_last_status(data, &pid);
+	command_loop(data, data->command);
+	set_last_status(data);
 }
+
+
+// echo -n oi >> file && echo -n laele

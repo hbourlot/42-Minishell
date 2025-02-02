@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   definitions.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 15:45:00 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/01 20:59:12 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_rules
 	bool				or_next;
 	bool				expansion;
 	bool				only_tokens;
+	bool				is_builtin;
 	bool				builtin_cd;
 	bool				builtin_echo;
 	bool				builtin_env;
@@ -115,8 +116,7 @@ typedef struct s_hashmap
 typedef struct s_data
 {
 	bool				it_ends_with_delimiter;
-	bool				its_only_eof;
-	// bool				it_ends_with_double_pipe;
+	// bool				its_only_eof;
 	pid_t				pid;
 	int					pipe_id[2];
 	int					prev_fd;
@@ -139,6 +139,7 @@ typedef void			(*t_here_doc_handler)(t_shell *, t_cmd *);
 typedef void			(*t_builtin_handler)(t_shell *, t_cmd *);
 typedef void			(*t_command_executor)(t_shell *, t_cmd *);
 typedef int				(*t_access_check_function)(const char *path);
+typedef int				(*t_executer_handler)(t_shell *, t_cmd *);
 
 #endif
 

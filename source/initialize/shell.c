@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 15:46:50 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/01 23:10:15 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ int	main_shell_loop(t_shell *data)
 		if (verify_and_prepare_input(data) == false)
 			handle_error();
 		else if (data->command || data->eof)
-		{
 			run_commands(data);
-		}
 		refresh_shell_data(data);
 	}
 	return (0);
@@ -58,6 +56,9 @@ t_shell	*init_shell(int argc, char *argv[], char *envp[])
 	data->argc = argc;
 	data->argv = argv;
 	data->map = create_map();
+	data->pid = -1;
+	data->prev_fd = -1;
+	ft_memset(data->pipe_id, -1, 8);
 	if (import_env_to_hashmap(data->map, envp) == -1
 		|| hashmap_to_env_array(data, data->map) == -1)
 	{

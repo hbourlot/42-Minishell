@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hashmap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:48:06 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/29 16:32:04 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/01 18:27:38 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static t_hashnode	*find_node(t_hashmap *map, char *key)
 	current = map->slots[index];
 	while (current)
 	{
-		if (strcmp(current->key, key) == 0)
+		if (ft_strcmp(current->key, key) == 0)
 			return (current);
 		current = current->next;
 	}
@@ -63,7 +63,10 @@ int	hashmap_insert(t_hashmap *map, char *key, char *value)
 	if (!new_node)
 		return (/* free(key), free(value), */ -1);
 	new_node->key = ft_strdup(key);
-	new_node->value = ft_strdup(value);
+	if (!value)
+		new_node->value = NULL;
+	else
+		new_node->value = ft_strdup(value);
 	if (!new_node->key)
 		return (free(new_node), -1);
 	if (!new_node->value && value)
@@ -83,7 +86,7 @@ char	*hashmap_search(t_hashmap *map, char *key)
 	current = map->slots[index];
 	while (current)
 	{
-		if (strcmp(current->key, key) == 0)
+		if (ft_strcmp(current->key, key) == 0)
 			return (current->value);
 		current = current->next;
 	}
@@ -115,5 +118,4 @@ void	hashmap_delete(t_hashmap *map, char *key)
 		prev = current;
 		current = current->next;
 	}
-	// printf("Key not found\n");
 }

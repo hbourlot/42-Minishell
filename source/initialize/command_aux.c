@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 15:52:22 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/01 21:06:33 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,6 @@ int	add_command(t_cmd **command, char *readline_splitted, t_shell *data,
 		if (prepare_execve_parameters(last_node, data) < 0)
 			return (ERROR);
 	}
-	set_builtin_flag(last_node);
-	// !! Builtin Test
-	process_builtin(data, last_node);
-	//! remove ↑
+	// set_builtin_flag(last_node);
 	return (SUCCESS);
 }
