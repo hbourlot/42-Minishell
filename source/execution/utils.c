@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:23:56 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:30:03 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:42:09 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	set_last_status(t_shell *data)
 	int		wait_status;
 	pid_t	prev_pid;
 	int		i;
-	int		sig;
 
 	i = 0;
 	prev_pid = 0;
@@ -48,7 +47,6 @@ void	set_last_status(t_shell *data)
 		prev_pid = data->pid;
 		i++;
 	}
-
 	data->exit_status = status;
 }
 
@@ -60,13 +58,6 @@ int	do_fork(pid_t *pid)
 	return (0);
 }
 
-
-
-
-
-
-
-
 // bool	there_is_command_single_pipe(t_shell *data)
 // {
 // 	t_cmd *current;
@@ -74,12 +65,12 @@ int	do_fork(pid_t *pid)
 // 	current = data->command;
 
 // 	if (data->nbr_of_commands == 1)
-// 		return false;
+// 		return (false);
 // 	while (current)
 // 	{
 // 		if (current->delimiter == PIPE_SINGLE)
-// 			return true;
+// 			return (true);
 // 		current = current->next;
 // 	}
-// 	return false;
+// 	return (false);
 // }

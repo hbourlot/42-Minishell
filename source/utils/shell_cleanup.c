@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:31:04 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:44:39 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	free_command(t_cmd **command)
 */
 void	refresh_shell_data(t_shell *data)
 {
-	t_cmd	*tmp;
+	// t_cmd	*tmp;
 
 	// if (data->prev_fd != -1)
 	// 	close(data->prev_fd);

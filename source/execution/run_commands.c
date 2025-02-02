@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:29:55 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:43:58 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	run_builting_separately(t_shell *data, t_cmd *command)
 {
 	bool	cond_1;
 	bool	cond_2;
-	bool	cond_3;
+	// bool	cond_3;
 
 	cond_1 = command->delimiter == NO_TOKEN && is_builtin(command) && !command->redir_files;
 	cond_2 = command->delimiter == AND_DOUBLE && is_builtin(command) && !command->redir_files;
@@ -79,7 +79,6 @@ void	command_loop(t_shell *data, t_cmd *command)
 
 void	run_commands(t_shell *data)
 {
-	pid_t	*pid;
 
 	data->prev_fd = -1;
 	ft_memset(data->pipe_id, -1, sizeof(int) * 2);

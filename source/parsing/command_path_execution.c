@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_path_execution.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 10:09:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 16:25:06 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:37:54 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ static int	check_access_xok(const char *path)
 	return (ft_printf_error("bash: %s: Permission denied\n", path), 126);
 }
 
-static int	ft_is_directory(const char *path)
-{
-	struct stat	stat_path;
+// static int	ft_is_directory(const char *path)
+// {
+// 	struct stat	stat_path;
 
-	if (stat(path, &stat_path) != OK)
-		return (0);
-	return (S_ISDIR(stat_path.st_mode));
-}
+// 	if (stat(path, &stat_path) != OK)
+// 		return (0);
+// 	return (S_ISDIR(stat_path.st_mode));
+// }
 
 static int	check_is_directory(const char *path)
 {

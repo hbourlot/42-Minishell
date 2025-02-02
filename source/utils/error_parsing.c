@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 18:32:37 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 14:21:19 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:45:30 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	handle_error_pa(void)
 void	set_error_pa(int code, char *syntax, char *token,
 		const char *function)
 {
+	(void)code;
 	t_error	*error;
 
 	error = get_error_context();

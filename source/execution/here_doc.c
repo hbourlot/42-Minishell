@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:31:32 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:43:23 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,8 @@ static void	handle_child_process(t_shell *data)
 	exit(EXIT_SUCCESS);
 }
 
-static int	handle_parent_process(t_shell *data, pid_t *pid)
+static int	handle_parent_process(t_shell *data)
 {
-	int	wait_status;
-	int	status;
-
-	status = 0;
 	if (data->command)
 		data->prev_fd = data->pipe_id[0];
 	else
@@ -93,7 +89,7 @@ int	run_eof(t_shell *data, pid_t *pid)
 		restore_signals();
 		handle_child_process(data);
 	}
-	if (handle_parent_process(data, pid))
+	if (handle_parent_process(data))
 		return (-1);
 	return (0);
 }
