@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:23:56 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/01 17:38:50 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 18:39:47 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,38 @@ void	set_last_status(t_shell *data)
 		prev_pid = data->pid;
 		i++;
 	}
+
 	data->exit_status = status;
 }
+
+int	do_fork(pid_t *pid)
+{
+	*pid = fork();
+	if (*pid < 0)
+		return (-1);
+	return (0);
+}
+
+
+
+
+
+
+
+
+// bool	there_is_command_single_pipe(t_shell *data)
+// {
+// 	t_cmd *current;
+
+// 	current = data->command;
+
+// 	if (data->nbr_of_commands == 1)
+// 		return false;
+// 	while (current)
+// 	{
+// 		if (current->delimiter == PIPE_SINGLE)
+// 			return true;
+// 		current = current->next;
+// 	}
+// 	return false;
+// }

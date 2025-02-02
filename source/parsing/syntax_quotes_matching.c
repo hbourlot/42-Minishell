@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 16:29:40 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/22 20:38:24 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 14:19:39 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool is_quotes_maching(char *input)
 			in_quotes = !in_quotes;
 		if (!in_quotes && input[i] == '"' || input[i] == '\'')
 		{
-			set_error_initialize(1, "Opened quotes", __func__, false);
+			set_error_in(1, "Opened quotes", __func__, false);
 			return (false);
 		}
 		i++;

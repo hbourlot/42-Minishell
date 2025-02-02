@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 16:35:41 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/03 11:07:46 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 14:21:27 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ void		reset_error_context(t_error *error);
 int			handle_error(void);
 
 
-int			handle_error_parsing(void);
-void 		set_error_parsing(int code, char *syntax, char *token, const char *function);
+int			handle_error_pa(void);
+void 		set_error_pa(int code, char *syntax, char *token, const char *function);
 
-int			handle_error_initialize(void);
-void		set_error_initialize(int code, char *msg, const char *function, bool exit);
+int			handle_error_in(void);
+void		set_error_in(int code, char *msg, const char *function, bool exit);
 
-int			handle_error_execution(void);
-void		set_error_execution(int code, char *msg, const char *folder, bool exit);
+int			handle_error_ex(void);
+void		set_error_ex(int code, char *msg, const char *folder, bool exit);
 
 #endif

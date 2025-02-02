@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/01 23:12:03 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 17:19:20 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,12 @@ void	refresh_shell_data(t_shell *data)
 {
 	t_cmd	*tmp;
 
-	if (data->prev_fd != -1)
-		close(data->prev_fd);
-	if (data->pipe_id[0] != -1)
-		close(data->pipe_id[0]);
-	if (data->pipe_id[1] != -1)
-		close(data->pipe_id[1]);
+	// if (data->prev_fd != -1)
+	// 	close(data->prev_fd);
+	// if (data->pipe_id[0] != -1)
+	// 	close(data->pipe_id[0]);
+	// if (data->pipe_id[1] != -1)
+	// 	close(data->pipe_id[1]);
 
 	data->commands_ran = 0;
 	data->nbr_of_commands = 0;

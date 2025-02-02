@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:38:12 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/28 16:02:46 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 14:19:39 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*get_path(char *command_str, char **env_paths)
 	executable = ft_strdup(command_str);
 	if (!executable)
 	{
-		set_error_initialize(1, "Malloc", __func__, true);
+		set_error_in(1, "Malloc", __func__, true);
 		return (NULL);
 	}
 	if (!env_paths ||!*env_paths || ft_strlen(executable) == 0)

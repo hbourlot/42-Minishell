@@ -6,13 +6,13 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 20:21:00 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/12/26 21:06:46 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 14:21:27 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_error_initialize(void)
+int	handle_error_in(void)
 {
 	t_error	*error;
 	int		code;
@@ -27,7 +27,7 @@ int	handle_error_initialize(void)
 	return (code);
 }
 
-void	set_error_initialize(int code, char *msg, const char *function,
+void	set_error_in(int code, char *msg, const char *function,
 		bool exit)
 {
 	t_error	*error;

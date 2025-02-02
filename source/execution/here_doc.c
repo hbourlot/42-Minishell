@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 09:16:37 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 18:45:22 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,13 @@ static void	handle_child_process(t_shell *data)
 	int	i;
 
 	i = 0;
-	
 	handle_signals(data, 1);
 	while (data->eof && data->eof[i])
 	{
 		if (here_doc(data->pipe_id, data->eof[i]) == -1)
 		{
 			close(data->pipe_id[1]);
-			set_error_execution(1, "Failed", "here_doc", true);
+			set_error_ex(1, "Failed", "here_doc", true);
 			handle_error();
 		}
 		i++;
@@ -93,8 +92,8 @@ static int	handle_parent_process(t_shell *data, pid_t *pid)
 int	run_eof(t_shell *data, pid_t *pid)
 {
 	if (pipe(data->pipe_id) == -1)
-		perror("Pipe");
-	*pid = fork();
+		perror("Pipe"); // TODO: !!!!!
+	*pid = fork(); // TODO: !!!!!
 	if (*pid == -1)
 		perror("Fork");
 	if (*pid == 0)

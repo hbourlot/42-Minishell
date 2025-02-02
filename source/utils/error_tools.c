@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 18:10:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/11 13:23:39 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 14:21:27 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ int	handle_error(void)
 	error = get_error_context();
 	code = error->code;
 	if (error->parsing.is_initialized)
-		code = handle_error_parsing();
+		code = handle_error_pa();
 	else if (error->initialize.is_initialized)
-		code = handle_error_initialize();
+		code = handle_error_in();
 	else if (error->execution.is_initialized)
-		code = handle_error_execution();
+		code = handle_error_ex();
 	if (error->exit == true)
 	{
 		cleanup_shell(get_shell());

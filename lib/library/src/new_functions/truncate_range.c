@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   truncate_range.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 12:20:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 15:34:23 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 20:08:24 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	truncate_range(char *src, int start, int bytes)
 {
 	int		length;
 	int		i;
+	int		pos;
 
 	if (!src || start < 0 || bytes < 0)
 		return (-1);
@@ -40,6 +41,11 @@ int	truncate_range(char *src, int start, int bytes)
 		src[i] = src[i + bytes];
 		i++;
 	}
-	src[length - bytes] = '\0';
+	pos = length - bytes;
+	while (pos - length)
+	{
+		src[pos] = '\0';
+		pos++;
+	}
 	return (0);
 }

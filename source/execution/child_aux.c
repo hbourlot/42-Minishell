@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 12:00:01 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/01 18:44:51 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 13:14:35 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,3 @@ int	do_dup2(int *fd_in, int *fd_out,  int *pipe_id, int *prev_fd)
 	return (0);
 }
 
-int	do_pipe(int *pipe_id)
-{
-	if (pipe(pipe_id) == -1)
-		return (-1);
-	return (0);
-}
-
-int	do_fork(pid_t *pid)
-{
-	*pid = fork();
-	if (*pid < 0)
-		return (-1);
-	return (0);
-}
