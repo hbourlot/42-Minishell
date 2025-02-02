@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 21:19:52 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 18:10:44 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ bool	is_builtin(t_cmd *command)
 
 void	command_loop(t_shell *data, t_cmd *command)
 {
+	signal(SIGINT, SIG_IGN);
 	while (command)
 	{
 		if (is_builtin(command) && !command->next && !command->redir_files)
@@ -50,7 +51,10 @@ void	command_loop(t_shell *data, t_cmd *command)
 		if (do_fork(&data->pid))
 			return (set_error_execution(1, "Fork", NULL, false));
 		else if (data->pid == 0)
+		{
+			restore_signals();
 			child_process(data, command, data->pipe_id, &data->prev_fd);
+		}
 		else
 		{
 			if (parent_process(data, command))

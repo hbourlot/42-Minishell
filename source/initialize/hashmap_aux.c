@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:52:16 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/31 18:29:10 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/01 23:20:19 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int	update_shell_lvl(t_hashmap *map)
 	if (!temp_value)
 		return (ERROR);
 	if (hashmap_insert(map, (char *)key, temp_value) == ERROR)
-		return (ERROR);
-	return (0);
+		return (free(temp_value), ERROR);
+	return (free(temp_value), 0);
 }
 
 /// @brief Imports environment variables from an array into a hashmap.

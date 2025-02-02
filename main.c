@@ -6,31 +6,30 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:58:02 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/30 20:53:18 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 17:52:55 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	sigint_handler(int signal)
+void	handle_sigint(int sig)
 {
-	if (signal == SIGINT)
-	{
-		write(1, "\n", 1);
-		rl_on_new_line();
-		// rl_replace_line("", 0);
-		rl_redisplay();
-	}
+	(void)sig;
+	write(STDOUT_FILENO, "\n", 1); // Nueva línea
+	rl_on_new_line();
+	// Indicar a readline que estamos en nueva línea
+	rl_replace_line("", 0); // Limpiar línea actual
+	rl_redisplay();         // Volver a mostrar el prompt
 }
-void	sigint_heredoc_handler(int signal)
+
+void	setup_parent_signals(void)
 {
-	(void)signal;
-	write(1, "\n", 1);
-	exit(1);
-}
-void	setup_signals(void)
-{
-	signal(SIGINT, &sigint_handler);
+	struct sigaction	sa_int;
+
+	sa_int.sa_handler = handle_sigint;
+	sigemptyset(&sa_int.sa_mask);
+	sa_int.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa_int, NULL);
 	signal(SIGQUIT, SIG_IGN);
 }
 
@@ -45,10 +44,12 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	t_shell	*data;
 
-	setup_signals();
 	data = init_shell(argc, argv, envp);
 	if (main_shell_loop(data))
 		return (cleanup_shell(data), handle_error());
 	cleanup_shell(data);
 	return (0);
 }
+
+//   signal(SIGINT, SIG_DFL);
+//         signal(SIGQUIT, SIG_DFL);

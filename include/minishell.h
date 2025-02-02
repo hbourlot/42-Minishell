@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 16:24:54 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 17:15:41 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,22 @@
 // ************************************************************************
 
 int			parsing_syntax(t_shell *data);
-bool 		is_valid_pipe_tokens(char *source);
+bool		is_valid_pipe_tokens(char *source);
 void		identify_and_replace_sqpa_tokens(char *input);
-bool 		is_valid_file_and_here_doc_tokens(char *source);
+bool		is_valid_file_and_here_doc_tokens(char *source);
 int			validate_file_read_execution(t_file *redir_files);
 int			validate_command_path_access(char *command_path);
 // int 		strip_redirects(char **input, const char *redirects[]);
 void		strip_redirects(char *input, const char *redirects[]);
 
-
-
 // ************************************************************************
 // **						Initialize Functions							**
 // ************************************************************************
 
-t_shell 	*get_shell();
+t_shell		*get_shell(void);
 int			init_command(t_shell *data);
 int			main_shell_loop(t_shell *data);
-bool		 is_quotes_maching(char *input);
+bool		is_quotes_maching(char *input);
 char		**tokenize_element(char *element);
 char		*process_variables(char *cmd_token);
 char		**tokenize_bash_variables(char *src);
@@ -78,7 +76,6 @@ int			update_envp_and_envpath(t_shell *data);
 // **						Execution Functions								**
 // ************************************************************************
 
-
 int			print_command_on_terminal(t_shell *data, pid_t *pid);
 
 // int			do_pipe(int *pipe_id);
@@ -87,14 +84,15 @@ void		run_commands(t_shell *data);
 void		set_last_status(t_shell *data);
 int			handle_double_pipe(t_shell *data);
 int			here_doc(int *pipe_id, char *limiter);
-char 		*get_path(char *input, char **env_paths);
+char		*get_path(char *input, char **env_paths);
 void		command_loop(t_shell *data, t_cmd *command);
 void		handle_double_and(t_shell *data, t_cmd *command);
 int			open_folder(char *file, t_cmd *command, bool here_doc);
 int			do_dup2(int *fd_in, int *fd_out, int *pipe_id, int *prev_fd);
 int			run_eof(t_shell *data, int *pipe_id, int *prev_fd, pid_t *pid);
 int			open_folders_safety(int *fd_in, int *fd_out, t_file *redir_files);
-void		child_process(t_shell *data, t_cmd *command, int *pipe_id, int *prev_fd);
+void		child_process(t_shell *data, t_cmd *command, int *pipe_id,
+				int *prev_fd);
 int			parent_process(t_shell *data, t_cmd *command);
 
 // ************************************************************************
@@ -116,12 +114,15 @@ void		debug_command_input(t_shell *data);
 void		debug_input_splitted(t_shell *data);
 t_token		get_t_token(char *src, size_t size);
 
-void 		debug_command_file_list(t_shell *data);
+void		debug_command_file_list(t_shell *data);
 void		restore_original_characters(char **src);
-void 		skip_character_by_idx(char *src, char c, int *i);
+void		skip_character_by_idx(char *src, char c, int *i);
 void		skip_character_diff_by_idx(char *src, char c, int *i);
 void		replace_characters(char *src, char to_take, char to_put);
-void		get_redirect_complement(char *src, int *start, int *end, int redirect_size);
+void		get_redirect_complement(char *src, int *start, int *end,
+				int redirect_size);
+void		setup_parent_signals(void);
+void		restore_signals(void);
 
 // ************************************************************************
 // **						BuiltIn											**
