@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   run_commands.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
 /*   Updated: 2025/02/02 09:54:15 by hbourlot         ###   ########.fr       */
@@ -12,26 +12,23 @@
 
 #include "minishell.h"
 
-bool is_builtin(t_cmd *command)
+bool	is_builtin(t_cmd *command)
 {
-	bool		*builtin_flags[] = {&command->settings.builtin_cd,
-				&command->settings.builtin_export,
-				&command->settings.builtin_echo,
-				&command->settings.builtin_env,
-				&command->settings.builtin_unset,
-				&command->settings.builtin_exit,
-				&command->settings.builtin_pwd,
-				NULL};
-	int	i;
+	bool	*builtin_flags[] = {&command->settings.builtin_cd,
+			&command->settings.builtin_export, &command->settings.builtin_echo,
+			&command->settings.builtin_env, &command->settings.builtin_unset,
+			&command->settings.builtin_exit, &command->settings.builtin_pwd,
+			NULL};
+	int		i;
 
 	i = 0;
 	while (builtin_flags[i])
 	{
 		if (*builtin_flags[i])
-			return true;
+			return (true);
 		i++;
 	}
-	return false;
+	return (false);
 }
 
 bool run_builting_separately(t_shell *data, t_cmd *command)
@@ -67,7 +64,8 @@ void	command_loop(t_shell *data, t_cmd *command)
 			ft_printf_error("command->path: %s\n", command->path);
 			return ;
 		}
-		if (command->delimiter != AND_DOUBLE && command->next && pipe(data->pipe_id) == -1)
+		if (command->delimiter != AND_DOUBLE && command->next
+			&& pipe(data->pipe_id) == -1)
 			return (set_error_execution(1, "Pipe", NULL, false));
 		if (do_fork(&data->pid))
 			return (set_error_execution(1, "Fork", NULL, false));

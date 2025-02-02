@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:43:23 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/29 14:57:44 by joralves         ###   ########.fr       */
+/*   Updated: 2025/01/30 20:55:38 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,9 @@ static int	is_numeric(char *str)
 ///          - Otherwise, exits with the provided numeric value or 0 if none is given.
 void	builtin_exit(t_shell *data, t_cmd *cmd)
 {
-	int	i;
 	int	len;
 	int	ret;
 
-	i = 0;
 	len = array_length(cmd->args);
 	if (len > 2)
 	{

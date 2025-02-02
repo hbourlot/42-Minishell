@@ -38,11 +38,13 @@ static int	change_directory(t_shell *data, const char *dir)
 	if (!temp_cwd)
 		return (-1);
 	hashmap_insert(data->map, "OLDPWD", temp_cwd);
+	free(temp_cwd);
 	getcwd(cwd, PATH_MAX);
 	temp_cwd = ft_strdup(cwd);
 	if (!temp_cwd)
 		return (-1);
 	hashmap_insert(data->map, "PWD", temp_cwd);
+	free(temp_cwd);
 	if (hashmap_to_env_array(data, data->map) == -1)
 		return (-1);
 	

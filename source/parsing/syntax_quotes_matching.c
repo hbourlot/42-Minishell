@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_quotes_matching.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 16:29:40 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/22 20:38:24 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/01/30 20:58:09 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool is_quotes_maching(char *input)
 	{
 		if (input[i] == REP_DOUBLE_QUOTE || input[i] == REP_SINGLE_QUOTE)
 			in_quotes = !in_quotes;
-		if (!in_quotes && input[i] == '"' || input[i] == '\'')
+		if ((!in_quotes && input[i] == '"') || input[i] == '\'')
 		{
 			set_error_initialize(1, "Opened quotes", __func__, false);
 			return (false);

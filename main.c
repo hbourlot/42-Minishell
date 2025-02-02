@@ -17,7 +17,6 @@
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_shell	*data;
-	char	*input;
 
 	setup_signals();
 	data = init_shell(argc, argv, envp);
