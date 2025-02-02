@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 18:12:53 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:24:42 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,16 @@ void		strip_redirects(char *input, const char *redirects[]);
 // ************************************************************************
 
 t_shell		*get_shell(void);
+t_hashmap	*create_map(void);
 int			init_command(t_shell *data);
+void		hashmap_free(t_hashmap *map);
 int			main_shell_loop(t_shell *data);
 bool		is_quotes_maching(char *input);
 char		**tokenize_element(char *element);
 char		*process_variables(char *cmd_token);
 char		**tokenize_bash_variables(char *src);
 char		**process_command_input(char *input);
-void		process_eof_truncation(t_shell *data);
+int			update_envp_and_envpath(t_shell *data);
 int			initialize_environment_paths(t_shell *data);
 t_shell		*init_shell(int argc, char *argv[], char *envp[]);
 int			initialize_eof(char *data_readline, char ***data_eof);
@@ -62,33 +64,27 @@ int			add_command(t_cmd **command, char *readline_splitted, t_shell *data,
 				t_token token_type);
 int			initialize_file_list(char *input, const char *redirects[],
 				t_file **redir_files);
-t_hashmap	*create_map(void);
 int			hashmap_insert(t_hashmap *map, char *key, char *value);
 char		*hashmap_search(t_hashmap *map, char *key);
 void		hashmap_delete(t_hashmap *map, char *key);
-void		hashmap_free(t_hashmap *map);
 int			hashmap_to_env_array(t_shell *data, t_hashmap *map);
 int			import_env_to_hashmap(t_hashmap *map, char *envp[]);
-int			update_envp_and_envpath(t_shell *data);
 
 // ************************************************************************
 // **						Execution Functions								**
 // ************************************************************************
 
-int			print_command_on_terminal(t_shell *data, pid_t *pid);
-
 int			do_fork(pid_t *pid);
 void		run_commands(t_shell *data);
 void		set_last_status(t_shell *data);
+int			run_eof(t_shell *data, pid_t *pid);
 int			here_doc(int *pipe_id, char *limiter);
 char		*get_path(char *input, char **env_paths);
 void		command_loop(t_shell *data, t_cmd *command);
-int			do_dup2(int *fd_in, int *fd_out, int *pipe_id, int *prev_fd);
-int			run_eof(t_shell *data, pid_t *pid);
-int			open_folders_safety(int *fd_in, int *fd_out, t_file *redir_files);
 void		child_process(t_shell *data, t_cmd *command);
 int			parent_process(t_shell *data, t_cmd **command_ref);
-
+int			do_dup2(int *fd_in, int *fd_out, int *pipe_id, int *prev_fd);
+int			open_folders_safety(int *fd_in, int *fd_out, t_file *redir_files);
 
 // ************************************************************************
 // **						Free Functions									**
@@ -108,7 +104,6 @@ void		debug_command_path(t_shell *data);
 void		debug_command_input(t_shell *data);
 void		debug_input_splitted(t_shell *data);
 t_token		get_t_token(char *src, size_t size);
-
 void		debug_command_file_list(t_shell *data);
 void		restore_original_characters(char **src);
 void		skip_character_by_idx(char *src, char c, int *i);
@@ -116,8 +111,6 @@ void		skip_character_diff_by_idx(char *src, char c, int *i);
 void		replace_characters(char *src, char to_take, char to_put);
 void		get_redirect_complement(char *src, int *start, int *end,
 				int redirect_size);
-void		setup_parent_signals(void);
-void		restore_signals(void);
 
 // ************************************************************************
 // **						BuiltIn											**
@@ -134,17 +127,11 @@ int			builtin_unset(t_shell *data, char **command_args);
 int			builtin_export(t_shell *data, char **command_args);
 
 // ************************************************************************
-// **						Execution Functions								**
+// **						Signal Functions								**
 // ************************************************************************
 
-void	restore_signals(void);
-void	setup_signals(void);
-void	sigint_heredoc_handler(int signal);
-void	sigint_handler(int signal);
-void	handle_signals(t_shell *data, int status);
-
-
-
+void		restore_signals(void);
+void		setup_parent_signals(void);
 
 
 #endif

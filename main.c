@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:58:02 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/02 18:17:54 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:16:45 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,3 @@ int	main(int argc, char *argv[], char *envp[])
 	cleanup_shell(data);
 	return (0);
 }
-
-//   signal(SIGINT, SIG_DFL);
-//         signal(SIGQUIT, SIG_DFL);

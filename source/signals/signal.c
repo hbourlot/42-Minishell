@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 22:00:45 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 18:18:41 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 19:23:12 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	handle_sigint(int sig)
 {
 	(void)sig;
-	write(STDOUT_FILENO, "\n", 1);
+	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();

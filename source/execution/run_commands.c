@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 18:17:04 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:09:23 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,14 @@ bool	is_builtin(t_cmd *command)
 	return (false);
 }
 
-bool run_builting_separately(t_shell *data, t_cmd *command)
+bool	run_builting_separately(t_shell *data, t_cmd *command)
 {
-	bool 	cond_1;
+	bool	cond_1;
 	bool	cond_2;
 	bool	cond_3;
 
-	cond_1 = data->nbr_of_commands == 2 && data->command->delimiter == AND_DOUBLE && !command->redir_files;
+	cond_1 = data->nbr_of_commands == 2
+		&& data->command->delimiter == AND_DOUBLE && !command->redir_files;
 	cond_2 = data->nbr_of_commands == 1 && !command->redir_files;
 	if ((cond_1 || cond_2) && is_builtin(command))
 	{
@@ -46,14 +47,10 @@ bool run_builting_separately(t_shell *data, t_cmd *command)
 			set_error_execution(1, "Malloc", NULL, true);
 			handle_error();
 		}
-	
-		return true;
+		return (true);
 	}
-	
-	return false;
+	return (false);
 }
-
-
 
 void	command_loop(t_shell *data, t_cmd *command)
 {
@@ -78,7 +75,7 @@ void	command_loop(t_shell *data, t_cmd *command)
 		else
 		{
 			if (parent_process(data, &command))
-				break;
+				break ;
 			command = command->next;
 		}
 	}
@@ -98,6 +95,5 @@ void	run_commands(t_shell *data)
 	command_loop(data, data->command);
 	set_last_status(data);
 }
-
 
 // echo -n oi >> file && echo -n laele
