@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/03 17:49:39 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/04 13:57:52 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 static bool	verify_and_prepare_input(t_shell *data)
 {
 	if (data->readline && *data->readline)
+	{
 		add_history(data->readline);
+		data->nbr_of_lines += 1;
+	}
 	identify_and_replace_sqpa_tokens(data->readline);
 	if (all_same_char(data->readline, REP_SPACE))
 	{
@@ -36,10 +39,7 @@ int	main_shell_loop(t_shell *data)
 		setup_parent_signals();
 		data->readline = readline(PROMPT);
 		if (!data->readline)
-		{
-			// cleanup_shell(data);
 			return (printf("exit\n"), 0);
-		}
 		if (verify_and_prepare_input(data) == false)
 			handle_error();
 		else if (data->command || data->eof)

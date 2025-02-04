@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 11:04:56 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/04 14:04:24 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,28 @@ int	here_doc(int *pipe_id, char *limiter)
 	return (cleanup_and_exit(text, 0));
 }
 
+
+static void	here_doc_fail(t_shell *data, char *eof)
+{
+	int	size;
+
+	size = ft_strlen(eof);
+	get_error_context()->exit = true;
+	truncate_range(eof, size - 1, 1);
+	ft_printf_error("\nbash: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", data->nbr_of_lines, eof);
+	handle_error();
+
+}
+
 static void	handle_child_process(t_shell *data)
 {
 	int	i;
-
+	
 	i = 0;
 	while (data->eof && data->eof[i])
 	{
 		if (here_doc(data->pipe_id, data->eof[i]) == -1)
-		{
-			close(data->pipe_id[1]);
-			set_error_ex(1, "Failed", "here_doc", true);
-			handle_error();
-		}
+			here_doc_fail(data, data->eof[i]);
 		i++;
 	}
 	if (!data->command) // TODO: Still need to make sure about it
