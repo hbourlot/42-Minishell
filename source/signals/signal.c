@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 22:00:45 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 10:14:58 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/04 10:24:10 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ void  handle_sigint_child(int sig)
 	cleanup_shell(get_shell());
 	exit(130);
 }
+void  handle_sigquit_child(int sig)
+{
+	(void)sig;
+	cleanup_shell(get_shell());
+	exit(131);
+}
 
 void	restore_signals(void)
 {
@@ -46,5 +52,5 @@ void	restore_signals(void)
 	sigemptyset(&sa_int.sa_mask);
 	sa_int.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa_int, NULL);
-	signal(SIGQUIT, SIG_DFL);
+	signal(SIGQUIT, handle_sigint_child);
 }
