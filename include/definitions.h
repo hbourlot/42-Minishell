@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 14:12:34 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/04 13:58:10 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ typedef struct s_data
 	char				**env_paths;
 	int					exit_status;
 	int					nbr_of_commands;
+	int					nbr_of_lines;
 	int					commands_ran;
 	int					argc;
 	char				**argv;

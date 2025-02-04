@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 12:16:09 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:34:57 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 static bool	verify_and_prepare_input(t_shell *data)
 {
 	if (data->readline && *data->readline)
+	{
 		add_history(data->readline);
+		data->nbr_of_lines += 1;
+	}
 	identify_and_replace_sqpa_tokens(data->readline);
 	if (all_same_char(data->readline, REP_SPACE))
 	{

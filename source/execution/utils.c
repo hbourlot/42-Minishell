@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:23:56 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 12:58:00 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:35:14 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,3 @@ int	do_fork(pid_t *pid)
 		return (-1);
 	return (0);
 }
-
-// bool	there_is_command_single_pipe(t_shell *data)
-// {
-// 	t_cmd *current;
-
-// 	current = data->command;
-
-// 	if (data->nbr_of_commands == 1)
-// 		return (false);
-// 	while (current)
-// 	{
-// 		if (current->delimiter == PIPE_SINGLE)
-// 			return (true);
-// 		current = current->next;
-// 	}
-// 	return (false);
-// }
