@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:57:27 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/04 17:14:59 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/04 17:39:43 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	builtin_cd(t_shell *data, char **command_args)
 {
 	char	*home;
 	size_t	arg_count;
+	char * OLDPWD;
 
 	home = hashmap_search(data->map, "HOME");
 	arg_count = array_length(command_args);
@@ -79,7 +80,14 @@ int	builtin_cd(t_shell *data, char **command_args)
 	}
 	if(!ft_strcmp(command_args[1], "-"))
 	{
-		if(change_directory(data, hashmap_search(data->map, "OLDPWD")) == -1)
+		OLDPWD = hashmap_search(data->map, "OLDPWD");
+		if(!OLDPWD)
+		{
+			ft_printf_error("bash: cd: OLDPWD not set\n");
+			data->exit_status =1;
+			return(1);
+		}
+		if(change_directory(data, OLDPWD) == -1)
 			return(-1);
 		return(0);
 	}
