@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 12:09:16 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/04 21:41:16 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,11 @@ void	run_commands(t_shell *data)
 	ft_memset(data->pipe_id, -1, sizeof(int) * 2);
 	if ((data->eof))
 	{
-		run_eof(data, &data->pid);
+		if (run_eof(data, &data->pid))
+		{
+			data->exit_status = 1;
+			return;
+		}
 		set_last_status(data);
 		if (data->exit_status == 130 || data->exit_status == 131)
 			return ;

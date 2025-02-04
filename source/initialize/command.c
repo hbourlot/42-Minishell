@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 11:24:01 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/04 21:13:23 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,27 @@ static int split_command_input(t_shell *data, const char *delimiters[])
 
 static bool there_is_no_command(t_shell *data)
 {
-	const char *tokens[] = {"||", "|", "&&", ">>", "<<", "<", ">", NULL};
+    const char *tokens[] = {"||", "|", "&&", ">>", "<<", "<", ">", NULL};
     int i;
     int idx;
-    
+    int match;
+
     i = 0;
     while (data->readline[i])
     {
-        while (find_string_match(&data->readline[i], tokens, &idx) == -1
-            && data->readline[i] == REP_SPACE)
-                i++;
-        if (data->readline[i] && find_string_match(&data->readline[i], tokens, &idx) == -1)
+        while (data->readline[i] == REP_SPACE)
+            i++;
+        match = find_string_match(&data->readline[i], tokens, &idx);
+        if (data->readline[i] && match == -1)
             return false;
-        else
+        if (match != -1)
         {
             i += ft_strlen(tokens[idx]);
             if (!data->readline[i])
                 break;
         }
-        i++;
     }
-    return (true);
+    return true;
 }
 
 static int create_command_list(t_shell *data, const char *delimiters[])
