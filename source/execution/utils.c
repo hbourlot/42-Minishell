@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:23:56 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 12:00:47 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/04 12:58:00 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,11 @@ void	set_last_status(t_shell *data)
 	int		wait_status;
 	pid_t	prev_pid;
 	int		i;
-
 	i = 0;
 	prev_pid = 0;
 	wait_status = 0;
+	if(data->commands_ran == 0)
+		return;
 	while (i < data->commands_ran)
 	{
 		data->pid = waitpid(-1, &wait_status, 0);

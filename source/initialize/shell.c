@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/03 17:49:39 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/04 12:16:09 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,7 @@ int	main_shell_loop(t_shell *data)
 		setup_parent_signals();
 		data->readline = readline(PROMPT);
 		if (!data->readline)
-		{
-			// cleanup_shell(data);
 			return (printf("exit\n"), 0);
-		}
 		if (verify_and_prepare_input(data) == false)
 			handle_error();
 		else if (data->command || data->eof)
