@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:38:24 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/04 11:24:01 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,34 +21,30 @@ static int split_command_input(t_shell *data, const char *delimiters[])
     return (SUCCESS);
 }
 
-// static int create_command_list(t_shell *data, const char *delimiters[])
-// {
-//     t_token token_type;
-//     int     i;
-//     int     idx;
-//     char    *src;
-
-//     i = 0;
-//     src = data->readline;
-//     while (data->readline_splitted[i])
-//     {
-//         src = ft_strstr_any(src, delimiters);
-//         if (find_string_match(src, delimiters, &idx) == CMP_OK)
-//         {
-//             token_type = get_t_token((char *)delimiters[idx], ft_strlen(delimiters[idx]));
-//             src += ft_strlen(delimiters[idx]);
-//             if (add_command(&data->command, data->readline_splitted[i++], data, token_type) < 0)
-//                 return (ERROR);
-//         }
-//         else
-//         {
-//             if (add_command(&data->command, data->readline_splitted[i++], data, PIPE_SINGLE) < 0)
-//                 return (ERROR);
-//         }
-//     }
-//     data->nbr_of_commands = i;
-//     return (SUCCESS);
-// }
+static bool there_is_no_command(t_shell *data)
+{
+	const char *tokens[] = {"||", "|", "&&", ">>", "<<", "<", ">", NULL};
+    int i;
+    int idx;
+    
+    i = 0;
+    while (data->readline[i])
+    {
+        while (find_string_match(&data->readline[i], tokens, &idx) == -1
+            && data->readline[i] == REP_SPACE)
+                i++;
+        if (data->readline[i] && find_string_match(&data->readline[i], tokens, &idx) == -1)
+            return false;
+        else
+        {
+            i += ft_strlen(tokens[idx]);
+            if (!data->readline[i])
+                break;
+        }
+        i++;
+    }
+    return (true);
+}
 
 static int create_command_list(t_shell *data, const char *delimiters[])
 {
@@ -81,7 +77,6 @@ static int create_command_list(t_shell *data, const char *delimiters[])
 static int handle_eof(t_shell *data)
 {
     const char *eof_token[] = {"<<", NULL};
-    // const char  *delimiters_tokens[] = {"||", "|", NULL};
 
     
     if (initialize_eof(data->readline, &data->eof) < 0)
@@ -90,7 +85,7 @@ static int handle_eof(t_shell *data)
         return -1;
     }
     strip_redirects(data->readline, eof_token);
-    if (ft_strlen(data->readline) == 0 || all_same_char(data->readline, REP_SPACE))
+    if (there_is_no_command(data))
         free_pointers(1, &data->readline);
     return (0);
 }
