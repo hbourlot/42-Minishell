@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:41:34 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 23:43:03 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/05 12:03:01 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,8 @@ void	set_builtin_flag(t_cmd *command)
 {
 	int			i;
 	char		*args;
-	bool		**builtin_flags;
 	const char	*builtin_functions[] = {"cd", "export", "echo", "env", "unset",
 			"exit", "pwd", NULL};
-
-	builtin_flags = (bool *[]){&command->settings.builtin_cd,
-		&command->settings.builtin_export, &command->settings.builtin_echo,
-		&command->settings.builtin_env, &command->settings.builtin_unset,
-		&command->settings.builtin_exit, &command->settings.builtin_pwd};
 	i = 0;
 	args = command->args[0];
 	if (!args || !*args || all_same_char(args, ' '))
@@ -36,12 +30,14 @@ void	set_builtin_flag(t_cmd *command)
 	{
 		if (ft_strcmp(args, builtin_functions[i]) == 0)
 		{
-			*builtin_flags[i] = true;
+			command->settings.builtin_id = i;
 			command->settings.is_builtin = true;
 			break ;
 		}
 		i++;
 	}
+	if (command->settings.is_builtin == false)
+		command->settings.builtin_id = -1;
 }
 
 /// @brief Executes a built-in command.
@@ -52,28 +48,28 @@ void	set_builtin_flag(t_cmd *command)
 ///          `cd`, `pwd`, `echo`, `unset`, `env`, `exit`.
 int	process_builtin(t_shell *data, t_cmd *command)
 {
-	if (command->settings.builtin_cd)
+	if (command->settings.builtin_id == CD)
 	{
 		if (builtin_cd(data, command->args) == -1)
 			return (ERROR);
 	}
-	else if (command->settings.builtin_pwd)
+	else if (command->settings.builtin_id == PWD)
 		builtin_pwd(data);
-	else if (command->settings.builtin_echo)
+	else if (command->settings.builtin_id == ECHO)
 		builtin_echo(data, command->args);
-	else if (command->settings.builtin_unset)
+	else if (command->settings.builtin_id == UNSET)
 	{
 		if (builtin_unset(data, command->args) == ERROR)
 			return (ERROR);
 	}
-	else if (command->settings.builtin_env)
+	else if (command->settings.builtin_id == ENV)
 		builtin_env(data, command->args);
-	else if (command->settings.builtin_export)
+	else if (command->settings.builtin_id == EXPORT)
 	{
 		if (builtin_export(data, command->args) == ERROR)
 			return (ERROR);
 	}
-	else if (command->settings.builtin_exit)
+	else if (command->settings.builtin_id == EXIT)
 		builtin_exit(data, command);
 	return (0);
 }

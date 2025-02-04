@@ -88,3 +88,6 @@ hbourlot@c65c2c36c642:~/Projects/minishell_42$
 // << eof + ^d | ls
 // << eof <<"eof1 " "<<" <<'eof 3' <<" eof4 " <<eof5
 //* echo "File creation madness" > "file_>_and_|.txt" | cat "file_>_and_|.txt" ">>" pegadinha_do_malandro | grep "madness"
+
+
+// (ls /nonexistent && (echo "Dir exists">> filke || echo "Dir missing" >> la | echo oi)) || (mkdir test_dir && cd test_dir && (touch file1 || touch file2))

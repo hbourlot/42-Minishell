@@ -6,40 +6,32 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 12:09:16 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/05 12:47:41 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	is_builtin(t_cmd *command)
+static bool	is_safe_to_run_builtin(t_shell *data, t_cmd *command)
 {
-	bool	*builtin_flags[] = {&command->settings.builtin_cd,
-			&command->settings.builtin_export, &command->settings.builtin_echo,
-			&command->settings.builtin_env, &command->settings.builtin_unset,
-			&command->settings.builtin_exit, &command->settings.builtin_pwd,
-			NULL};
-	int		i;
+	bool delimiter_cond;
 
-	i = 0;
-	while (builtin_flags[i])
+	delimiter_cond = (command->delimiter == NO_TOKEN || command->delimiter == AND_DOUBLE
+			|| command->delimiter == PIPE_DOUBLE);
+
+	if (command->settings.is_builtin && delimiter_cond)
 	{
-		if (*builtin_flags[i])
-			return (true);
-		i++;
+		command->settings.is_safe_to_execve = false;
+		if (command->redir_files && command->settings.builtin_id == ECHO)
+			return false;
+		return true;
 	}
 	return (false);
 }
 
 bool	run_builting_separately(t_shell *data, t_cmd *command)
 {
-	bool	cond_1;
-	bool	cond_2;
-	// bool	cond_3;
-
-	cond_1 = command->delimiter == NO_TOKEN && is_builtin(command) && !command->redir_files;
-	cond_2 = command->delimiter == AND_DOUBLE && is_builtin(command) && !command->redir_files;
-	if (cond_1 || cond_2)
+	if (is_safe_to_run_builtin(data, command))
 	{
 		if (process_builtin(data, command) < 0)
 		{
@@ -48,7 +40,6 @@ bool	run_builting_separately(t_shell *data, t_cmd *command)
 		}
 		return true;
 	}
-	
 	return false; 
 }
 
@@ -57,11 +48,7 @@ void	command_loop(t_shell *data, t_cmd *command)
 	signal(SIGINT, SIG_IGN);
 	while (command)
 	{
-		if (run_builting_separately(data, command))
-		{
-			command = command->next;
-			continue;
-		}
+		run_builting_separately(data, command);
 		if (command->delimiter != AND_DOUBLE && command->next && pipe(data->pipe_id) == -1)
 			return (set_error_ex(1, "Pipe", NULL, false));
 		if (do_fork(&data->pid))
@@ -78,16 +65,20 @@ void	command_loop(t_shell *data, t_cmd *command)
 			command = command->next;
 		}
 	}
+	// print_error_information(data);
 }
 
 void	run_commands(t_shell *data)
 {
-
 	data->prev_fd = -1;
 	ft_memset(data->pipe_id, -1, sizeof(int) * 2);
 	if ((data->eof))
 	{
-		run_eof(data, &data->pid);
+		if (run_eof(data, &data->pid))
+		{
+			data->exit_status = 1;
+			return;
+		}
 		set_last_status(data);
 		if (data->exit_status == 130 || data->exit_status == 131)
 			return ;
@@ -95,5 +86,3 @@ void	run_commands(t_shell *data)
 	command_loop(data, data->command);
 	set_last_status(data);
 }
-
-// echo -n oi >> file && echo -n laele

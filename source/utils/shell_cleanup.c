@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 11:27:24 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/05 10:53:59 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ static void	free_command(t_cmd **command)
 			free_split(tmp->args);
 		if (tmp->path)
 			free(tmp->path);
-		if (tmp->fd_in != -1) // TODO: DO I NEED??
-			close(tmp->fd_in);
-		if (tmp->fd_out != -1)
-			close(tmp->fd_out);
+		if (tmp->io[0] != -1)
+			close(tmp->io[0]);
+		if (tmp->io[1] != -1)
+			close(tmp->io[1]);
 		(*command) = (*command)->next;
 		free(tmp);
 	}
@@ -88,7 +88,6 @@ void	refresh_shell_data(t_shell *data)
 		close(data->pipe_id[0]);
 	if (data->pipe_id[1] != -1)
 		close(data->pipe_id[1]);
-
 	data->commands_ran = 0;
 	data->nbr_of_commands = 0;
 	data->pid = -1;
