@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 12:04:13 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/04 17:23:46 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	child_process(t_shell *data, t_cmd *command)
 		cleanup_shell(data);
 		exit(EXIT_FAILURE);
 	}
+	ft_printf_error("fd_in: %d | fd_out: %d\n", command->fd_in, command->fd_out);
 	if (is_safe_to_execute(command))
 	{
 		execve(command->path, command->args, command->envp);
