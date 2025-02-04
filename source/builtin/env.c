@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:44:28 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/02 22:51:00 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/04 09:23:05 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@ static void	print_key_value(t_hashnode *current)
 {
 	while (current)
 	{
-		printf("%s", current->key);
 		if (current->value)
+		{
+			printf("%s", current->key);
 			printf("=%s", current->value);
-		printf("\n");
+			printf("\n");
+		}
 		current = current->next;
 	}
 }
@@ -27,7 +29,7 @@ static void	print_key_value(t_hashnode *current)
 /// @brief Displays shell environment variables.
 /// @param data The shell structure with the environment.
 /// @param command_args The arguments array.
-/// @details Prints all key-value pairs. Extra args cause an error (exit 126).  
+/// @details Prints all key-value pairs. Extra args cause an error (exit 126).
 ///          On success, exit status is 0.
 void	builtin_env(t_shell *data, char **command_args)
 {
