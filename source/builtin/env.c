@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:44:28 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/04 09:23:05 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/04 12:50:03 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@ static void	print_key_value(t_hashnode *current)
 		current = current->next;
 	}
 }
+static int	check_access_fok(t_shell *data, const char *path)
+{
+	if (access(path, F_OK) == 0)
+		return (0);
+	printf("bash: env: %s: No such file or directory\n", path);
+	data->exit_status = 1;
+	return (1);
+}
 
 /// @brief Displays shell environment variables.
 /// @param data The shell structure with the environment.
@@ -40,6 +48,8 @@ void	builtin_env(t_shell *data, char **command_args)
 	length = array_length(command_args);
 	if (length > 1)
 	{
+		if(check_access_fok(data, command_args[1]) == 1)
+			return ;
 		printf("env: '%s': Permission denied\n", command_args[1]);
 		data->exit_status = 126;
 		return ;

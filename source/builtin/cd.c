@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:57:27 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/02 22:47:44 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/04 17:14:59 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,12 @@ int	builtin_cd(t_shell *data, char **command_args)
 		printf("bash: cd: too many arguments\n");
 		data->exit_status = 1;
 		return (1);
+	}
+	if(!ft_strcmp(command_args[1], "-"))
+	{
+		if(change_directory(data, hashmap_search(data->map, "OLDPWD")) == -1)
+			return(-1);
+		return(0);
 	}
 	if (check_access_fok(data, command_args[1]) != 0)
 		return (1);

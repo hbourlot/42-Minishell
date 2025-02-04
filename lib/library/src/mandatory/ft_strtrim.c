@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:02:59 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/14 15:28:02 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:55:41 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	long long	start;
 	long long	end;
 	char		*temp;
-
+	
 	len = ft_strlen(s1);
 	start = 0;
 	end = len - 1;
@@ -50,7 +50,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 		start++;
 	while (s1 && is_in(s1[end], set) == 1 && end != 0)
 		end--;
-	if (start >= end)
+	if (start > end)
 		return (ft_strdup(""));
 	temp = ft_substr(s1, start, end - start + 2);
 	if (!temp)

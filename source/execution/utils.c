@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:23:56 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 14:56:39 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:35:14 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	set_last_status(t_shell *data)
 	int		wait_status;
 	pid_t	prev_pid;
 	int		i;
-
 	i = 0;
 	prev_pid = 0;
 	wait_status = 0;
@@ -59,20 +58,3 @@ int	do_fork(pid_t *pid)
 		return (-1);
 	return (0);
 }
-
-// bool	there_is_command_single_pipe(t_shell *data)
-// {
-// 	t_cmd *current;
-
-// 	current = data->command;
-
-// 	if (data->nbr_of_commands == 1)
-// 		return (false);
-// 	while (current)
-// 	{
-// 		if (current->delimiter == PIPE_SINGLE)
-// 			return (true);
-// 		current = current->next;
-// 	}
-// 	return (false);
-// }
