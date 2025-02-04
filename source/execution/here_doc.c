@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 14:04:24 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/04 21:41:48 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,12 @@ static void	here_doc_fail(t_shell *data, char *eof)
 
 }
 
-static void	handle_child_process(t_shell *data)
+static void	handle_child_process(t_shell *data, int i)
 {
-	int	i;
-	
-	i = 0;
-	while (data->eof && data->eof[i])
-	{
-		if (here_doc(data->pipe_id, data->eof[i]) == -1)
-			here_doc_fail(data, data->eof[i]);
-		i++;
-	}
-	if (!data->command) // TODO: Still need to make sure about it
+	restore_signals();
+	if (here_doc(data->pipe_id, data->eof[i]) == -1)
+		here_doc_fail(data, data->eof[i]);
+	if (!data->command && !data->eof[i + 1])
 		write(1, "\n", 1);
 	close(data->pipe_id[0]);
 	close(data->pipe_id[1]);
@@ -74,32 +68,30 @@ static void	handle_child_process(t_shell *data)
 	exit(EXIT_SUCCESS);
 }
 
-static int	handle_parent_process(t_shell *data)
+static void	handle_parent_process(t_shell *data, int i)
 {
-	if (data->command)
+	if (!data->eof[i + 1] && data->command)
 		data->prev_fd = data->pipe_id[0];
 	else
 		close(data->pipe_id[0]);
-	data->commands_ran += 1;
+	wait(NULL);
 	close(data->pipe_id[1]);
-		
-	return (0);
 }
 
 int	run_eof(t_shell *data, pid_t *pid)
 {
-	if (pipe(data->pipe_id) == -1)
-		perror("Pipe");
-	signal(SIGINT, SIG_IGN);
-	*pid = fork();
-	if (*pid == -1)
-		perror("Fork");
-	if (*pid == 0)
+	int	i;
+
+	i = 0;
+	while (data->eof[i])
 	{
-		restore_signals();
-		handle_child_process(data);
+		if (pipe(data->pipe_id) == -1 || do_fork(&data->pid))
+			return (set_error_ex(1, "Pipe/Fork", NULL, false), -1);
+		else if (*pid == 0)
+			handle_child_process(data, i);
+		else
+			handle_parent_process(data, i);
+		i++;
 	}
-	if (handle_parent_process(data))
-		return (-1);
 	return (0);
 }

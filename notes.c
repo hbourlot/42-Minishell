@@ -4,14 +4,14 @@
 * [X] Prob find first how many pipes "|" i got on cmd_line and separate by how many t_cmd structure i'll have
 * [X] Maybe add a boolean logic to clean all address inside struct data but keep variable of history safe?
 * [X] command cat > file4 ( which doest not exist) get stuck on terminal
-* [] I still need to treat the case of ls | which my parsing return error_handling but need to go to here_doc
-* [] in a command order if theres <<, i need to priority HERE_DOC at all, after here doc I make any commands
-* [] Need to add header files into pre-dependence on Makefile 
-* [] Need to treat exit status
-* [] Nees to test exit status on here_doc
-* [] Need to check file handle_folders, with error ze told on zap :)
-*
-*
+* [x] I still need to treat the case of ls | which my parsing return error_handling but need to go to here_doc
+* [x] in a command order if theres <<, i need to priority HERE_DOC at all, after here doc I make any commands
+* [x] Need to add header files into pre-dependence on Makefile 
+* [x] Need to treat exit status
+* [x] Need to test exit status on here_doc
+* [x] Need to check file handle_folders, with error ze told on zap :)
+* [] Prob handle multiple process to each here_doc so CTRL+D ends one by one
+* [] Treat all error message into a char * to print properly
 *
 *
 *
