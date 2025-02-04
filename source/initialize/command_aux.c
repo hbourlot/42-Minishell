@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 20:15:33 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:39:23 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static int	initialize_command_struct(t_cmd **command, char *readline_splitted, t
 
 static int	handle_file_tokens(t_shell *data, t_cmd *command)
 {
+	(void)data;
 	const char *file_tokens[] = {">>", ">", "<", NULL};
 
 	if (initialize_file_list(command->input, file_tokens,

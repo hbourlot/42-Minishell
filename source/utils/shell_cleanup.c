@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_cleanup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 17:19:20 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/04 10:15:45 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,30 @@ void	free_files(t_file *file_list)
 			free(tmp->write);
 		file_list = file_list->next;
 		free(tmp);
+	}
+}
+
+void	hashmap_free(t_hashmap *map)
+{
+	int			i;
+	t_hashnode	*current;
+	t_hashnode	*temp;
+
+	i = 0;
+	if (!map)
+		return ;
+	while (i < HASHMAP_SIZE)
+	{
+		current = map->slots[i];
+		while (current)
+		{
+			temp = current;
+			current = current->next;
+			free(temp->key);
+			free(temp->value);
+			free(temp);
+		}
+		i++;
 	}
 }
 
@@ -58,15 +82,13 @@ static void	free_command(t_cmd **command)
 */
 void	refresh_shell_data(t_shell *data)
 {
-	t_cmd	*tmp;
-
+	// t_cmd	*tmp;
 	// if (data->prev_fd != -1)
 	// 	close(data->prev_fd);
 	// if (data->pipe_id[0] != -1)
 	// 	close(data->pipe_id[0]);
 	// if (data->pipe_id[1] != -1)
 	// 	close(data->pipe_id[1]);
-
 	data->commands_ran = 0;
 	data->nbr_of_commands = 0;
 	data->pid = -1;
@@ -86,20 +108,24 @@ void	refresh_shell_data(t_shell *data)
 	}
 	free_command(&data->command);
 	data->command = NULL;
+	data->last_cmd_executed = NULL;
 }
 
 // * All the command->input comes from the data->input_splitted
 // * so just need to free input_splitted.
 void	cleanup_shell(t_shell *data)
 {
-	t_cmd	*tmp;
-
+	// t_cmd	*tmp;
+	if (data->prev_fd != -1)
+		close(data->prev_fd);
+	if (data->pipe_id[0] != -1)
+		close(data->pipe_id[0]);
+	if (data->pipe_id[1] != -1)
+		close(data->pipe_id[1]);
 	if (data->readline)
 		free(data->readline);
 	if (data->readline_splitted)
 		free_split(data->readline_splitted);
-	if (data->env_paths)
-		free_split(data->env_paths);
 	if (data->eof)
 	{
 		free_split(data->eof);
@@ -109,6 +135,8 @@ void	cleanup_shell(t_shell *data)
 		hashmap_free(data->map);
 	if (data->envp)
 		free_split(data->envp);
+	if (data->env_paths)
+		free_split(data->env_paths);
 	free_command(&data->command);
 	data->command = NULL;
 }

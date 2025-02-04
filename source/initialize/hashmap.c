@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   hashmap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:48:06 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/01 18:27:38 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/04 09:17:49 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static size_t	hash(char *key)
+size_t	hash(char *key)
 {
 	int		i;
 	size_t	hash_value;
@@ -43,11 +43,35 @@ static t_hashnode	*find_node(t_hashmap *map, char *key)
 	return (NULL);
 }
 
-int	hashmap_insert(t_hashmap *map, char *key, char *value)
+static int	new_hasnode(t_hashmap *map, char *key, char *value)
 {
 	size_t		index;
-	t_hashnode	*current;
 	t_hashnode	*new_node;
+
+	index = hash(key);
+	new_node = malloc(sizeof(t_hashnode));
+	if (!new_node)
+		return (ERROR);
+	new_node->key = ft_strdup(key);
+	if (!new_node->key)
+		return (free(new_node), ERROR);
+	if(value)
+	{
+		new_node->value = ft_strdup(value);
+		if (!new_node->value && value)
+			return (free(new_node->key), free(new_node), ERROR);
+	}
+	else
+		new_node->value = NULL;
+	new_node->next = map->slots[index];
+	map->slots[index] = new_node;
+	map->total_size += 1;
+	return (0);
+}
+
+int	hashmap_insert(t_hashmap *map, char *key, char *value)
+{
+	t_hashnode	*current;
 
 	current = find_node(map, key);
 	if (current)
@@ -55,42 +79,12 @@ int	hashmap_insert(t_hashmap *map, char *key, char *value)
 		free(current->value);
 		current->value = ft_strdup(value);
 		if (!current->value)
-			return (-1);
+			return (ERROR);
 		return (0);
 	}
-	index = hash(key);
-	new_node = malloc(sizeof(t_hashnode));
-	if (!new_node)
-		return (/* free(key), free(value), */ -1);
-	new_node->key = ft_strdup(key);
-	if (!value)
-		new_node->value = NULL;
-	else
-		new_node->value = ft_strdup(value);
-	if (!new_node->key)
-		return (free(new_node), -1);
-	if (!new_node->value && value)
-		return (free(new_node->key), free(new_node), -1);
-	new_node->next = map->slots[index];
-	map->slots[index] = new_node;
-	map->total_size += 1;
+	if (new_hasnode(map, key, value) == ERROR)
+		return (ERROR);
 	return (0);
-}
-
-char	*hashmap_search(t_hashmap *map, char *key)
-{
-	size_t		index;
-	t_hashnode	*current;
-
-	index = hash(key);
-	current = map->slots[index];
-	while (current)
-	{
-		if (ft_strcmp(current->key, key) == 0)
-			return (current->value);
-		current = current->next;
-	}
-	return (NULL);
 }
 
 void	hashmap_delete(t_hashmap *map, char *key)

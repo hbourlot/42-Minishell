@@ -3,75 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   hashmap_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:52:16 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/01 18:19:38 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/03 18:01:18 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void	hashmap_display(t_hashmap *map)
-// {
-// 	t_hashnode	*current;
-// 	int			i;
-//
-// 	i = 0;
-// 	while (i < HASHMAP_SIZE)
-// 	{
-// 		current = map->slots[i];
-// 		while (current)
-// 		{
-// 			printf("%d %s=%s\n", i, current->key, current->value);
-// 			current = current->next;
-// 		}
-// 		i++;
-// 	}
-// }
-
-void	hashmap_free(t_hashmap *map)
+static int	update_shell_lvl(t_hashmap *map)
 {
-	int			i;
-	t_hashnode	*current;
-	t_hashnode	*temp;
+	const char	*key = "SHLVL";
+	char		*temp;
+	int			temp_lvl;
+	char		*temp_value;
 
-	i = 0;
-	if (!map)
-		return ;
-	while (i < HASHMAP_SIZE)
-	{
-		current = map->slots[i];
-		while (current)
-		{
-			temp = current;
-			current = current->next;
-			free(temp->key);
-			free(temp->value);
-			free(temp);
-		}
-		i++;
-	}
+	temp = hashmap_search(map, (char *)key);
+	if (!temp)
+		return (-1);
+	temp_lvl = ft_atoi(temp);
+	temp_lvl++;
+	temp_value = ft_itoa(temp_lvl);
+	if (!temp_value)
+		return (ERROR);
+	if (hashmap_insert(map, (char *)key, temp_value) == ERROR)
+		return (free(temp_value), ERROR);
+	return (free(temp_value), 0);
 }
 
-t_hashmap	*create_map(void)
-{
-	static t_hashmap	map;
-
-	return (&map);
-}
-
-/// @brief Imports environment variables from an array into a hashmap.
-/// @param map The hashmap to store the environment variables as key-value pairs.
-/// @param envp The array of environment variables in "KEY=VALUE" format.
-/// @return 0 on success, -1 on memory allocation or insertion failure.
+/// @brief Imports environment variables into a hashmap.
+/// @param map The hashmap to store key-value pairs.
+/// @param envp The array of variables in "KEY=VALUE" format.
+/// @return 0 on success, -1 on allocation or insertion failure.
 int	import_env_to_hashmap(t_hashmap *map, char *envp[])
 {
 	int		i;
 	char	*delimeter;
 	size_t	len;
 	char	*key;
-	char	*value;
 
 	i = 0;
 	while (envp[i])
@@ -80,59 +50,78 @@ int	import_env_to_hashmap(t_hashmap *map, char *envp[])
 		len = delimeter - envp[i];
 		key = ft_substr(envp[i], 0, len);
 		if (!key)
-			return (-1);
+			return (ERROR);
 		if (hashmap_insert(map, key, delimeter + 1) == -1)
-			return (free(key), -1);
+			if (hashmap_insert(map, key, delimeter + 1) == -1)
+				return (free(key), ERROR);
 		free(key);
 		i++;
+	}
+	if (update_shell_lvl(map) == ERROR)
+		return (ERROR);
+	return (0);
+}
+
+static int	populate_env_array(char **envp, t_hashnode *current, size_t *idx)
+{
+	while (current)
+	{
+		if (current->key && current->value)
+		{
+			envp[*idx] = ft_strjoin_char(current->key, current->value, '=');
+			if (!envp[*idx])
+				return (ERROR);
+			(*idx)++;
+		}
+		current = current->next;
 	}
 	return (0);
 }
 
-/// @brief Converts a hashmap of environment variables into an environment array.
-/// @param data The shell structure where the environment array will be stored.
-/// @param map The hashmap containing the environment variables as key-value pairs.
-/// @return 0 on success, -1 on memory allocation failure.
+/// @brief Converts a hashmap into an environment array.
+/// @param data The shell structure to store the array.
+/// @param map The hashmap with environment variables.
+/// @return 0 on success, -1 on allocation failure.
 int	hashmap_to_env_array(t_shell *data, t_hashmap *map)
 {
 	int			i;
 	t_hashnode	*current;
+	char		**envp;
 	size_t		idx;
 
-	if (data->envp)
-		free_split(data->envp);
-	data->envp = ft_calloc(map->total_size + 1, sizeof(char *));
-	if (!data->envp)
-		return (-1);
-	i = 0;
 	idx = 0;
+	if (data->envp)
+	{
+		free_split(data->envp);
+		data->envp = NULL;
+	}
+	envp = ft_calloc(map->total_size + 1, sizeof(char *));
+	if (!envp)
+		return (ERROR);
+	i = 0;
 	while (i < HASHMAP_SIZE)
 	{
 		current = map->slots[i];
-		while (current)
-		{
-			data->envp[idx] = ft_strjoin_char(current->key, current->value,
-					'=');
-			if (!data->envp[idx])
-				return (-1);
-			idx++;
-			current = current->next;
-		}
+		if (populate_env_array(envp, current, &idx) == ERROR)
+			return (ERROR);
 		i++;
 	}
+	data->envp = envp;
 	return (0);
 }
 
-/// @brief Updates the environment variables and paths in the shell structure.
-/// @param data The shell structure containing environment mappings and state.
-/// @return SUCCESS on successful update, ERROR if malloc fails.
-int	update_envp_and_envpath(t_shell *data)
+char	*hashmap_search(t_hashmap *map, char *key)
 {
-	if (data->env_paths)
-		free_split(data->env_paths);
-	if (hashmap_to_env_array(data, data->map) == ERROR)
-		return (ERROR);
-	if (initialize_environment_paths(data) == ERROR)
-		return (ERROR);
-	return (SUCCESS);
+	size_t		index;
+	t_hashnode	*current;
+
+	index = hash(key);
+	current = map->slots[index];
+	while (current)
+	{
+		if (ft_strcmp(current->key, key) == 0)
+			return (current->value);
+		current = current->next;
+	}
+	return (NULL);
 }

@@ -3,34 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   handler.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:41:34 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/01 20:14:37 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 23:43:03 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/// @brief Sets the appropriate flag for a built-in command in the command structure.
-/// @param command The command structure representing the last executed command.
-/// @details Checks if the command is a built-in function and sets the corresponding
-///          flag in `command->settings`. If the command is empty or consists only of spaces, 
-///          no flags are set. Uses `ft_strcmp` to compare commands against a predefined list.
+/// @brief Sets the built-in command flag.
+/// @param command The last executed command.
+/// @details Checks if the command is built-in and updates its settings.
+///          No flags are set if empty or only spaces. Uses `ft_strcmp`.
 void	set_builtin_flag(t_cmd *command)
 {
-	char		*args;
 	int			i;
+	char		*args;
+	bool		**builtin_flags;
 	const char	*builtin_functions[] = {"cd", "export", "echo", "env", "unset",
 			"exit", "pwd", NULL};
-	bool		*builtin_flags[] = {&command->settings.builtin_cd,
-				&command->settings.builtin_export,
-				&command->settings.builtin_echo,
-				&command->settings.builtin_env,
-				&command->settings.builtin_unset,
-				&command->settings.builtin_exit,
-				&command->settings.builtin_pwd};
 
+	builtin_flags = (bool *[]){&command->settings.builtin_cd,
+		&command->settings.builtin_export, &command->settings.builtin_echo,
+		&command->settings.builtin_env, &command->settings.builtin_unset,
+		&command->settings.builtin_exit, &command->settings.builtin_pwd};
 	i = 0;
 	args = command->args[0];
 	if (!args || !*args || all_same_char(args, ' '))
@@ -47,12 +44,12 @@ void	set_builtin_flag(t_cmd *command)
 	}
 }
 
-/// @brief Processes the execution of a built-in command based on the flags in the command structure.
-/// @param data The shell structure containing environment mappings and state.
-/// @param command The command structure representing the last executed command.
-/// @details Checks which built-in command is set in `command->settings` and calls the corresponding
-///          function. Returns ERROR if a command fails. This is a temporary function used for testing
-///          the execution of built-in commands like `cd`, `pwd`, `echo`, `unset`, `env`, and `exit`.
+/// @brief Executes a built-in command.
+/// @param data The shell structure.
+/// @param command The last executed command.
+/// @details Calls the function for the set built-in.
+///          Returns ERROR on failure. Handles:
+///          `cd`, `pwd`, `echo`, `unset`, `env`, `exit`.
 int	process_builtin(t_shell *data, t_cmd *command)
 {
 	if (command->settings.builtin_cd)

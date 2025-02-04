@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:38:12 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 14:19:39 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:28:58 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,7 @@ static char	*find_executable_path(char *executable, char **env_paths,
 char	*get_path(char *command_str, char **env_paths)
 {
 	char	*executable;
-	char	**command_splitted;
 	bool	only_executable;
-	int		i;
 	char	*path;
 
 	executable = NULL;

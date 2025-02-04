@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 15:27:48 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/29 01:08:04 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:50:04 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ static void	is_valid_flag(char *command_arg, bool *remove_nl, bool *printable)
 		*printable = false;
 	}
 }
-/// @brief Handles the `echo` built-in command to print arguments to the terminal.
-/// @param data The shell structure (unused in this function but kept for consistency).
-/// @param command_args The array of arguments passed to the `echo` command.
-/// @details Prints the provided arguments, handling the `-n` flag to suppress
-///          the trailing newline. Spaces are preserved between arguments.
-///          Flags are validated using `is_valid_flag`.
+
+/// @brief Handles `echo` to print arguments.
+/// @param data The shell structure.
+/// @param command_args The arguments array.
+/// @details Prints arguments, handling `-n` to suppress newline.
+///          Spaces are preserved. Flags validated via `is_valid_flag`.
 void	builtin_echo(t_shell *data, char **command_args)
 {
 	int		idx;

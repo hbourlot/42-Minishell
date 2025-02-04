@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_variables_aux.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:59:00 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/01 17:29:26 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 18:15:53 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,16 @@ static char	*expand_shell_variable(char *var_name)
 	}
 	else if (var_name[1] == '?')
 	{
-		expanded_value = ft_itoa(get_shell()->exit_status);
+		temp = ft_itoa(get_shell()->exit_status);
+		if (!temp)
+			return (NULL);
+		expanded_value = temp;
 	}
 	else
 	{
 		temp = hashmap_search(create_map(), var_name + 1);
 		expanded_value = ft_strtrim(temp, " ");
-		free(temp);
+		// free(temp);
 	}
 	free(var_name);
 	if (!expanded_value)

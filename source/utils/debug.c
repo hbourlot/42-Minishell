@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:18:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 17:40:11 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:44:58 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	debug_command_file_list(t_shell *data)
 {
 	int		cmd_num;
 	t_cmd	*tmp;
-	t_file	*tmp_files;
+	// t_file	*tmp_files;
 
 	cmd_num = 1;
 	tmp = data->command;

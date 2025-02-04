@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 18:41:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/22 16:42:59 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:37:07 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 /// @return 0 if the input is valid; -1 if a syntax error is detected.
 int	parsing_syntax(t_shell *data)
 {
-	const char *pipe_tokens[] = {"||", "|", NULL};
-	const char *redirect_tokens[] = {"<<", ">>", ">", "<", NULL};
+	// const char *pipe_tokens[] = {"||", "|", NULL};
+	// const char *redirect_tokens[] = {"<<", ">>", ">", "<", NULL};
 	// int			fd_id[2];
 
 	// fd_id[1] = STDOUT_FILENO;

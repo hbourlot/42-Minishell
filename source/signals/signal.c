@@ -3,56 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 22:00:45 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/01 23:13:38 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/04 10:24:10 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-void	sigint_handler(int signal)
+void	handle_sigint(int sig)
 {
-	if (signal == SIGINT)
-	{
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		get_shell()->exit_status = 130;
-		// refresh_shell_data(get_shell());
-	}
+	(void)sig;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
-void	sigint_heredoc_handler(int signal)
+void	setup_parent_signals(void)
 {
-	(void)signal;
-	close(get_shell()->pipe_id[0]);
-	close(get_shell()->pipe_id[1]);
+	struct sigaction	sa_int;
+
+	sa_int.sa_handler = handle_sigint;
+	sigemptyset(&sa_int.sa_mask);
+	sa_int.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa_int, NULL);
+	signal(SIGQUIT, SIG_IGN);
+}
+void  handle_sigint_child(int sig)
+{
+	(void)sig;
 	cleanup_shell(get_shell());
-	write(1, "\n", 1);
 	exit(130);
 }
-void	setup_signals(void)
+void  handle_sigquit_child(int sig)
 {
-	signal(SIGINT, &sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
+	(void)sig;
+	cleanup_shell(get_shell());
+	exit(131);
 }
 
 void	restore_signals(void)
 {
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-}
+	struct sigaction	sa_int;
 
-
-void	handle_signals(t_shell *data, int status)
-{
-	if (status == 1)
-	{
-		signal(SIGINT, sigint_heredoc_handler);
-	}
-
+	sa_int.sa_handler = handle_sigint_child;
+	sigemptyset(&sa_int.sa_mask);
+	sa_int.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa_int, NULL);
+	signal(SIGQUIT, handle_sigint_child);
 }

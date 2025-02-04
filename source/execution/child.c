@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 17:37:54 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:28:52 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static void	execute_only_tokens(t_shell *data, t_cmd *command)
 	int	code_parsing;
 
 	code_parsing = 0;
-	code_parsing = (validate_file_read_execution(command->redir_files) 
-					|| validate_command_path_access(command->path));
+	code_parsing = (validate_file_read_execution(command->redir_files)
+			|| validate_command_path_access(command->path));
 	// ! Pretty sure dont need to validate command_path_access since its only files to handle;
 	if (code_parsing)
 	{
@@ -26,10 +26,10 @@ static void	execute_only_tokens(t_shell *data, t_cmd *command)
 		cleanup_shell(data);
 		handle_error();
 	}
-	return;
+	return ;
 }
 
-static bool is_safe_to_execute(t_cmd *command)
+static bool	is_safe_to_execute(t_cmd *command)
 {
 	if (command->settings.only_tokens)
 		return (false);
@@ -37,7 +37,6 @@ static bool is_safe_to_execute(t_cmd *command)
 		return (false);
 	if (command->settings.is_builtin)
 		return (false);
-
 	return (true);
 }
 
@@ -45,10 +44,10 @@ void	child_process(t_shell *data, t_cmd *command)
 {
 	int	code;
 
-	handle_signals(data, 1);
 	if (command->settings.only_tokens)
 		execute_only_tokens(data, command);
-	if (open_folders_safety(&command->fd_in, &command->fd_out, command->redir_files))
+	if (open_folders_safety(&command->fd_in, &command->fd_out,
+			command->redir_files))
 		exit(handle_error());
 	if (do_dup2(&command->fd_in, &command->fd_out, data->pipe_id, &data->prev_fd))
 	{

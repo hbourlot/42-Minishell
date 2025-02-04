@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:11:13 by joralves          #+#    #+#             */
-/*   Updated: 2025/01/31 17:38:59 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/03 16:37:10 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,32 @@ static void	print_key_value(t_hashmap *map)
 		idx++;
 	}
 }
+static int	is_valid_key(t_shell *data, char *temp_key)
+{
+	int		i;
+	bool	valid;
+
+	valid = true;
+	i = 0;
+	while (temp_key && temp_key[i])
+	{
+		if (!ft_isalnum(temp_key[i]) && !(temp_key[i] == '_'))
+		{
+			valid = false;
+			break ;
+		}
+		i++;
+	}
+	if (valid == false)
+	{
+		ft_printf_error("bash: export: '%s': not a valid identifier\n",
+			temp_key);
+		data->exit_status = 1;
+		return (1);
+	}
+	return (0);
+}
+
 static int	add_new_variable_on_hashmap(t_shell *data, char *command_arg)
 {
 	char	*value;
@@ -40,16 +66,28 @@ static int	add_new_variable_on_hashmap(t_shell *data, char *command_arg)
 	value = ft_strchr(command_arg, '=');
 	if (!value)
 	{
+		if (is_valid_key(data, command_arg))
+			return (1);
 		if (hashmap_insert(data->map, command_arg, NULL) == ERROR)
 			return (ERROR);
 		return (SUCCESS);
 	}
 	temp_key = ft_substr(command_arg, 0, value - command_arg);
+	if (!temp_key)
+		return (ERROR);
+	if (is_valid_key(data, temp_key))
+		return (free(temp_key), 1);
 	if (hashmap_insert(data->map, temp_key, value + 1) == ERROR)
 		return (free(temp_key), ERROR);
+	data->exit_status = 0;
 	return (free(temp_key), 0);
 }
 
+/// @brief Handles the `export` command.
+/// @param data The shell structure.
+/// @param command_args The arguments array.
+/// @details Prints variables if no args are given. Otherwise, adds new ones
+///          and updates the environment. Returns 0 or ERROR.
 int	builtin_export(t_shell *data, char **command_args)
 {
 	int	idx;
