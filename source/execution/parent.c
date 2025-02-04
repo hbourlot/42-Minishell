@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:16:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 17:37:38 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/04 12:07:02 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static int	handle_double_and(t_shell *data, t_cmd **command_ref)
 int	parent_process(t_shell *data, t_cmd **command_ref)
 {
 	data->commands_ran += 1;
-	if ((*command_ref)->settings.is_builtin && (*command_ref)->redir_files)
+	if ((*command_ref)->settings.is_builtin && !(*command_ref)->redir_files
+		&& (*command_ref)->delimiter != PIPE_SINGLE)
 		data->commands_ran -=1;
 
 	data->last_cmd_executed = (*command_ref);
