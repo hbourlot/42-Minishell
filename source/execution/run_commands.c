@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 11:48:09 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/04 12:09:16 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,11 @@ void	command_loop(t_shell *data, t_cmd *command)
 	signal(SIGINT, SIG_IGN);
 	while (command)
 	{
-		run_builting_separately(data, command);
-		
+		if (run_builting_separately(data, command))
+		{
+			command = command->next;
+			continue;
+		}
 		if (command->delimiter != AND_DOUBLE && command->next && pipe(data->pipe_id) == -1)
 			return (set_error_ex(1, "Pipe", NULL, false));
 		if (do_fork(&data->pid))
@@ -88,7 +91,6 @@ void	run_commands(t_shell *data)
 		set_last_status(data);
 		if (data->exit_status == 130 || data->exit_status == 131)
 			return ;
-		
 	}
 	command_loop(data, data->command);
 	set_last_status(data);
