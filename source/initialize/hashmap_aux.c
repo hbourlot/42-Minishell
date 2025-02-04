@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hashmap_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:52:16 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/03 18:01:18 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/04 13:26:25 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ int	import_env_to_hashmap(t_hashmap *map, char *envp[])
 		if (!key)
 			return (ERROR);
 		if (hashmap_insert(map, key, delimeter + 1) == -1)
-			if (hashmap_insert(map, key, delimeter + 1) == -1)
-				return (free(key), ERROR);
+			return (free(key), ERROR);
 		free(key);
 		i++;
 	}

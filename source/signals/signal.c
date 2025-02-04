@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 22:00:45 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 10:24:10 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/04 13:27:34 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,14 @@ void  handle_sigint_child(int sig)
 {
 	(void)sig;
 	cleanup_shell(get_shell());
+	write(1, "\n", 1);
 	exit(130);
 }
 void  handle_sigquit_child(int sig)
 {
 	(void)sig;
 	cleanup_shell(get_shell());
+	write(1, "\n", 1);	
 	exit(131);
 }
 
