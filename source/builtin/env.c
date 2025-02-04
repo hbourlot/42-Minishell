@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:44:28 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/04 12:50:03 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/04 17:52:05 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,12 @@ void	builtin_env(t_shell *data, char **command_args)
 	int			idx;
 	int			length;
 	t_hashnode	*current;
-
+	if(!data->env_paths)
+	{
+		ft_printf_error("bash: env: No such file or directory\n");
+		data->exit_status= 127;
+		return;
+	}
 	length = array_length(command_args);
 	if (length > 1)
 	{
