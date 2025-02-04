@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:44:39 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:41:23 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,30 @@ void	free_files(t_file *file_list)
 			free(tmp->write);
 		file_list = file_list->next;
 		free(tmp);
+	}
+}
+
+void	hashmap_free(t_hashmap *map)
+{
+	int			i;
+	t_hashnode	*current;
+	t_hashnode	*temp;
+
+	i = 0;
+	if (!map)
+		return ;
+	while (i < HASHMAP_SIZE)
+	{
+		current = map->slots[i];
+		while (current)
+		{
+			temp = current;
+			current = current->next;
+			free(temp->key);
+			free(temp->value);
+			free(temp);
+		}
+		i++;
 	}
 }
 
@@ -59,14 +83,12 @@ static void	free_command(t_cmd **command)
 void	refresh_shell_data(t_shell *data)
 {
 	// t_cmd	*tmp;
-
 	// if (data->prev_fd != -1)
 	// 	close(data->prev_fd);
 	// if (data->pipe_id[0] != -1)
 	// 	close(data->pipe_id[0]);
 	// if (data->pipe_id[1] != -1)
 	// 	close(data->pipe_id[1]);
-
 	data->commands_ran = 0;
 	data->nbr_of_commands = 0;
 	data->pid = -1;

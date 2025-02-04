@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:24:42 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:45:31 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int			add_command(t_cmd **command, char *readline_splitted, t_shell *data,
 				t_token token_type);
 int			initialize_file_list(char *input, const char *redirects[],
 				t_file **redir_files);
+size_t		hash(char *key);
 int			hashmap_insert(t_hashmap *map, char *key, char *value);
 char		*hashmap_search(t_hashmap *map, char *key);
 void		hashmap_delete(t_hashmap *map, char *key);
@@ -132,6 +133,5 @@ int			builtin_export(t_shell *data, char **command_args);
 
 void		restore_signals(void);
 void		setup_parent_signals(void);
-
 
 #endif

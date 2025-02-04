@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:41:34 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 23:01:23 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/02 23:43:03 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,14 @@ void	set_builtin_flag(t_cmd *command)
 {
 	int			i;
 	char		*args;
+	bool		**builtin_flags;
 	const char	*builtin_functions[] = {"cd", "export", "echo", "env", "unset",
-		"exit", "pwd", NULL};
-	const bool	*builtin_flags[] = {&command->settings.builtin_cd,
+			"exit", "pwd", NULL};
+
+	builtin_flags = (bool *[]){&command->settings.builtin_cd,
 		&command->settings.builtin_export, &command->settings.builtin_echo,
 		&command->settings.builtin_env, &command->settings.builtin_unset,
 		&command->settings.builtin_exit, &command->settings.builtin_pwd};
-
 	i = 0;
 	args = command->args[0];
 	if (!args || !*args || all_same_char(args, ' '))
@@ -43,12 +44,12 @@ void	set_builtin_flag(t_cmd *command)
 	}
 }
 
-/// @brief Executes a built-in command.  
-/// @param data The shell structure.  
-/// @param command The last executed command.  
-/// @details Calls the function for the set built-in.  
-///          Returns ERROR on failure. Handles:  
-///          `cd`, `pwd`, `echo`, `unset`, `env`, `exit`.  
+/// @brief Executes a built-in command.
+/// @param data The shell structure.
+/// @param command The last executed command.
+/// @details Calls the function for the set built-in.
+///          Returns ERROR on failure. Handles:
+///          `cd`, `pwd`, `echo`, `unset`, `env`, `exit`.
 int	process_builtin(t_shell *data, t_cmd *command)
 {
 	if (command->settings.builtin_cd)

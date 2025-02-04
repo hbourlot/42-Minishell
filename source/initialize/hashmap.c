@@ -6,13 +6,13 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:48:06 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/02 18:15:45 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:45:54 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static size_t	hash(char *key)
+size_t	hash(char *key)
 {
 	int		i;
 	size_t	hash_value;
@@ -43,21 +43,11 @@ static t_hashnode	*find_node(t_hashmap *map, char *key)
 	return (NULL);
 }
 
-int	hashmap_insert(t_hashmap *map, char *key, char *value)
+static int	new_hasnode(t_hashmap *map, char *key, char *value)
 {
 	size_t		index;
-	t_hashnode	*current;
 	t_hashnode	*new_node;
 
-	current = find_node(map, key);
-	if (current)
-	{
-		free(current->value);
-		current->value = ft_strdup(value);
-		if (!current->value)
-			return (ERROR);
-		return (0);
-	}
 	index = hash(key);
 	new_node = malloc(sizeof(t_hashnode));
 	if (!new_node)
@@ -74,20 +64,22 @@ int	hashmap_insert(t_hashmap *map, char *key, char *value)
 	return (0);
 }
 
-char	*hashmap_search(t_hashmap *map, char *key)
+int	hashmap_insert(t_hashmap *map, char *key, char *value)
 {
-	size_t		index;
 	t_hashnode	*current;
 
-	index = hash(key);
-	current = map->slots[index];
-	while (current)
+	current = find_node(map, key);
+	if (current)
 	{
-		if (ft_strcmp(current->key, key) == 0)
-			return (current->value);
-		current = current->next;
+		free(current->value);
+		current->value = ft_strdup(value);
+		if (!current->value)
+			return (ERROR);
+		return (0);
 	}
-	return (NULL);
+	if (new_hasnode(map, key, value) == ERROR)
+		return (ERROR);
+	return (0);
 }
 
 void	hashmap_delete(t_hashmap *map, char *key)

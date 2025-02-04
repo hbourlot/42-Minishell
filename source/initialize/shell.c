@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:17:07 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:49:39 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ static bool	verify_and_prepare_input(t_shell *data)
 	if (data->readline && *data->readline)
 		add_history(data->readline);
 	identify_and_replace_sqpa_tokens(data->readline);
-	if (/* ft_strlen(data->readline) == 0 || */ all_same_char(data->readline,
-			REP_SPACE))
+	if (all_same_char(data->readline, REP_SPACE))
 	{
 		free_pointers(1, &data->readline);
 		return (false);
@@ -36,8 +35,11 @@ int	main_shell_loop(t_shell *data)
 	{
 		setup_parent_signals();
 		data->readline = readline(PROMPT);
-		if (!data->readline /* || ft_strcmp("exit", data->readline) == CMP_OK */)
+		if (!data->readline)
+		{
+			// cleanup_shell(data);
 			return (printf("exit\n"), 0);
+		}
 		if (verify_and_prepare_input(data) == false)
 			handle_error();
 		else if (data->command || data->eof)
@@ -59,15 +61,10 @@ t_shell	*init_shell(int argc, char *argv[], char *envp[])
 	data->prev_fd = -1;
 	ft_memset(data->pipe_id, -1, 8);
 	if (import_env_to_hashmap(data->map, envp) == -1
-		|| hashmap_to_env_array(data, data->map) == -1)
+		|| update_envp_and_envpath(data) == -1)
 	{
 		cleanup_shell(data);
 		exit(EXIT_FAILURE);
-	}
-	if (initialize_environment_paths(data))
-	{
-		cleanup_shell(data);
-		exit(EXIT_FAILURE); // TODO: Add a custom message ??
 	}
 	return (data);
 }
@@ -79,4 +76,11 @@ t_shell	*get_shell(void)
 	static t_shell	data;
 
 	return (&data);
+}
+
+t_hashmap	*create_map(void)
+{
+	static t_hashmap	map;
+
+	return (&map);
 }
