@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:48:06 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/04 13:24:09 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:44:26 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	new_hasnode(t_hashmap *map, char *key, char *value)
 	if(value)
 	{
 		new_node->value = ft_strdup(value);
-		if (!new_node->value && value)
+		if (!new_node->value)
 			return (free(new_node->key), free(new_node), ERROR);
 	}
 	else
