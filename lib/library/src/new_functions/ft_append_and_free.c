@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_append_and_free.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 08:12:38 by hbourlot          #+#    #+#             */
-/*   Updated: 2024/10/26 10:11:20 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:25:55 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_append_and_free(char *s1, char *s2)
 		return (NULL);
 	result = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!result)
-		return (NULL);
+		return (free(s1),NULL);
 	i = 0;
 	while (s1 && s1[i])
 	{

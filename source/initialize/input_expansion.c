@@ -6,83 +6,133 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 12:33:35 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:41:18 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*process_command_element(char *cmd_element)
+static char	*expand_variable(char *var_name, bool double_quotes)
 {
-	char	**cmd_tokens;
-	int		i;
-	char	*rest;
+	char	*temp;
+	char	*expanded_value;
 
-	rest = NULL;
-	i = 0;
-	cmd_tokens = tokenize_element(cmd_element);
-	if (!cmd_tokens)
-		return (free(cmd_element), NULL);
-	while (cmd_tokens[i])
+	if (var_name[1] == '$')
+		expanded_value = ft_itoa(getpid());
+	else if (var_name[1] == '?')
+		expanded_value = ft_itoa(get_shell()->exit_status);
+	else
 	{
-		cmd_tokens[i] = process_variables(cmd_tokens[i]);
-		rest = ft_append_and_free(rest, cmd_tokens[i]);
-		if (!rest || !cmd_tokens[i])
-			return (free(cmd_element), free_split(cmd_tokens), NULL);
-		free(cmd_tokens[i]);
-		i++;
+		temp = hashmap_search(create_map(), var_name + 1);
+		if (!temp)
+			expanded_value = ft_strdup("");
+		else if (double_quotes == false)
+			expanded_value = ft_strtrim(temp, " ");
+		else
+			expanded_value = ft_strdup(temp);
 	}
-	free(cmd_tokens);
-	return (free(cmd_element), rest);
+	if (!expanded_value)
+		return (NULL);
+	return (expanded_value);
 }
 
-static char	**filter_non_empty(char **array)
+static char	*process_expansion(char *element, int i, bool double_quotes)
 {
-	int	i;
-	int	j;
+	int		j;
+	char	*var_name;
+	char	*expansion_value;
+	char	*result;
 
-	i = 0;
-	j = 0;
-	while (array[i])
-	{
-		if (*array[i])
-		{
-			array[j] = array[i];
+	j = i + 1;
+	if (element[j] == '$' || element[j] == '?')
+		j++;
+	else
+		while (element[j] && (ft_isalnum(element[j]) || element[j] == '_'))
 			j++;
+	var_name = ft_substr(element, i, j - i);
+	if (!var_name)
+		return (NULL);
+	expansion_value = expand_variable(var_name, double_quotes);
+	free(var_name);
+	if (!expansion_value)
+		return (NULL);
+	truncate_range(element, i, j - i);
+	result = insert_string(element, expansion_value, i);
+	if (!result)
+		return (free(element), free(expansion_value), NULL);
+	identify_and_replace_sqpa_tokens(result);
+	return (free(element), free(expansion_value), result);
+}
+
+static char	*handle_variable_expansion(char *element)
+{
+	int		i;
+	bool	double_quotes;
+
+	double_quotes = false;
+	i = 0;
+	if (element[0] == 1)
+		return (element);
+	if (element[0] == 2)
+		double_quotes = true;
+	while (element[i])
+	{
+		while (element[i] && element[i] != '$')
+			i++;
+		if (!element[i])
+			break ;
+		if (element[++i] == 3 || element[i] == ' ' || element[i] == '\0')
+			continue ;
+		element = process_expansion(element, i - 1, double_quotes);
+		if (!element)
+			return (NULL);
+	}
+	return (element);
+}
+
+static char	*handle_command_elements(char **elements)
+{
+	int		i;
+	char	*result;
+
+	result = NULL;
+	i = 0;
+	while (elements[i])
+	{
+		if (ft_strchr(elements[i], '$'))
+		{
+			elements[i] = handle_variable_expansion(elements[i]);
+			if (!elements[i])
+				return (free_split(elements), NULL);
 		}
-		else
-			free(array[i]);
+		if (elements[i][0] == REP_SINGLE_QUOTE
+			|| elements[i][0] == REP_DOUBLE_QUOTE)
+		{
+			truncate_character(elements[i], 2);
+			truncate_character(elements[i], 1);
+		}
+		result = ft_append_and_free(result, elements[i]);
+		if (!result)
+			return (free_split(elements), NULL);
 		i++;
 	}
-	if (j == 0)
-	{
-		array[0] = ft_strdup("");
-		if (!array[0])
-			return (NULL);
-		j++;
-	}
-	array[j] = NULL;
-	return (array);
+	return (free_split(elements), result);
 }
 
 char	**process_command_input(char *input)
 {
-	char	**cmd_elements;
-	int		i;
+	char	**cmd_args;
+	char	*process_input;
+	char	**elements;
 
-	i = 0;
-	cmd_elements = ft_split(input, REP_SPACE);
-	if (!cmd_elements)
+	elements = tokenize_element(input);
+	if (!elements)
 		return (NULL);
-	while (cmd_elements[i])
-	{
-		cmd_elements[i] = process_command_element(cmd_elements[i]);
-		if (!cmd_elements[i])
-			return (free_split(cmd_elements), NULL);
-		i++;
-	}
-	cmd_elements = filter_non_empty(cmd_elements);
-	if (!cmd_elements)
-		return (free_split(cmd_elements), NULL);
-	return (cmd_elements);
+	process_input = handle_command_elements(elements);
+	if (!process_input)
+		return (NULL);
+	cmd_args = ft_split(process_input, REP_SPACE);
+	if (!cmd_args)
+		return (free(process_input), NULL);
+	return (free(process_input), cmd_args);
 }

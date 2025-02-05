@@ -7,7 +7,7 @@ CYAN 			= \033[1;36m
 RESET 			= \033[0m
 
 CC				= cc
-CFLAGS			= #-Wall -Wextra -Werror -g #-pthread #-fsanitize=address,undefined 
+CFLAGS			=  -g #-Wall -Wextra -Werror #-pthread #-fsanitize=address,undefined 
 LIB				= minishell.a
 INCLUDE 		= include/
 HEADER_MINI		= $(INCLUDE)minishell.h
@@ -28,7 +28,6 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redire
 					 																								\
 					initialize/command initialize/command_aux initialize/shell initialize/file_list 				\
 					initialize/eof initialize/env_paths initialize/tokenize_element_aux 							\
-					initialize/tokenize_variables_aux initialize/process_variables_aux 								\
 					initialize/input_expansion	initialize/hashmap initialize/hashmap_aux							\
 																							             			\
 					execution/parent	execution/utils																\
