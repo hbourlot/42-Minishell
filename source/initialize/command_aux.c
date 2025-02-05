@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:39:23 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/05 12:46:03 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,9 @@ static int	initialize_command_struct(t_cmd **command, char *readline_splitted, t
 	if (!new_command->input)
 		return (set_error_in(1, "\"Malloc\"", __func__, true), ERROR);
 	new_command->delimiter = token_type;
-	new_command->fd_in = -1;
-	new_command->fd_out = -1;
+	ft_memset(new_command->io, -1, 8);
+	new_command->settings.is_safe_to_execve = true;
 	new_command->next = NULL;
-	
 	if (ft_strlen(readline_splitted) == 0 || all_same_char(readline_splitted, REP_SPACE))
 		new_command->settings.only_tokens = true;
 	return add_command_to_list(command, new_command);
@@ -63,7 +62,7 @@ static int	handle_file_tokens(t_shell *data, t_cmd *command)
 	if (ft_strlen(command->input) == 0 || all_same_char(command->input,
 			REP_SPACE))
 	{
-		command->settings.only_tokens = true;
+		command->settings.is_safe_to_execve = false;
 	}
 	return (0);
 }
@@ -97,7 +96,7 @@ int	add_command(t_cmd **command, char *readline_splitted, t_shell *data,
 	last_node = get_last_node(data->command, get_offset(&dummy, &dummy.next));
 	if (handle_file_tokens(data, last_node) < 0)
 		return (ERROR);
-	if (last_node->settings.only_tokens == false)
+	if (last_node->settings.is_safe_to_execve == true)
 	{
 		if (prepare_execve_parameters(last_node, data) < 0)
 			return (ERROR);

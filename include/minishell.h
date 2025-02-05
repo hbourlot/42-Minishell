@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/03 17:45:31 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/05 10:50:17 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ char		*get_path(char *input, char **env_paths);
 void		command_loop(t_shell *data, t_cmd *command);
 void		child_process(t_shell *data, t_cmd *command);
 int			parent_process(t_shell *data, t_cmd **command_ref);
-int			do_dup2(int *fd_in, int *fd_out, int *pipe_id, int *prev_fd);
-int			open_folders_safety(int *fd_in, int *fd_out, t_file *redir_files);
+void		do_dup2(int *io, int *pipe_id, int *prev_fd);
+int			open_folders_safety(int *io, t_file *redir_files);
 
 // ************************************************************************
 // **						Free Functions									**

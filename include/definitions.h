@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 13:58:10 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/05 11:55:25 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # define OK 0
 # define ERROR -1
 # define SUCCESS 0
+# define NO_FILE_DIR 1
+# define PERM_DENIED 1
 
 // Representations
 # define REP_SINGLE_QUOTE 1
@@ -62,6 +64,17 @@ typedef enum e_token
 	REDIRECT_LEFT_DOUBLE
 }						t_token;
 
+typedef enum e_builtin
+{
+	CD,
+	EXPORT,
+	ECHO,
+	ENV,
+	UNSET,
+	EXIT,
+	PWD
+}						t_builtin;
+
 typedef struct s_file
 {
 	char				*read;
@@ -73,17 +86,12 @@ typedef struct s_file
 typedef struct s_rules
 {
 	char				**eof;
-	bool				or_next;
 	bool				expansion;
 	bool				only_tokens;
 	bool				is_builtin;
-	bool				builtin_cd;
-	bool				builtin_echo;
-	bool				builtin_env;
-	bool				builtin_exit;
-	bool				builtin_export;
-	bool				builtin_unset;
-	bool				builtin_pwd;
+	bool				is_safe_to_execve;
+	bool				is_safe_to_builtin;
+	t_builtin			builtin_id;
 }						t_rules;
 
 typedef struct s_cmd
@@ -95,6 +103,7 @@ typedef struct s_cmd
 	char				*file;
 	int					fd_in;
 	int					fd_out;
+	int					io[2];
 	char				**args;
 	char				*path;
 	char				**envp;
@@ -119,6 +128,7 @@ typedef struct s_data
 	bool				it_ends_with_delimiter;
 	// bool				its_only_eof;
 	pid_t				pid;
+	char				*error_output;
 	int					pipe_id[2];
 	int					prev_fd;
 	char				*readline;
