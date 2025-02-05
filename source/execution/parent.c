@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:16:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 12:07:02 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/05 12:43:58 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,31 @@ static int	handle_double_and(t_shell *data, t_cmd **command_ref)
 	return 1;
 }
 
+int	print_command_on_terminal(t_shell *data)
+{
+	char	buffer[1024];
+	ssize_t	bytes_read;
+
+	close(data->pipe_id[1]);
+	bytes_read = read(data->pipe_id[0], buffer, sizeof(buffer) -1);
+	if (bytes_read < 0)
+		return (-1);
+	buffer[bytes_read] = '\0';
+	while (bytes_read > 0)
+	{
+		write(STDOUT_FILENO, buffer, bytes_read);
+		bytes_read = read(data->pipe_id[0], buffer, sizeof(buffer) -1);
+		if (bytes_read < 0)
+			return (-1);
+		buffer[bytes_read] = '\0';
+	}
+	close(data->pipe_id[0]);
+	return (0);
+}
+
 int	parent_process(t_shell *data, t_cmd **command_ref)
 {
 	data->commands_ran += 1;
-	if ((*command_ref)->settings.is_builtin && !(*command_ref)->redir_files
-		&& (*command_ref)->delimiter != PIPE_SINGLE)
-		data->commands_ran -=1;
-
 	data->last_cmd_executed = (*command_ref);
 	if ((*command_ref)->delimiter != AND_DOUBLE && (*command_ref)->next)
 		close(data->pipe_id[1]);
@@ -50,7 +68,10 @@ int	parent_process(t_shell *data, t_cmd **command_ref)
 	{
 		set_last_status(data);
 		if (data->exit_status == 0)
+		{
+			print_command_on_terminal(data);
 			return 1;
+		}
 	}
 	if ((*command_ref)->delimiter == AND_DOUBLE)
 		return handle_double_and(data, command_ref);

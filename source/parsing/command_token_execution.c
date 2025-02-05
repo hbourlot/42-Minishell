@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 11:55:05 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/16 13:50:22 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/05 10:31:48 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,3 +33,20 @@ int	validate_file_read_execution(t_file *redir_files)
 	}
 	return (0);
 }
+
+// const char* parse_file_read_execution(t_file *redir_files)
+// {
+// 	while (redir_files && redir_files->read)
+// 	{
+// 		if (redir_files->read)
+// 		{
+// 			if (access(redir_files->read, F_OK) != OK)
+// 				return ("bash: : No such file or directory\n");
+// 			else if (access(redir_files->read, R_OK) != OK
+// 				|| access(redir_files->read, W_OK) != OK)
+// 				return ("bash: : Permission denied\n");
+// 			redir_files = redir_files->next;
+// 		}
+// 	}
+// 	return (NULL);
+// }

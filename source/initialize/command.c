@@ -78,7 +78,6 @@ static int handle_eof(t_shell *data)
 {
     const char *eof_token[] = {"<<", NULL};
 
-    
     if (initialize_eof(data->readline, &data->eof) < 0)
     {
         set_error_in(1, "\"EOF_HERE_DOC\"", __func__, true);

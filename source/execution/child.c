@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 17:27:05 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/05 12:47:25 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ static void	execute_only_tokens(t_shell *data, t_cmd *command)
 	int	code_parsing;
 
 	code_parsing = 0;
-	code_parsing = (validate_file_read_execution(command->redir_files)
-			|| validate_command_path_access(command->path));
-	// ! Pretty sure dont need to validate command_path_access since its only files to handle;
+	code_parsing = validate_file_read_execution(command->redir_files);
 	if (code_parsing)
 	{
 		set_error_ex(code_parsing, NULL, NULL, true);
@@ -28,8 +26,7 @@ static void	execute_only_tokens(t_shell *data, t_cmd *command)
 	}
 	return ;
 }
-
-static bool	is_safe_to_execute(t_cmd *command)
+static bool	is_safe_to_execve(t_cmd *command)
 {
 	if (command->settings.only_tokens)
 		return (false);
@@ -37,7 +34,24 @@ static bool	is_safe_to_execute(t_cmd *command)
 		return (false);
 	if (command->settings.is_builtin)
 		return (false);
+	if ( command->settings.is_safe_to_execve == false)
+		return false;
 	return (true);
+}
+
+void	exec_builtin(t_shell *data, t_cmd *command)
+{
+	bool	cond_1;
+	bool	cond_2;
+	
+	cond_1 = command->delimiter == PIPE_SINGLE || command->redir_files;
+	cond_2 = command->settings.is_builtin;
+	if (cond_1 && cond_2 && process_builtin(data, command) < 0)
+	{
+			ft_printf_error("hello\n");
+		set_error_ex(1, "Malloc", NULL, true);
+		handle_error();
+	}	
 }
 
 void	child_process(t_shell *data, t_cmd *command)
@@ -46,33 +60,17 @@ void	child_process(t_shell *data, t_cmd *command)
 
 	if (command->settings.only_tokens)
 		execute_only_tokens(data, command);
-	if (open_folders_safety(&command->fd_in, &command->fd_out,
-			command->redir_files))
+	if (open_folders_safety(command->io, command->redir_files))
 		exit(handle_error());
-	if (do_dup2(&command->fd_in, &command->fd_out, data->pipe_id, &data->prev_fd))
-	{
-		cleanup_shell(data);
-		exit(EXIT_FAILURE);
-	}
-	if (is_safe_to_execute(command))
+	do_dup2(command->io, data->pipe_id, &data->prev_fd);
+	if (is_safe_to_execve(command))
 	{
 		execve(command->path, command->args, command->envp);
 		code = validate_command_path_access(command->path);
 		set_error_ex(code, NULL, NULL, true);
 		handle_error();
 	}
-
-	// TODO: Added this part
-	if ((command->delimiter == PIPE_SINGLE && command->settings.is_builtin)
-		|| command->redir_files)
-	{
-		if (process_builtin(data, command) < 0)
-		{
-			set_error_ex(1, "Malloc", NULL, true);
-			handle_error();
-		}
-	}
-
+	exec_builtin(data, command);
 	cleanup_shell(data);
 	exit(0);
 }
