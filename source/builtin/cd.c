@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:57:27 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/04 17:39:43 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/05 18:26:14 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,50 @@ static int	change_directory(t_shell *data, const char *dir)
 	return (0);
 }
 
+int	change_to_home_or_invalid_arg(t_shell *data, size_t arg_count)
+{
+	char	*home;
+
+	if (arg_count == 1)
+	{
+		home = hashmap_search(data->map, "HOME");
+		if (!home || !*home)
+		{
+			ft_printf_error("bash: cd: HOME not set\n");
+			data->exit_status = 1;
+			return (1);
+		}
+		if (change_directory(data, home) == -1)
+			return (-1);
+		return (0);
+	}
+	if (arg_count > 2)
+	{
+		printf("bash: cd: too many arguments\n");
+		data->exit_status = 1;
+		return (1);
+	}
+	return (0);
+}
+
+int	change_to_oldpwd(t_shell *data)
+{
+	char	*oldpwd;
+
+	oldpwd = hashmap_search(data->map, "OLDPWD");
+	if (!oldpwd)
+	{
+		ft_printf_error("bash: cd: OLDPWD not set\n");
+		data->exit_status = 1;
+		return (1);
+	}
+	if (oldpwd)
+		printf("%s\n", oldpwd);
+	if (change_directory(data, oldpwd) == -1)
+		return (-1);
+	return (0);
+}
+
 /// @brief Changes the current directory using the `cd` command.
 /// @param data The shell structure with environment mappings and state.
 /// @param command_args Arguments passed to the `cd` command.
@@ -58,38 +102,20 @@ static int	change_directory(t_shell *data, const char *dir)
 ///     		and updates `PWD` and `OLDPWD` environment variables.
 int	builtin_cd(t_shell *data, char **command_args)
 {
-	char	*home;
 	size_t	arg_count;
-	char * OLDPWD;
 
-	home = hashmap_search(data->map, "HOME");
 	arg_count = array_length(command_args);
-	if (arg_count == 1)
+	if (arg_count == 1 || arg_count > 2)
 	{
-		if (!home || !*home)
-			data->exit_status = 0;
-		else if (change_directory(data, home) == -1)
+		if (change_to_home_or_invalid_arg(data, arg_count) == -1)
 			return (-1);
 		return (0);
 	}
-	else if (arg_count > 2)
+	if (ft_strcmp(command_args[1], "-") == 0)
 	{
-		printf("bash: cd: too many arguments\n");
-		data->exit_status = 1;
-		return (1);
-	}
-	if(!ft_strcmp(command_args[1], "-"))
-	{
-		OLDPWD = hashmap_search(data->map, "OLDPWD");
-		if(!OLDPWD)
-		{
-			ft_printf_error("bash: cd: OLDPWD not set\n");
-			data->exit_status =1;
-			return(1);
-		}
-		if(change_directory(data, OLDPWD) == -1)
-			return(-1);
-		return(0);
+		if (change_to_oldpwd(data) == -1)
+			return (-1);
+		return (0);
 	}
 	if (check_access_fok(data, command_args[1]) != 0)
 		return (1);
