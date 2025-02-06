@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 21:41:48 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/06 12:58:42 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ static void	handle_child_process(t_shell *data, int i)
 	restore_signals();
 	if (here_doc(data->pipe_id, data->eof[i]) == -1)
 		here_doc_fail(data, data->eof[i]);
-	if (!data->command && !data->eof[i + 1])
-		write(1, "\n", 1);
 	close(data->pipe_id[0]);
 	close(data->pipe_id[1]);
 	cleanup_shell(data);
