@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_cleanup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/05 10:53:59 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/06 17:53:13 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,24 @@ void	free_files(t_file *file_list)
 		free(tmp);
 	}
 }
+void	hashnode_free(t_hashnode *current)
+{
+	t_hashnode	*temp;
+
+	while (current)
+	{
+		temp = current;
+		current = current->next;
+		free(temp->key);
+		free(temp->value);
+		free(temp);
+	}
+}
 
 void	hashmap_free(t_hashmap *map)
 {
 	int			i;
 	t_hashnode	*current;
-	t_hashnode	*temp;
 
 	i = 0;
 	if (!map)
@@ -40,14 +52,7 @@ void	hashmap_free(t_hashmap *map)
 	while (i < HASHMAP_SIZE)
 	{
 		current = map->slots[i];
-		while (current)
-		{
-			temp = current;
-			current = current->next;
-			free(temp->key);
-			free(temp->value);
-			free(temp);
-		}
+		hashnode_free(current);
 		i++;
 	}
 }
@@ -120,7 +125,6 @@ void	cleanup_shell(t_shell *data)
 		close(data->pipe_id[0]);
 	if (data->pipe_id[1] != -1)
 		close(data->pipe_id[1]);
-
 	if (data->readline)
 		free(data->readline);
 	if (data->readline_splitted)

@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/05 13:58:10 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/06 18:17:41 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void		strip_redirects(char *input, const char *redirects[]);
 t_shell		*get_shell(void);
 t_hashmap	*create_map(void);
 int			init_command(t_shell *data);
-void		hashmap_free(t_hashmap *map);
 int			main_shell_loop(t_shell *data);
 bool		is_quotes_maching(char *input);
 char		**tokenize_element(char *element);
@@ -92,7 +91,9 @@ int			open_folders_safety(int *io, t_file *redir_files);
 // ************************************************************************
 
 void		cleanup_shell(t_shell *data);
+void		hashmap_free(t_hashmap *map);
 void		free_files(t_file *file_list);
+void		hashnode_free(t_hashnode *head);
 void		refresh_shell_data(t_shell *data);
 
 // ************************************************************************
@@ -102,6 +103,7 @@ void		refresh_shell_data(t_shell *data);
 void		skip_spaces(char **src);
 void		debug_command_args(t_shell *data);
 void		debug_command_path(t_shell *data);
+void		insertion_sort(t_hashnode **head);
 void		debug_command_input(t_shell *data);
 void		debug_input_splitted(t_shell *data);
 t_token		get_t_token(char *src, size_t size);
@@ -112,7 +114,7 @@ void		skip_character_diff_by_idx(char *src, char c, int *i);
 void		replace_characters(char *src, char to_take, char to_put);
 void		get_redirect_complement(char *src, int *start, int *end,
 				int redirect_size);
-void	print_execve_parameters(char *input);
+void		print_execve_parameters(char *input);
 
 // ************************************************************************
 // **						BuiltIn											**
