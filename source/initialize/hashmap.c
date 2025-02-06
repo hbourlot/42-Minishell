@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:48:06 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/04 16:44:26 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/05 23:47:36 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,9 @@ static int	new_hasnode(t_hashmap *map, char *key, char *value)
 	new_node->key = ft_strdup(key);
 	if (!new_node->key)
 		return (free(new_node), ERROR);
-	if(value)
-	{
-		new_node->value = ft_strdup(value);
-		if (!new_node->value)
-			return (free(new_node->key), free(new_node), ERROR);
-	}
-	else
-		new_node->value = NULL;
+	new_node->value = ft_strdup(value);
+	if (!new_node->value && value)
+		return (free(new_node->key), free(new_node), ERROR);
 	new_node->next = map->slots[index];
 	map->slots[index] = new_node;
 	map->total_size += 1;
@@ -78,7 +73,7 @@ int	hashmap_insert(t_hashmap *map, char *key, char *value)
 	{
 		free(current->value);
 		current->value = ft_strdup(value);
-		if (!current->value)
+		if (!current->value && value)
 			return (ERROR);
 		return (0);
 	}
