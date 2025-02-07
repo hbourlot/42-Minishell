@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   useful_functions.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:17:42 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/23 13:57:13 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/06 18:17:18 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,43 @@ void	restore_original_characters(char **src)
 		}
 		i++;
 	}
+}
+
+static t_hashnode	*sorted_insert(t_hashnode *sorted, t_hashnode *new_node)
+{
+	t_hashnode	*current;
+
+	if (!new_node)
+		return (sorted);
+	if (!sorted || ft_strcmp(new_node->key, sorted->key) < 0)
+	{
+		new_node->next = sorted;
+		return (new_node);
+	}
+	current = sorted;
+	while (current->next && ft_strcmp(current->next->key, new_node->key) < 0)
+		current = current->next;
+	new_node->next = current->next;
+	current->next = new_node;
+	return (sorted);
+}
+
+void	insertion_sort(t_hashnode **head)
+{
+	t_hashnode	*sorted;
+	t_hashnode	*current;
+	t_hashnode	*next;
+
+	if (!head || !*head || !(*head)->next)
+		return ;
+	sorted = NULL;
+	current = *head;
+	while (current)
+	{
+		next = current->next;
+		current->next = NULL;
+		sorted = sorted_insert(sorted, current);
+		current = next;
+	}
+	*head = sorted;
 }

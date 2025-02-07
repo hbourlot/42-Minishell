@@ -6,15 +6,24 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:11:13 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/03 16:37:10 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/06 18:18:35 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_key_value(t_hashmap *map)
+static void	add_hashnode_front(t_hashnode **temp, t_hashnode *new_node)
+{
+	if (!new_node)
+		return ;
+	new_node->next = *temp;
+	*temp = new_node;
+}
+
+static int	duplicate(t_hashmap *map, t_hashnode **temp)
 {
 	int			idx;
+	t_hashnode	*new_node;
 	t_hashnode	*current;
 
 	idx = 0;
@@ -23,15 +32,38 @@ static void	print_key_value(t_hashmap *map)
 		current = map->slots[idx];
 		while (current)
 		{
-			printf("declare -x %s", current->key);
-			if (current->value)
-				printf("=\"%s\"", current->value);
-			printf("\n");
+			new_node = malloc(sizeof(t_hashnode));
+			if (!new_node)
+				return (ERROR);
+			new_node->key = ft_strdup(current->key);
+			if (!new_node->key)
+				return (free(new_node), ERROR);
+			new_node->value = ft_strdup(current->value);
+			if (!new_node->value && current->value)
+				return (free(new_node->key), free(new_node), ERROR);
+			add_hashnode_front(temp, new_node);
 			current = current->next;
 		}
 		idx++;
 	}
 }
+
+static void	print_key_value_sorted(t_hashnode **temp)
+{
+	t_hashnode	*current;
+
+	insertion_sort(temp);
+	current = *temp;
+	while (current)
+	{
+		printf("declare -x %s", current->key);
+		if (current->value)
+			printf("=\"%s\"", current->value);
+		printf("\n");
+		current = current->next;
+	}
+}
+
 static int	is_valid_key(t_shell *data, char *temp_key)
 {
 	int		i;
@@ -90,14 +122,19 @@ static int	add_new_variable_on_hashmap(t_shell *data, char *command_arg)
 ///          and updates the environment. Returns 0 or ERROR.
 int	builtin_export(t_shell *data, char **command_args)
 {
-	int	idx;
-	int	length;
+	int			idx;
+	int			length;
+	t_hashnode	*temp;
 
+	temp = NULL;
 	idx = 1;
 	length = array_length(command_args);
 	if (length == 1)
 	{
-		print_key_value(data->map);
+		if (duplicate(data->map, &temp) == ERROR)
+			return (ERROR);
+		print_key_value_sorted(&temp);
+		hashnode_free(temp);
 		data->exit_status = 0;
 		return (0);
 	}

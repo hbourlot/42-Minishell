@@ -6,83 +6,141 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 12:33:35 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:21:33 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*process_command_element(char *cmd_element)
+static char	*expand_variable(t_cmd *command, char *var_name, bool double_quotes)
 {
-	char	**cmd_tokens;
-	int		i;
-	char	*rest;
+	char	*temp;
+	char	*expanded_value;
 
-	rest = NULL;
-	i = 0;
-	cmd_tokens = tokenize_element(cmd_element);
-	if (!cmd_tokens)
-		return (free(cmd_element), NULL);
-	while (cmd_tokens[i])
+	if (var_name[1] == '$')
+		expanded_value = ft_itoa(getpid());
+	else if (var_name[1] == '?')
+		expanded_value = ft_itoa(get_shell()->exit_status);
+	else
 	{
-		cmd_tokens[i] = process_variables(cmd_tokens[i]);
-		rest = ft_append_and_free(rest, cmd_tokens[i]);
-		if (!rest || !cmd_tokens[i])
-			return (free(cmd_element), free_split(cmd_tokens), NULL);
-		free(cmd_tokens[i]);
-		i++;
-	}
-	free(cmd_tokens);
-	return (free(cmd_element), rest);
-}
-
-static char	**filter_non_empty(char **array)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (array[i])
-	{
-		if (*array[i])
-		{
-			array[j] = array[i];
-			j++;
-		}
+		temp = hashmap_search(create_map(), var_name + 1);
+		if (!temp)
+			expanded_value = ft_strdup("");
+		else if (double_quotes == false)
+			expanded_value = ft_strtrim(temp, " ");
 		else
-			free(array[i]);
-		i++;
+			expanded_value = ft_strdup(temp);
 	}
-	if (j == 0)
-	{
-		array[0] = ft_strdup("");
-		if (!array[0])
-			return (NULL);
-		j++;
-	}
-	array[j] = NULL;
-	return (array);
+	if (!expanded_value)
+		return (NULL);
+	command->settings.expansion = true;
+	return (expanded_value);
 }
 
-char	**process_command_input(char *input)
+static char	*process_expansion(t_cmd *command, char *element, int i,
+		bool double_quotes)
 {
-	char	**cmd_elements;
-	int		i;
+	int		j;
+	char	*var_name;
+	char	*expansion_value;
+	char	*result;
 
-	i = 0;
-	cmd_elements = ft_split(input, REP_SPACE);
-	if (!cmd_elements)
+	j = i + 1;
+	if (element[j] == '$' || element[j] == '?')
+		j++;
+	else
+		while (element[j] && (ft_isalnum(element[j]) || element[j] == '_'))
+			j++;
+	var_name = ft_substr(element, i, j - i);
+	if (!var_name)
 		return (NULL);
-	while (cmd_elements[i])
+	expansion_value = expand_variable(command, var_name, double_quotes);
+	free(var_name);
+	if (!expansion_value)
+		return (NULL);
+	truncate_range(element, i, j - i);
+	result = insert_string(element, expansion_value, i);
+	if (!result)
+		return (free(element), free(expansion_value), NULL);
+	identify_and_replace_sqpa_tokens(result);
+	return (free(element), free(expansion_value), result);
+}
+
+static char	*handle_variable_expansion(t_cmd *command, char *element)
+{
+	int		i;
+	bool	double_quotes;
+
+	double_quotes = false;
+	i = 0;
+	if (element[0] == 1)
+		return (element);
+	if (element[0] == 2)
+		double_quotes = true;
+	while (element && element[i])
 	{
-		cmd_elements[i] = process_command_element(cmd_elements[i]);
-		if (!cmd_elements[i])
-			return (free_split(cmd_elements), NULL);
+		while (element[i] && element[i] != '$')
+			i++;
+		if (!element[i] || element[i] == '\0')
+			break ;
+		i++;
+		if (element[i] == 3 || element[i] == ' ' || element[i] == '\0')
+			continue ;
+		element = process_expansion(command, element, i - 1, double_quotes);
+		if (!element)
+			return (NULL);
+		i = 0;
+	}
+	return (element);
+}
+
+static char	*handle_command_elements(t_cmd *command, char **elements)
+{
+	int		i;
+	char	*result;
+
+	result = NULL;
+	i = 0;
+	while (elements[i])
+	{
+		if (ft_strchr(elements[i], '$'))
+		{
+			elements[i] = handle_variable_expansion(command, elements[i]);
+			if (!elements[i])
+				return (free_split(elements), NULL);
+		}
+		if (elements[i][0] == REP_SINGLE_QUOTE
+			|| elements[i][0] == REP_DOUBLE_QUOTE)
+		{
+			truncate_character(elements[i], 2);
+			truncate_character(elements[i], 1);
+		}
+		result = ft_append_and_free(result, elements[i]);
+		if (!result)
+			return (free_split(elements), NULL);
 		i++;
 	}
-	cmd_elements = filter_non_empty(cmd_elements);
-	if (!cmd_elements)
-		return (free_split(cmd_elements), NULL);
-	return (cmd_elements);
+	return (free_split(elements), result);
+}
+
+char	**process_command_input(t_cmd *command)
+{
+	char	**cmd_args;
+	char	*process_input;
+	char	**elements;
+
+	elements = tokenize_element(command->input);
+	if (!elements)
+		return (NULL);
+	process_input = handle_command_elements(command, elements);
+	if (!process_input)
+	{
+		command->settings.expansion = false;
+		return (NULL);
+	}
+	cmd_args = ft_split(process_input, REP_SPACE);
+	free(process_input);
+	if (!cmd_args)
+		return (NULL);
+	return (cmd_args);
 }
