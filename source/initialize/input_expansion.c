@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 12:21:33 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/07 22:44:14 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,11 @@ static char	*handle_variable_expansion(t_cmd *command, char *element)
 	{
 		while (element[i] && element[i] != '$')
 			i++;
-		if (!element[i] || element[i] == '\0')
+		if (!element[i])
 			break ;
 		i++;
-		if (element[i] == 3 || element[i] == ' ' || element[i] == '\0')
+		if (element[i] == 1 || element[i] == 2 || element[i] == 3
+			|| element[i] == ' ' || element[i] == '\0')
 			continue ;
 		element = process_expansion(command, element, i - 1, double_quotes);
 		if (!element)

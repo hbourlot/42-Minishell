@@ -1,0 +1,17 @@
+BACKUP
+Makefile
+SUBJECTS
+include
+lib
+main.c
+main.o
+minishell
+minishell.a
+minishell_tester
+notes.c
+objects
+outfil
+outfile01
+readline.supp
+source
+test_files
