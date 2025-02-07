@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 21:41:16 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/06 15:42:16 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,22 @@
 
 static bool	is_safe_to_run_builtin(t_shell *data, t_cmd *command)
 {
-	bool delimiter_cond;
-
-	delimiter_cond = (command->delimiter == NO_TOKEN || command->delimiter == AND_DOUBLE
-			|| command->delimiter == PIPE_DOUBLE);
-
-	if (command->settings.is_builtin && delimiter_cond)
+	bool cond_1;
+	bool cond_2;
+	bool cond_3;
+	bool cond_4;
+	
+	cond_1 = data->nbr_of_commands == 2;
+	cond_2 = (command->delimiter == AND_DOUBLE || command->delimiter == PIPE_DOUBLE);
+	cond_3 = command->settings.is_builtin;
+	cond_4 = (command->settings.builtin_id == ECHO);
+	if (cond_4)
 	{
-		command->settings.is_safe_to_execve = false;
-		if (command->redir_files && command->settings.builtin_id == ECHO)
-			return false;
-		return true;
+		command->settings.is_safe_to_builtin = true;
+		return false;
 	}
+	if ((cond_1 && cond_2 && cond_3) || (data->nbr_of_commands == 1 && cond_3))
+		return true;
 	return (false);
 }
 
@@ -70,6 +74,8 @@ void	command_loop(t_shell *data, t_cmd *command)
 
 void	run_commands(t_shell *data)
 {
+	int	wait_status;
+	
 	data->prev_fd = -1;
 	ft_memset(data->pipe_id, -1, sizeof(int) * 2);
 	if ((data->eof))
