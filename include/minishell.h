@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/06 18:17:41 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:01:35 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,7 @@ int			init_command(t_shell *data);
 int			main_shell_loop(t_shell *data);
 bool		is_quotes_maching(char *input);
 char		**tokenize_element(char *element);
-char		*process_variables(char *cmd_token);
-char		**tokenize_bash_variables(char *src);
-char		**process_command_input(char *input);
+char		**process_command_input(t_cmd *command);
 int			update_envp_and_envpath(t_shell *data);
 int			initialize_environment_paths(t_shell *data);
 t_shell		*init_shell(int argc, char *argv[], char *envp[]);

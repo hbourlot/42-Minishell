@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/05 12:46:03 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:20:25 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static int	add_command_to_list(t_cmd **command, t_cmd *new_command)
 	return (SUCCESS);
 }
 
-static int	initialize_command_struct(t_cmd **command, char *readline_splitted, t_token token_type)
+static int	initialize_command_struct(t_cmd **command, char *readline_splitted,
+		t_token token_type)
 {
 	t_cmd	*new_command;
 
@@ -42,16 +43,17 @@ static int	initialize_command_struct(t_cmd **command, char *readline_splitted, t
 	ft_memset(new_command->io, -1, 8);
 	new_command->settings.is_safe_to_execve = true;
 	new_command->next = NULL;
-	if (ft_strlen(readline_splitted) == 0 || all_same_char(readline_splitted, REP_SPACE))
+	if (ft_strlen(readline_splitted) == 0 || all_same_char(readline_splitted,
+			REP_SPACE))
 		new_command->settings.only_tokens = true;
-	return add_command_to_list(command, new_command);
+	return (add_command_to_list(command, new_command));
 }
 
 static int	handle_file_tokens(t_shell *data, t_cmd *command)
 {
-	(void)data;
-	const char *file_tokens[] = {">>", ">", "<", NULL};
+	const char	*file_tokens[] = {">>", ">", "<", NULL};
 
+	(void)data;
 	if (initialize_file_list(command->input, file_tokens,
 			&command->redir_files))
 	{
@@ -70,16 +72,17 @@ static int	handle_file_tokens(t_shell *data, t_cmd *command)
 static int	prepare_execve_parameters(t_cmd *command, t_shell *data)
 {
 	command->envp = data->envp;
-
-	command->args = process_command_input(command->input);
-	if (!command->args)
+	command->args = process_command_input(command);
+	if (!command->args && command->settings.expansion == false)
 	{
 		set_error_in(1, "Malloc", __func__, true);
 		return (handle_error());
 	}
 	command->path = get_path(command->args[0], data->env_paths);
-	if (!command->path || !command->args)
+	if (!command->path && command->settings.expansion == false)
 		return (set_error_in(1, "\"Path\"", __func__, true), ERROR);
+	if (command->settings.expansion == true && !command->args)
+		command->settings.is_safe_to_execve = false;
 	return (SUCCESS);
 }
 

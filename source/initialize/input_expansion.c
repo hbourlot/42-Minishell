@@ -6,13 +6,13 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 10:06:00 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:21:33 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*expand_variable(char *var_name, bool double_quotes)
+static char	*expand_variable(t_cmd *command, char *var_name, bool double_quotes)
 {
 	char	*temp;
 	char	*expanded_value;
@@ -33,10 +33,12 @@ static char	*expand_variable(char *var_name, bool double_quotes)
 	}
 	if (!expanded_value)
 		return (NULL);
+	command->settings.expansion = true;
 	return (expanded_value);
 }
 
-static char	*process_expansion(char *element, int i, bool double_quotes)
+static char	*process_expansion(t_cmd *command, char *element, int i,
+		bool double_quotes)
 {
 	int		j;
 	char	*var_name;
@@ -52,7 +54,7 @@ static char	*process_expansion(char *element, int i, bool double_quotes)
 	var_name = ft_substr(element, i, j - i);
 	if (!var_name)
 		return (NULL);
-	expansion_value = expand_variable(var_name, double_quotes);
+	expansion_value = expand_variable(command, var_name, double_quotes);
 	free(var_name);
 	if (!expansion_value)
 		return (NULL);
@@ -64,7 +66,7 @@ static char	*process_expansion(char *element, int i, bool double_quotes)
 	return (free(element), free(expansion_value), result);
 }
 
-static char	*handle_variable_expansion(char *element)
+static char	*handle_variable_expansion(t_cmd *command, char *element)
 {
 	int		i;
 	bool	double_quotes;
@@ -79,20 +81,20 @@ static char	*handle_variable_expansion(char *element)
 	{
 		while (element[i] && element[i] != '$')
 			i++;
-		if (!element[i])
+		if (!element[i] || element[i] == '\0')
 			break ;
-		if (element[++i] == 3 || element[i] == ' ' || element[i] == '\0')
+		i++;
+		if (element[i] == 3 || element[i] == ' ' || element[i] == '\0')
 			continue ;
-		element = process_expansion(element, i - 1, double_quotes);
+		element = process_expansion(command, element, i - 1, double_quotes);
 		if (!element)
 			return (NULL);
-		if (!*element || !element[i])
-			break ;
+		i = 0;
 	}
 	return (element);
 }
 
-static char	*handle_command_elements(char **elements)
+static char	*handle_command_elements(t_cmd *command, char **elements)
 {
 	int		i;
 	char	*result;
@@ -103,7 +105,7 @@ static char	*handle_command_elements(char **elements)
 	{
 		if (ft_strchr(elements[i], '$'))
 		{
-			elements[i] = handle_variable_expansion(elements[i]);
+			elements[i] = handle_variable_expansion(command, elements[i]);
 			if (!elements[i])
 				return (free_split(elements), NULL);
 		}
@@ -121,20 +123,24 @@ static char	*handle_command_elements(char **elements)
 	return (free_split(elements), result);
 }
 
-char	**process_command_input(char *input)
+char	**process_command_input(t_cmd *command)
 {
 	char	**cmd_args;
 	char	*process_input;
 	char	**elements;
 
-	elements = tokenize_element(input);
+	elements = tokenize_element(command->input);
 	if (!elements)
 		return (NULL);
-	process_input = handle_command_elements(elements);
+	process_input = handle_command_elements(command, elements);
 	if (!process_input)
+	{
+		command->settings.expansion = false;
 		return (NULL);
+	}
 	cmd_args = ft_split(process_input, REP_SPACE);
+	free(process_input);
 	if (!cmd_args)
-		return (free(process_input), NULL);
-	return (free(process_input), cmd_args);
+		return (NULL);
+	return (cmd_args);
 }
