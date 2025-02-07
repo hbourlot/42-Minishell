@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/05 17:41:18 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/07 10:06:00 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static char	*handle_variable_expansion(char *element)
 		return (element);
 	if (element[0] == 2)
 		double_quotes = true;
-	while (element[i])
+	while (element && element[i])
 	{
 		while (element[i] && element[i] != '$')
 			i++;
@@ -86,6 +86,8 @@ static char	*handle_variable_expansion(char *element)
 		element = process_expansion(element, i - 1, double_quotes);
 		if (!element)
 			return (NULL);
+		if (!*element || !element[i])
+			break ;
 	}
 	return (element);
 }
