@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/06 12:58:42 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/06 15:42:06 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,30 +66,60 @@ static void	handle_child_process(t_shell *data, int i)
 	exit(EXIT_SUCCESS);
 }
 
-static void	handle_parent_process(t_shell *data, int i)
+static void	handle_parent_process(t_shell *data, int i, int *ws)
 {
+	int	e;
+	
 	if (!data->eof[i + 1] && data->command)
 		data->prev_fd = data->pipe_id[0];
 	else
 		close(data->pipe_id[0]);
-	wait(NULL);
+	
+	// wait(NULL);
+	wait(ws);
+	// if (WIFEXITED(wait_status))
+	// 	data->exit_status = WEXITSTATUS(wait_status);
 	close(data->pipe_id[1]);
 }
 
 int	run_eof(t_shell *data, pid_t *pid)
 {
 	int	i;
-
+	int	wait_status;
+	
 	i = 0;
 	while (data->eof[i])
 	{
+		signal(SIGINT, SIG_IGN);
 		if (pipe(data->pipe_id) == -1 || do_fork(&data->pid))
 			return (set_error_ex(1, "Pipe/Fork", NULL, false), -1);
 		else if (*pid == 0)
 			handle_child_process(data, i);
 		else
-			handle_parent_process(data, i);
+			handle_parent_process(data, i, &wait_status);
+		if (WIFEXITED(wait_status))
+			return 1;
 		i++;
 	}
+
 	return (0);
 }
+
+
+// int	run_eof(t_shell *data, pid_t *pid)
+// {
+// 	if (pipe(data->pipe_id) == -1)
+// 		perror("Pipe");
+// 	signal(SIGINT, SIG_IGN);
+// 	*pid = fork();
+// 	if (*pid == -1)
+// 		perror("Fork");
+// 	if (*pid == 0)
+// 	{
+// 		restore_signals();
+// 		handle_child_process(data);
+// 	}
+// 	if (handle_parent_process(data))
+// 		return (-1);
+// 	return (0);
+// }

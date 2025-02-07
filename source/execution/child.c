@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/05 12:47:25 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:13:06 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	execute_only_tokens(t_shell *data, t_cmd *command)
 	}
 	return ;
 }
+
 static bool	is_safe_to_execve(t_cmd *command)
 {
 	if (command->settings.only_tokens)
@@ -41,14 +42,8 @@ static bool	is_safe_to_execve(t_cmd *command)
 
 void	exec_builtin(t_shell *data, t_cmd *command)
 {
-	bool	cond_1;
-	bool	cond_2;
-	
-	cond_1 = command->delimiter == PIPE_SINGLE || command->redir_files;
-	cond_2 = command->settings.is_builtin;
-	if (cond_1 && cond_2 && process_builtin(data, command) < 0)
+	if (command->settings.is_safe_to_builtin && process_builtin(data, command) < 0)
 	{
-			ft_printf_error("hello\n");
 		set_error_ex(1, "Malloc", NULL, true);
 		handle_error();
 	}	
