@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:41:38 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:23:47 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int	initialize_file_list(char *input, const char *redirects[],
 				ft_strlen(redirects[idx]));
 			if (add_file(input, position, token, redir_files) < 0)
 				return (-1);
-			input += ft_strlen(redirects[idx]);
 		}
 		input++;
 	}

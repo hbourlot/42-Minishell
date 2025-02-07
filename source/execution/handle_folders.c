@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 08:00:37 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/05 10:49:04 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:33:06 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,28 @@ static void	close_folders_safety(t_file *redir_files, int *io)
 
 int	open_folders_safety(int *io, t_file *redir_files)
 {
+	int	code;
+	
 	while (redir_files)
 	{
 		if (redir_files->redirect == REDIRECT_LEFT_SINGLE)
 		{
 			io[0] = open(redir_files->read, O_RDONLY);
 			if (io[0] < 0)
+			{
 				return (set_error_ex(1, NO_FILE_DIR_MSG,
 						redir_files->read, true), -1);
+			}
 		}
 		else if (redir_files->redirect == REDIRECT_RIGHT_SINGLE)
 		{
 			io[1] = open(redir_files->write, O_CREAT | O_RDWR | O_TRUNC,
 					0644);
 			if (io[1] < 0)
-				return (set_error_ex(1, "File Creation", NULL, true), -1);
+			{
+				code = validate_command_path_access(redir_files->write);
+				return (set_error_ex(1, NULL, NULL, true), -1);
+			}
 		}
 		else if (redir_files->redirect == REDIRECT_RIGHT_DOUBLE)
 			io[1] = open(redir_files->write, O_CREAT | O_RDWR | O_APPEND,
