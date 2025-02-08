@@ -6,11 +6,29 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 17:26:34 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/08 18:42:49 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	refresh_command_parameters(t_shell *data, t_cmd *command)
+{
+	while (command)
+	{
+		if (command->input_expanded)
+			free_pointers(1, &command->input_expanded);
+		if (command->args)
+		{
+			free_split(command->args);
+			command->args = NULL;
+		}
+		if (command->path)
+			free_pointers(1, &command->path);
+		prepare_parameters(command, data);
+		command = command->next;
+	}
+}
 
 static bool	is_safe_to_run_builtin(t_shell *data, t_cmd *command)
 {
@@ -45,6 +63,8 @@ bool	run_builting_separately(t_shell *data, t_cmd *command)
 			set_error_ex(1, "Malloc", NULL, true);
 			handle_error();
 		}
+		if (command->settings.builtin_id == EXPORT)
+			refresh_command_parameters(data, command->next);
 		return (true);
 	}
 	return (false);

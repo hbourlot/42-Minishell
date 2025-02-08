@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 16:35:35 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/08 18:20:13 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,25 +127,22 @@ char	*expand_command_input(t_cmd *command)
 		return (NULL);
 	expand_input = handle_command_elements(command, elements);
 	if (!expand_input)
-	{
-		command->settings.expansion = false;
-		return (NULL);
-	}
-	free(command->input);
+		return (set_error_in(1, "Malloc", __func__, true), handle_error(), NULL); // ! Treat HERE
+	// free(command->input);
 	return (expand_input);
 }
 
 char	**process_command_input(t_cmd *command)
 {
 	char	**cmd_args;
-	identify_and_replace_sqpa_tokens(command->input);
-	if (ft_strchr(command->input, REP_DOUBLE_QUOTE) || ft_strchr(command->input, REP_SINGLE_QUOTE))
+	identify_and_replace_sqpa_tokens(command->input_expanded);
+	if (ft_strchr(command->input_expanded, REP_DOUBLE_QUOTE) || ft_strchr(command->input_expanded, REP_SINGLE_QUOTE))
 	{
-		truncate_character(command->input, 2);
-		truncate_character(command->input, 1);
+		truncate_character(command->input_expanded, 2);
+		truncate_character(command->input_expanded, 1);
 	}
-	cmd_args = ft_split(command->input, REP_SPACE);
-	if (!cmd_args)
-		return (NULL);
+	cmd_args = ft_split(command->input_expanded, REP_SPACE);
+	if (!cmd_args && command->settings.expansion == false)
+		return (set_error_in(1, "Malloc", __func__, true), handle_error(), NULL); // ! TREAT HERE
 	return (cmd_args);
 }

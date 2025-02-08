@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 17:19:30 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/08 18:02:28 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	child_process(t_shell *data, t_cmd *command)
 	do_dup2(command->io, data->pipe_id, &data->prev_fd);
 	if (is_safe_to_execve(command))
 	{
-		execve(command->path, command->args, command->envp);
+		execve(command->path, command->args, data->envp);
 		code = validate_command_path_access(command->path);
 		set_error_ex(code, NULL, NULL, true);
 		handle_error();
