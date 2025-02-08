@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   definitions.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 15:06:34 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/08 15:55:29 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef enum e_token
 
 typedef enum e_builtin
 {
-	CD,
+	CD = 1,
 	EXPORT,
 	ECHO,
 	ENV,

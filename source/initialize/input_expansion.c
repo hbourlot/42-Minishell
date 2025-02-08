@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 14:59:25 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/08 16:35:35 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ static char	*process_expansion(t_cmd *command, char *element, int i,
 	result = insert_string(element, expansion_value, i);
 	if (!result)
 		return (free(element), free(expansion_value), NULL);
-	identify_and_replace_sqpa_tokens(result);
 	return (free(element), free(expansion_value), result);
 }
 
@@ -81,10 +80,11 @@ static char	*handle_variable_expansion(t_cmd *command, char *element)
 	{
 		while (element[i] && element[i] != '$')
 			i++;
-		if (!element[i] || element[i] == '\0')
+		if (!element[i])
 			break ;
 		i++;
-		if (element[i] == 3 || element[i] == ' ' || element[i] == '\0')
+		if (element[i] == 1 || element[i] == 2 || element[i] == 3
+			|| element[i] == ' ' || element[i] == '\0')
 			continue ;
 		element = process_expansion(command, element, i - 1, double_quotes);
 		if (!element)
@@ -109,12 +109,6 @@ static char	*handle_command_elements(t_cmd *command, char **elements)
 			if (!elements[i])
 				return (free_split(elements), NULL);
 		}
-		if (elements[i][0] == REP_SINGLE_QUOTE
-			|| elements[i][0] == REP_DOUBLE_QUOTE)
-		{
-			truncate_character(elements[i], 2);
-			truncate_character(elements[i], 1);
-		}
 		result = ft_append_and_free(result, elements[i]);
 		if (!result)
 			return (free_split(elements), NULL);
@@ -123,23 +117,34 @@ static char	*handle_command_elements(t_cmd *command, char **elements)
 	return (free_split(elements), result);
 }
 
-char	**process_command_input(t_cmd *command)
+char	*expand_command_input(t_cmd *command)
 {
-	char	**cmd_args;
-	char	*process_input;
+	char	*expand_input;
 	char	**elements;
 
 	elements = tokenize_element(command->input);
 	if (!elements)
 		return (NULL);
-	process_input = handle_command_elements(command, elements);
-	if (!process_input)
+	expand_input = handle_command_elements(command, elements);
+	if (!expand_input)
 	{
 		command->settings.expansion = false;
 		return (NULL);
 	}
-	cmd_args = ft_split(process_input, REP_SPACE);
-	free(process_input);
+	free(command->input);
+	return (expand_input);
+}
+
+char	**process_command_input(t_cmd *command)
+{
+	char	**cmd_args;
+	identify_and_replace_sqpa_tokens(command->input);
+	if (ft_strchr(command->input, REP_DOUBLE_QUOTE) || ft_strchr(command->input, REP_SINGLE_QUOTE))
+	{
+		truncate_character(command->input, 2);
+		truncate_character(command->input, 1);
+	}
+	cmd_args = ft_split(command->input, REP_SPACE);
 	if (!cmd_args)
 		return (NULL);
 	return (cmd_args);

@@ -6,30 +6,30 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:52:16 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/04 16:47:18 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/07 23:09:55 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static int	update_shell_lvl(t_hashmap *map)
-// {
-// 	char		*temp;
-// 	int			temp_lvl;
-// 	char		*temp_value;
+static int	update_shell_lvl(t_hashmap *map)
+{
+	char		*temp;
+	int			temp_lvl;
+	char		*temp_value;
 
-// 	temp = hashmap_search(map, "SHLVL");
-// 	if (!temp)
-// 		return (-1);
-// 	temp_lvl = ft_atoi(temp);
-// 	temp_lvl++;
-// 	temp_value = ft_itoa(temp_lvl);
-// 	if (!temp_value)
-// 		return (ERROR);
-// 	if (hashmap_insert(map, "SHLVL", temp_value) == ERROR)
-// 		return (free(temp_value), ERROR);
-// 	return (free(temp_value), 0);
-// }
+	temp = hashmap_search(map, "SHLVL");
+	if (!temp)
+		return (-1);
+	temp_lvl = ft_atoi(temp);
+	temp_lvl++;
+	temp_value = ft_itoa(temp_lvl);
+	if (!temp_value)
+		return (ERROR);
+	if (hashmap_insert(map, "SHLVL", temp_value) == ERROR)
+		return (free(temp_value), ERROR);
+	return (free(temp_value), 0);
+}
 
 /// @brief Imports environment variables into a hashmap.
 /// @param map The hashmap to store key-value pairs.
@@ -55,8 +55,8 @@ int	import_env_to_hashmap(t_hashmap *map, char *envp[])
 		free(key);
 		i++;
 	}
-	// if (update_shell_lvl(map) == ERROR)
-	// 	return (ERROR);
+	if (update_shell_lvl(map) == ERROR)
+		return (ERROR);
 	return (0);
 }
 

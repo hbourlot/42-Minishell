@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 14:58:01 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/08 16:37:04 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static int	add_command_to_list(t_cmd **command, t_cmd *new_command)
 	return (SUCCESS);
 }
 
-static int	initialize_command_struct(t_cmd **command, char *rl_splitted, t_token token_type)
+static int	initialize_command_struct(t_cmd **command, char *rl_splitted,
+		t_token token_type)
 {
 	t_cmd	*new_command;
 
@@ -42,8 +43,7 @@ static int	initialize_command_struct(t_cmd **command, char *rl_splitted, t_token
 	ft_memset(new_command->io, -1, 8);
 	new_command->settings.is_safe_to_execve = true;
 	new_command->next = NULL;
-	if (ft_strlen(rl_splitted) == 0 || all_same_char(rl_splitted,
-			REP_SPACE))
+	if (ft_strlen(rl_splitted) == 0 || all_same_char(rl_splitted, REP_SPACE))
 		new_command->settings.only_tokens = true;
 	return (add_command_to_list(command, new_command));
 }
@@ -60,8 +60,8 @@ static int	handle_file_tokens(t_shell *data, t_cmd *command)
 		return (-1);
 	}
 	strip_redirects(command->input, file_tokens);
-	if (ft_strlen(command->input) == 0 || all_same_char(command->input,
-			REP_SPACE))
+	if ((ft_strlen(command->input) == 0 || all_same_char(command->input,
+			REP_SPACE)) && command->settings.expansion == false)
 	{
 		command->settings.is_safe_to_execve = false;
 	}
@@ -77,7 +77,6 @@ static int	prepare_execve_parameters(t_cmd *command, t_shell *data)
 		set_error_in(1, "Malloc", __func__, true);
 		return (handle_error());
 	}
-	debug_command_args(data);
 	command->path = get_path(command->args[0], data->env_paths);
 	if (!command->path && command->settings.expansion == false)
 		return (set_error_in(1, "\"Path\"", __func__, true), ERROR);
@@ -98,7 +97,9 @@ int	add_command(t_cmd **command, char *rl_splitted, t_shell *data,
 		return (ERROR);
 	last_node = get_last_node(data->command, get_offset(&dummy, &dummy.next));
 	// expand here
-	
+	last_node->input = expand_command_input(last_node);
+	if (!data->command->input)
+		return (ERROR);
 	if (handle_file_tokens(data, last_node) < 0)
 		return (ERROR);
 	if (last_node->settings.is_safe_to_execve == true)

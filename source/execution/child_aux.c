@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   child_aux.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 12:00:01 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/05 12:29:21 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/07 23:12:59 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 // TODO: dup2 fails and return -1
 static void	duplicate_fd(int fd1, int fd2)

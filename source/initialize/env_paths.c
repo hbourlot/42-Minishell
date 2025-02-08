@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 10:16:37 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/03 17:43:48 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/07 23:09:16 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	initialize_environment_paths(t_shell *data)
 {
-	char *path;
+	char	*path;
+
 	if (data->env_paths)
 		free_split(data->env_paths);
 	path = hashmap_search(data->map, "PATH");

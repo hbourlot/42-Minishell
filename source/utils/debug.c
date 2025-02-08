@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:18:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:44:58 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/08 16:13:05 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ void	debug_command_file_list(t_shell *data)
 {
 	int		cmd_num;
 	t_cmd	*tmp;
-	// t_file	*tmp_files;
 
+	// t_file	*tmp_files;
 	cmd_num = 1;
 	tmp = data->command;
 	while (tmp)
@@ -114,11 +114,11 @@ void	print_execve_parameters(char *input) // TODO: from command->input
 	while (input[i])
 	{
 		if (input[i] == REP_DOUBLE_QUOTE)
-			printf("2");
+			printf("(%d - %c)", input[i], input[i]);
 		if (input[i] == REP_SINGLE_QUOTE)
-			printf("1");
+			printf("(%d - %c)", input[i], input[i]);
 		if (input[i] == REP_SPACE)
-			printf("3");
+			printf("(%d - %c)", input[i], input[i]);
 		else
 			printf("%c", input[i]);
 		i++;
