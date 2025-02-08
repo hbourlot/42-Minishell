@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:11:13 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/06 18:18:35 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/07 23:04:07 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,19 +68,22 @@ static int	is_valid_key(t_shell *data, char *temp_key)
 {
 	int		i;
 	bool	valid;
+	bool	only_digits;
 
 	valid = true;
-	i = 0;
-	while (temp_key && temp_key[i])
+	only_digits = true;
+	i = -1;
+	while (temp_key && temp_key[++i])
 	{
-		if (!ft_isalnum(temp_key[i]) && !(temp_key[i] == '_'))
+		if (!ft_isalnum(temp_key[i]) && temp_key[i] != '_')
 		{
 			valid = false;
 			break ;
 		}
-		i++;
+		if (!ft_isdigit(temp_key[i]))
+			only_digits = false;
 	}
-	if (valid == false)
+	if (valid == false || only_digits == true)
 	{
 		ft_printf_error("bash: export: '%s': not a valid identifier\n",
 			temp_key);
@@ -94,6 +97,7 @@ static int	add_new_variable_on_hashmap(t_shell *data, char *command_arg)
 {
 	char	*value;
 	char	*temp_key;
+	int		len;
 
 	value = ft_strchr(command_arg, '=');
 	if (!value)
@@ -104,7 +108,10 @@ static int	add_new_variable_on_hashmap(t_shell *data, char *command_arg)
 			return (ERROR);
 		return (SUCCESS);
 	}
-	temp_key = ft_substr(command_arg, 0, value - command_arg);
+	len = value - command_arg;
+	if (len == 0)
+		len++;
+	temp_key = ft_substr(command_arg, 0, len);
 	if (!temp_key)
 		return (ERROR);
 	if (is_valid_key(data, temp_key))

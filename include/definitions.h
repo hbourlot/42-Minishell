@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 15:06:34 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/08 18:15:13 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef enum e_token
 
 typedef enum e_builtin
 {
-	CD,
+	CD = 1,
 	EXPORT,
 	ECHO,
 	ENV,
@@ -101,13 +101,13 @@ typedef struct s_cmd
 	t_rules				settings;
 	bool				expansion;
 	char				*input;
+	char				*input_expanded;
 	char				*file;
 	int					fd_in;
 	int					fd_out;
 	int					io[2];
 	char				**args;
 	char				*path;
-	char				**envp;
 	struct s_cmd		*next;
 }						t_cmd;
 

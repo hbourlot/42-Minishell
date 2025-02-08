@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 15:06:34 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/08 18:22:39 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void		strip_redirects(char *input, const char *redirects[]);
 // **						Initialize Functions							**
 // ************************************************************************
 
+size_t		hash(char *key);
 t_shell		*get_shell(void);
 t_hashmap	*create_map(void);
 int			init_command(t_shell *data);
@@ -56,17 +57,18 @@ char		**process_command_input(t_cmd *command);
 int			update_envp_and_envpath(t_shell *data);
 int			initialize_environment_paths(t_shell *data);
 t_shell		*init_shell(int argc, char *argv[], char *envp[]);
+char		*expand_command_input(t_cmd *command);
+void		hashmap_delete(t_hashmap *map, char *key);
+char		*hashmap_search(t_hashmap *map, char *key);
+int			prepare_parameters(t_cmd *command, t_shell *data);
+int			hashmap_to_env_array(t_shell *data, t_hashmap *map);
+int			import_env_to_hashmap(t_hashmap *map, char *envp[]);
 int			initialize_eof(char *data_readline, char ***data_eof);
+int			hashmap_insert(t_hashmap *map, char *key, char *value);
 int			add_command(t_cmd **command, char *rl_splitted, t_shell *data,
 				t_token token_type);
 int			initialize_file_list(char *input, const char *redirects[],
 				t_file **redir_files);
-size_t		hash(char *key);
-int			hashmap_insert(t_hashmap *map, char *key, char *value);
-char		*hashmap_search(t_hashmap *map, char *key);
-void		hashmap_delete(t_hashmap *map, char *key);
-int			hashmap_to_env_array(t_shell *data, t_hashmap *map);
-int			import_env_to_hashmap(t_hashmap *map, char *envp[]);
 
 // ************************************************************************
 // **						Execution Functions								**

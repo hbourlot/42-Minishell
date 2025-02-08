@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 13:48:56 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/08 18:02:28 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,24 @@ static bool	is_safe_to_execve(t_cmd *command)
 		return (false);
 	if (command->settings.is_builtin)
 		return (false);
-	if ( command->settings.is_safe_to_execve == false)
-		return false;
+	if (command->settings.is_safe_to_execve == false)
+		return (false);
 	return (true);
 }
 
 void	exec_builtin(t_shell *data, t_cmd *command)
 {
-	if (command->settings.is_safe_to_builtin && process_builtin(data, command) < 0)
+	if (command->settings.is_safe_to_builtin && process_builtin(data,
+			command) < 0)
 	{
 		set_error_ex(1, "Malloc", NULL, true);
 		handle_error();
-	}	
+	}
 }
 
 void	child_process(t_shell *data, t_cmd *command)
 {
+	// printf("%s\n", command->envp[0]);
 	int	code;
 
 	if (command->settings.only_tokens)
@@ -60,7 +62,7 @@ void	child_process(t_shell *data, t_cmd *command)
 	do_dup2(command->io, data->pipe_id, &data->prev_fd);
 	if (is_safe_to_execve(command))
 	{
-		execve(command->path, command->args, command->envp);
+		execve(command->path, command->args, data->envp);
 		code = validate_command_path_access(command->path);
 		set_error_ex(code, NULL, NULL, true);
 		handle_error();

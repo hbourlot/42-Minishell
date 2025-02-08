@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 15:06:34 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/08 18:24:03 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	free_files(t_file *file_list)
 		free(tmp);
 	}
 }
+
 void	hashnode_free(t_hashnode *current)
 {
 	t_hashnode	*temp;
@@ -76,9 +77,21 @@ static void	free_command(t_cmd **command)
 			close(tmp->io[0]);
 		if (tmp->io[1] != -1)
 			close(tmp->io[1]);
+		if (tmp->input_expanded)
+			free(tmp->input_expanded);
 		(*command) = (*command)->next;
 		free(tmp);
 	}
+}
+
+void	close_fds_and_pipes(t_shell *data)
+{
+	if (data->prev_fd != -1)
+		close(data->prev_fd);
+	if (data->pipe_id[0] != -1)
+		close(data->pipe_id[0]);
+	if (data->pipe_id[1] != -1)
+		close(data->pipe_id[1]);
 }
 
 /*
@@ -87,12 +100,7 @@ static void	free_command(t_cmd **command)
 */
 void	refresh_shell_data(t_shell *data)
 {
-	if (data->prev_fd != -1)
-		close(data->prev_fd);
-	if (data->pipe_id[0] != -1)
-		close(data->pipe_id[0]);
-	if (data->pipe_id[1] != -1)
-		close(data->pipe_id[1]);
+	close_fds_and_pipes(data);
 	data->commands_ran = 0;
 	data->nbr_of_commands = 0;
 	data->pid = -1;
@@ -119,12 +127,7 @@ void	refresh_shell_data(t_shell *data)
 // * so just need to free input_splitted.
 void	cleanup_shell(t_shell *data)
 {
-	if (data->prev_fd != -1)
-		close(data->prev_fd);
-	if (data->pipe_id[0] != -1)
-		close(data->pipe_id[0]);
-	if (data->pipe_id[1] != -1)
-		close(data->pipe_id[1]);
+	close_fds_and_pipes(data);
 	if (data->rl)
 		free(data->rl);
 	if (data->rl_splitted)

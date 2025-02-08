@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:41:34 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 12:12:51 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/08 15:57:48 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,17 @@ void	set_builtin_flag(t_cmd *command)
 	char		*args;
 	const char	*builtin_functions[] = {"cd", "export", "echo", "env", "unset",
 			"exit", "pwd", NULL};
+
 	i = 0;
-	if (!command->args || !command->args[0] || all_same_char(command->args[0], ' '))
+	if (!command->args || !command->args[0] || all_same_char(command->args[0],
+			' '))
 		return ;
 	args = command->args[0];
 	while (builtin_functions[i])
 	{
 		if (ft_strcmp(args, builtin_functions[i]) == 0)
 		{
-			command->settings.builtin_id = i;
+			command->settings.builtin_id = i + 1;
 			command->settings.is_builtin = true;
 			break ;
 		}
