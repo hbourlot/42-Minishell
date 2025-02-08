@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/06 15:42:16 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/08 14:41:47 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ static bool	is_safe_to_run_builtin(t_shell *data, t_cmd *command)
 	if (cond_4)
 	{
 		command->settings.is_safe_to_builtin = true;
-		return false;
+		return (false);
 	}
 	if ((cond_1 && cond_2 && cond_3) || (data->nbr_of_commands == 1 && cond_3))
 		return true;
+	command->settings.is_safe_to_builtin = true;
 	return (false);
 }
 
