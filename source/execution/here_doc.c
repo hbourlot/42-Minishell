@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/06 15:42:06 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:14:23 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,7 @@ static void	handle_parent_process(t_shell *data, int i, int *ws)
 		data->prev_fd = data->pipe_id[0];
 	else
 		close(data->pipe_id[0]);
-	
-	// wait(NULL);
 	wait(ws);
-	// if (WIFEXITED(wait_status))
-	// 	data->exit_status = WEXITSTATUS(wait_status);
 	close(data->pipe_id[1]);
 }
 

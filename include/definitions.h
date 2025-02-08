@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   definitions.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 12:10:17 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:06:34 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,9 @@ typedef struct s_data
 	char				*error_output;
 	int					pipe_id[2];
 	int					prev_fd;
-	char				*readline;
+	char				*rl;
 	char				**eof;
-	char				**readline_splitted;
+	char				**rl_splitted;
 	char				**env_paths;
 	int					exit_status;
 	int					nbr_of_commands;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 08:43:16 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/08 14:58:01 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,21 @@ static int	add_command_to_list(t_cmd **command, t_cmd *new_command)
 	return (SUCCESS);
 }
 
-static int	initialize_command_struct(t_cmd **command, char *readline_splitted,
-		t_token token_type)
+static int	initialize_command_struct(t_cmd **command, char *rl_splitted, t_token token_type)
 {
 	t_cmd	*new_command;
 
 	new_command = ft_calloc(1, sizeof(t_cmd));
 	if (!new_command)
 		return (set_error_in(1, "\"Malloc\"", __func__, true), ERROR);
-	new_command->input = ft_strdup(readline_splitted);
+	new_command->input = ft_strdup(rl_splitted);
 	if (!new_command->input)
 		return (set_error_in(1, "\"Malloc\"", __func__, true), ERROR);
 	new_command->delimiter = token_type;
 	ft_memset(new_command->io, -1, 8);
 	new_command->settings.is_safe_to_execve = true;
 	new_command->next = NULL;
-	if (ft_strlen(readline_splitted) == 0 || all_same_char(readline_splitted,
+	if (ft_strlen(rl_splitted) == 0 || all_same_char(rl_splitted,
 			REP_SPACE))
 		new_command->settings.only_tokens = true;
 	return (add_command_to_list(command, new_command));
@@ -78,6 +77,7 @@ static int	prepare_execve_parameters(t_cmd *command, t_shell *data)
 		set_error_in(1, "Malloc", __func__, true);
 		return (handle_error());
 	}
+	debug_command_args(data);
 	command->path = get_path(command->args[0], data->env_paths);
 	if (!command->path && command->settings.expansion == false)
 		return (set_error_in(1, "\"Path\"", __func__, true), ERROR);
@@ -86,17 +86,19 @@ static int	prepare_execve_parameters(t_cmd *command, t_shell *data)
 	return (SUCCESS);
 }
 
-int	add_command(t_cmd **command, char *readline_splitted, t_shell *data,
+int	add_command(t_cmd **command, char *rl_splitted, t_shell *data,
 		t_token token_type)
 {
 	t_cmd	dummy;
 	t_cmd	*last_node;
 
-	replace_characters(readline_splitted, REP_AND, '&');
-	replace_characters(readline_splitted, REP_PIPE, '|');
-	if (initialize_command_struct(command, readline_splitted, token_type) < 0)
+	replace_characters(rl_splitted, REP_AND, '&');
+	replace_characters(rl_splitted, REP_PIPE, '|');
+	if (initialize_command_struct(command, rl_splitted, token_type) < 0)
 		return (ERROR);
 	last_node = get_last_node(data->command, get_offset(&dummy, &dummy.next));
+	// expand here
+	
 	if (handle_file_tokens(data, last_node) < 0)
 		return (ERROR);
 	if (last_node->settings.is_safe_to_execve == true)

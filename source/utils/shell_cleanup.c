@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_cleanup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/06 17:53:13 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:06:34 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,12 @@ void	refresh_shell_data(t_shell *data)
 		free_split(data->eof);
 		data->eof = NULL;
 	}
-	if (data->readline)
-		free_pointers(1, &data->readline);
-	if (data->readline_splitted)
+	if (data->rl)
+		free_pointers(1, &data->rl);
+	if (data->rl_splitted)
 	{
-		free_split(data->readline_splitted);
-		data->readline_splitted = NULL;
+		free_split(data->rl_splitted);
+		data->rl_splitted = NULL;
 	}
 	free_command(&data->command);
 	data->command = NULL;
@@ -125,10 +125,10 @@ void	cleanup_shell(t_shell *data)
 		close(data->pipe_id[0]);
 	if (data->pipe_id[1] != -1)
 		close(data->pipe_id[1]);
-	if (data->readline)
-		free(data->readline);
-	if (data->readline_splitted)
-		free_split(data->readline_splitted);
+	if (data->rl)
+		free(data->rl);
+	if (data->rl_splitted)
+		free_split(data->rl_splitted);
 	if (data->eof)
 	{
 		free_split(data->eof);

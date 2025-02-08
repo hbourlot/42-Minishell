@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 12:32:00 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:08:02 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,14 +203,11 @@ int	initialize_file_list(char *input, const char *redirects[],
 // 	{
 // 		if ((command->args[i][0] == REP_DOUBLE_QUOTE || command->args[i][0] == REP_SINGLE_QUOTE))
 // 			continue;
-// 		else
+// 		else if (find_string_match(command->args[i], redirects, &idx) == OK)
 // 		{
-// 			if (find_string_match(command->args[i], redirects, &idx) == OK)
-// 			{
-// 				if (verify_empty_complement(command, redi))
-// 				if (iter_args(command, redirects[idx], i))
-// 					return -1;	
-// 			}
+// 			if (verify_empty_complement(command, redirects))
+// 			if (iter_args(command, redirects[idx], i))
+// 				return -1;	
 // 		}
 // 		i++;
 // 	}

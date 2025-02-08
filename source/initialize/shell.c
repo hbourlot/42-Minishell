@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 16:34:57 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:04:05 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 static bool	verify_and_prepare_input(t_shell *data)
 {
-	if (data->readline && *data->readline)
+	if (data->rl && *data->rl)
 	{
-		add_history(data->readline);
+		add_history(data->rl);
 		data->nbr_of_lines += 1;
 	}
-	identify_and_replace_sqpa_tokens(data->readline);
-	if (all_same_char(data->readline, REP_SPACE))
+	identify_and_replace_sqpa_tokens(data->rl);
+	if (all_same_char(data->rl, REP_SPACE))
 	{
-		free_pointers(1, &data->readline);
+		free_pointers(1, &data->rl);
 		return (false);
 	}
 	if (parsing_syntax(data) == -1)
@@ -37,8 +37,8 @@ int	main_shell_loop(t_shell *data)
 	while (true)
 	{
 		setup_parent_signals();
-		data->readline = readline(PROMPT);
-		if (!data->readline)
+		data->rl = readline(PROMPT);
+		if (!data->rl)
 			return (printf("exit\n"), 0);
 		if (verify_and_prepare_input(data) == false)
 			handle_error();
