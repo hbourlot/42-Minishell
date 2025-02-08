@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 22:44:14 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/08 15:07:52 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,23 +124,30 @@ static char	*handle_command_elements(t_cmd *command, char **elements)
 	return (free_split(elements), result);
 }
 
-char	**process_command_input(t_cmd *command)
+char	*process_expansion_before(t_cmd *command)
 {
-	char	**cmd_args;
-	char	*process_input;
+	char	*expand_input;
 	char	**elements;
 
 	elements = tokenize_element(command->input);
 	if (!elements)
 		return (NULL);
-	process_input = handle_command_elements(command, elements);
-	if (!process_input)
+		expand_input = handle_command_elements(command, elements);
+	if (!expand_input)
 	{
 		command->settings.expansion = false;
 		return (NULL);
 	}
-	cmd_args = ft_split(process_input, REP_SPACE);
-	free(process_input);
+	return (expand_input);
+}
+
+char	**process_command_input(t_cmd *command)
+{
+	char	**cmd_args;
+	char	*expanded_input;
+
+	expanded_input = process_expansion_before(command);
+	cmd_args = ft_split(expanded_input, REP_SPACE);
 	if (!cmd_args)
 		return (NULL);
 	return (cmd_args);
