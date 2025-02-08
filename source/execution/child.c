@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 15:13:10 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/08 17:19:30 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	exec_builtin(t_shell *data, t_cmd *command)
 
 void	child_process(t_shell *data, t_cmd *command)
 {
+	// printf("%s\n", command->envp[0]);
 	int	code;
 
 	if (command->settings.only_tokens)

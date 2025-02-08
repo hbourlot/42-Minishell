@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_commands.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 15:13:26 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/08 17:26:34 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,22 @@ static bool	is_safe_to_run_builtin(t_shell *data, t_cmd *command)
 	bool	cond_1;
 	bool	cond_2;
 	bool	cond_3;
-	bool	cond_4;
 
-	cond_1 = data->nbr_of_commands == 2;
-	cond_2 = (command->delimiter == AND_DOUBLE
-			|| command->delimiter == PIPE_DOUBLE);
-	cond_3 = command->settings.is_builtin;
-	cond_4 = (command->settings.builtin_id == ECHO);
-	if (cond_4)
+	cond_1 = (command->delimiter == AND_DOUBLE
+			|| command->delimiter == PIPE_DOUBLE || command->delimiter == NO_TOKEN);
+	cond_2 = command->settings.is_builtin;
+	cond_3 = command->redir_files;
+	if (cond_1 && cond_2)
 	{
-		command->settings.is_safe_to_builtin = true;
-		return (false);
-	}
-	if ((cond_1 && cond_2 && cond_3) || (data->nbr_of_commands == 1 && cond_3))
+		command->settings.is_safe_to_execve = false;
+		if (command->settings.builtin_id == ECHO)
+		{
+			command->settings.is_safe_to_builtin = true;
+			return false;
+		}
+		command->settings.is_safe_to_builtin = false;
 		return true;
-	command->settings.is_safe_to_builtin = true;
+	}
 	return (false);
 }
 
