@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 23:11:52 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/08 15:13:26 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static bool	is_safe_to_run_builtin(t_shell *data, t_cmd *command)
 		return (false);
 	}
 	if ((cond_1 && cond_2 && cond_3) || (data->nbr_of_commands == 1 && cond_3))
-		return (true);
+		return true;
+	command->settings.is_safe_to_builtin = true;
 	return (false);
 }
 

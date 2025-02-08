@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 23:16:46 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/08 15:14:20 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,12 +109,12 @@ void	refresh_shell_data(t_shell *data)
 		free_split(data->eof);
 		data->eof = NULL;
 	}
-	if (data->readline)
-		free_pointers(1, &data->readline);
-	if (data->readline_splitted)
+	if (data->rl)
+		free_pointers(1, &data->rl);
+	if (data->rl_splitted)
 	{
-		free_split(data->readline_splitted);
-		data->readline_splitted = NULL;
+		free_split(data->rl_splitted);
+		data->rl_splitted = NULL;
 	}
 	free_command(&data->command);
 	data->command = NULL;
@@ -126,10 +126,10 @@ void	refresh_shell_data(t_shell *data)
 void	cleanup_shell(t_shell *data)
 {
 	close_fds_and_pipes(data);
-	if (data->readline)
-		free(data->readline);
-	if (data->readline_splitted)
-		free_split(data->readline_splitted);
+	if (data->rl)
+		free(data->rl);
+	if (data->rl_splitted)
+		free_split(data->rl_splitted);
 	if (data->eof)
 	{
 		free_split(data->eof);

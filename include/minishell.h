@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 12:01:35 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:06:34 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int			update_envp_and_envpath(t_shell *data);
 int			initialize_environment_paths(t_shell *data);
 t_shell		*init_shell(int argc, char *argv[], char *envp[]);
 int			initialize_eof(char *data_readline, char ***data_eof);
-int			add_command(t_cmd **command, char *readline_splitted, t_shell *data,
+int			add_command(t_cmd **command, char *rl_splitted, t_shell *data,
 				t_token token_type);
 int			initialize_file_list(char *input, const char *redirects[],
 				t_file **redir_files);

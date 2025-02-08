@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:21:13 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 14:21:19 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/07 21:38:56 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,27 +69,54 @@ static bool	is_first_pipe_token_valid(char *source, const char *tokens[])
 	return (false);
 }
 
+// static bool is_first_pipe_token_valid(char *src, const char *tokens[])
+// {
+// 	size_t	length;
+// 	char	*tmp;
+// 	int		i;
+// 	int		idx;
+// 	bool	in_quotes;
+
+// 	length = 0;
+// 	i = 0;
+// 	in_quotes = false;
+// 	while (src[i])
+// 	{
+// 		if (src[i] == 1 || src[i] == 2)
+// 			in_quotes = !in_quotes;
+// 		else if (!in_quotes && find_string_match(&src[i], tokens, &idx) == OK)
+// 		{
+// 			i += ft_strlen(tokens[idx]);
+// 			while (src[i])
+// 			{
+// 				if (src[i] && src[i] != ' ' && find_string_match(&src[i], tokens, &idx) == OK)
+// 					i++;
+// 			}
+// 		}
+// 	}
+// }
+
 bool	is_valid_pipe_tokens(char *source)
 {
 	int			idx;
-	const char	*pipe_tokens[] = {"||", "|", NULL};
+	const char	*deli_tokens[] = {"&&", "||", "|", NULL};
 
 	idx = 0;
-	if (is_first_pipe_token_valid(source, pipe_tokens) == false)
+	if (is_first_pipe_token_valid(source, deli_tokens) == false)
 		return (false);
 	while (source && *source)
 	{
-		source = ft_strstr_any(source, pipe_tokens);
-		if (source && *source && find_string_match(source, pipe_tokens,
+		source = ft_strstr_any(source, deli_tokens);
+		if (source && *source && find_string_match(source, deli_tokens,
 				&idx) == OK)
 		{
-			source += ft_strlen(pipe_tokens[idx]);
+			source += ft_strlen(deli_tokens[idx]);
 			skip_spaces(&source);
-			if (*source && find_string_match(source, pipe_tokens, &idx) == OK)
+			if (*source && find_string_match(source, deli_tokens, &idx) == OK)
 				// If has and its another pipe ERROR CASE
 				return (set_error_pa(2, SYNTAX_ERROR_MSG,
-						(char *)pipe_tokens[idx], __func__), false);
-			if (*source && ft_strcmps(source, pipe_tokens) == ERROR)
+						(char *)deli_tokens[idx], __func__), false);
+			if (*source && ft_strcmps(source, deli_tokens) == ERROR)
 				// If has and it's not another pipe
 				continue ;                                           
 				// Right case
