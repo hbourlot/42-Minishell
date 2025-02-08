@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 15:13:38 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/08 16:35:35 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ static char	*process_expansion(t_cmd *command, char *element, int i,
 	result = insert_string(element, expansion_value, i);
 	if (!result)
 		return (free(element), free(expansion_value), NULL);
-	identify_and_replace_sqpa_tokens(result);
 	return (free(element), free(expansion_value), result);
 }
 
@@ -110,12 +109,6 @@ static char	*handle_command_elements(t_cmd *command, char **elements)
 			if (!elements[i])
 				return (free_split(elements), NULL);
 		}
-		if (elements[i][0] == REP_SINGLE_QUOTE
-			|| elements[i][0] == REP_DOUBLE_QUOTE)
-		{
-			truncate_character(elements[i], 2);
-			truncate_character(elements[i], 1);
-		}
 		result = ft_append_and_free(result, elements[i]);
 		if (!result)
 			return (free_split(elements), NULL);
@@ -124,7 +117,7 @@ static char	*handle_command_elements(t_cmd *command, char **elements)
 	return (free_split(elements), result);
 }
 
-char	*process_expansion_before(t_cmd *command)
+char	*expand_command_input(t_cmd *command)
 {
 	char	*expand_input;
 	char	**elements;
@@ -132,22 +125,26 @@ char	*process_expansion_before(t_cmd *command)
 	elements = tokenize_element(command->input);
 	if (!elements)
 		return (NULL);
-		expand_input = handle_command_elements(command, elements);
+	expand_input = handle_command_elements(command, elements);
 	if (!expand_input)
 	{
 		command->settings.expansion = false;
 		return (NULL);
 	}
+	free(command->input);
 	return (expand_input);
 }
 
 char	**process_command_input(t_cmd *command)
 {
 	char	**cmd_args;
-	char	*expanded_input;
-
-	expanded_input = process_expansion_before(command);
-	cmd_args = ft_split(expanded_input, REP_SPACE);
+	identify_and_replace_sqpa_tokens(command->input);
+	if (ft_strchr(command->input, REP_DOUBLE_QUOTE) || ft_strchr(command->input, REP_SINGLE_QUOTE))
+	{
+		truncate_character(command->input, 2);
+		truncate_character(command->input, 1);
+	}
+	cmd_args = ft_split(command->input, REP_SPACE);
 	if (!cmd_args)
 		return (NULL);
 	return (cmd_args);

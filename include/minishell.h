@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 15:06:34 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/08 15:35:02 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ char		*hashmap_search(t_hashmap *map, char *key);
 void		hashmap_delete(t_hashmap *map, char *key);
 int			hashmap_to_env_array(t_shell *data, t_hashmap *map);
 int			import_env_to_hashmap(t_hashmap *map, char *envp[]);
+char		*expand_command_input(t_cmd *command);
 
 // ************************************************************************
 // **						Execution Functions								**
