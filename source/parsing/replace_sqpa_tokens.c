@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   replace_sq_tokens.c                                :+:      :+:    :+:   */
+/*   replace_sqpa_tokens.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:44:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/22 20:34:59 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/09 18:52:46 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,12 @@ static void replace_pa_tokens_in_literal(char *input)
 		i++;
 	}
 }
-
+/// @brief Identifies and replaces specific characters in the 
+///		input string based on context.
+///        - Replaces paired single ('') and double ("") quotes with respective tags.
+///        - Converts spaces outside quotes to REP_SPACE.
+///        - Converts '|' to REP_PIPE and '&' to REP_AND inside quotes.
+/// @param input The string to be processed.
 void	identify_and_replace_sqpa_tokens(char *input)
 {
 	int idx;
