@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 18:32:39 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/09 18:54:25 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,19 +97,7 @@ int	add_command(t_cmd **command, char *rl_splitted, t_shell *data,
 	if (initialize_command_struct(command, rl_splitted, token_type) < 0)
 		return (ERROR);
 	last_node = get_last_node(data->command, get_offset(&dummy, &dummy.next));
-	// expand here
-
-	
 	if (prepare_parameters(last_node, data) < 0)
 			return (ERROR);
-	// last_node->input = expand_command_input(last_node);
-	// if (handle_file_tokens(data, last_node) < 0)
-	// 	return (ERROR);
-	// if (last_node->settings.is_safe_to_execve == true)
-	// {
-	// 	if (prepare_parameters(last_node, data) < 0)
-	// 		return (ERROR);
-	// 	set_builtin_flag(last_node);
-	// }
 	return (SUCCESS);
 }
