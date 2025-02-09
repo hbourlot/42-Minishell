@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 18:15:13 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/09 21:17:50 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@
 # define REP_AND 5
 
 # define ABS_PATH "PATH=/bin:/usr/bin:/usr/local/bin"
-# define SYNTAX_ERROR_MSG "bash: syntax error near unexpected token `"
 # define NO_FILE_DIR_MSG "No such file or directory"
 # define PROMPT "\033[1;32m[Chitãozinho&Xororó\033[1;31m@localhost ~]$ \033[0m"
 
@@ -97,7 +96,7 @@ typedef struct s_rules
 typedef struct s_cmd
 {
 	t_token				delimiter;
-	t_file				*redir_files;
+	t_file				*rf;
 	t_rules				settings;
 	bool				expansion;
 	char				*input;

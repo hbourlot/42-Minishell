@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   file_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 16:18:58 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/09 21:17:50 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static int	add_file(char *input, int *position, t_token token,
-		t_file **redir_files)
+		t_file **rf)
 {
 	t_file	*new;
 	t_file	*current;
@@ -30,9 +30,9 @@ static int	add_file(char *input, int *position, t_token token,
 		new->read = src;
 	else if (token == REDIRECT_RIGHT_SINGLE || token == REDIRECT_RIGHT_DOUBLE)
 		new->write = src;
-	current = *redir_files;
+	current = *rf;
 	if (!current)
-		*redir_files = new;
+		*rf = new;
 	else
 	{
 		while (current->next)
@@ -43,7 +43,7 @@ static int	add_file(char *input, int *position, t_token token,
 }
 
 int	initialize_file_list(char *input, const char *redirects[],
-		t_file **redir_files)
+		t_file **rf)
 {
 	int		idx;
 	int		position[2];
@@ -61,7 +61,7 @@ int	initialize_file_list(char *input, const char *redirects[],
 			token = get_t_token(input, ft_strlen(redirects[idx]));
 			get_redirect_complement(input, &position[0], &position[1],
 				ft_strlen(redirects[idx]));
-			if (add_file(input, position, token, redir_files) < 0)
+			if (add_file(input, position, token, rf) < 0)
 				return (-1);
 		}
 		input++;
@@ -92,7 +92,7 @@ int	initialize_file_list(char *input, const char *redirects[],
 // #include "minishell.h"
 
 // static int	add_file(char *input, int *position, t_token token,
-// 		t_file **redir_files)
+// 		t_file **rf)
 // {
 // 	t_file	*new;
 // 	t_file	*current;
@@ -109,9 +109,9 @@ int	initialize_file_list(char *input, const char *redirects[],
 // 		new->read = src;
 // 	else if (token == REDIRECT_RIGHT_SINGLE || token == REDIRECT_RIGHT_DOUBLE)
 // 		new->write = src;
-// 	current = *redir_files;
+// 	current = *rf;
 // 	if (!current)
-// 		*redir_files = new;
+// 		*rf = new;
 // 	else
 // 	{
 // 		while (current->next)
@@ -135,7 +135,7 @@ int	initialize_file_list(char *input, const char *redirects[],
 // 	// 		token = get_t_token(input, ft_strlen(redirects[idx]));
 // 	// 		get_redirect_complement(input, &position[0], &position[1],
 // 	// 			ft_strlen(redirects[idx]));
-// 	// 		if (add_file(input, position, token, redir_files) < 0)
+// 	// 		if (add_file(input, position, token, rf) < 0)
 // 	// 			return (-1);
 // 	// 	}
 // 	// }
@@ -171,7 +171,7 @@ int	initialize_file_list(char *input, const char *redirects[],
 // 		while (command->args[i + 1][j] && (command->args[i + 1][j] != REP_DOUBLE_QUOTE || command->args[i + 1][j] != REP_SINGLE_QUOTE))
 // 			j++;
 // 		p[1] = j;
-// 		if (add_file(command->args[i + 1], p, token_id, &command->redir_files) < 0)
+// 		if (add_file(command->args[i + 1], p, token_id, &command->rf) < 0)
 // 			return -1;
 // 		else
 // 			clean_args(command->args, i);

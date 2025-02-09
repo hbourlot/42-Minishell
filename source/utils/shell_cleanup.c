@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 18:24:03 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/09 21:17:50 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ static void	free_command(t_cmd **command)
 	while (command && *command)
 	{
 		tmp = *command;
-		free_files(tmp->redir_files);
-		tmp->redir_files = NULL;
+		free_files(tmp->rf);
+		tmp->rf = NULL;
 		if (tmp->input)
 			free(tmp->input);
 		if (tmp->args)

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:18:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/09 18:42:28 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/09 21:17:50 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ void	debug_command_file_list(t_shell *data)
 		printf("Command %d:\n", cmd_num++);
 		if (tmp->input)
 			printf("  Input: %s\n", tmp->input);
-		if (tmp->redir_files)
-			debug_files(tmp->redir_files);
+		if (tmp->rf)
+			debug_files(tmp->rf);
 		else
 			printf("  No files associated.\n");
 		tmp = tmp->next;

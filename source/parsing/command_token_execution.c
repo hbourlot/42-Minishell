@@ -6,46 +6,46 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 11:55:05 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/05 10:31:48 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/09 21:17:50 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /// @brief Parses and validates file redirection paths for read/write access.
-/// @param redir_files The linked list of file redirection.
+/// @param rf The linked list of file redirection.
 /// @return 0 on success, or 1 on failure with an error message.
-int	validate_file_read_execution(t_file *redir_files)
+int	validate_file_read_execution(t_file *rf)
 {
-	while (redir_files && redir_files->read)
+	while (rf && rf->read)
 	{
-		if (redir_files->read)
+		if (rf->read)
 		{
-			if (access(redir_files->read, F_OK) != OK)
+			if (access(rf->read, F_OK) != OK)
 				return (ft_printf_error("bash: %s: No such file or directory\n",
-						redir_files->read), 1);
-			else if (access(redir_files->read, R_OK) != OK
-				|| access(redir_files->read, W_OK) != OK)
+						rf->read), 1);
+			else if (access(rf->read, R_OK) != OK
+				|| access(rf->read, W_OK) != OK)
 				return (ft_printf_error("bash: %s: Permission denied\n",
-						redir_files->read), 1);
-			redir_files = redir_files->next;
+						rf->read), 1);
+			rf = rf->next;
 		}
 	}
 	return (0);
 }
 
-// const char* parse_file_read_execution(t_file *redir_files)
+// const char* parse_file_read_execution(t_file *rf)
 // {
-// 	while (redir_files && redir_files->read)
+// 	while (rf && rf->read)
 // 	{
-// 		if (redir_files->read)
+// 		if (rf->read)
 // 		{
-// 			if (access(redir_files->read, F_OK) != OK)
+// 			if (access(rf->read, F_OK) != OK)
 // 				return ("bash: : No such file or directory\n");
-// 			else if (access(redir_files->read, R_OK) != OK
-// 				|| access(redir_files->read, W_OK) != OK)
+// 			else if (access(rf->read, R_OK) != OK
+// 				|| access(rf->read, W_OK) != OK)
 // 				return ("bash: : Permission denied\n");
-// 			redir_files = redir_files->next;
+// 			rf = rf->next;
 // 		}
 // 	}
 // 	return (NULL);

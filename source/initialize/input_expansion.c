@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/09 18:53:57 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/09 20:43:51 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,14 +127,15 @@ char	*expand_command_input(t_cmd *command)
 		return (NULL);
 	expand_input = handle_command_elements(command, elements);
 	if (!expand_input)
-		return (set_error_in(1, "Malloc", __func__, true), handle_error(), NULL); // ! Treat HERE
-	// free(command->input);
+		handle_error(E_MALLOC, NULL, __func__);
+	// free(command->input); // ! WHY THIS IS COMMENTED ze??
 	return (expand_input);
 }
 
 char	**process_command_input(t_cmd *command)
 {
 	char	**cmd_args;
+	
 	identify_and_replace_sqpa_tokens(command->input_expanded);
 	replace_characters(command->input_expanded, REP_PIPE, '|');
 	replace_characters(command->input_expanded, REP_AND, '&');
@@ -145,6 +146,6 @@ char	**process_command_input(t_cmd *command)
 	}
 	cmd_args = ft_split(command->input_expanded, REP_SPACE);
 	if (!cmd_args && command->settings.expansion == false)
-		return (set_error_in(1, "Malloc", __func__, true), handle_error(), NULL); // ! TREAT HERE
+		handle_error(E_MALLOC, NULL, __func__);
 	return (cmd_args);
 }

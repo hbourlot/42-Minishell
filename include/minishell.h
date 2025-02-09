@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 18:22:39 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/09 21:29:45 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int			parsing_syntax(t_shell *data);
 bool		is_valid_pipe_tokens(char *source);
 void		identify_and_replace_sqpa_tokens(char *input);
 bool		is_valid_file_and_here_doc_tokens(char *source);
-int			validate_file_read_execution(t_file *redir_files);
+int			validate_file_read_execution(t_file *rf);
 int			validate_command_path_access(char *command_path);
 // int 		strip_redirects(char **input, const char *redirects[]);
 void		strip_redirects(char *input, const char *redirects[]);
@@ -51,7 +51,7 @@ t_shell		*get_shell(void);
 t_hashmap	*create_map(void);
 int			init_command(t_shell *data);
 int			main_shell_loop(t_shell *data);
-bool		is_quotes_maching(char *input);
+bool		is_quotes_matching(char *input);
 char		**tokenize_element(char *element);
 char		**process_command_input(t_cmd *command);
 int			update_envp_and_envpath(t_shell *data);
@@ -60,15 +60,14 @@ t_shell		*init_shell(int argc, char *argv[], char *envp[]);
 char		*expand_command_input(t_cmd *command);
 void		hashmap_delete(t_hashmap *map, char *key);
 char		*hashmap_search(t_hashmap *map, char *key);
-int			prepare_parameters(t_cmd *command, t_shell *data);
+void		prepare_parameters(t_cmd *command, t_shell *data);
 int			hashmap_to_env_array(t_shell *data, t_hashmap *map);
 int			import_env_to_hashmap(t_hashmap *map, char *envp[]);
 int			initialize_eof(char *data_readline, char ***data_eof);
 int			hashmap_insert(t_hashmap *map, char *key, char *value);
-int			add_command(t_cmd **command, char *rl_splitted, t_shell *data,
-				t_token token_type);
+void		add_command(t_cmd **command, char *rl_splitted, t_shell *data, t_token id);
 int			initialize_file_list(char *input, const char *redirects[],
-				t_file **redir_files);
+				t_file **rf);
 
 // ************************************************************************
 // **						Execution Functions								**
@@ -80,11 +79,11 @@ void		set_last_status(t_shell *data);
 int			run_eof(t_shell *data, pid_t *pid);
 int			here_doc(int *pipe_id, char *limiter);
 char		*get_path(char *input, char **env_paths);
-void		command_loop(t_shell *data, t_cmd *command);
+int			command_loop(t_shell *data, t_cmd *command);
 void		child_process(t_shell *data, t_cmd *command);
 int			parent_process(t_shell *data, t_cmd **command_ref);
 void		do_dup2(int *io, int *pipe_id, int *prev_fd);
-int			open_folders_safety(int *io, t_file *redir_files);
+void		open_folders_safety(int *io, t_file *rf);
 
 // ************************************************************************
 // **						Free Functions									**
