@@ -6,35 +6,44 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 10:09:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 18:35:01 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:53:51 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_access_fok(const char *path)
+int	check_access_fok(const char *path, int code)
 {
 	if (access(path, F_OK) == OK)
 		return (0);
+	if (code == ENV)
+		return (ft_printf_error("env: '%s': No such file or directory\n", path),
+			127);
 	return (ft_printf_error("bash: %s: No such file or directory\n", path),
 		127);
 }
 
-int	check_access_xok(const char *path)
+int	check_access_xok(const char *path, int code)
 {
 	if (access(path, X_OK) == OK)
 		return (0);
+	if (code == ENV)
+		return (ft_printf_error("env: '%s': Permission denied\n", path), 126);
 	return (ft_printf_error("bash: %s: Permission denied\n", path), 126);
 }
 
-int	check_is_directory(const char *path)
+int	check_is_directory(const char *path, int code)
 {
 	struct stat	stat_path;
 
 	if (stat(path, &stat_path) != OK)
 		return (0);
 	if (S_ISDIR(stat_path.st_mode))
+	{
+		if (code == ENV)
+			return (ft_printf_error("env: '%s': is a directory\n", path), 127);
 		return (ft_printf_error("bash: %s: is a directory\n", path), 127);
+	}
 	return (0);
 }
 
@@ -53,7 +62,7 @@ int	validate_command_path_access(char *command_path)
 	{
 		while (checks_with_path[i] != NULL)
 		{
-			result = checks_with_path[i](command_path);
+			result = checks_with_path[i](command_path, 0);
 			if (result)
 				return (result);
 			i++;

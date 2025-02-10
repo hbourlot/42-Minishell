@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:44:28 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/10 18:32:42 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:53:41 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	handle_env_errors(char *command_arg)
 	int								i;
 	int								result;
 	const t_access_check_function	checks_with_path[] = {check_access_xok,
-			check_access_fok, check_is_directory, NULL};
+		check_access_fok, check_is_directory, NULL};
 
 	i = 0;
 	result = 0;
@@ -39,7 +39,7 @@ static int	handle_env_errors(char *command_arg)
 		return (0);
 	while (checks_with_path[i] != NULL)
 	{
-		result = checks_with_path[i](command_arg);
+		result = checks_with_path[i](command_arg, ENV);
 		if (result)
 			return (result);
 		i++;

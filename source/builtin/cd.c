@@ -6,12 +6,11 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:57:27 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/10 18:27:25 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:51:18 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
 
 static int	change_directory(t_shell *data, const char *dir)
 {
@@ -110,7 +109,7 @@ int	builtin_cd(t_shell *data, char **command_args)
 			return (-1);
 		return (0);
 	}
-	if (check_access_fok(command_args[1]) != 0)
+	if (check_access_fok(command_args[1], CD) != 0)
 	{
 		data->exit_status = 1;
 		return (1);
