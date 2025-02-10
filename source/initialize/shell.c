@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/09 21:36:38 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:59:31 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static void	verify_and_prepare_input(t_shell *data)
 		return ;
 	if (init_command(data) == -1)
 		return ;
-	// return (true);
 }
 
 int	main_shell_loop(t_shell *data)

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/09 20:43:51 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:58:56 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ char	*expand_command_input(t_cmd *command)
 	expand_input = handle_command_elements(command, elements);
 	if (!expand_input)
 		handle_error(E_MALLOC, NULL, __func__);
-	// free(command->input); // ! WHY THIS IS COMMENTED ze??
 	return (expand_input);
 }
 

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/09 21:29:45 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:24:45 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,9 @@
 // ************************************************************************
 
 int			parsing_syntax(t_shell *data);
-bool		is_valid_pipe_tokens(char *source);
-void		identify_and_replace_sqpa_tokens(char *input);
-bool		is_valid_file_and_here_doc_tokens(char *source);
 int			validate_file_read_execution(t_file *rf);
+void		identify_and_replace_sqpa_tokens(char *input);
 int			validate_command_path_access(char *command_path);
-// int 		strip_redirects(char **input, const char *redirects[]);
 void		strip_redirects(char *input, const char *redirects[]);
 
 // ************************************************************************
@@ -53,14 +50,14 @@ int			init_command(t_shell *data);
 int			main_shell_loop(t_shell *data);
 bool		is_quotes_matching(char *input);
 char		**tokenize_element(char *element);
-char		**process_command_input(t_cmd *command);
-int			update_envp_and_envpath(t_shell *data);
-int			initialize_environment_paths(t_shell *data);
-t_shell		*init_shell(int argc, char *argv[], char *envp[]);
 char		*expand_command_input(t_cmd *command);
+int			update_envp_and_envpath(t_shell *data);
+char		**process_command_input(t_cmd *command);
+int			initialize_environment_paths(t_shell *data);
 void		hashmap_delete(t_hashmap *map, char *key);
 char		*hashmap_search(t_hashmap *map, char *key);
 void		prepare_parameters(t_cmd *command, t_shell *data);
+t_shell		*init_shell(int argc, char *argv[], char *envp[]);
 int			hashmap_to_env_array(t_shell *data, t_hashmap *map);
 int			import_env_to_hashmap(t_hashmap *map, char *envp[]);
 int			initialize_eof(char *data_readline, char ***data_eof);
@@ -79,11 +76,11 @@ void		set_last_status(t_shell *data);
 int			run_eof(t_shell *data, pid_t *pid);
 int			here_doc(int *pipe_id, char *limiter);
 char		*get_path(char *input, char **env_paths);
+void		open_folders_safety(int *io, t_file *rf);
 int			command_loop(t_shell *data, t_cmd *command);
+void		do_dup2(int *io, int *pipe_id, int *prev_fd);
 void		child_process(t_shell *data, t_cmd *command);
 int			parent_process(t_shell *data, t_cmd **command_ref);
-void		do_dup2(int *io, int *pipe_id, int *prev_fd);
-void		open_folders_safety(int *io, t_file *rf);
 
 // ************************************************************************
 // **						Free Functions									**
@@ -106,6 +103,7 @@ void		insertion_sort(t_hashnode **head);
 void		debug_command_input(t_shell *data);
 void		debug_input_splitted(t_shell *data);
 t_token		get_t_token(char *src, size_t size);
+void		print_execve_parameters(char *input);
 void		debug_command_file_list(t_shell *data);
 void		restore_original_characters(char **src);
 void		skip_character_by_idx(char *src, char c, int *i);
@@ -113,7 +111,6 @@ void		skip_character_diff_by_idx(char *src, char c, int *i);
 void		replace_characters(char *src, char to_take, char to_put);
 void		get_redirect_complement(char *src, int *start, int *end,
 				int redirect_size);
-void		print_execve_parameters(char *input);
 
 // ************************************************************************
 // **						BuiltIn											**
@@ -123,9 +120,9 @@ void		builtin_pwd(t_shell *data);
 void		set_builtin_flag(t_cmd *last_node);
 void		builtin_exit(t_shell *data, t_cmd *cmd);
 int			builtin_cd(t_shell *data, char **command_args);
+int			process_builtin(t_shell *data, t_cmd *command);
 void		builtin_env(t_shell *data, char **command_args);
 void		builtin_echo(t_shell *data, char **command_args);
-int			process_builtin(t_shell *data, t_cmd *command);
 int			builtin_unset(t_shell *data, char **command_args);
 int			builtin_export(t_shell *data, char **command_args);
 

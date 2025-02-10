@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 18:32:37 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/09 19:29:49 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:09:54 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	handle_error_pa(void)
 	code = error->code;
 	if (error->parsing.token)
 	{
-		ft_putstr_fd(SYNTAX_ERROR_MSG, 2);
+		ft_putstr_fd(error->parsing.syntax, 2);
 		ft_putstr_fd(error->parsing.token, 2);
 		ft_putstr_fd("'\n", 2);
 	}

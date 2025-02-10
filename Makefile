@@ -22,7 +22,7 @@ OS				= $(shell uname)
 MSG_MAC 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))%% ] $(ORANGE)Compiling... $<... $(RESET)"
 MSG_LINUX 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))% ] $(ORANGE)Compiling... $<... $(RESET)"
 NAME			= minishell
-C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redirects parsing/replace_sqpa_tokens 	\
+C_FUNCTIONS		= parsing/syntax parsing/syntax_tokens parsing/strip_redirects parsing/replace_sqpa_tokens 	\
 					parsing/command_token_execution	parsing/command_path_execution 									\
 					parsing/syntax_quotes_matching																	\
 					 																								\

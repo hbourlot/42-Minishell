@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 18:41:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/09 21:23:10 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:20:17 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,5 @@ int	parsing_syntax(t_shell *data)
 		data->exit_status = 2;
 		return -1;
 	}
-	// if (is_valid_pipe_tokens(data->rl) == false || 
-	// 	is_valid_file_and_here_doc_tokens(data->rl) == false ||
-	// 	is_quotes_matching(data->rl) == false)
-	// 	{
-	// 		data->exit_status = 2;
-	// 		return (-1);
-	// 	}
 	return (0);
 }
