@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   eof.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 10:46:44 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 15:50:18 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:25:17 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,9 @@ static int	allocate_eof(char **data_eof, char **data_readline, int *idx)
 	return (0);
 }
 
-int	initialize_eof(char *data_readline, char ***data_eof)
+int	allocate_data_eof(char *data_readline, char ***data_eof)
 {
-	int	in_quotes;
 	int	occurrence_times;
-	int	idx;
 
 	occurrence_times = count_occurrence(data_readline);
 	if (occurrence_times == 0)
@@ -62,6 +60,18 @@ int	initialize_eof(char *data_readline, char ***data_eof)
 	(*data_eof) = malloc(sizeof(char *) * (occurrence_times + 1));
 	if (!*data_eof)
 		return (-1);
+	return (1);
+}
+
+int	initialize_eof(char *data_readline, char ***data_eof)
+{
+	int	idx;
+	int	in_quotes;
+	int	alloc_status;
+
+	alloc_status = allocate_data_eof(data_readline, data_eof);
+	if (alloc_status <= 0)
+		return (alloc_status);
 	idx = 0;
 	in_quotes = false;
 	while (data_readline && *data_readline)

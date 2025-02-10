@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   useful_functions2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:33:57 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 16:06:12 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:49:03 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,16 @@ t_token	get_t_token(char *src, size_t size)
 	return (NO_TOKEN);
 }
 
+static bool	toggle_quotes(char *src, bool *in_quotes, int i)
+{
+	if (src[i] && (src[i] == REP_SINGLE_QUOTE || src[i] == REP_DOUBLE_QUOTE))
+	{
+		*in_quotes = !*in_quotes;
+		return (true);
+	}
+	return (false);
+}
+
 void	get_redirect_complement(char *src, int *start, int *end,
 		int redirect_size)
 {
@@ -85,11 +95,8 @@ void	get_redirect_complement(char *src, int *start, int *end,
 	i += redirect_size;
 	while (src[i] && src[i] == REP_SPACE)
 		i++;
-	if (src[i] && (src[i] == REP_SINGLE_QUOTE || src[i] == REP_DOUBLE_QUOTE))
-	{
-		in_quotes = !in_quotes;
+	if (toggle_quotes(src, &in_quotes, i))
 		i++;
-	}
 	*start = i;
 	while (src[i] && src[i] != REP_SPACE && src[i] != REP_SINGLE_QUOTE
 		&& src[i] != REP_DOUBLE_QUOTE)

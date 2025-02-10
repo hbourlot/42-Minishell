@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/09 21:17:50 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:52:32 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@
 # define OK 0
 # define ERROR -1
 # define SUCCESS 0
-# define NO_FILE_DIR 1
-# define PERM_DENIED 1
 
 // Representations
 # define REP_SINGLE_QUOTE 1
@@ -41,10 +39,7 @@
 # define REP_PIPE 4
 # define REP_AND 5
 
-# define ABS_PATH "PATH=/bin:/usr/bin:/usr/local/bin"
-# define NO_FILE_DIR_MSG "No such file or directory"
 # define PROMPT "\033[1;32m[Chitãozinho&Xororó\033[1;31m@localhost ~]$ \033[0m"
-
 # define HASHMAP_SIZE 10
 
 // ***************************************************************************

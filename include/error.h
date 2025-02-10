@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 16:35:41 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 15:41:16 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:51:54 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 # define SYNTAX_ERROR_MSG "bash: syntax error near unexpected token `"
 # define NO_SUPPORT_MSG "bash: minishell doesn't support opened '"
+# define NO_FILE_DIR_MSG "No such file or directory"
 
 typedef struct s_execution
 {
