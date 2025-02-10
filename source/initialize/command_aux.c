@@ -6,13 +6,13 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/09 18:54:25 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:19:59 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	add_command_to_list(t_cmd **command, t_cmd *new_command)
+static void	add_command_to_list(t_cmd **command, t_cmd *new_command)
 {
 	t_cmd	*last;
 
@@ -25,79 +25,65 @@ static int	add_command_to_list(t_cmd **command, t_cmd *new_command)
 			last = last->next;
 		last->next = new_command;
 	}
-	return (SUCCESS);
 }
 
-static int	initialize_command_struct(t_cmd **command, char *rl_splitted,
-		t_token token_type)
+static void	initialize_command_struct(t_cmd **command, char *rl_splitted, t_token id)
 {
 	t_cmd	*new_command;
 
 	new_command = ft_calloc(1, sizeof(t_cmd));
 	if (!new_command)
-		return (set_error_in(1, "\"Malloc\"", __func__, true), ERROR);
+		handle_error(E_MALLOC, NULL, __func__);
 	new_command->input = ft_strdup(rl_splitted);
 	if (!new_command->input)
-		return (set_error_in(1, "\"Malloc\"", __func__, true), ERROR);
-	new_command->delimiter = token_type;
+	{
+		free_pointers(1, &new_command);
+		handle_error(E_MALLOC, NULL, __func__);
+	}
+	new_command->delimiter = id;
 	ft_memset(new_command->io, -1, 8);
 	new_command->settings.is_safe_to_execve = true;
 	new_command->next = NULL;
 	if (ft_strlen(rl_splitted) == 0 || all_same_char(rl_splitted, REP_SPACE))
 		new_command->settings.only_tokens = true;
-	return (add_command_to_list(command, new_command));
+	add_command_to_list(command, new_command);
 }
 
-static int	handle_file_tokens(t_shell *data, t_cmd *command)
+static void	handle_file_tokens(t_cmd *command)
 {
 	const char	*file_tokens[] = {">>", ">", "<", NULL};
 
-	(void)data;
-	if (initialize_file_list(command->input_expanded, file_tokens,
-			&command->redir_files))
-	{
-		set_error_in(1, "\"File Redirection\"", __func__, true);
-		return (-1);
-	}
+	if (initialize_file_list(command->input_expanded, file_tokens, &command->rf))
+		handle_error(E_MALLOC, NULL, __func__);
 	strip_redirects(command->input_expanded, file_tokens);
 	if ((ft_strlen(command->input_expanded) == 0 || all_same_char(command->input_expanded,
 			REP_SPACE)) && command->settings.expansion == false)
-	{
 		command->settings.is_safe_to_execve = false;
-	}
-	return (0);
 }
 
-int	prepare_parameters(t_cmd *command, t_shell *data)
+void	prepare_parameters(t_cmd *command, t_shell *data)
 {
 	command->input_expanded = expand_command_input(command);
-	if (handle_file_tokens(data, command) < 0)
-		return (ERROR);
+	handle_file_tokens(command);
 	if (command->settings.is_safe_to_execve == false)
-		return (0);
+		return ;
 	command->args = process_command_input(command);
 	command->path = get_path(command->args[0], data->env_paths);
 	if (!command->path && command->settings.expansion == false)
-		return (set_error_in(1, "\"Path\"", __func__, true), handle_error(),  ERROR);
+		handle_error(E_MALLOC, NULL, __func__);
 	if (command->settings.expansion == true && !command->args)
 		command->settings.is_safe_to_execve = false;
 	set_builtin_flag(command);
-	
-	return (SUCCESS);
 }
 
-int	add_command(t_cmd **command, char *rl_splitted, t_shell *data,
-		t_token token_type)
+void	add_command(t_cmd **command, char *rl_splitted, t_shell *data, t_token id)
 {
 	t_cmd	dummy;
 	t_cmd	*last_node;
 
 	replace_characters(rl_splitted, REP_AND, '&');
 	replace_characters(rl_splitted, REP_PIPE, '|');
-	if (initialize_command_struct(command, rl_splitted, token_type) < 0)
-		return (ERROR);
+	initialize_command_struct(command, rl_splitted, id);
 	last_node = get_last_node(data->command, get_offset(&dummy, &dummy.next));
-	if (prepare_parameters(last_node, data) < 0)
-			return (ERROR);
-	return (SUCCESS);
+	prepare_parameters(last_node, data);
 }

@@ -6,13 +6,13 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 15:04:05 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:59:31 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool	verify_and_prepare_input(t_shell *data)
+static void	verify_and_prepare_input(t_shell *data)
 {
 	if (data->rl && *data->rl)
 	{
@@ -21,15 +21,11 @@ static bool	verify_and_prepare_input(t_shell *data)
 	}
 	identify_and_replace_sqpa_tokens(data->rl);
 	if (all_same_char(data->rl, REP_SPACE))
-	{
-		free_pointers(1, &data->rl);
-		return (false);
-	}
+		return (free_pointers(1, &data->rl));
 	if (parsing_syntax(data) == -1)
-		return (false);
+		return ;
 	if (init_command(data) == -1)
-		return (false);
-	return (true);
+		return ;
 }
 
 int	main_shell_loop(t_shell *data)
@@ -40,9 +36,9 @@ int	main_shell_loop(t_shell *data)
 		data->rl = readline(PROMPT);
 		if (!data->rl)
 			return (printf("exit\n"), 0);
-		if (verify_and_prepare_input(data) == false)
-			handle_error();
-		else if (data->command || data->eof)
+		verify_and_prepare_input(data);
+			
+		if (data->command || data->eof)
 			run_commands(data);
 		refresh_shell_data(data);
 	}
