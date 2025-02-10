@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_cleanup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 15:14:20 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/09 21:17:50 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ static void	free_command(t_cmd **command)
 	while (command && *command)
 	{
 		tmp = *command;
-		free_files(tmp->redir_files);
-		tmp->redir_files = NULL;
+		free_files(tmp->rf);
+		tmp->rf = NULL;
 		if (tmp->input)
 			free(tmp->input);
 		if (tmp->args)
@@ -77,6 +77,8 @@ static void	free_command(t_cmd **command)
 			close(tmp->io[0]);
 		if (tmp->io[1] != -1)
 			close(tmp->io[1]);
+		if (tmp->input_expanded)
+			free(tmp->input_expanded);
 		(*command) = (*command)->next;
 		free(tmp);
 	}

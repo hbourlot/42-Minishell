@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 15:13:10 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/09 21:57:52 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,9 @@ static void	execute_only_tokens(t_shell *data, t_cmd *command)
 	int	code_parsing;
 
 	code_parsing = 0;
-	code_parsing = validate_file_read_execution(command->redir_files);
+	code_parsing = validate_file_read_execution(command->rf);
 	if (code_parsing)
-	{
-		set_error_ex(code_parsing, NULL, NULL, true);
-		cleanup_shell(data);
-		handle_error();
-	}
+		handle_error(E_VFRE, NULL, NULL);
 	return ;
 }
 
@@ -44,10 +40,7 @@ void	exec_builtin(t_shell *data, t_cmd *command)
 {
 	if (command->settings.is_safe_to_builtin && process_builtin(data,
 			command) < 0)
-	{
-		set_error_ex(1, "Malloc", NULL, true);
-		handle_error();
-	}
+		handle_error(E_MALLOC, NULL, __func__);
 }
 
 void	child_process(t_shell *data, t_cmd *command)
@@ -56,15 +49,13 @@ void	child_process(t_shell *data, t_cmd *command)
 
 	if (command->settings.only_tokens)
 		execute_only_tokens(data, command);
-	if (open_folders_safety(command->io, command->redir_files))
-		exit(handle_error());
+	open_folders_safety(command->io, command->rf);
 	do_dup2(command->io, data->pipe_id, &data->prev_fd);
 	if (is_safe_to_execve(command))
 	{
-		execve(command->path, command->args, command->envp);
+		execve(command->path, command->args, data->envp);
 		code = validate_command_path_access(command->path);
-		set_error_ex(code, NULL, NULL, true);
-		handle_error();
+		handle_error(code, NULL, NULL);
 	}
 	exec_builtin(data, command);
 	cleanup_shell(data);

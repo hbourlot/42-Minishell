@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:18:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/08 16:13:05 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/09 21:17:50 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	debug_command_input(t_shell *data)
 	tmp = data->command;
 	while (tmp)
 	{
-		printf("Command->pre_command [%d]: %s\n", i++, tmp->input);
+		printf("Command->input [%d]: %s\n", i++, tmp->input);
 		tmp = tmp->next;
 	}
 }
@@ -100,8 +100,8 @@ void	debug_command_file_list(t_shell *data)
 		printf("Command %d:\n", cmd_num++);
 		if (tmp->input)
 			printf("  Input: %s\n", tmp->input);
-		if (tmp->redir_files)
-			debug_files(tmp->redir_files);
+		if (tmp->rf)
+			debug_files(tmp->rf);
 		else
 			printf("  No files associated.\n");
 		tmp = tmp->next;
@@ -110,7 +110,7 @@ void	debug_command_file_list(t_shell *data)
 void	print_execve_parameters(char *input) // TODO: from command->input
 {
 	int i = 0;
-	printf("Print_execve ");
+	// printf("Print_execve ");
 	while (input[i])
 	{
 		if (input[i] == REP_DOUBLE_QUOTE)

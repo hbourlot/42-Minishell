@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 16:35:41 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 14:21:27 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/09 21:12:54 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,19 @@
 #ifndef ERROR_H
 #define ERROR_H
 
+# define E_SYNTAX_NEWLINE -1
+# define E_SYNTAX_TOKEN -2
+# define E_SHELL_SUPPORT -3
+# define E_EOF -4
+# define E_MALLOC -5
+# define E_PF -6
+# define E_VFRE -7
+# define E_FILE_DIR -8
+# define E_VCPA -9
+
+
+# define SYNTAX_ERROR_MSG "bash: syntax error near unexpected token `"
+# define NO_SUPPORT_MSG "bash: minishell doesn't support opened '"
 
 typedef struct s_execution
 {
@@ -30,7 +43,6 @@ typedef struct s_parsing
 	bool					is_initialized;
 	char 					*syntax;
 	char					*token;
-	char					*function;
 }			t_parsing;
 
 typedef struct s_initialize
@@ -55,16 +67,20 @@ typedef struct s_error
 
 t_error		*get_error_context(void);
 void		reset_error_context(t_error *error);
-int			handle_error(void);
+// int			handle_error(void);
+int			handle_error(int error, const char *token, const char *func);
 
 
 int			handle_error_pa(void);
-void 		set_error_pa(int code, char *syntax, char *token, const char *function);
+void 		set_error_pa(int code, char *syntax, char *token);
 
 int			handle_error_in(void);
 void		set_error_in(int code, char *msg, const char *function, bool exit);
 
 int			handle_error_ex(void);
 void		set_error_ex(int code, char *msg, const char *folder, bool exit);
+
+
+bool 		is_tokens_invalid(char *rl);
 
 #endif

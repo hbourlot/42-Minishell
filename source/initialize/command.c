@@ -6,19 +6,18 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 15:15:45 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/09 21:55:12 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	split_command_input(t_shell *data, const char *delimiters[])
+static void	split_command_input(t_shell *data, const char *delimiters[])
 {
 	sort_strings_by_length_desc((char **)delimiters);
 	data->rl_splitted = split_by_multiple_tokens(data->rl, delimiters);
 	if (!data->rl_splitted)
-		return (ERROR);
-	return (SUCCESS);
+		handle_error(E_MALLOC, NULL, __func__);
 }
 
 static bool	there_is_no_command(t_shell *data)
@@ -48,7 +47,7 @@ static bool	there_is_no_command(t_shell *data)
 
 static int	create_command_list(t_shell *data, const char *delimiters[])
 {
-	t_token	token_type;
+	t_token	id;
 	int		i;
 	int		idx;
 	char	*src;
@@ -62,43 +61,38 @@ static int	create_command_list(t_shell *data, const char *delimiters[])
 		match_result = find_string_match(src, delimiters, &idx);
 		if (match_result == CMP_OK)
 		{
-			token_type = get_t_token((char *)delimiters[idx],
+			id = get_t_token((char *)delimiters[idx],
 					ft_strlen(delimiters[idx]));
 			src += ft_strlen(delimiters[idx]);
 		}
 		else
-			token_type = NO_TOKEN;
-		if (add_command(&data->command, data->rl_splitted[i++], data,
-				token_type) < 0)
-			return (ERROR);
+			id = NO_TOKEN;
+		add_command(&data->command, data->rl_splitted[i++], data, id);
 	}
 	data->nbr_of_commands = i;
 	return (SUCCESS);
 }
 
-static int	handle_eof(t_shell *data)
+static void	handle_eof(t_shell *data)
 {
 	const char	*eof_token[] = {"<<", NULL};
 
 	if (initialize_eof(data->rl, &data->eof) < 0)
-	{
-		set_error_in(1, "\"EOF_HERE_DOC\"", __func__, true);
-		return (-1);
-	}
+		handle_error(E_MALLOC, NULL, __func__);
 	strip_redirects(data->rl, eof_token);
 	if (there_is_no_command(data))
 		free_pointers(1, &data->rl);
-	return (0);
 }
 
 int	init_command(t_shell *data)
 {
 	const char	*delimiters[] = {"||", "|", "&&", NULL};
 
-	if (handle_eof(data))
-		return (-1);
-	if (data->rl && (split_command_input(data, delimiters) < 0
-			|| create_command_list(data, delimiters) < 0))
-		return (-1);
+	handle_eof(data);
+	if (data->rl)
+	{
+		split_command_input(data, delimiters);
+		create_command_list(data, delimiters);
+	}
 	return (0);
 }

@@ -6,13 +6,13 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 16:29:40 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 16:14:14 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/09 21:23:10 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-bool is_quotes_maching(char *input)
+bool is_quotes_matching(char *input)
 {
 	int		i;
 	bool 	in_quotes;

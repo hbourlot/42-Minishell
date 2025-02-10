@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 15:14:23 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/09 21:54:21 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ static void	here_doc_fail(t_shell *data, char *eof)
 	get_error_context()->exit = true;
 	truncate_range(eof, size - 1, 1);
 	ft_printf_error("\nbash: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", data->nbr_of_lines, eof);
-	handle_error();
-
 }
 
 static void	handle_child_process(t_shell *data, int i)
@@ -60,16 +58,12 @@ static void	handle_child_process(t_shell *data, int i)
 	restore_signals();
 	if (here_doc(data->pipe_id, data->eof[i]) == -1)
 		here_doc_fail(data, data->eof[i]);
-	close(data->pipe_id[0]);
-	close(data->pipe_id[1]);
 	cleanup_shell(data);
 	exit(EXIT_SUCCESS);
 }
 
 static void	handle_parent_process(t_shell *data, int i, int *ws)
 {
-	int	e;
-	
 	if (!data->eof[i + 1] && data->command)
 		data->prev_fd = data->pipe_id[0];
 	else
@@ -88,34 +82,18 @@ int	run_eof(t_shell *data, pid_t *pid)
 	{
 		signal(SIGINT, SIG_IGN);
 		if (pipe(data->pipe_id) == -1 || do_fork(&data->pid))
-			return (set_error_ex(1, "Pipe/Fork", NULL, false), -1);
+			return (handle_error(E_PF, NULL, NULL), -1);
 		else if (*pid == 0)
 			handle_child_process(data, i);
 		else
 			handle_parent_process(data, i, &wait_status);
 		if (WIFEXITED(wait_status))
-			return 1;
+		{
+			data->exit_status = WEXITSTATUS(wait_status);
+			if (data->exit_status)
+				return (-1);
+		}
 		i++;
 	}
-
 	return (0);
 }
-
-
-// int	run_eof(t_shell *data, pid_t *pid)
-// {
-// 	if (pipe(data->pipe_id) == -1)
-// 		perror("Pipe");
-// 	signal(SIGINT, SIG_IGN);
-// 	*pid = fork();
-// 	if (*pid == -1)
-// 		perror("Fork");
-// 	if (*pid == 0)
-// 	{
-// 		restore_signals();
-// 		handle_child_process(data);
-// 	}
-// 	if (handle_parent_process(data))
-// 		return (-1);
-// 	return (0);
-// }
