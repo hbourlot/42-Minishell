@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_tokens.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:21:13 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 15:54:33 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:49:40 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,24 @@ static bool	get_syntax_errors(char *rl, int *i, int length, int prev_idx)
 	return (false);
 }
 
+static bool	check_initial_token_error(char *rl, const char **deli_tokens)
+{
+	int	idx;
+
+	if (find_string_match(rl, deli_tokens, &idx) == OK)
+	{
+		handle_error(E_SYNTAX_TOKEN, (char *)deli_tokens[idx], NULL);
+		return (true);
+	}
+	return (false);
+}
+
+static void	toggle_quotes(char *rl, bool *in_quotes, int i)
+{
+	if (rl[i] == 1 || rl[i] == 2)
+		*in_quotes = !*in_quotes;
+}
+
 bool	is_tokens_invalid(char *rl)
 {
 	int			i;
@@ -67,16 +85,14 @@ bool	is_tokens_invalid(char *rl)
 
 	i = 0;
 	in_quotes = false;
-	if (find_string_match(&rl[i], deli_tokens, &idx) == OK)
-		return (handle_error(E_SYNTAX_TOKEN, (char *)deli_tokens[idx], NULL),
-			true);
+	if (check_initial_token_error(&rl[i], deli_tokens))
+		return (true);
 	while (rl[i])
 	{
 		while (rl[i] == REP_SPACE)
 			i++;
-		if (rl[i] == 1 || rl[i] == 2)
-			in_quotes = !in_quotes;
-		else if (!in_quotes && (find_string_match(&rl[i], deli_tokens,
+		toggle_quotes(rl, &in_quotes, i);
+		if (!in_quotes && (find_string_match(&rl[i], deli_tokens,
 					&idx) == OK || find_string_match(&rl[i], file_tokens,
 					&idx) == OK))
 		{
@@ -85,4 +101,5 @@ bool	is_tokens_invalid(char *rl)
 		}
 		i++;
 	}
+	return (false);
 }
