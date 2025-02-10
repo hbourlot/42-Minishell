@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:21:13 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/09 21:38:39 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/09 22:03:44 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,12 @@ bool	is_valid_pipe_tokens(char *source)
 	}
 	return (true);
 }
+
+
+
+
+
+
 
 
 static bool get_file_redirects_errors(char *rl, int *i, int length)
