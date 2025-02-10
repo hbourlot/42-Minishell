@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 18:50:11 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:56:42 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@
 # define REP_PIPE 4
 # define REP_AND 5
 // # define REP_ENV 1
-
-
 
 # define PROMPT "\033[1;32m[Chitãozinho&Xororó\033[1;31m@localhost ~]$ \033[0m"
 # define HASHMAP_SIZE 10
