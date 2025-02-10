@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 18:32:37 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 15:09:54 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:02:52 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,13 @@ int	handle_error_pa(void)
 
 void	set_error_pa(int code, char *syntax, char *token)
 {
-	(void)code;
 	t_error	*error;
 
+	(void)code;
 	error = get_error_context();
 	error->parsing.is_initialized = true;
 	if (syntax)
 		error->parsing.syntax = syntax;
 	if (token)
 		error->parsing.token = token;
-	get_shell()->exit_status = code; //! MAYBE??
 }

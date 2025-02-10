@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_commands.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/09 21:54:26 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:42:57 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ static bool	is_safe_to_run_builtin(t_shell *data, t_cmd *command)
 	bool	cond_3;
 
 	cond_1 = (command->delimiter == AND_DOUBLE
-			|| command->delimiter == PIPE_DOUBLE || command->delimiter == NO_TOKEN);
+			|| command->delimiter == PIPE_DOUBLE
+			|| command->delimiter == NO_TOKEN);
 	cond_2 = command->settings.is_builtin;
 	cond_3 = command->rf;
 	if (cond_1 && cond_2)
@@ -46,10 +47,10 @@ static bool	is_safe_to_run_builtin(t_shell *data, t_cmd *command)
 		if (command->settings.builtin_id == ECHO)
 		{
 			command->settings.is_safe_to_builtin = true;
-			return false;
+			return (false);
 		}
 		command->settings.is_safe_to_builtin = false;
-		return true;
+		return (true);
 	}
 	return (false);
 }
@@ -90,7 +91,6 @@ int	command_loop(t_shell *data, t_cmd *command)
 			command = command->next;
 		}
 	}
-	// print_error_information(data);
 	return (0);
 }
 

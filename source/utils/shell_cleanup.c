@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_cleanup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/09 21:17:50 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:05:35 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,36 +25,6 @@ void	free_files(t_file *file_list)
 			free(tmp->write);
 		file_list = file_list->next;
 		free(tmp);
-	}
-}
-
-void	hashnode_free(t_hashnode *current)
-{
-	t_hashnode	*temp;
-
-	while (current)
-	{
-		temp = current;
-		current = current->next;
-		free(temp->key);
-		free(temp->value);
-		free(temp);
-	}
-}
-
-void	hashmap_free(t_hashmap *map)
-{
-	int			i;
-	t_hashnode	*current;
-
-	i = 0;
-	if (!map)
-		return ;
-	while (i < HASHMAP_SIZE)
-	{
-		current = map->slots[i];
-		hashnode_free(current);
-		i++;
 	}
 }
 

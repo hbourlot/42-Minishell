@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 10:09:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:37:54 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:54:26 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ static int	check_is_directory(const char *path)
 
 int	validate_command_path_access(char *command_path)
 {
-	int			i;
-	int			result;
+	int								i;
+	int								result;
 	const t_access_check_function	checks_with_path[] = {check_access_fok,
-	check_is_directory, check_access_xok, NULL};
+		check_is_directory, check_access_xok, NULL};
 
 	i = 0;
 	result = 0;
@@ -73,6 +73,3 @@ int	validate_command_path_access(char *command_path)
 			127);
 	return (0);
 }
-
-// const t_access_check_function	checks_with_path[] = {check_access_fok,
-// 	check_is_directory, check_access_xok, NULL};

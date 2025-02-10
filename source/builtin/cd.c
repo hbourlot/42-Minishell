@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:57:27 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/05 18:26:14 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:14:36 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,17 @@ static int	change_directory(t_shell *data, const char *dir)
 	temp_cwd = ft_strdup(cwd);
 	if (!temp_cwd)
 		return (-1);
-	hashmap_insert(data->map, "OLDPWD", temp_cwd);
+	if (hashmap_insert(data->map, "OLDPWD", temp_cwd) == ERROR)
+		return (free(temp_cwd), -1);
 	free(temp_cwd);
 	getcwd(cwd, PATH_MAX);
 	temp_cwd = ft_strdup(cwd);
 	if (!temp_cwd)
 		return (-1);
-	hashmap_insert(data->map, "PWD", temp_cwd);
+	if (hashmap_insert(data->map, "PWD", temp_cwd) == ERROR)
+		return (free(temp_cwd), -1);
 	free(temp_cwd);
-	if (hashmap_to_env_array(data, data->map) == -1)
-		return (-1);
+	hashmap_to_env_array(data, data->map);
 	return (0);
 }
 
@@ -87,8 +88,7 @@ int	change_to_oldpwd(t_shell *data)
 		data->exit_status = 1;
 		return (1);
 	}
-	if (oldpwd)
-		printf("%s\n", oldpwd);
+	printf("%s\n", oldpwd);
 	if (change_directory(data, oldpwd) == -1)
 		return (-1);
 	return (0);

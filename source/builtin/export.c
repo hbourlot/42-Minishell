@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:11:13 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/07 23:04:07 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:58:52 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,6 @@ int	builtin_export(t_shell *data, char **command_args)
 			return (ERROR);
 		idx++;
 	}
-	if (update_envp_and_envpath(data) == ERROR)
-		return (ERROR);
+	update_envp_and_envpath(data);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/09 21:54:21 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:46:34 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	here_doc(int *pipe_id, char *limiter)
 	return (cleanup_and_exit(text, 0));
 }
 
-
 static void	here_doc_fail(t_shell *data, char *eof)
 {
 	int	size;
@@ -50,7 +49,9 @@ static void	here_doc_fail(t_shell *data, char *eof)
 	size = ft_strlen(eof);
 	get_error_context()->exit = true;
 	truncate_range(eof, size - 1, 1);
-	ft_printf_error("\nbash: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", data->nbr_of_lines, eof);
+	ft_printf_error("\nbash: warning: here-document at line ");
+	ft_printf_error("%d delimited by end-of-file (wanted `%s')\n",
+		data->nbr_of_lines, eof);
 }
 
 static void	handle_child_process(t_shell *data, int i)
@@ -76,7 +77,7 @@ int	run_eof(t_shell *data, pid_t *pid)
 {
 	int	i;
 	int	wait_status;
-	
+
 	i = 0;
 	while (data->eof[i])
 	{

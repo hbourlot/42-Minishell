@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_error.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 14:51:20 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 08:16:13 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:37:56 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	ft_printf_error(const char *fmt, ...)
 	va_list	ap;
 	int		i;
 	int		j;
-	
+
 	i = 0;
 	if (fmt == NULL)
 		return ;
@@ -101,7 +101,7 @@ void	ft_printf_error(const char *fmt, ...)
 			while (fmt[i + j] && fmt[i + j] != '%')
 				j++;
 			write(2, fmt + i, j);
-			i += j -1;
+			i += j - 1;
 		}
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 15:19:59 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:14:10 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static void	add_command_to_list(t_cmd **command, t_cmd *new_command)
 	}
 }
 
-static void	initialize_command_struct(t_cmd **command, char *rl_splitted, t_token id)
+static void	initialize_command_struct(t_cmd **command, char *rl_splitted,
+		t_token id)
 {
 	t_cmd	*new_command;
 
@@ -53,11 +54,13 @@ static void	handle_file_tokens(t_cmd *command)
 {
 	const char	*file_tokens[] = {">>", ">", "<", NULL};
 
-	if (initialize_file_list(command->input_expanded, file_tokens, &command->rf))
+	if (initialize_file_list(command->input_expanded, file_tokens,
+			&command->rf))
 		handle_error(E_MALLOC, NULL, __func__);
 	strip_redirects(command->input_expanded, file_tokens);
-	if ((ft_strlen(command->input_expanded) == 0 || all_same_char(command->input_expanded,
-			REP_SPACE)) && command->settings.expansion == false)
+	if ((ft_strlen(command->input_expanded) == 0
+			|| all_same_char(command->input_expanded, REP_SPACE))
+		&& command->settings.expansion == false)
 		command->settings.is_safe_to_execve = false;
 }
 
@@ -67,7 +70,7 @@ void	prepare_parameters(t_cmd *command, t_shell *data)
 	handle_file_tokens(command);
 	if (command->settings.is_safe_to_execve == false)
 		return ;
-	command->args = process_command_input(command);
+	command->args = process_command_input_expanded(command);
 	command->path = get_path(command->args[0], data->env_paths);
 	if (!command->path && command->settings.expansion == false)
 		handle_error(E_MALLOC, NULL, __func__);
@@ -76,7 +79,8 @@ void	prepare_parameters(t_cmd *command, t_shell *data)
 	set_builtin_flag(command);
 }
 
-void	add_command(t_cmd **command, char *rl_splitted, t_shell *data, t_token id)
+void	add_command(t_cmd **command, char *rl_splitted, t_shell *data,
+		t_token id)
 {
 	t_cmd	dummy;
 	t_cmd	*last_node;
