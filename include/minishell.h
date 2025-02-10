@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 16:57:35 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:30:10 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void		run_commands(t_shell *data);
 void		set_last_status(t_shell *data);
 int			run_eof(t_shell *data, pid_t *pid);
 int			here_doc(int *pipe_id, char *limiter);
+void		here_doc_fail(t_shell *data, char *eof);
 char		*get_path(char *input, char **env_paths);
 void		open_folders_safety(int *io, t_file *rf);
 int			command_loop(t_shell *data, t_cmd *command);

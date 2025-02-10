@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strip_redirects.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:51:28 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 15:56:47 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:45:29 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,17 @@ static void	toggle_quotes(char *input, bool *in_quotes, int i)
 	if (input[i] && (input[i] == REP_SINGLE_QUOTE
 			|| input[i] == REP_DOUBLE_QUOTE))
 		*in_quotes = !*in_quotes;
+}
+
+void	skip_spaces_and_token(char *input, const char *all_tokens[], int *i)
+{
+	int	idx;
+
+	while (input[*i] && input[*i] == REP_SPACE)
+		(*i)++;
+	while (input[*i] && input[*i] != REP_SPACE && find_string_match(&input[*i],
+			all_tokens, &idx) != OK)
+		(*i)++;
 }
 
 void	strip_redirects(char *input, const char *tokens[])
@@ -37,11 +48,7 @@ void	strip_redirects(char *input, const char *tokens[])
 		{
 			start = i;
 			i += ft_strlen(tokens[idx]);
-			while (input[i] && input[i] == REP_SPACE)
-				i++;
-			while (input[i] && input[i] != REP_SPACE
-				&& find_string_match(&input[i], all_tokens, &idx) != OK)
-				i++;
+			skip_spaces_and_token(input, all_tokens, &i);
 			truncate_range(input, start, i - start);
 			strip_redirects(input, tokens);
 			return ;
