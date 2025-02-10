@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 15:24:45 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:57:35 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-// ************************************************************************
+// ***************************************************************************
 // **						Parsing Functions								**
-// ************************************************************************
+// ***************************************************************************
 
 int			parsing_syntax(t_shell *data);
 int			validate_file_read_execution(t_file *rf);
@@ -39,9 +39,9 @@ void		identify_and_replace_sqpa_tokens(char *input);
 int			validate_command_path_access(char *command_path);
 void		strip_redirects(char *input, const char *redirects[]);
 
-// ************************************************************************
+// ***************************************************************************
 // **						Initialize Functions							**
-// ************************************************************************
+// ***************************************************************************
 
 size_t		hash(char *key);
 t_shell		*get_shell(void);
@@ -49,26 +49,27 @@ t_hashmap	*create_map(void);
 int			init_command(t_shell *data);
 int			main_shell_loop(t_shell *data);
 bool		is_quotes_matching(char *input);
-char		**tokenize_element(char *element);
 char		*expand_command_input(t_cmd *command);
-int			update_envp_and_envpath(t_shell *data);
-char		**process_command_input(t_cmd *command);
-int			initialize_environment_paths(t_shell *data);
+void		update_envp_and_envpath(t_shell *data);
+char		**process_command_input_expanded(t_cmd *command);
+void		initialize_environment_paths(t_shell *data);
 void		hashmap_delete(t_hashmap *map, char *key);
 char		*hashmap_search(t_hashmap *map, char *key);
 void		prepare_parameters(t_cmd *command, t_shell *data);
 t_shell		*init_shell(int argc, char *argv[], char *envp[]);
-int			hashmap_to_env_array(t_shell *data, t_hashmap *map);
-int			import_env_to_hashmap(t_hashmap *map, char *envp[]);
+void		hashmap_to_env_array(t_shell *data, t_hashmap *map);
+void		import_env_to_hashmap(t_hashmap *map, char *envp[]);
 int			initialize_eof(char *data_readline, char ***data_eof);
 int			hashmap_insert(t_hashmap *map, char *key, char *value);
-void		add_command(t_cmd **command, char *rl_splitted, t_shell *data, t_token id);
+char		*handle_command_elements(t_cmd *command, char **elements);
+void		add_command(t_cmd **command, char *rl_splitted, t_shell *data,
+				t_token id);
 int			initialize_file_list(char *input, const char *redirects[],
 				t_file **rf);
 
-// ************************************************************************
+// ***************************************************************************
 // **						Execution Functions								**
-// ************************************************************************
+// ***************************************************************************
 
 int			do_fork(pid_t *pid);
 void		run_commands(t_shell *data);
@@ -82,9 +83,9 @@ void		do_dup2(int *io, int *pipe_id, int *prev_fd);
 void		child_process(t_shell *data, t_cmd *command);
 int			parent_process(t_shell *data, t_cmd **command_ref);
 
-// ************************************************************************
+// ***************************************************************************
 // **						Free Functions									**
-// ************************************************************************
+// ***************************************************************************
 
 void		cleanup_shell(t_shell *data);
 void		hashmap_free(t_hashmap *map);
@@ -92,9 +93,9 @@ void		free_files(t_file *file_list);
 void		hashnode_free(t_hashnode *head);
 void		refresh_shell_data(t_shell *data);
 
-// ************************************************************************
+// ***************************************************************************
 // **						Utils Functions									**
-// ************************************************************************
+// ***************************************************************************
 
 void		skip_spaces(char **src);
 void		debug_command_args(t_shell *data);
@@ -112,9 +113,9 @@ void		replace_characters(char *src, char to_take, char to_put);
 void		get_redirect_complement(char *src, int *start, int *end,
 				int redirect_size);
 
-// ************************************************************************
+// ***************************************************************************
 // **						BuiltIn											**
-// ************************************************************************
+// ***************************************************************************
 
 void		builtin_pwd(t_shell *data);
 void		set_builtin_flag(t_cmd *last_node);
@@ -126,9 +127,9 @@ void		builtin_echo(t_shell *data, char **command_args);
 int			builtin_unset(t_shell *data, char **command_args);
 int			builtin_export(t_shell *data, char **command_args);
 
-// ************************************************************************
+// ***************************************************************************
 // **						Signal Functions								**
-// ************************************************************************
+// ***************************************************************************
 
 void		restore_signals(void);
 void		setup_parent_signals(void);

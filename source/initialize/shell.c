@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 14:59:31 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:55:40 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	main_shell_loop(t_shell *data)
 		if (!data->rl)
 			return (printf("exit\n"), 0);
 		verify_and_prepare_input(data);
-			
 		if (data->command || data->eof)
 			run_commands(data);
 		refresh_shell_data(data);
@@ -56,12 +55,8 @@ t_shell	*init_shell(int argc, char *argv[], char *envp[])
 	data->pid = -1;
 	data->prev_fd = -1;
 	ft_memset(data->pipe_id, -1, 8);
-	if (import_env_to_hashmap(data->map, envp) == -1
-		|| update_envp_and_envpath(data) == -1)
-	{
-		cleanup_shell(data);
-		exit(EXIT_FAILURE);
-	}
+	import_env_to_hashmap(data->map, envp);
+	update_envp_and_envpath(data);
 	return (data);
 }
 

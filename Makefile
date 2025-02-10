@@ -27,8 +27,8 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_tokens parsing/strip_redirects pars
 					parsing/syntax_quotes_matching																	\
 					 																								\
 					initialize/command initialize/command_aux initialize/shell initialize/file_list 				\
-					initialize/eof initialize/env_paths initialize/tokenize_element_aux 							\
-					initialize/input_expansion	initialize/hashmap initialize/hashmap_aux							\
+					initialize/eof initialize/env_paths initialize/handle_expansion		 							\
+					initialize/input_expansion	initialize/hashmap initialize/hashmap_aux	initialize/process_input_expanded \
 																							             			\
 					execution/parent	execution/utils																\
 					execution/get_path execution/handle_folders execution/here_doc execution/child					\
@@ -40,7 +40,7 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_tokens parsing/strip_redirects pars
 					signals/signal      																			\
 																													\
 					utils/shell_cleanup utils/debug utils/debug1 utils/error_tools utils/error_parsing				\
-					utils/error_initialize utils/error_execution utils/useful_functions utils/useful_functions2
+					utils/error_initialize utils/error_execution utils/useful_functions utils/useful_functions2 utils/hashmap_free
 # -L./ -lminishell
 # VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes
 VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=readline.supp

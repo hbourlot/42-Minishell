@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:44:28 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/04 17:52:05 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:15:51 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,18 @@ static void	print_key_value(t_hashnode *current)
 		current = current->next;
 	}
 }
+
+// static int	check_is_directory(const char *path)
+// {
+// 	struct stat	stat_path;
+
+// 	if (stat(path, &stat_path) != OK)
+// 		return (0);
+// 	if (S_ISDIR(stat_path.st_mode))
+// 		return (ft_printf_error("bash: %s: is a directory\n", path), 127);
+// 	return (0);
+// }
+
 static int	check_access_fok(t_shell *data, const char *path)
 {
 	if (access(path, F_OK) == 0)
@@ -44,16 +56,17 @@ void	builtin_env(t_shell *data, char **command_args)
 	int			idx;
 	int			length;
 	t_hashnode	*current;
-	if(!data->env_paths)
+
+	if (!data->env_paths)
 	{
 		ft_printf_error("bash: env: No such file or directory\n");
-		data->exit_status= 127;
-		return;
+		data->exit_status = 127;
+		return ;
 	}
 	length = array_length(command_args);
 	if (length > 1)
 	{
-		if(check_access_fok(data, command_args[1]) == 1)
+		if (check_access_fok(data, command_args[1]) == 1)
 			return ;
 		printf("env: '%s': Permission denied\n", command_args[1]);
 		data->exit_status = 126;

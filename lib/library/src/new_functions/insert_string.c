@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   insert_string.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 12:43:10 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/10 12:57:11 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:37:48 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 ///			memory allocation failure).
 char	*insert_string(char *dest, char *src, int idx_to_add)
 {
-	int	length_d;
-	int	length_s;
+	int		length_d;
+	int		length_s;
 	char	*new;
 
 	if (!src || !dest)

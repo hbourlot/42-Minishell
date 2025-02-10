@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:48:06 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/06 12:43:10 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:56:52 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	hashmap_insert(t_hashmap *map, char *key, char *value)
 		free(current->value);
 		current->value = ft_strdup(value);
 		if (!current->value && value)
-			return (ERROR);
+			handle_error(E_MALLOC, NULL, __func__);
 		return (0);
 	}
 	if (new_hasnode(map, key, value) == ERROR)

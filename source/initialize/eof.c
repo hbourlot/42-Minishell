@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   eof.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 10:46:44 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/27 15:08:55 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:50:18 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int count_occurrence(char *src)
+static int	count_occurrence(char *src)
 {
-	int		idx;
-	int		times;
-	bool	in_quotes;
-	const char *tokens[] = {"<<", NULL};
+	int			idx;
+	int			times;
+	bool		in_quotes;
+	const char	*tokens[] = {"<<", NULL};
 
 	times = 0;
 	in_quotes = false;
-	while(src && *src)
+	while (src && *src)
 	{
 		if (*src && (*src == REP_SINGLE_QUOTE || *src == REP_DOUBLE_QUOTE))
 			in_quotes = !in_quotes;
@@ -41,7 +41,7 @@ static int	allocate_eof(char **data_eof, char **data_readline, int *idx)
 	end = -1;
 	get_redirect_complement(*data_readline, &start, &end, 2);
 	if (start == -1 || end == -1)
-		return -1;
+		return (-1);
 	data_eof[*idx] = ft_substr(*data_readline, start, end - start);
 	data_eof[*idx] = ft_append_and_free(data_eof[*idx], "\n");
 	if (!data_eof[*idx])
@@ -52,10 +52,10 @@ static int	allocate_eof(char **data_eof, char **data_readline, int *idx)
 
 int	initialize_eof(char *data_readline, char ***data_eof)
 {
-	int			in_quotes;
-	int			occurrence_times;
-	int			idx;
-	
+	int	in_quotes;
+	int	occurrence_times;
+	int	idx;
+
 	occurrence_times = count_occurrence(data_readline);
 	if (occurrence_times == 0)
 		return (0);
@@ -66,7 +66,8 @@ int	initialize_eof(char *data_readline, char ***data_eof)
 	in_quotes = false;
 	while (data_readline && *data_readline)
 	{
-		if (*data_readline && (*data_readline == REP_SINGLE_QUOTE || *data_readline == REP_DOUBLE_QUOTE))
+		if (*data_readline && (*data_readline == REP_SINGLE_QUOTE
+				|| *data_readline == REP_DOUBLE_QUOTE))
 			in_quotes = !in_quotes;
 		else if (!in_quotes && ft_strncmp(data_readline, "<<", 2) == CMP_OK)
 		{
@@ -78,4 +79,3 @@ int	initialize_eof(char *data_readline, char ***data_eof)
 	(*data_eof)[idx] = NULL;
 	return (0);
 }
-

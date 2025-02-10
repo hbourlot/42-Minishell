@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:43:23 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 17:05:43 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:08:57 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	builtin_exit(t_shell *data, t_cmd *cmd)
 	int	ret;
 
 	len = array_length(cmd->args);
-		printf("exit\n");
+	printf("exit\n");
 	if (len > 2)
 	{
 		ft_printf_error("bash: exit: too many arguments\n");

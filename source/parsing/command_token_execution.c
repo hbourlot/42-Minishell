@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_token_execution.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 11:55:05 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/09 21:17:50 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:58:12 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int	validate_file_read_execution(t_file *rf)
 			if (access(rf->read, F_OK) != OK)
 				return (ft_printf_error("bash: %s: No such file or directory\n",
 						rf->read), 1);
-			else if (access(rf->read, R_OK) != OK
-				|| access(rf->read, W_OK) != OK)
+			else if (access(rf->read, R_OK) != OK || access(rf->read,
+					W_OK) != OK)
 				return (ft_printf_error("bash: %s: Permission denied\n",
 						rf->read), 1);
 			rf = rf->next;
@@ -33,20 +33,3 @@ int	validate_file_read_execution(t_file *rf)
 	}
 	return (0);
 }
-
-// const char* parse_file_read_execution(t_file *rf)
-// {
-// 	while (rf && rf->read)
-// 	{
-// 		if (rf->read)
-// 		{
-// 			if (access(rf->read, F_OK) != OK)
-// 				return ("bash: : No such file or directory\n");
-// 			else if (access(rf->read, R_OK) != OK
-// 				|| access(rf->read, W_OK) != OK)
-// 				return ("bash: : Permission denied\n");
-// 			rf = rf->next;
-// 		}
-// 	}
-// 	return (NULL);
-// }

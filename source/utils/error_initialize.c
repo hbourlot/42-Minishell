@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 20:21:00 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:45:48 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:00:16 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,11 @@ int	handle_error_in(void)
 	return (code);
 }
 
-void	set_error_in(int code, char *msg, const char *function,
-		bool exit)
+void	set_error_in(int code, char *msg, const char *function, bool exit)
 {
-	(void)code;
-
 	t_error	*error;
 
+	(void)code;
 	error = get_error_context();
 	error->initialize.is_initialized = true;
 	if (msg)

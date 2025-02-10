@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parent.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:16:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/05 12:43:58 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:42:28 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,20 @@
 
 static int	handle_double_and(t_shell *data, t_cmd **command_ref)
 {
-	t_cmd *current;
+	t_cmd	*current;
 
 	set_last_status(data);
 	if (data->exit_status == 0)
-		return 0;
-
+		return (0);
 	current = *command_ref;
 	while (current && current->delimiter != PIPE_DOUBLE)
 		current = current->next;
-
 	if (current && current->delimiter == PIPE_DOUBLE)
 	{
 		*command_ref = current;
-		return 0;
+		return (0);
 	}
-	return 1;
+	return (1);
 }
 
 int	print_command_on_terminal(t_shell *data)
@@ -38,14 +36,14 @@ int	print_command_on_terminal(t_shell *data)
 	ssize_t	bytes_read;
 
 	close(data->pipe_id[1]);
-	bytes_read = read(data->pipe_id[0], buffer, sizeof(buffer) -1);
+	bytes_read = read(data->pipe_id[0], buffer, sizeof(buffer) - 1);
 	if (bytes_read < 0)
 		return (-1);
 	buffer[bytes_read] = '\0';
 	while (bytes_read > 0)
 	{
 		write(STDOUT_FILENO, buffer, bytes_read);
-		bytes_read = read(data->pipe_id[0], buffer, sizeof(buffer) -1);
+		bytes_read = read(data->pipe_id[0], buffer, sizeof(buffer) - 1);
 		if (bytes_read < 0)
 			return (-1);
 		buffer[bytes_read] = '\0';
@@ -70,10 +68,10 @@ int	parent_process(t_shell *data, t_cmd **command_ref)
 		if (data->exit_status == 0)
 		{
 			print_command_on_terminal(data);
-			return 1;
+			return (1);
 		}
 	}
 	if ((*command_ref)->delimiter == AND_DOUBLE)
-		return handle_double_and(data, command_ref);
+		return (handle_double_and(data, command_ref));
 	return (0);
 }

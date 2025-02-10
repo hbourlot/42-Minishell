@@ -1,41 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_append_and_free.c                               :+:      :+:    :+:   */
+/*   hashmap_free.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/26 08:12:38 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 15:38:18 by joralves         ###   ########.fr       */
+/*   Created: 2025/02/10 16:05:07 by joralves          #+#    #+#             */
+/*   Updated: 2025/02/10 16:06:24 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_append_and_free(char *s1, char *s2)
+void	hashnode_free(t_hashnode *current)
 {
-	char	*result;
-	int		i;
-	int		j;
+	t_hashnode	*temp;
 
-	if (!s1 && !s2)
-		return (NULL);
-	result = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!result)
-		return (free(s1), NULL);
-	i = 0;
-	while (s1 && s1[i])
+	while (current)
 	{
-		result[i] = s1[i];
+		temp = current;
+		current = current->next;
+		free(temp->key);
+		free(temp->value);
+		free(temp);
+	}
+}
+
+void	hashmap_free(t_hashmap *map)
+{
+	int			i;
+	t_hashnode	*current;
+
+	i = 0;
+	if (!map)
+		return ;
+	while (i < HASHMAP_SIZE)
+	{
+		current = map->slots[i];
+		hashnode_free(current);
 		i++;
 	}
-	free(s1);
-	j = 0;
-	while (s2 && s2[j])
-	{
-		result[i + j] = s2[j];
-		j++;
-	}
-	result[i + j] = '\0';
-	return (result);
 }
