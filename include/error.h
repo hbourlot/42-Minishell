@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 16:35:41 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 17:51:54 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:41:20 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// #include "minishell.h"
 
 #ifndef ERROR_H
 # define ERROR_H
@@ -61,7 +59,7 @@ typedef struct s_error
 }						t_error;
 
 // ************************************************************************
-// **						Error Functions								 **
+// **						Error Functions									**
 // ************************************************************************
 
 t_error					*get_error_context(void);

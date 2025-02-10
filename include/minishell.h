@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 17:30:10 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:47:39 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@
 // ***************************************************************************
 
 int			parsing_syntax(t_shell *data);
+int			check_access_fok(const char *path, int code);
+int			check_access_xok(const char *path, int code);
+int			check_is_directory(const char *path, int code);
 int			validate_file_read_execution(t_file *rf);
 void		identify_and_replace_sqpa_tokens(char *input);
 int			validate_command_path_access(char *command_path);

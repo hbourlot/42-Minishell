@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   definitions.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 17:52:32 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:56:42 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define REP_SPACE 3
 # define REP_PIPE 4
 # define REP_AND 5
+// # define REP_ENV 1
 
 # define PROMPT "\033[1;32m[Chitãozinho&Xororó\033[1;31m@localhost ~]$ \033[0m"
 # define HASHMAP_SIZE 10
@@ -142,11 +143,7 @@ typedef struct s_data
 	t_hashmap			*map;
 }						t_shell;
 
-typedef void			(*t_here_doc_handler)(t_shell *, t_cmd *);
-typedef void			(*t_builtin_handler)(t_shell *, t_cmd *);
-typedef void			(*t_command_executor)(t_shell *, t_cmd *);
-typedef int				(*t_access_check_function)(const char *path);
-typedef int				(*t_executer_handler)(t_shell *, t_cmd *);
+typedef int				(*t_access_check_function)(const char *path, int code);
 
 #endif
 

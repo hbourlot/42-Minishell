@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:23:56 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 17:30:15 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:26:35 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ void	set_last_status(t_shell *data)
 		prev_pid = data->pid;
 		i++;
 	}
-	data->exit_status = status;
+	if (data->exit_status == 0)
+		data->exit_status = status;
 }
 
 int	do_fork(pid_t *pid)

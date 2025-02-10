@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:44:28 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/10 17:15:51 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:53:41 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,25 @@ static void	print_key_value(t_hashnode *current)
 	}
 }
 
-// static int	check_is_directory(const char *path)
-// {
-// 	struct stat	stat_path;
-
-// 	if (stat(path, &stat_path) != OK)
-// 		return (0);
-// 	if (S_ISDIR(stat_path.st_mode))
-// 		return (ft_printf_error("bash: %s: is a directory\n", path), 127);
-// 	return (0);
-// }
-
-static int	check_access_fok(t_shell *data, const char *path)
+static int	handle_env_errors(char *command_arg)
 {
-	if (access(path, F_OK) == 0)
+	int								i;
+	int								result;
+	const t_access_check_function	checks_with_path[] = {check_access_xok,
+		check_access_fok, check_is_directory, NULL};
+
+	i = 0;
+	result = 0;
+	if (!command_arg)
 		return (0);
-	printf("bash: env: %s: No such file or directory\n", path);
-	data->exit_status = 1;
-	return (1);
+	while (checks_with_path[i] != NULL)
+	{
+		result = checks_with_path[i](command_arg, ENV);
+		if (result)
+			return (result);
+		i++;
+	}
+	return (0);
 }
 
 /// @brief Displays shell environment variables.
@@ -66,10 +67,7 @@ void	builtin_env(t_shell *data, char **command_args)
 	length = array_length(command_args);
 	if (length > 1)
 	{
-		if (check_access_fok(data, command_args[1]) == 1)
-			return ;
-		printf("env: '%s': Permission denied\n", command_args[1]);
-		data->exit_status = 126;
+		data->exit_status = handle_env_errors(command_args[1]);
 		return ;
 	}
 	idx = 0;

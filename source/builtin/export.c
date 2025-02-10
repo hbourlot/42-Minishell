@@ -6,19 +6,11 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:11:13 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/10 16:58:52 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:36:12 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	add_hashnode_front(t_hashnode **temp, t_hashnode *new_node)
-{
-	if (!new_node)
-		return ;
-	new_node->next = *temp;
-	*temp = new_node;
-}
 
 static int	duplicate(t_hashmap *map, t_hashnode **temp)
 {
@@ -41,7 +33,8 @@ static int	duplicate(t_hashmap *map, t_hashnode **temp)
 			new_node->value = ft_strdup(current->value);
 			if (!new_node->value && current->value)
 				return (free(new_node->key), free(new_node), ERROR);
-			add_hashnode_front(temp, new_node);
+			new_node->next = *temp;
+			*temp = new_node;
 			current = current->next;
 		}
 		idx++;
@@ -139,7 +132,7 @@ int	builtin_export(t_shell *data, char **command_args)
 	if (length == 1)
 	{
 		if (duplicate(data->map, &temp) == ERROR)
-			return (ERROR);
+			return (hashnode_free(temp), ERROR);
 		print_key_value_sorted(&temp);
 		hashnode_free(temp);
 		data->exit_status = 0;
