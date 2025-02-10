@@ -6,20 +6,12 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:57:27 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/10 17:14:36 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:27:25 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static int	check_access_fok(t_shell *data, const char *path)
-{
-	if (access(path, F_OK) == 0)
-		return (0);
-	printf("bash: cd: %s: No such file or directory\n", path);
-	data->exit_status = 1;
-	return (1);
-}
 
 static int	change_directory(t_shell *data, const char *dir)
 {
@@ -103,6 +95,7 @@ int	change_to_oldpwd(t_shell *data)
 int	builtin_cd(t_shell *data, char **command_args)
 {
 	size_t	arg_count;
+	int		exit_status;
 
 	arg_count = array_length(command_args);
 	if (arg_count == 1 || arg_count > 2)
@@ -117,8 +110,11 @@ int	builtin_cd(t_shell *data, char **command_args)
 			return (-1);
 		return (0);
 	}
-	if (check_access_fok(data, command_args[1]) != 0)
+	if (check_access_fok(command_args[1]) != 0)
+	{
+		data->exit_status = 1;
 		return (1);
+	}
 	if (change_directory(data, command_args[1]) == -1)
 		return (-1);
 	return (0);

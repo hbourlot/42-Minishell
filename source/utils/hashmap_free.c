@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 16:05:07 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/10 16:06:24 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:32:17 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ void	hashnode_free(t_hashnode *current)
 	{
 		temp = current;
 		current = current->next;
-		free(temp->key);
-		free(temp->value);
+		if (temp->key)
+			free(temp->key);
+		if (temp->value)
+			free(temp->value);
 		free(temp);
 	}
 }

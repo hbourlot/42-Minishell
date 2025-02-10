@@ -6,13 +6,13 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 10:09:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 15:54:26 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:35:01 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	check_access_fok(const char *path)
+int	check_access_fok(const char *path)
 {
 	if (access(path, F_OK) == OK)
 		return (0);
@@ -20,23 +20,14 @@ static int	check_access_fok(const char *path)
 		127);
 }
 
-static int	check_access_xok(const char *path)
+int	check_access_xok(const char *path)
 {
 	if (access(path, X_OK) == OK)
 		return (0);
 	return (ft_printf_error("bash: %s: Permission denied\n", path), 126);
 }
 
-// static int	ft_is_directory(const char *path)
-// {
-// 	struct stat	stat_path;
-
-// 	if (stat(path, &stat_path) != OK)
-// 		return (0);
-// 	return (S_ISDIR(stat_path.st_mode));
-// }
-
-static int	check_is_directory(const char *path)
+int	check_is_directory(const char *path)
 {
 	struct stat	stat_path;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   definitions.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 17:52:32 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:11:55 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,11 +142,7 @@ typedef struct s_data
 	t_hashmap			*map;
 }						t_shell;
 
-typedef void			(*t_here_doc_handler)(t_shell *, t_cmd *);
-typedef void			(*t_builtin_handler)(t_shell *, t_cmd *);
-typedef void			(*t_command_executor)(t_shell *, t_cmd *);
 typedef int				(*t_access_check_function)(const char *path);
-typedef int				(*t_executer_handler)(t_shell *, t_cmd *);
 
 #endif
 

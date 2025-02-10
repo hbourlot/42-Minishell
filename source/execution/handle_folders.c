@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_folders.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 08:00:37 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 17:50:29 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:55:41 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static void	close_folders_safety(t_file *rf, int *io)
 
 static void	handle_right_folders_safety(int *io, t_file *rf)
 {
-	int code;
-	
+	int	code;
+
 	if (rf->redirect == REDIRECT_RIGHT_SINGLE)
 	{
 		io[1] = open(rf->write, O_CREAT | O_RDWR | O_TRUNC, 0644);
