@@ -43,7 +43,7 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_tokens parsing/strip_redirects pars
 					utils/error_initialize utils/error_execution utils/useful_functions utils/useful_functions2 utils/hashmap_free
 # -L./ -lminishell
 # VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes
-VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=readline.supp
+VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes #--suppressions=readline.supp
 LINK			= ./minishell.a -L./lib/library/ -lft -lreadline
 SRC_FILES 		= $(addprefix $(SRC_DIR), $(C_FUNCTIONS:=.c))
 OBJS_SRC 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:%.c=%.o))
@@ -95,6 +95,7 @@ fclean: 		clean
 
 re: 			fclean all
 
+bonus:			all
 
 TEST =			test_minishell
 

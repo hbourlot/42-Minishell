@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_expansion.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 16:38:10 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:44:37 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ static char	*handle_variable_expansion(char *element, bool *expanded)
 
 static void	filter_special_quotes(char *result)
 {
-	int	i;
-	bool in_quotes;
+	int		i;
+	bool	in_quotes;
 
 	i = 0;
 	in_quotes = false;
@@ -106,14 +106,14 @@ static void	filter_special_quotes(char *result)
 	{
 		if (result[i] == REP_SQ || result[i] == REP_DQ)
 			in_quotes = !in_quotes;
-		else if (!in_quotes && result[i] == '$' &&
-			(result[i + 1] == REP_SQ || result[i + 1] == REP_DQ))
-			{
-				truncate_range(result, i, 1);
-				in_quotes = false;
-				i = 0;
-				continue;
-			}
+		else if (!in_quotes && result[i] == '$'
+			&& (result[i + 1] == REP_SQ || result[i + 1] == REP_DQ))
+		{
+			truncate_range(result, i, 1);
+			in_quotes = false;
+			i = 0;
+			continue ;
+		}
 		i++;
 	}
 }

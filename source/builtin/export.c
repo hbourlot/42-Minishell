@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:11:13 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/11 16:32:08 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:43:49 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,22 +61,19 @@ static int	is_valid_key(t_shell *data, char *temp_key)
 {
 	int		i;
 	bool	valid;
-	bool	only_digits;
 
 	valid = true;
-	only_digits = true;
 	i = -1;
 	while (temp_key && temp_key[++i])
 	{
-		if ((!ft_isalnum(temp_key[i]) && temp_key[i] != '_') || ft_isdigit(temp_key[0]))
+		if ((!ft_isalnum(temp_key[i]) && temp_key[i] != '_')
+			|| ft_isdigit(temp_key[0]))
 		{
 			valid = false;
 			break ;
 		}
-		if (!ft_isdigit(temp_key[i]))
-			only_digits = false;
 	}
-	if (valid == false || only_digits == true)
+	if (valid == false)
 	{
 		ft_printf_error("bash: export: '%s': not a valid identifier\n",
 			temp_key);
