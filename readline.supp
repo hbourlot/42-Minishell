@@ -1,0 +1,40 @@
+	{
+    leak readline
+    Memcheck:Leak
+    ...
+    fun:readline
+}
+{
+    leak add_history
+    Memcheck:Leak
+    ...
+    fun:add_history
+}
+{
+    leak readline
+    Memcheck:Leak
+    ...
+    fun:readline
+}
+{
+    leak add_history
+    Memcheck:Leak
+    ...
+    fun:add_history
+}
+{
+    still_reachable xrealloc
+    Memcheck:Leak
+    ...
+    fun:realloc
+}
+{
+    still_reachable rl_extend_line_buffer
+    Memcheck:Leak
+    ...
+    fun:rl_extend_line_buffer
+}
+{
+    still_reachable rl_insert_text
+    Memcheck:Leak
+}
