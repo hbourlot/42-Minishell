@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   useful_functions.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:17:42 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 16:06:07 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:40:04 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	replace_characters(char *src, char to_take, char to_put)
 
 void	restore_original_characters(char **src)
 {
-	const char	tk[] = {REP_SPACE, REP_SINGLE_QUOTE, REP_DOUBLE_QUOTE, '\0'};
+	const char	tk[] = {REP_SPACE, REP_SQ, REP_DQ, '\0'};
 	const char	to_set[] = {' ', '\'', '"'};
 	int			i;
 	int			j;

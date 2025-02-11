@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:33:57 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 17:49:03 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 13:59:18 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_token	get_t_token(char *src, size_t size)
 
 static bool	toggle_quotes(char *src, bool *in_quotes, int i)
 {
-	if (src[i] && (src[i] == REP_SINGLE_QUOTE || src[i] == REP_DOUBLE_QUOTE))
+	if (src[i] && (src[i] == REP_SQ || src[i] == REP_DQ))
 	{
 		*in_quotes = !*in_quotes;
 		return (true);
@@ -97,9 +97,10 @@ void	get_redirect_complement(char *src, int *start, int *end,
 		i++;
 	if (toggle_quotes(src, &in_quotes, i))
 		i++;
+	if (toggle_quotes(src, &in_quotes, i))
+		i++;
 	*start = i;
-	while (src[i] && src[i] != REP_SPACE && src[i] != REP_SINGLE_QUOTE
-		&& src[i] != REP_DOUBLE_QUOTE)
+	while (src[i] && src[i] != REP_SPACE)
 	{
 		if (!in_quotes && find_string_match(&src[i], tokens, &idx) == OK)
 			break ;
@@ -107,3 +108,32 @@ void	get_redirect_complement(char *src, int *start, int *end,
 	}
 	*end = i;
 }
+// void	get_redirect_complement(char *src, int *start, int *end,
+// 		int redirect_size)
+// {
+// 	int			i;
+// 	int			idx;
+// 	bool		in_quotes;
+// 	const char	*tokens[] = {"||", "|", "&&", ">>", "<<", "<", ">", NULL};
+
+// 	i = 0;
+// 	in_quotes = false;
+// 	if (!src)
+// 		return ;
+// 	i += redirect_size;
+// 	while (src[i] && src[i] == REP_SPACE)
+// 		i++;
+// 	if (toggle_quotes(src, &in_quotes, i))
+// 		i++;
+// 	if (toggle_quotes(src, &in_quotes, i))
+// 		i++;
+// 	*start = i;
+// 	while (src[i] && src[i] != REP_SPACE && src[i] != REP_SQ
+// 		&& src[i] != REP_DQ)
+// 	{
+// 		if (!in_quotes && find_string_match(&src[i], tokens, &idx) == OK)
+// 			break ;
+// 		i++;
+// 	}
+// 	*end = i;
+// }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_element_aux.c                             :+:      :+:    :+:   */
+/*   input_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 17:39:46 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/10 15:52:55 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:45:07 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	count_tokens(char *src)
 	count = 0;
 	while (src && *src)
 	{
-		if (*src == REP_SINGLE_QUOTE || *src == REP_DOUBLE_QUOTE)
+		if (*src == REP_SQ || *src == REP_DQ)
 		{
 			count++;
 			quote = *src++;
@@ -32,7 +32,7 @@ static int	count_tokens(char *src)
 		else if (*src)
 		{
 			count++;
-			while (*src && *src != REP_SINGLE_QUOTE && *src != REP_DOUBLE_QUOTE)
+			while (*src && *src != REP_SQ && *src != REP_DQ)
 				src++;
 		}
 	}
@@ -64,8 +64,8 @@ static char	*extract_unquoted_substring(char *str, int *i)
 	char	*result;
 
 	start = *i;
-	while (str[*i] && str[*i] != REP_SINGLE_QUOTE
-		&& str[*i] != REP_DOUBLE_QUOTE)
+	while (str[*i] && str[*i] != REP_SQ
+		&& str[*i] != REP_DQ)
 		(*i)++;
 	result = ft_substr(str, start, *i - start);
 	if (!result)
@@ -86,7 +86,7 @@ static char	**tokenize_element(char *element)
 		return (free(element), NULL);
 	while (element && element[i])
 	{
-		if (element[i] == REP_SINGLE_QUOTE || element[i] == REP_DOUBLE_QUOTE)
+		if (element[i] == REP_SQ || element[i] == REP_DQ)
 		{
 			cmd_tokens[idx] = extract_quoted_substring(element, &i);
 			if (!cmd_tokens[idx++])
@@ -102,15 +102,15 @@ static char	**tokenize_element(char *element)
 	return (cmd_tokens);
 }
 
-char	*expand_command_input(t_cmd *command)
+char	*expand_command_input(char *input, bool *expanded)
 {
 	char	*expand_input;
 	char	**elements;
 
-	elements = tokenize_element(command->input);
+	elements = tokenize_element(input);
 	if (!elements)
 		return (NULL);
-	expand_input = handle_command_elements(command, elements);
+	expand_input = handle_command_elements(elements, expanded);
 	if (!expand_input)
 		handle_error(E_MALLOC, NULL, __func__);
 	return (expand_input);

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:09:01 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/15 10:25:44 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:12:49 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	truncate_character(char *src, const char character)
 				j++;
 			}
 			src[j] = '\0';
+			i = 0;
+			continue;
 		}
 		i++;
 	}

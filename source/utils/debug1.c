@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 21:36:23 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 16:07:30 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:40:04 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ void	print_execve_parameters(char *input)
 	i = 0;
 	while (input[i])
 	{
-		if (input[i] == REP_DOUBLE_QUOTE)
+		if (input[i] == REP_DQ)
 			printf("(%d - %c)", input[i], input[i]);
-		if (input[i] == REP_SINGLE_QUOTE)
+		if (input[i] == REP_SQ)
 			printf("(%d - %c)", input[i], input[i]);
 		if (input[i] == REP_SPACE)
 			printf("(%d - %c)", input[i], input[i]);

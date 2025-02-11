@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:51:28 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 17:45:29 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:40:04 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	toggle_quotes(char *input, bool *in_quotes, int i)
 {
-	if (input[i] && (input[i] == REP_SINGLE_QUOTE
-			|| input[i] == REP_DOUBLE_QUOTE))
+	if (input[i] && (input[i] == REP_SQ
+			|| input[i] == REP_DQ))
 		*in_quotes = !*in_quotes;
 }
 

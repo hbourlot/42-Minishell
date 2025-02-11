@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 18:47:39 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:49:53 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_hashmap	*create_map(void);
 int			init_command(t_shell *data);
 int			main_shell_loop(t_shell *data);
 bool		is_quotes_matching(char *input);
-char		*expand_command_input(t_cmd *command);
+char		*expand_command_input(char *input, bool *expanded);
 void		update_envp_and_envpath(t_shell *data);
 char		**process_command_input_expanded(t_cmd *command);
 void		initialize_environment_paths(t_shell *data);
@@ -62,9 +62,11 @@ void		prepare_parameters(t_cmd *command, t_shell *data);
 t_shell		*init_shell(int argc, char *argv[], char *envp[]);
 void		hashmap_to_env_array(t_shell *data, t_hashmap *map);
 void		import_env_to_hashmap(t_hashmap *map, char *envp[]);
-int			initialize_eof(char *data_readline, char ***data_eof);
+// int			initialize_eof(char *data_readline, char ***data_eof);
+int			initialize_eof(t_shell *data);
+
 int			hashmap_insert(t_hashmap *map, char *key, char *value);
-char		*handle_command_elements(t_cmd *command, char **elements);
+char		*handle_command_elements(char **elements, bool *expanded);
 void		add_command(t_cmd **command, char *rl_splitted, t_shell *data,
 				t_token id);
 int			initialize_file_list(char *input, const char *redirects[],
@@ -78,8 +80,8 @@ int			do_fork(pid_t *pid);
 void		run_commands(t_shell *data);
 void		set_last_status(t_shell *data);
 int			run_eof(t_shell *data, pid_t *pid);
-int			here_doc(int *pipe_id, char *limiter);
-void		here_doc_fail(t_shell *data, char *eof);
+int			here_doc(int *pipe_id, t_file *current);
+void		here_doc_fail(t_shell *data, t_file *current);
 char		*get_path(char *input, char **env_paths);
 void		open_folders_safety(int *io, t_file *rf);
 int			command_loop(t_shell *data, t_cmd *command);

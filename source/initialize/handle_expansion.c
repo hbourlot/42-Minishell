@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_expansion.c                                  :+:      :+:    :+:   */
+/*   handle_expansion.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 16:15:50 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:54:51 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*expand_variable(t_cmd *command, char *var_name, bool double_quotes)
+static char	*expand_variable(bool *expanded, char *var_name, bool double_quotes)
 {
 	char	*temp;
 	char	*expanded_value;
@@ -33,11 +33,12 @@ static char	*expand_variable(t_cmd *command, char *var_name, bool double_quotes)
 	}
 	if (!expanded_value)
 		return (NULL);
-	command->settings.expansion = true;
+	if (expanded)
+		*expanded = true;
 	return (expanded_value);
 }
 
-static char	*process_expansion(t_cmd *command, char *element, int i,
+static char	*process_expansion(bool *expanded, char *element, int i,
 		bool double_quotes)
 {
 	int		j;
@@ -54,7 +55,7 @@ static char	*process_expansion(t_cmd *command, char *element, int i,
 	var_name = ft_substr(element, i, j - i);
 	if (!var_name)
 		return (NULL);
-	expansion_value = expand_variable(command, var_name, double_quotes);
+	expansion_value = expand_variable(expanded, var_name, double_quotes);
 	free(var_name);
 	if (!expansion_value)
 		return (NULL);
@@ -65,7 +66,7 @@ static char	*process_expansion(t_cmd *command, char *element, int i,
 	return (free(element), free(expansion_value), result);
 }
 
-static char	*handle_variable_expansion(t_cmd *command, char *element)
+static char	*handle_variable_expansion(char *element, bool *expanded)
 {
 	int		i;
 	bool	double_quotes;
@@ -86,7 +87,7 @@ static char	*handle_variable_expansion(t_cmd *command, char *element)
 		if (element[i] == 1 || element[i] == 2 || element[i] == 3
 			|| element[i] == ' ' || element[i] == '\0')
 			continue ;
-		element = process_expansion(command, element, i - 1, double_quotes);
+		element = process_expansion(expanded, element, i - 1, double_quotes);
 		if (!element)
 			return (NULL);
 		i = 0;
@@ -94,18 +95,18 @@ static char	*handle_variable_expansion(t_cmd *command, char *element)
 	return (element);
 }
 
-char	*handle_command_elements(t_cmd *command, char **elements)
+char	*handle_command_elements(char **elements, bool *expanded)
 {
 	int		i;
 	char	*result;
 
-	result = NULL;
 	i = 0;
+	result = NULL;
 	while (elements[i])
 	{
 		if (ft_strchr(elements[i], '$'))
 		{
-			elements[i] = handle_variable_expansion(command, elements[i]);
+			elements[i] = handle_variable_expansion(elements[i], expanded);
 			if (!elements[i])
 				return (free_split(elements), NULL);
 		}

@@ -6,86 +6,75 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 10:46:44 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 17:25:17 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:04:25 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	count_occurrence(char *src)
-{
-	int			idx;
-	int			times;
-	bool		in_quotes;
-	const char	*tokens[] = {"<<", NULL};
 
-	times = 0;
-	in_quotes = false;
-	while (src && *src)
+static void	add_rf_to_list(t_shell *data, t_file *rf_new)
+{
+	t_file	*last;
+
+	if (!data->rf)
+		data->rf = rf_new;
+	else
 	{
-		if (*src && (*src == REP_SINGLE_QUOTE || *src == REP_DOUBLE_QUOTE))
-			in_quotes = !in_quotes;
-		if (!in_quotes && find_string_match(src, tokens, &idx) == OK)
-			times++;
-		src++;
+		last = data->rf;
+		while (last->next)
+			last = last->next;
+		last->next = rf_new;
 	}
-	return (times);
 }
 
-static int	allocate_eof(char **data_eof, char **data_readline, int *idx)
+static int allocate_eof(t_shell *data, int  i)
 {
-	int	start;
-	int	end;
+	int			j;
+	t_file	 	*new;
+	int 		p[2];
 
-	start = -1;
-	end = -1;
-	get_redirect_complement(*data_readline, &start, &end, 2);
-	if (start == -1 || end == -1)
-		return (-1);
-	data_eof[*idx] = ft_substr(*data_readline, start, end - start);
-	data_eof[*idx] = ft_append_and_free(data_eof[*idx], "\n");
-	if (!data_eof[*idx])
-		return (-1);
-	(*idx)++;
-	return (0);
-}
-
-int	allocate_data_eof(char *data_readline, char ***data_eof)
-{
-	int	occurrence_times;
-
-	occurrence_times = count_occurrence(data_readline);
-	if (occurrence_times == 0)
+	j = 2;
+	get_redirect_complement(&data->rl[i], &p[0], &p[1], 2);
+	if (p[0] == -1 || p[1] == -1)
 		return (0);
-	(*data_eof) = malloc(sizeof(char *) * (occurrence_times + 1));
-	if (!*data_eof)
+	new = ft_calloc(1, sizeof(t_file));
+	if (!new)
 		return (-1);
-	return (1);
+	new->eof = ft_substr(&data->rl[i], p[0], p[1] - p[0]);
+	truncate_character(new->eof, REP_DQ);
+	truncate_character(new->eof, REP_SQ);
+	new->eof = ft_append_and_free(new->eof, "\n");
+	if (!new->eof)
+		return (free(new), -1);
+	while(data->rl[i + j] && data->rl[i + j] == REP_SPACE)
+		j++;
+	if (data->rl[i + j] == REP_SQ || data->rl[i + j] == REP_DQ)
+		new->in_quotes = true;
+	add_rf_to_list(data, new);
+	return (0);
+
 }
 
-int	initialize_eof(char *data_readline, char ***data_eof)
+int	initialize_eof(t_shell *data)
 {
-	int	idx;
+	int i;
+	int idx;
 	int	in_quotes;
-	int	alloc_status;
 
-	alloc_status = allocate_data_eof(data_readline, data_eof);
-	if (alloc_status <= 0)
-		return (alloc_status);
+	i = 0;
 	idx = 0;
 	in_quotes = false;
-	while (data_readline && *data_readline)
+	while (data->rl && data->rl[i])
 	{
-		if (*data_readline && (*data_readline == REP_SINGLE_QUOTE
-				|| *data_readline == REP_DOUBLE_QUOTE))
+		if (data->rl[i] && (data->rl[i] == REP_SQ || data->rl[i] == REP_DQ))
 			in_quotes = !in_quotes;
-		else if (!in_quotes && ft_strncmp(data_readline, "<<", 2) == CMP_OK)
+		else if (!in_quotes && ft_strncmp(&data->rl[i], "<<", 2) == CMP_OK)
 		{
-			if (allocate_eof(*data_eof, &data_readline, &idx) < 0)
+			if (allocate_eof(data, i) < 0)
 				return (-1);
 		}
-		data_readline++;
+		i++;
 	}
-	(*data_eof)[idx] = NULL;
-	return (0);
+	return 0;
 }

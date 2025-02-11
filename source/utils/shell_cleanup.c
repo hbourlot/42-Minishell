@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_cleanup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 16:05:35 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:38:26 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	free_files(t_file *file_list)
 	while (file_list)
 	{
 		tmp = file_list;
+		if (tmp->eof)
+			free(tmp->eof);
 		if (tmp->read)
 			free(tmp->read);
 		if (tmp->write)
@@ -74,12 +76,11 @@ void	refresh_shell_data(t_shell *data)
 	data->commands_ran = 0;
 	data->nbr_of_commands = 0;
 	data->pid = -1;
-	data->it_ends_with_delimiter = false;
 	data->last_cmd_executed = NULL;
-	if (data->eof)
+	if (data->rf)
 	{
-		free_split(data->eof);
-		data->eof = NULL;
+		free_files(data->rf);
+		data->rf = NULL;
 	}
 	if (data->rl)
 		free_pointers(1, &data->rl);
@@ -102,10 +103,10 @@ void	cleanup_shell(t_shell *data)
 		free(data->rl);
 	if (data->rl_splitted)
 		free_split(data->rl_splitted);
-	if (data->eof)
+	if (data->rf)
 	{
-		free_split(data->eof);
-		data->eof = NULL;
+		free_files(data->rf);
+		data->rf = NULL;
 	}
 	if (data->map)
 		hashmap_free(data->map);
