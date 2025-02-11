@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_expansion.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 14:25:39 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:17:41 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ static char	*handle_variable_expansion(char *element, bool *expanded)
 		if (!element[i])
 			break ;
 		i++;
-		if (!(ft_isalnum(element[i]) || element[i] == '_'))
+		if (!(element[i] == '$' || element[i] == '?')
+			&& !(ft_isalnum(element[i]) || element[i] == '_'))
 			continue ;
 		element = process_expansion(expanded, element, i - 1, double_quotes);
 		if (!element)
@@ -92,6 +93,29 @@ static char	*handle_variable_expansion(char *element, bool *expanded)
 		i = 0;
 	}
 	return (element);
+}
+
+static void	filter_special_quotes(char *result)
+{
+	int	i;
+	bool in_quotes;
+	
+	i = 0;
+	in_quotes = false;
+	while (result[i])
+	{
+		if (result[i] == REP_SQ || result[i] == REP_DQ)
+			in_quotes = !in_quotes;
+		else if (!in_quotes && result[i] == '$' &&
+			(result[i + 1] == REP_SQ || result[i + 1] == REP_DQ))
+			{
+				truncate_range(result, i, 1);
+				in_quotes = false;
+				i = 0;
+				continue;
+			}
+		i++;
+	}
 }
 
 char	*handle_command_elements(char **elements, bool *expanded)
@@ -114,5 +138,6 @@ char	*handle_command_elements(char **elements, bool *expanded)
 			return (free_split(elements), NULL);
 		i++;
 	}
+	filter_special_quotes(result);
 	return (free_split(elements), result);
 }
