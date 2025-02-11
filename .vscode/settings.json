@@ -4,6 +4,7 @@
 		"sqpa"
 	],
 	"files.associations": {
-		"minishell.h": "c"
+		"minishell.h": "c",
+		"cstdlib": "c"
 	}
 }

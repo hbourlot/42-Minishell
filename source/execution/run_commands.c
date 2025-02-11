@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 10:04:53 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:33:01 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	run_commands(t_shell *data)
 {
 	data->prev_fd = -1;
 	ft_memset(data->pipe_id, -1, sizeof(int) * 2);
-	if ((data->eof))
+	if ((data->rf))
 	{
 		if (run_eof(data, &data->pid))
 			return ;

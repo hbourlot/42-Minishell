@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 10:16:37 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:11:51 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@
 # define SUCCESS 0
 
 // Representations
-# define REP_SINGLE_QUOTE 1
-# define REP_DOUBLE_QUOTE 2
+# define REP_SQ 1
+# define REP_DQ 2
 # define REP_SPACE 3
 # define REP_PIPE 4
 # define REP_AND 5
@@ -72,9 +72,12 @@ typedef enum e_builtin
 
 typedef struct s_file
 {
+	char				*eof;
+	bool				in_quotes;
 	char				*read;
 	char				*write;
 	t_token				redirect;
+	
 	struct s_file		*next;
 }						t_file;
 
@@ -122,12 +125,11 @@ typedef struct s_hashmap
 typedef struct s_data
 {
 	pid_t				pid;
-	char				*error_output;
 	int					pipe_id[2];
 	int					prev_fd;
 	char				*rl;
 	char				**eof;
-	// t_file				*rf;
+	t_file				*rf;
 	char				**rl_splitted;
 	char				**env_paths;
 	int					exit_status;

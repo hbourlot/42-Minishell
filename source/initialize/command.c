@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/09 21:55:12 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:17:42 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,19 @@ static void	handle_eof(t_shell *data)
 {
 	const char	*eof_token[] = {"<<", NULL};
 
-	if (initialize_eof(data->rl, &data->eof) < 0)
+	if (initialize_eof(data) < 0)
 		handle_error(E_MALLOC, NULL, __func__);
+	// while (data->rf)
+	// {
+	// 	printf("rf->rof: %s", data->rf->eof);
+	// 	if (data->rf->in_quotes)
+	// 		printf("in_quotes\n");
+	// 	else
+	// 		printf("not in_quotes\n");
+	// 	data->rf = data->rf->next;
+	// }
+	// if (initialize_eof(data->rl, &data->eof) < 0)
+		// handle_error(E_MALLOC, NULL, __func__);
 	strip_redirects(data->rl, eof_token);
 	if (there_is_no_command(data))
 		free_pointers(1, &data->rl);

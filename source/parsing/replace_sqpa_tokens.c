@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_sqpa_tokens.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:44:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 15:55:20 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:40:04 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	replace_non_literal_spaces(char *input)
 	i = 0;
 	while (input[i])
 	{
-		if (input[i] == REP_DOUBLE_QUOTE || input[i] == REP_SINGLE_QUOTE)
+		if (input[i] == REP_DQ || input[i] == REP_SQ)
 			in_quotes = !in_quotes;
 		else if (input[i] == ' ' && !in_quotes)
 			input[i] = REP_SPACE;
@@ -67,7 +67,7 @@ static void	replace_pa_tokens_in_literal(char *input)
 	in_quotes = false;
 	while (input && input[i])
 	{
-		if (input[i] == REP_DOUBLE_QUOTE || input[i] == REP_SINGLE_QUOTE)
+		if (input[i] == REP_DQ || input[i] == REP_SQ)
 			in_quotes = !in_quotes;
 		if (in_quotes)
 		{
@@ -100,9 +100,9 @@ void	identify_and_replace_sqpa_tokens(char *input)
 	while (occurrence[0] != -1 && occurrence[1] != -1)
 	{
 		if (in_quotes == '\'')
-			tag = REP_SINGLE_QUOTE;
+			tag = REP_SQ;
 		else if (in_quotes == '"')
-			tag = REP_DOUBLE_QUOTE;
+			tag = REP_DQ;
 		input[occurrence[0]] = tag;
 		input[occurrence[1]] = tag;
 		in_quotes = '\0';

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 16:14:10 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:55:32 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	handle_file_tokens(t_cmd *command)
 
 void	prepare_parameters(t_cmd *command, t_shell *data)
 {
-	command->input_expanded = expand_command_input(command);
+	command->input_expanded = expand_command_input(command->input, &command->settings.expansion);
 	handle_file_tokens(command);
 	if (command->settings.is_safe_to_execve == false)
 		return ;

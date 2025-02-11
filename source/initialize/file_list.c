@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 15:51:06 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:40:04 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int	initialize_file_list(char *input, const char *redirects[], t_file **rf)
 	in_quotes = false;
 	while (input && *input)
 	{
-		if (*input && (*input == REP_DOUBLE_QUOTE
-				|| *input == REP_SINGLE_QUOTE))
+		if (*input && (*input == REP_DQ
+				|| *input == REP_SQ))
 			in_quotes = !in_quotes;
 		else if (!in_quotes && find_string_match(input, redirects, &idx) == OK)
 		{
