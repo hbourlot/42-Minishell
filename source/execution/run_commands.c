@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 18:25:10 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 00:02:52 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,15 @@ void	refresh_command_parameters(t_shell *data, t_cmd *command)
 	}
 }
 
-static bool	is_safe_to_run_builtin(t_shell *data, t_cmd *command)
+static bool	is_safe_to_run_builtin(t_cmd *command)
 {
 	bool	cond_1;
 	bool	cond_2;
-	bool	cond_3;
 
 	cond_1 = (command->delimiter == AND_DOUBLE
 			|| command->delimiter == PIPE_DOUBLE
 			|| command->delimiter == NO_TOKEN);
 	cond_2 = command->settings.is_builtin;
-	cond_3 = command->rf;
 	if (cond_1 && cond_2)
 	{
 		command->settings.is_safe_to_execve = false;
@@ -57,7 +55,7 @@ static bool	is_safe_to_run_builtin(t_shell *data, t_cmd *command)
 
 bool	run_builting_separately(t_shell *data, t_cmd *command)
 {
-	if (is_safe_to_run_builtin(data, command))
+	if (is_safe_to_run_builtin(command))
 	{
 		if (process_builtin(data, command) < 0)
 			handle_error(E_MALLOC, NULL, __func__);
@@ -96,8 +94,6 @@ int	command_loop(t_shell *data, t_cmd *command)
 
 void	run_commands(t_shell *data)
 {
-	int	wait_status;
-
 	data->prev_fd = -1;
 	ft_memset(data->pipe_id, -1, sizeof(int) * 2);
 	if ((data->eof))

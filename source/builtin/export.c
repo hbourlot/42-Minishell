@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:11:13 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/10 17:36:12 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 00:03:49 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static int	duplicate(t_hashmap *map, t_hashnode **temp)
 	t_hashnode	*new_node;
 	t_hashnode	*current;
 
-	idx = 0;
-	while (idx < HASHMAP_SIZE)
+	idx = -1;
+	while (++idx < HASHMAP_SIZE)
 	{
 		current = map->slots[idx];
 		while (current)
@@ -37,8 +37,8 @@ static int	duplicate(t_hashmap *map, t_hashnode **temp)
 			*temp = new_node;
 			current = current->next;
 		}
-		idx++;
 	}
+	return (0);
 }
 
 static void	print_key_value_sorted(t_hashnode **temp)

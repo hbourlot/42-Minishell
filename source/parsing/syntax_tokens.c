@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_tokens.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:21:13 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 17:49:40 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 00:13:39 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,18 +87,18 @@ bool	is_tokens_invalid(char *rl)
 	in_quotes = false;
 	if (check_initial_token_error(&rl[i], deli_tokens))
 		return (true);
-	while (rl[i])
+	while (rl && rl[i])
 	{
-		while (rl[i] == REP_SPACE)
-			i++;
+		skip_character_by_idx(rl, REP_SPACE, &i);
 		toggle_quotes(rl, &in_quotes, i);
-		if (!in_quotes && (find_string_match(&rl[i], deli_tokens,
-					&idx) == OK || find_string_match(&rl[i], file_tokens,
-					&idx) == OK))
+		if (!in_quotes && (find_string_match(&rl[i], deli_tokens, &idx) == OK
+				|| find_string_match(&rl[i], file_tokens, &idx) == OK))
 		{
 			if (get_syntax_errors(rl, &i, ft_strlen(deli_tokens[idx]), idx))
 				return (true);
 		}
+		if (rl[i] == '\0')
+			break ;
 		i++;
 	}
 	return (false);
