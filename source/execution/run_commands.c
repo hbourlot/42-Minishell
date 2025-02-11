@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 15:49:09 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:33:43 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static bool	is_safe_to_run_builtin(t_cmd *command)
 		command->settings.is_safe_to_builtin = false;
 		return (true);
 	}
+	if (command->delimiter == PIPE_SINGLE)
+		command->settings.is_safe_to_builtin = true;
 	return (false);
 }
 
