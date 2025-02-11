@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 16:29:53 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:37:11 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ static void	handle_eof(t_shell *data)
 
 	if (initialize_eof(data) < 0)
 		handle_error(E_MALLOC, NULL, __func__);
-	print_execve_parameters(data->rf->eof);
 	strip_redirects(data->rl, eof_token);
 	if (there_is_no_command(data))
 		free_pointers(1, &data->rl);
