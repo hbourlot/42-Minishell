@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_error.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 14:51:20 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 09:59:29 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:29:11 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,4 +107,3 @@ void	ft_printf_error(const char *fmt, ...)
 	}
 	va_end(ap);
 }
-

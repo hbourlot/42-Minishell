@@ -64,8 +64,7 @@ static char	*extract_unquoted_substring(char *str, int *i)
 	char	*result;
 
 	start = *i;
-	while (str[*i] && str[*i] != REP_SQ
-		&& str[*i] != REP_DQ)
+	while (str[*i] && str[*i] != REP_SQ && str[*i] != REP_DQ)
 		(*i)++;
 	result = ft_substr(str, start, *i - start);
 	if (!result)

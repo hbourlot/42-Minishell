@@ -66,7 +66,8 @@ static void	handle_file_tokens(t_cmd *command)
 
 void	prepare_parameters(t_cmd *command, t_shell *data)
 {
-	command->input_expanded = expand_command_input(command->input, &command->settings.expansion);
+	command->input_expanded = expand_command_input(command->input,
+			&command->settings.expansion);
 	handle_file_tokens(command);
 	if (command->settings.is_safe_to_execve == false)
 		return ;

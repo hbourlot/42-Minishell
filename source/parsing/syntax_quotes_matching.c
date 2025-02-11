@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void set_quotes_error(char *input)
+static void	set_quotes_error(char *input)
 {
 	if (input[0] == '\'')
 		handle_error(E_SHELL_SUPPORT, "'", NULL);

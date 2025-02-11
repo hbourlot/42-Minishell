@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_expansion.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 11:54:51 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:25:39 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,7 @@ static char	*handle_variable_expansion(char *element, bool *expanded)
 		if (!element[i])
 			break ;
 		i++;
-		if (element[i] == 1 || element[i] == 2 || element[i] == 3
-			|| element[i] == ' ' || element[i] == '\0')
+		if (!(ft_isalnum(element[i]) || element[i] == '_'))
 			continue ;
 		element = process_expansion(expanded, element, i - 1, double_quotes);
 		if (!element)

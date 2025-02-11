@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-/// @brief Implements the `pwd` built-in command.  
-/// @param data The shell structure with environment and state.  
-/// @details Retrieves the current directory with `getcwd` and prints it.  
-///          Sets `exit_status` to 0 on success.  
+/// @brief Implements the `pwd` built-in command.
+/// @param data The shell structure with environment and state.
+/// @details Retrieves the current directory with `getcwd` and prints it.
+///          Sets `exit_status` to 0 on success.
 void	builtin_pwd(t_shell *data)
 {
 	char	cwd[PATH_MAX + 1];

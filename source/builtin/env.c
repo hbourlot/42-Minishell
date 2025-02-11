@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:44:28 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/11 10:57:31 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:28:20 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,24 @@ static void	print_key_value(t_hashnode *current)
 
 static int	handle_env_errors(char *command_arg)
 {
-	int								i;
-	int								result;
-	// const t_access_check_function	checks_with_path[] = {check_is_directory,check_access_xok,
-	// 	 check_access_fok, NULL};
+	int	i;
+	int	result;
 
 	i = 0;
 	result = 0;
 	if (!command_arg)
 		return (0);
-	if(ft_strchr(command_arg, '/'))
+	if (ft_strchr(command_arg, '/'))
 	{
 		result = check_is_directory(command_arg, ENV);
-		if(!result)
-			return (ft_printf_error("env: '%s': Not a directory\n", command_arg), 126);
-		return (ft_printf_error("env: %s: Permission denied\n", command_arg), 126);
+		if (!result)
+			return (ft_printf_error("env: '%s': Not a directory\n",
+					command_arg), 126);
+		return (ft_printf_error("env: %s: Permission denied\n", command_arg),
+			126);
 	}
-	return (ft_printf_error("env: '%s': No such file or directory\n", command_arg),127);
+	return (ft_printf_error("env: '%s': No such file or directory\n",
+			command_arg), 127);
 }
 
 /// @brief Displays shell environment variables.

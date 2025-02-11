@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 11:17:42 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:27:59 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,17 +79,6 @@ static void	handle_eof(t_shell *data)
 
 	if (initialize_eof(data) < 0)
 		handle_error(E_MALLOC, NULL, __func__);
-	// while (data->rf)
-	// {
-	// 	printf("rf->rof: %s", data->rf->eof);
-	// 	if (data->rf->in_quotes)
-	// 		printf("in_quotes\n");
-	// 	else
-	// 		printf("not in_quotes\n");
-	// 	data->rf = data->rf->next;
-	// }
-	// if (initialize_eof(data->rl, &data->eof) < 0)
-		// handle_error(E_MALLOC, NULL, __func__);
 	strip_redirects(data->rl, eof_token);
 	if (there_is_no_command(data))
 		free_pointers(1, &data->rl);

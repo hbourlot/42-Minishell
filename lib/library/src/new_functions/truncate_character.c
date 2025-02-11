@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   truncate_character.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:09:01 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 14:12:49 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:29:30 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	truncate_character(char *src, const char character)
 			}
 			src[j] = '\0';
 			i = 0;
-			continue;
+			continue ;
 		}
 		i++;
 	}
