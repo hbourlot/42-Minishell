@@ -6,32 +6,44 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:57:27 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/11 00:03:07 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 19:37:07 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static int	change_directory(t_shell *data, const char *dir)
+static int	update_variables(t_shell *data, char *old_cwd)
 {
 	char	cwd[PATH_MAX + 1];
-	char	old_cwd[PATH_MAX + 1];
 
-	getcwd(old_cwd, PATH_MAX);
-	if (chdir(dir) != 0)
-	{
-		ft_printf_error("bash: cd: %s: Not a directory\n", dir);
-		data->exit_status = 1;
-		return (1);
-	}
-	data->exit_status = 0;
 	getcwd(cwd, PATH_MAX);
 	if (hashmap_insert(data->map, "OLDPWD", old_cwd) == ERROR)
 		return (-1);
 	if (hashmap_insert(data->map, "PWD", cwd) == ERROR)
 		return (-1);
-	hashmap_to_env_array(data, data->map);
 	return (0);
+}
+
+static int	change_directory(t_shell *data, const char *dir)
+{
+	char	*oldcwd;
+	char	*temp_oldcwd;
+
+	oldcwd = hashmap_search(data->map, "PWD");
+	temp_oldcwd = ft_strdup(oldcwd);
+	if (!temp_oldcwd)
+		handle_error(E_MALLOC, NULL, __func__);
+	if (chdir(dir) != 0)
+	{
+		ft_printf_error("bash: cd: %s: Not a directory\n", dir);
+		data->exit_status = 1;
+		return (free(temp_oldcwd), 1);
+	}
+	data->exit_status = 0;
+	if (update_variables(data, temp_oldcwd) < 0)
+		return (free(temp_oldcwd), -1);
+	hashmap_to_env_array(data, data->map);
+	return (free(temp_oldcwd), 0);
 }
 
 int	change_to_home_or_invalid_arg(t_shell *data, size_t arg_count)
@@ -68,6 +80,11 @@ int	change_to_oldpwd(t_shell *data)
 	if (!oldpwd)
 	{
 		ft_printf_error("bash: cd: OLDPWD not set\n");
+		data->exit_status = 1;
+		return (1);
+	}
+	if (check_access_fok(oldpwd, CD) != 0)
+	{
 		data->exit_status = 1;
 		return (1);
 	}
