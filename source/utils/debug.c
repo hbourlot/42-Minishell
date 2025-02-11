@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:18:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:44:58 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:07:23 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	debug_command_input(t_shell *data)
 	tmp = data->command;
 	while (tmp)
 	{
-		printf("Command->pre_command [%d]: %s\n", i++, tmp->input);
+		printf("Command->input [%d]: %s\n", i++, tmp->input);
 		tmp = tmp->next;
 	}
 }
@@ -91,7 +91,6 @@ void	debug_command_file_list(t_shell *data)
 {
 	int		cmd_num;
 	t_cmd	*tmp;
-	// t_file	*tmp_files;
 
 	cmd_num = 1;
 	tmp = data->command;
@@ -100,28 +99,10 @@ void	debug_command_file_list(t_shell *data)
 		printf("Command %d:\n", cmd_num++);
 		if (tmp->input)
 			printf("  Input: %s\n", tmp->input);
-		if (tmp->redir_files)
-			debug_files(tmp->redir_files);
+		if (tmp->rf)
+			debug_files(tmp->rf);
 		else
 			printf("  No files associated.\n");
 		tmp = tmp->next;
 	}
-}
-void	print_execve_parameters(char *input) // TODO: from command->input
-{
-	int i = 0;
-	printf("Print_execve ");
-	while (input[i])
-	{
-		if (input[i] == REP_DOUBLE_QUOTE)
-			printf("2");
-		if (input[i] == REP_SINGLE_QUOTE)
-			printf("1");
-		if (input[i] == REP_SPACE)
-			printf("3");
-		else
-			printf("%c", input[i]);
-		i++;
-	}
-	printf("\n");
 }

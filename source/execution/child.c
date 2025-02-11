@@ -3,29 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/05 12:47:25 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 00:01:23 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	execute_only_tokens(t_shell *data, t_cmd *command)
+static void	execute_only_tokens(t_cmd *command)
 {
 	int	code_parsing;
 
 	code_parsing = 0;
-	code_parsing = validate_file_read_execution(command->redir_files);
+	code_parsing = validate_file_read_execution(command->rf);
 	if (code_parsing)
-	{
-		set_error_ex(code_parsing, NULL, NULL, true);
-		cleanup_shell(data);
-		handle_error();
-	}
+		handle_error(E_VFRE, NULL, NULL);
 	return ;
 }
+
 static bool	is_safe_to_execve(t_cmd *command)
 {
 	if (command->settings.only_tokens)
@@ -34,24 +31,16 @@ static bool	is_safe_to_execve(t_cmd *command)
 		return (false);
 	if (command->settings.is_builtin)
 		return (false);
-	if ( command->settings.is_safe_to_execve == false)
-		return false;
+	if (command->settings.is_safe_to_execve == false)
+		return (false);
 	return (true);
 }
 
 void	exec_builtin(t_shell *data, t_cmd *command)
 {
-	bool	cond_1;
-	bool	cond_2;
-	
-	cond_1 = command->delimiter == PIPE_SINGLE || command->redir_files;
-	cond_2 = command->settings.is_builtin;
-	if (cond_1 && cond_2 && process_builtin(data, command) < 0)
-	{
-			ft_printf_error("hello\n");
-		set_error_ex(1, "Malloc", NULL, true);
-		handle_error();
-	}	
+	if (command->settings.is_safe_to_builtin && process_builtin(data,
+			command) < 0)
+		handle_error(E_MALLOC, NULL, __func__);
 }
 
 void	child_process(t_shell *data, t_cmd *command)
@@ -59,16 +48,14 @@ void	child_process(t_shell *data, t_cmd *command)
 	int	code;
 
 	if (command->settings.only_tokens)
-		execute_only_tokens(data, command);
-	if (open_folders_safety(command->io, command->redir_files))
-		exit(handle_error());
+		execute_only_tokens(command);
+	open_folders_safety(command->io, command->rf);
 	do_dup2(command->io, data->pipe_id, &data->prev_fd);
 	if (is_safe_to_execve(command))
 	{
-		execve(command->path, command->args, command->envp);
+		execve(command->path, command->args, data->envp);
 		code = validate_command_path_access(command->path);
-		set_error_ex(code, NULL, NULL, true);
-		handle_error();
+		handle_error(code, NULL, NULL);
 	}
 	exec_builtin(data, command);
 	cleanup_shell(data);

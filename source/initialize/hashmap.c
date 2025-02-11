@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:48:06 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/05 23:47:36 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:56:52 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ size_t	hash(char *key)
 	i = 0;
 	while (key[i])
 	{
-		hash_value += key[i] * (i + 1);
+		hash_value = hash_value * 31 + key[i];
 		i++;
 	}
 	return (hash_value % HASHMAP_SIZE);
@@ -74,7 +74,7 @@ int	hashmap_insert(t_hashmap *map, char *key, char *value)
 		free(current->value);
 		current->value = ft_strdup(value);
 		if (!current->value && value)
-			return (ERROR);
+			handle_error(E_MALLOC, NULL, __func__);
 		return (0);
 	}
 	if (new_hasnode(map, key, value) == ERROR)

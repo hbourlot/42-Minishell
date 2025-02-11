@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_quotes_matching.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 16:29:40 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 16:14:14 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:55:35 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
-bool is_quotes_maching(char *input)
+bool	is_quotes_matching(char *input)
 {
 	int		i;
-	bool 	in_quotes;
+	bool	in_quotes;
 
 	i = 0;
 	in_quotes = false;

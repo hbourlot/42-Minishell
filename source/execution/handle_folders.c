@@ -3,55 +3,72 @@
 /*                                                        :::      ::::::::   */
 /*   handle_folders.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 08:00:37 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/05 10:49:04 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:55:41 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	close_folders_safety(t_file *redir_files, int *io)
+static void	close_folders_safety(t_file *rf, int *io)
 {
-	if (redir_files->next->read)
+	if (rf->next->read)
+	{
 		if (io[0] != -1)
 		{
 			close(io[0]);
 			io[0] = -1;
 		}
-	if (redir_files->next->write)
+	}
+	if (rf->next->write)
+	{
 		if (io[1] != -1)
 		{
 			close(io[1]);
 			io[1] = -1;
 		}
+	}
 }
 
-int	open_folders_safety(int *io, t_file *redir_files)
+static void	handle_right_folders_safety(int *io, t_file *rf)
 {
-	while (redir_files)
+	int	code;
+
+	if (rf->redirect == REDIRECT_RIGHT_SINGLE)
 	{
-		if (redir_files->redirect == REDIRECT_LEFT_SINGLE)
+		io[1] = open(rf->write, O_CREAT | O_RDWR | O_TRUNC, 0644);
+		if (io[1] < 0)
 		{
-			io[0] = open(redir_files->read, O_RDONLY);
-			if (io[0] < 0)
-				return (set_error_ex(1, NO_FILE_DIR_MSG,
-						redir_files->read, true), -1);
+			code = validate_command_path_access(rf->write);
+			handle_error(code, NULL, NULL);
 		}
-		else if (redir_files->redirect == REDIRECT_RIGHT_SINGLE)
-		{
-			io[1] = open(redir_files->write, O_CREAT | O_RDWR | O_TRUNC,
-					0644);
-			if (io[1] < 0)
-				return (set_error_ex(1, "File Creation", NULL, true), -1);
-		}
-		else if (redir_files->redirect == REDIRECT_RIGHT_DOUBLE)
-			io[1] = open(redir_files->write, O_CREAT | O_RDWR | O_APPEND,
-					0644);
-		if (redir_files->next)
-			close_folders_safety(redir_files, io);
-		redir_files = redir_files->next;
 	}
-	return (0);
+	if (rf->redirect == REDIRECT_RIGHT_DOUBLE)
+	{
+		io[1] = open(rf->write, O_CREAT | O_RDWR | O_APPEND, 0644);
+		if (io[1] < 0)
+		{
+			code = validate_command_path_access(rf->write);
+			handle_error(code, NULL, NULL);
+		}
+	}
+}
+
+void	open_folders_safety(int *io, t_file *rf)
+{
+	while (rf)
+	{
+		if (rf->redirect == REDIRECT_LEFT_SINGLE)
+		{
+			io[0] = open(rf->read, O_RDONLY);
+			if (io[0] < 0)
+				handle_error(E_FILE_DIR, rf->read, NULL);
+		}
+		handle_right_folders_safety(io, rf);
+		if (rf->next)
+			close_folders_safety(rf, io);
+		rf = rf->next;
+	}
 }

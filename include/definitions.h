@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   definitions.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/05 11:55:25 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:56:42 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@
 # define OK 0
 # define ERROR -1
 # define SUCCESS 0
-# define NO_FILE_DIR 1
-# define PERM_DENIED 1
 
 // Representations
 # define REP_SINGLE_QUOTE 1
@@ -40,12 +38,9 @@
 # define REP_SPACE 3
 # define REP_PIPE 4
 # define REP_AND 5
+// # define REP_ENV 1
 
-# define ABS_PATH "PATH=/bin:/usr/bin:/usr/local/bin"
-# define SYNTAX_ERROR_MSG "bash: syntax error near unexpected token `"
-# define NO_FILE_DIR_MSG "No such file or directory"
 # define PROMPT "\033[1;32m[Chitãozinho&Xororó\033[1;31m@localhost ~]$ \033[0m"
-
 # define HASHMAP_SIZE 10
 
 // ***************************************************************************
@@ -66,7 +61,7 @@ typedef enum e_token
 
 typedef enum e_builtin
 {
-	CD,
+	CD = 1,
 	EXPORT,
 	ECHO,
 	ENV,
@@ -97,16 +92,17 @@ typedef struct s_rules
 typedef struct s_cmd
 {
 	t_token				delimiter;
-	t_file				*redir_files;
+	t_file				*rf;
 	t_rules				settings;
+	bool				expansion;
 	char				*input;
+	char				*input_expanded;
 	char				*file;
 	int					fd_in;
 	int					fd_out;
 	int					io[2];
 	char				**args;
 	char				*path;
-	char				**envp;
 	struct s_cmd		*next;
 }						t_cmd;
 
@@ -131,9 +127,9 @@ typedef struct s_data
 	char				*error_output;
 	int					pipe_id[2];
 	int					prev_fd;
-	char				*readline;
+	char				*rl;
 	char				**eof;
-	char				**readline_splitted;
+	char				**rl_splitted;
 	char				**env_paths;
 	int					exit_status;
 	int					nbr_of_commands;
@@ -147,11 +143,7 @@ typedef struct s_data
 	t_hashmap			*map;
 }						t_shell;
 
-typedef void			(*t_here_doc_handler)(t_shell *, t_cmd *);
-typedef void			(*t_builtin_handler)(t_shell *, t_cmd *);
-typedef void			(*t_command_executor)(t_shell *, t_cmd *);
-typedef int				(*t_access_check_function)(const char *path);
-typedef int				(*t_executer_handler)(t_shell *, t_cmd *);
+typedef int				(*t_access_check_function)(const char *path, int code);
 
 #endif
 

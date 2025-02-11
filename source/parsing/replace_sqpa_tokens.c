@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   replace_sq_tokens.c                                :+:      :+:    :+:   */
+/*   replace_sqpa_tokens.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:44:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/22 20:34:59 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:55:20 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	identify_idx_of_occurrences(char *readline, char *in_quotes,
 		int *occurrence, int *idx)
 {
 	if (!readline[*idx])
-		return;
+		return ;
 	if (readline[*idx] == '\'' && *in_quotes != '"')
 	{
 		*in_quotes = '\'';
@@ -37,7 +37,7 @@ static void	identify_idx_of_occurrences(char *readline, char *in_quotes,
 	}
 	(*idx)++;
 	if (occurrence[0] != -1 && occurrence[1] != -1)
-		return;
+		return ;
 	identify_idx_of_occurrences(readline, in_quotes, occurrence, idx);
 }
 
@@ -58,7 +58,7 @@ static void	replace_non_literal_spaces(char *input)
 	}
 }
 
-static void replace_pa_tokens_in_literal(char *input)
+static void	replace_pa_tokens_in_literal(char *input)
 {
 	int		i;
 	bool	in_quotes;
@@ -80,12 +80,18 @@ static void replace_pa_tokens_in_literal(char *input)
 	}
 }
 
+/// @brief Identifies and replaces specific characters in the
+///		input string based on context.
+///     Replaces paired single ('') and double ("") quotes with respective tags.
+///     - Converts spaces outside quotes to REP_SPACE.
+///     - Converts '|' to REP_PIPE and '&' to REP_AND inside quotes.
+/// @param input The string to be processed.
 void	identify_and_replace_sqpa_tokens(char *input)
 {
-	int idx;
-	char in_quotes;
-	int occurrence[2];
-	char tag;
+	int		idx;
+	char	in_quotes;
+	int		occurrence[2];
+	char	tag;
 
 	idx = 0;
 	in_quotes = '\0';
@@ -97,7 +103,6 @@ void	identify_and_replace_sqpa_tokens(char *input)
 			tag = REP_SINGLE_QUOTE;
 		else if (in_quotes == '"')
 			tag = REP_DOUBLE_QUOTE;
-
 		input[occurrence[0]] = tag;
 		input[occurrence[1]] = tag;
 		in_quotes = '\0';

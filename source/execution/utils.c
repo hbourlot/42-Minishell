@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:23:56 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 16:35:14 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:26:35 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,12 @@ void	set_last_status(t_shell *data)
 	int		wait_status;
 	pid_t	prev_pid;
 	int		i;
+
 	i = 0;
 	prev_pid = 0;
 	wait_status = 0;
-	if(data->commands_ran == 0)
-		return;
+	if (data->commands_ran == 0)
+		return ;
 	while (i < data->commands_ran)
 	{
 		data->pid = waitpid(-1, &wait_status, 0);
@@ -48,7 +49,8 @@ void	set_last_status(t_shell *data)
 		prev_pid = data->pid;
 		i++;
 	}
-	data->exit_status = status;
+	if (data->exit_status == 0)
+		data->exit_status = status;
 }
 
 int	do_fork(pid_t *pid)
@@ -57,4 +59,16 @@ int	do_fork(pid_t *pid)
 	if (*pid < 0)
 		return (-1);
 	return (0);
+}
+
+void	here_doc_fail(t_shell *data, char *eof)
+{
+	int	size;
+
+	size = ft_strlen(eof);
+	get_error_context()->exit = true;
+	truncate_range(eof, size - 1, 1);
+	ft_printf_error("\nbash: warning: here-document at line ");
+	ft_printf_error("%d delimited by end-of-file (wanted `%s')\n",
+		data->nbr_of_lines, eof);
 }

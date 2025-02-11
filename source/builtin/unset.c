@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:04:19 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/02 23:03:34 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:00:18 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 /// @param command_args The variable names to unset.
 /// @return SUCCESS on removal, ERROR on failure.
 /// @details Deletes variables from the hashmap and updates the environment.
-///          Returns ERROR if updating fails. 
+///          Returns ERROR if updating fails.
 int	builtin_unset(t_shell *data, char **command_args)
 {
 	int	i;
@@ -29,10 +29,7 @@ int	builtin_unset(t_shell *data, char **command_args)
 		i++;
 	}
 	if (i > 1)
-	{
-		if (update_envp_and_envpath(data))
-			return (ERROR);
-	}
+		update_envp_and_envpath(data);
 	data->exit_status = 0;
 	return (SUCCESS);
 }

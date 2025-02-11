@@ -6,14 +6,13 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:41:38 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:51:06 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	add_file(char *input, int *position, t_token token,
-		t_file **redir_files)
+static int	add_file(char *input, int *position, t_token token, t_file **rf)
 {
 	t_file	*new;
 	t_file	*current;
@@ -30,9 +29,9 @@ static int	add_file(char *input, int *position, t_token token,
 		new->read = src;
 	else if (token == REDIRECT_RIGHT_SINGLE || token == REDIRECT_RIGHT_DOUBLE)
 		new->write = src;
-	current = *redir_files;
+	current = *rf;
 	if (!current)
-		*redir_files = new;
+		*rf = new;
 	else
 	{
 		while (current->next)
@@ -42,8 +41,7 @@ static int	add_file(char *input, int *position, t_token token,
 	return (0);
 }
 
-int	initialize_file_list(char *input, const char *redirects[],
-		t_file **redir_files)
+int	initialize_file_list(char *input, const char *redirects[], t_file **rf)
 {
 	int		idx;
 	int		position[2];
@@ -61,9 +59,8 @@ int	initialize_file_list(char *input, const char *redirects[],
 			token = get_t_token(input, ft_strlen(redirects[idx]));
 			get_redirect_complement(input, &position[0], &position[1],
 				ft_strlen(redirects[idx]));
-			if (add_file(input, position, token, redir_files) < 0)
+			if (add_file(input, position, token, rf) < 0)
 				return (-1);
-			input += ft_strlen(redirects[idx]);
 		}
 		input++;
 	}

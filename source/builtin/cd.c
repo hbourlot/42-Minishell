@@ -6,27 +6,18 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:57:27 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/05 18:26:14 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 00:03:07 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static int	check_access_fok(t_shell *data, const char *path)
-{
-	if (access(path, F_OK) == 0)
-		return (0);
-	printf("bash: cd: %s: No such file or directory\n", path);
-	data->exit_status = 1;
-	return (1);
-}
-
 static int	change_directory(t_shell *data, const char *dir)
 {
 	char	cwd[PATH_MAX + 1];
-	char	*temp_cwd;
+	char	old_cwd[PATH_MAX + 1];
 
-	getcwd(cwd, PATH_MAX);
+	getcwd(old_cwd, PATH_MAX);
 	if (chdir(dir) != 0)
 	{
 		ft_printf_error("bash: cd: %s: Not a directory\n", dir);
@@ -34,19 +25,12 @@ static int	change_directory(t_shell *data, const char *dir)
 		return (1);
 	}
 	data->exit_status = 0;
-	temp_cwd = ft_strdup(cwd);
-	if (!temp_cwd)
-		return (-1);
-	hashmap_insert(data->map, "OLDPWD", temp_cwd);
-	free(temp_cwd);
 	getcwd(cwd, PATH_MAX);
-	temp_cwd = ft_strdup(cwd);
-	if (!temp_cwd)
+	if (hashmap_insert(data->map, "OLDPWD", old_cwd) == ERROR)
 		return (-1);
-	hashmap_insert(data->map, "PWD", temp_cwd);
-	free(temp_cwd);
-	if (hashmap_to_env_array(data, data->map) == -1)
+	if (hashmap_insert(data->map, "PWD", cwd) == ERROR)
 		return (-1);
+	hashmap_to_env_array(data, data->map);
 	return (0);
 }
 
@@ -87,8 +71,7 @@ int	change_to_oldpwd(t_shell *data)
 		data->exit_status = 1;
 		return (1);
 	}
-	if (oldpwd)
-		printf("%s\n", oldpwd);
+	printf("%s\n", oldpwd);
 	if (change_directory(data, oldpwd) == -1)
 		return (-1);
 	return (0);
@@ -117,8 +100,11 @@ int	builtin_cd(t_shell *data, char **command_args)
 			return (-1);
 		return (0);
 	}
-	if (check_access_fok(data, command_args[1]) != 0)
+	if (check_access_fok(command_args[1], CD) != 0)
+	{
+		data->exit_status = 1;
 		return (1);
+	}
 	if (change_directory(data, command_args[1]) == -1)
 		return (-1);
 	return (0);

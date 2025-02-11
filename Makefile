@@ -7,7 +7,7 @@ CYAN 			= \033[1;36m
 RESET 			= \033[0m
 
 CC				= cc
-CFLAGS			=  -g #-Wall -Wextra -Werror #-pthread #-fsanitize=address,undefined 
+CFLAGS			=  -g -Wall -Wextra -Werror #-pthread #-fsanitize=address,undefined 
 LIB				= minishell.a
 INCLUDE 		= include/
 HEADER_MINI		= $(INCLUDE)minishell.h
@@ -22,13 +22,13 @@ OS				= $(shell uname)
 MSG_MAC 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))%% ] $(ORANGE)Compiling... $<... $(RESET)"
 MSG_LINUX 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))% ] $(ORANGE)Compiling... $<... $(RESET)"
 NAME			= minishell
-C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redirects parsing/replace_sqpa_tokens 	\
+C_FUNCTIONS		= parsing/syntax parsing/syntax_tokens parsing/strip_redirects parsing/replace_sqpa_tokens 	\
 					parsing/command_token_execution	parsing/command_path_execution 									\
 					parsing/syntax_quotes_matching																	\
 					 																								\
 					initialize/command initialize/command_aux initialize/shell initialize/file_list 				\
-					initialize/eof initialize/env_paths initialize/tokenize_element_aux 							\
-					initialize/input_expansion	initialize/hashmap initialize/hashmap_aux							\
+					initialize/eof initialize/env_paths initialize/handle_expansion		 							\
+					initialize/input_expansion	initialize/hashmap initialize/hashmap_aux	initialize/process_input_expanded \
 																							             			\
 					execution/parent	execution/utils																\
 					execution/get_path execution/handle_folders execution/here_doc execution/child					\
@@ -40,7 +40,7 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_pipe_redirects parsing/strip_redire
 					signals/signal      																			\
 																													\
 					utils/shell_cleanup utils/debug utils/debug1 utils/error_tools utils/error_parsing				\
-					utils/error_initialize utils/error_execution utils/useful_functions utils/useful_functions2
+					utils/error_initialize utils/error_execution utils/useful_functions utils/useful_functions2 utils/hashmap_free
 # -L./ -lminishell
 # VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes
 VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=readline.supp

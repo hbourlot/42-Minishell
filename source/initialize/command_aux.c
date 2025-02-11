@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   command_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/05 12:46:03 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:14:10 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	add_command_to_list(t_cmd **command, t_cmd *new_command)
+static void	add_command_to_list(t_cmd **command, t_cmd *new_command)
 {
 	t_cmd	*last;
 
@@ -25,82 +25,69 @@ static int	add_command_to_list(t_cmd **command, t_cmd *new_command)
 			last = last->next;
 		last->next = new_command;
 	}
-	return (SUCCESS);
 }
 
-static int	initialize_command_struct(t_cmd **command, char *readline_splitted, t_token token_type)
+static void	initialize_command_struct(t_cmd **command, char *rl_splitted,
+		t_token id)
 {
 	t_cmd	*new_command;
 
 	new_command = ft_calloc(1, sizeof(t_cmd));
 	if (!new_command)
-		return (set_error_in(1, "\"Malloc\"", __func__, true), ERROR);
-	new_command->input = ft_strdup(readline_splitted);
+		handle_error(E_MALLOC, NULL, __func__);
+	new_command->input = ft_strdup(rl_splitted);
 	if (!new_command->input)
-		return (set_error_in(1, "\"Malloc\"", __func__, true), ERROR);
-	new_command->delimiter = token_type;
+	{
+		free_pointers(1, &new_command);
+		handle_error(E_MALLOC, NULL, __func__);
+	}
+	new_command->delimiter = id;
 	ft_memset(new_command->io, -1, 8);
 	new_command->settings.is_safe_to_execve = true;
 	new_command->next = NULL;
-	if (ft_strlen(readline_splitted) == 0 || all_same_char(readline_splitted, REP_SPACE))
+	if (ft_strlen(rl_splitted) == 0 || all_same_char(rl_splitted, REP_SPACE))
 		new_command->settings.only_tokens = true;
-	return add_command_to_list(command, new_command);
+	add_command_to_list(command, new_command);
 }
 
-static int	handle_file_tokens(t_shell *data, t_cmd *command)
+static void	handle_file_tokens(t_cmd *command)
 {
-	(void)data;
-	const char *file_tokens[] = {">>", ">", "<", NULL};
+	const char	*file_tokens[] = {">>", ">", "<", NULL};
 
-	if (initialize_file_list(command->input, file_tokens,
-			&command->redir_files))
-	{
-		set_error_in(1, "\"File Redirection\"", __func__, true);
-		return (-1);
-	}
-	strip_redirects(command->input, file_tokens);
-	if (ft_strlen(command->input) == 0 || all_same_char(command->input,
-			REP_SPACE))
-	{
+	if (initialize_file_list(command->input_expanded, file_tokens,
+			&command->rf))
+		handle_error(E_MALLOC, NULL, __func__);
+	strip_redirects(command->input_expanded, file_tokens);
+	if ((ft_strlen(command->input_expanded) == 0
+			|| all_same_char(command->input_expanded, REP_SPACE))
+		&& command->settings.expansion == false)
 		command->settings.is_safe_to_execve = false;
-	}
-	return (0);
 }
 
-static int	prepare_execve_parameters(t_cmd *command, t_shell *data)
+void	prepare_parameters(t_cmd *command, t_shell *data)
 {
-	command->envp = data->envp;
-
-	command->args = process_command_input(command->input);
-	if (!command->args)
-	{
-		set_error_in(1, "Malloc", __func__, true);
-		return (handle_error());
-	}
+	command->input_expanded = expand_command_input(command);
+	handle_file_tokens(command);
+	if (command->settings.is_safe_to_execve == false)
+		return ;
+	command->args = process_command_input_expanded(command);
 	command->path = get_path(command->args[0], data->env_paths);
-	if (!command->path || !command->args)
-		return (set_error_in(1, "\"Path\"", __func__, true), ERROR);
-	return (SUCCESS);
+	if (!command->path && command->settings.expansion == false)
+		handle_error(E_MALLOC, NULL, __func__);
+	if (command->settings.expansion == true && !command->args)
+		command->settings.is_safe_to_execve = false;
+	set_builtin_flag(command);
 }
 
-int	add_command(t_cmd **command, char *readline_splitted, t_shell *data,
-		t_token token_type)
+void	add_command(t_cmd **command, char *rl_splitted, t_shell *data,
+		t_token id)
 {
 	t_cmd	dummy;
 	t_cmd	*last_node;
 
-	replace_characters(readline_splitted, REP_AND, '&');
-	replace_characters(readline_splitted, REP_PIPE, '|');
-	if (initialize_command_struct(command, readline_splitted, token_type) < 0)
-		return (ERROR);
+	replace_characters(rl_splitted, REP_AND, '&');
+	replace_characters(rl_splitted, REP_PIPE, '|');
+	initialize_command_struct(command, rl_splitted, id);
 	last_node = get_last_node(data->command, get_offset(&dummy, &dummy.next));
-	if (handle_file_tokens(data, last_node) < 0)
-		return (ERROR);
-	if (last_node->settings.is_safe_to_execve == true)
-	{
-		if (prepare_execve_parameters(last_node, data) < 0)
-			return (ERROR);
-		set_builtin_flag(last_node);
-	}
-	return (SUCCESS);
+	prepare_parameters(last_node, data);
 }

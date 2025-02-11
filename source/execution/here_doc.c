@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/06 12:58:42 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:30:22 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,53 +42,46 @@ int	here_doc(int *pipe_id, char *limiter)
 	return (cleanup_and_exit(text, 0));
 }
 
-
-static void	here_doc_fail(t_shell *data, char *eof)
-{
-	int	size;
-
-	size = ft_strlen(eof);
-	get_error_context()->exit = true;
-	truncate_range(eof, size - 1, 1);
-	ft_printf_error("\nbash: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", data->nbr_of_lines, eof);
-	handle_error();
-
-}
-
 static void	handle_child_process(t_shell *data, int i)
 {
 	restore_signals();
 	if (here_doc(data->pipe_id, data->eof[i]) == -1)
 		here_doc_fail(data, data->eof[i]);
-	close(data->pipe_id[0]);
-	close(data->pipe_id[1]);
 	cleanup_shell(data);
 	exit(EXIT_SUCCESS);
 }
 
-static void	handle_parent_process(t_shell *data, int i)
+static void	handle_parent_process(t_shell *data, int i, int *ws)
 {
 	if (!data->eof[i + 1] && data->command)
 		data->prev_fd = data->pipe_id[0];
 	else
 		close(data->pipe_id[0]);
-	wait(NULL);
+	wait(ws);
 	close(data->pipe_id[1]);
 }
 
 int	run_eof(t_shell *data, pid_t *pid)
 {
 	int	i;
+	int	wait_status;
 
 	i = 0;
 	while (data->eof[i])
 	{
+		signal(SIGINT, SIG_IGN);
 		if (pipe(data->pipe_id) == -1 || do_fork(&data->pid))
-			return (set_error_ex(1, "Pipe/Fork", NULL, false), -1);
+			return (handle_error(E_PF, NULL, NULL), -1);
 		else if (*pid == 0)
 			handle_child_process(data, i);
 		else
-			handle_parent_process(data, i);
+			handle_parent_process(data, i, &wait_status);
+		if (WIFEXITED(wait_status))
+		{
+			data->exit_status = WEXITSTATUS(wait_status);
+			if (data->exit_status)
+				return (-1);
+		}
 		i++;
 	}
 	return (0);

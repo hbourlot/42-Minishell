@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:02:59 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/04 16:55:41 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:38:50 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	long long	start;
 	long long	end;
 	char		*temp;
-	
+
 	len = ft_strlen(s1);
 	start = 0;
 	end = len - 1;

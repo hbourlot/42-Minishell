@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:38:12 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/02 22:28:58 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:58:59 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ char	*get_path(char *command_str, char **env_paths)
 	executable = NULL;
 	only_executable = false;
 	executable = ft_strdup(command_str);
-	if (!executable)
+	if (!executable && command_str)
 	{
 		set_error_in(1, "Malloc", __func__, true);
 		return (NULL);
 	}
-	if (!env_paths ||!*env_paths || ft_strlen(executable) == 0)
+	if (!env_paths || !*env_paths || ft_strlen(executable) == 0)
 		return (executable);
 	if (ft_strlen(executable) > 0 && ft_strchr(executable, '/'))
 		return (executable);
