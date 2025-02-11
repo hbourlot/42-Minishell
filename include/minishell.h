@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 11:49:53 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 19:53:51 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int			builtin_export(t_shell *data, char **command_args);
 // **						Signal Functions								**
 // ***************************************************************************
 
-void		restore_signals(void);
+void		restore_signals(int code);
 void		setup_parent_signals(void);
 
 #endif

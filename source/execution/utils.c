@@ -3,30 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:23:56 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 16:00:28 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 20:58:57 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	handle_wait_stats(int wait_status, int *status)
+static void	handle_wait_stats(t_shell *data, pid_t *prev_pid ,int wait_status, int *status)
 {
 	int	sig;
+	static pid_t max = 0;
 
-	if (WIFEXITED(wait_status))
-		*status = WEXITSTATUS(wait_status);
-	else if (WIFSIGNALED(wait_status))
+	if (WIFSIGNALED(wait_status))
 	{
 		sig = WTERMSIG(wait_status);
-		*status = 128 + sig;
+		if (data->pid > *prev_pid && data->pid > max)
+			*status = 128 + sig;
 		if (sig == SIGQUIT)
 			write(2, "Quit (core dumped)\n", 19);
 		else if (sig == SIGINT)
-			write(1, "\n", 1);
+			write(2, "\n", 1);
 	}
+	if (WIFEXITED(wait_status) && data->pid > *prev_pid)
+		*status = WEXITSTATUS(wait_status);
+	if (data->pid > *prev_pid)
+		max = data->pid;
 }
 
 void	set_last_status(t_shell *data)
@@ -45,8 +49,8 @@ void	set_last_status(t_shell *data)
 	while (i < data->commands_ran)
 	{
 		data->pid = waitpid(-1, &wait_status, 0);
-		if (data->pid > prev_pid)
-			handle_wait_stats(wait_status, &status);
+
+		handle_wait_stats(data, &prev_pid ,wait_status, &status);
 		prev_pid = data->pid;
 		i++;
 	}

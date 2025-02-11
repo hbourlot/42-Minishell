@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 14:38:58 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 20:11:46 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,16 @@ int	here_doc(int *pipe_id, t_file *current)
 
 	while (true)
 	{
-		ft_putstr_fd("> ", STDOUT_FILENO);
-		text = get_next_line(STDIN_FILENO);
+		text = readline("> ");
 		if (!text)
 			return (-1);
+		if (ft_strlen(text) == 0)
+		{
+			free(text);
+			continue;
+		}
 		if (!ft_strcmp(current->eof, text))
 			break ;
-		if (ft_strlen(text) == 0)
-			return (free(text), -1);
 		if (!ft_strchr(text, '\n') && !ft_strncmp(text, current->eof,
 				ft_strlen(text) - 1))
 			return (free(text), -1);
@@ -52,7 +54,7 @@ int	here_doc(int *pipe_id, t_file *current)
 
 static void	handle_child_process(t_shell *data, t_file *current)
 {
-	restore_signals();
+	restore_signals(EOF);
 	if (here_doc(data->pipe_id, current) == -1)
 		here_doc_fail(data, current);
 	cleanup_shell(data);

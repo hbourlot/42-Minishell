@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_commands.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 18:33:43 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 20:01:04 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	command_loop(t_shell *data, t_cmd *command)
 			return (handle_error(E_EOF, NULL, __func__), -1);
 		else if (data->pid == 0)
 		{
-			restore_signals();
+			restore_signals(0);
 			child_process(data, command);
 		}
 		else
@@ -102,7 +102,7 @@ void	run_commands(t_shell *data)
 	{
 		if (run_eof(data, &data->pid))
 			return ;
-		set_last_status(data);
+		// set_last_status(data);
 		if (data->exit_status == 130 || data->exit_status == 131)
 			return ;
 	}
