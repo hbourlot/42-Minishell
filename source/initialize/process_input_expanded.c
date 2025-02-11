@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 16:15:08 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/11 10:40:04 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:16:23 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	**process_command_input_expanded(t_cmd *command)
 {
 	char	**cmd_args;
 
-	identify_and_replace_sqpa_tokens(command->input_expanded);
+	identify_and_replace_sqpa_tokens(command->input_expanded); //  ! TODO
 	replace_characters(command->input_expanded, REP_PIPE, '|');
 	replace_characters(command->input_expanded, REP_AND, '&');
 	if (ft_strchr(command->input_expanded, REP_DQ)
