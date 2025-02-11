@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:11:13 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/11 00:03:49 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:32:08 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	is_valid_key(t_shell *data, char *temp_key)
 	i = -1;
 	while (temp_key && temp_key[++i])
 	{
-		if (!ft_isalnum(temp_key[i]) && temp_key[i] != '_')
+		if ((!ft_isalnum(temp_key[i]) && temp_key[i] != '_') || ft_isdigit(temp_key[0]))
 		{
 			valid = false;
 			break ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_expansion.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 16:17:41 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:38:10 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char	*process_expansion(bool *expanded, char *element, int i,
 	char	*result;
 
 	j = i + 1;
-	if (element[j] == '$' || element[j] == '?')
+	if (element[j] == '$' || element[j] == '?' || ft_isdigit(element[j]))
 		j++;
 	else
 		while (element[j] && (ft_isalnum(element[j]) || element[j] == '_'))
@@ -99,7 +99,7 @@ static void	filter_special_quotes(char *result)
 {
 	int	i;
 	bool in_quotes;
-	
+
 	i = 0;
 	in_quotes = false;
 	while (result[i])
