@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 10:46:44 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 14:04:25 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:33:45 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static int	allocate_eof(t_shell *data, int i)
 	new->eof = ft_substr(&data->rl[i], p[0], p[1] - p[0]);
 	truncate_character(new->eof, REP_DQ);
 	truncate_character(new->eof, REP_SQ);
+	replace_characters(new->eof, REP_PIPE, '|');
+	replace_characters(new->eof, REP_PIPE, '&');
 	new->eof = ft_append_and_free(new->eof, "\n");
 	if (!new->eof)
 		return (free(new), -1);

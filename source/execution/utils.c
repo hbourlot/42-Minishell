@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:23:56 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 11:12:27 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:00:28 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	set_last_status(t_shell *data)
 	i = 0;
 	prev_pid = 0;
 	wait_status = 0;
+	status = 0;
 	if (data->commands_ran == 0)
 		return ;
 	while (i < data->commands_ran)
@@ -49,8 +50,10 @@ void	set_last_status(t_shell *data)
 		prev_pid = data->pid;
 		i++;
 	}
-	if (data->exit_status == 0)
-		data->exit_status = status;
+	if (data->last_cmd_executed->settings.is_builtin
+		&& data->last_cmd_executed->settings.builtin_id != ECHO)
+		return ;
+	data->exit_status = status;
 }
 
 int	do_fork(pid_t *pid)
