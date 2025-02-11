@@ -36,7 +36,7 @@ int	here_doc(int *pipe_id, t_file *current)
 		if (ft_strlen(text) == 0)
 		{
 			free(text);
-			continue;
+			continue ;
 		}
 		if (!ft_strcmp(current->eof, text))
 			break ;

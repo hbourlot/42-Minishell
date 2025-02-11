@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 20:01:04 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 21:26:46 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ void	run_commands(t_shell *data)
 	{
 		if (run_eof(data, &data->pid))
 			return ;
-		// set_last_status(data);
 		if (data->exit_status == 130 || data->exit_status == 131)
 			return ;
 	}

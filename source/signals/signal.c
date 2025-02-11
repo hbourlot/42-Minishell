@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 22:00:45 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 20:15:20 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 21:20:51 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	handle_sigint(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	get_shell()->exit_status = 130;
 }
 
 void	setup_parent_signals(void)
@@ -36,7 +37,7 @@ void	handle_sigint_child(int sig)
 {
 	(void)sig;
 	cleanup_shell(get_shell());
-	write(1, "b\n", 2);
+	write(2, "\n", 1);
 	exit(130);
 }
 
@@ -44,7 +45,7 @@ void	handle_sigquit_child(int sig)
 {
 	(void)sig;
 	cleanup_shell(get_shell());
-	write(1, "a\n", 2);
+	write(2, "\n", 1);
 	exit(131);
 }
 
@@ -56,7 +57,7 @@ void	restore_signals(int code)
 	sigemptyset(&sa_int.sa_mask);
 	sa_int.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa_int, NULL);
-	if(code == EOF)
+	if (code == EOF)
 		signal(SIGQUIT, SIG_IGN);
 	else
 		signal(SIGQUIT, handle_sigint_child);

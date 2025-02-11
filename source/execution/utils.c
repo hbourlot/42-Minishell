@@ -12,10 +12,11 @@
 
 #include "minishell.h"
 
-static void	handle_wait_stats(t_shell *data, pid_t *prev_pid ,int wait_status, int *status)
+static void	handle_wait_stats(t_shell *data, pid_t *prev_pid, int wait_status,
+		int *status)
 {
-	int	sig;
-	static pid_t max = 0;
+	int				sig;
+	static pid_t	max = 0;
 
 	if (WIFSIGNALED(wait_status))
 	{
@@ -49,8 +50,7 @@ void	set_last_status(t_shell *data)
 	while (i < data->commands_ran)
 	{
 		data->pid = waitpid(-1, &wait_status, 0);
-
-		handle_wait_stats(data, &prev_pid ,wait_status, &status);
+		handle_wait_stats(data, &prev_pid, wait_status, &status);
 		prev_pid = data->pid;
 		i++;
 	}
