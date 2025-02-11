@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   definitions.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 18:56:42 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:16:37 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 # define REP_AND 5
 // # define REP_ENV 1
 
-# define PROMPT "\033[1;32m[Chitãozinho&Xororó\033[1;31m@localhost ~]$ \033[0m"
+# define PROMPT "\033[1;32m[Chitaozinho&Xororo\033[1;31m@localhost ~]$ \033[0m"
 # define HASHMAP_SIZE 10
 
 // ***************************************************************************
@@ -121,14 +121,13 @@ typedef struct s_hashmap
 
 typedef struct s_data
 {
-	bool				it_ends_with_delimiter;
-	// bool				its_only_eof;
 	pid_t				pid;
 	char				*error_output;
 	int					pipe_id[2];
 	int					prev_fd;
 	char				*rl;
 	char				**eof;
+	// t_file				*rf;
 	char				**rl_splitted;
 	char				**env_paths;
 	int					exit_status;
