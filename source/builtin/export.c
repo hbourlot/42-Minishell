@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:11:13 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/11 16:43:49 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/18 10:37:05 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	print_key_value_sorted(t_hashnode **temp)
 	}
 }
 
-static int	is_valid_key(t_shell *data, char *temp_key)
+static int	is_valid_key(t_shell *data, char *temp_key, char *str)
 {
 	int		i;
 	bool	valid;
@@ -76,7 +76,7 @@ static int	is_valid_key(t_shell *data, char *temp_key)
 	if (valid == false)
 	{
 		ft_printf_error("bash: export: '%s': not a valid identifier\n",
-			temp_key);
+			str);
 		data->exit_status = 1;
 		return (1);
 	}
@@ -92,7 +92,7 @@ static int	add_new_variable_on_hashmap(t_shell *data, char *command_arg)
 	value = ft_strchr(command_arg, '=');
 	if (!value)
 	{
-		if (is_valid_key(data, command_arg))
+		if (is_valid_key(data, command_arg, command_arg))
 			return (1);
 		if (hashmap_insert(data->map, command_arg, NULL) == ERROR)
 			return (ERROR);
@@ -104,7 +104,7 @@ static int	add_new_variable_on_hashmap(t_shell *data, char *command_arg)
 	temp_key = ft_substr(command_arg, 0, len);
 	if (!temp_key)
 		return (ERROR);
-	if (is_valid_key(data, temp_key))
+	if (is_valid_key(data, temp_key, command_arg))
 		return (free(temp_key), 1);
 	if (hashmap_insert(data->map, temp_key, value + 1) == ERROR)
 		return (free(temp_key), ERROR);
