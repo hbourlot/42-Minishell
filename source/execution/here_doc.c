@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 20:11:46 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:33:25 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,11 @@ int	here_doc(int *pipe_id, t_file *current)
 		if (!ft_strcmp(current->eof, text))
 			break ;
 		if (!ft_strchr(text, '\n') && !ft_strncmp(text, current->eof,
-				ft_strlen(text) - 1))
+				ft_strlen(text)))
 			return (free(text), -1);
 		expand_in_pipe(current, &text);
 		ft_putstr_fd(text, pipe_id[1]);
+		ft_putstr_fd("\n", pipe_id[1]);
 		free(text);
 	}
 	if (text)

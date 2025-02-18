@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   run_commands.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
 /*   Updated: 2025/02/18 17:47:32 by joralves         ###   ########.fr       */
@@ -75,6 +75,7 @@ int	command_loop(t_shell *data, t_cmd *command)
 	{
 
 		run_builting_separately(data, command);
+		
 		if (command->delimiter != AND_DOUBLE && command->next
 			&& pipe(data->pipe_id) == -1)
 			return (handle_error(E_EOF, NULL, __func__), -1);

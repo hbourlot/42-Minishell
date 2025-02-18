@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:23:56 by hbourlot          #+#    #+#             */
 /*   Updated: 2025/02/18 16:05:46 by joralves         ###   ########.fr       */
