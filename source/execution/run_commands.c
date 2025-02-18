@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 21:26:46 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:47:32 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ bool	run_builting_separately(t_shell *data, t_cmd *command)
 {
 	if (is_safe_to_run_builtin(command))
 	{
-		if (process_builtin(data, command) < 0)
+		if (process_builtin(data, command, STDOUT_FILENO) < 0)
 			handle_error(E_MALLOC, NULL, __func__);
 		if (command->settings.builtin_id == EXPORT)
 			refresh_command_parameters(data, command->next);
@@ -73,6 +73,7 @@ int	command_loop(t_shell *data, t_cmd *command)
 	signal(SIGINT, SIG_IGN);
 	while (command)
 	{
+
 		run_builting_separately(data, command);
 		if (command->delimiter != AND_DOUBLE && command->next
 			&& pipe(data->pipe_id) == -1)

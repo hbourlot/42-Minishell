@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 00:01:23 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:05:17 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static bool	is_safe_to_execve(t_cmd *command)
 void	exec_builtin(t_shell *data, t_cmd *command)
 {
 	if (command->settings.is_safe_to_builtin && process_builtin(data,
-			command) < 0)
+			command, 1) < 0)
 		handle_error(E_MALLOC, NULL, __func__);
 }
 

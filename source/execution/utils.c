@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:23:56 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 20:58:57 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:05:46 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	here_doc_fail(t_shell *data, t_file *current)
 	size = ft_strlen(current->eof);
 	get_error_context()->exit = true;
 	truncate_range(current->eof, size - 1, 1);
-	ft_printf_error("\nbash: warning: here-document at line ");
-	ft_printf_error("%d delimited by end-of-file (wanted `%s')\n",
+	ft_printf_fd(2, "\nbash: warning: here-document at line ");
+	ft_printf_fd(2, "%d delimited by end-of-file (wanted `%s')\n",
 		data->nbr_of_lines, current->eof);
 }

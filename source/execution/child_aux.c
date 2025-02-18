@@ -6,13 +6,12 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 12:00:01 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/07 23:12:59 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:04:10 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// TODO: dup2 fails and return -1
 static void	duplicate_fd(int fd1, int fd2)
 {
 	if (fd1 != -1)

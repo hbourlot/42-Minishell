@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 22:00:45 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 21:20:51 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:13:57 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	setup_parent_signals(void)
 	sa_int.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa_int, NULL);
 	signal(SIGQUIT, SIG_IGN);
+	// signal(SIGPIPE, SIG_IGN);
 }
 
 void	handle_sigint_child(int sig)

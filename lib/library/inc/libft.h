@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 15:40:35 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:01:54 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int					ft_check_duplicate(t_list **lst);
 int					stack_value(t_list **node, int idx);
 int					stack_idx(t_list **node, int value);
 int					is_str_longer(char *src1, char *src2);
-void				ft_printf_error(const char *fmt, ...);
+void				ft_printf_fd(int fd,const char *fmt, ...);
 bool				all_same_char(const char *src, char c);
 char				*ft_strcpy(char *dest, const char *src);
 char				*ft_strcat(char *dest, const char *src);

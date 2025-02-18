@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:57:27 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/11 21:23:53 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:08:40 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	change_directory(t_shell *data, const char *dir)
 		handle_error(E_MALLOC, NULL, __func__);
 	if (chdir(dir) != 0)
 	{
-		ft_printf_error("bash: cd: %s: Not a directory\n", dir);
+		ft_printf_fd(2,"bash: cd: %s: Not a directory\n", dir);
 		data->exit_status = 1;
 		return (free(temp_oldcwd), 1);
 	}
@@ -55,7 +55,7 @@ int	change_to_home_or_invalid_arg(t_shell *data, size_t arg_count)
 		home = hashmap_search(data->map, "HOME");
 		if (!home || !*home)
 		{
-			ft_printf_error("bash: cd: HOME not set\n");
+			ft_printf_fd(2,"bash: cd: HOME not set\n");
 			data->exit_status = 1;
 			return (1);
 		}
@@ -65,7 +65,7 @@ int	change_to_home_or_invalid_arg(t_shell *data, size_t arg_count)
 	}
 	if (arg_count > 2)
 	{
-		printf("bash: cd: too many arguments\n");
+		ft_printf_fd(2,"bash: cd: too many arguments\n");
 		data->exit_status = 1;
 		return (1);
 	}
@@ -79,7 +79,7 @@ int	change_to_oldpwd(t_shell *data)
 	oldpwd = hashmap_search(data->map, "OLDPWD");
 	if (!oldpwd)
 	{
-		ft_printf_error("bash: cd: OLDPWD not set\n");
+		ft_printf_fd(2,"bash: cd: OLDPWD not set\n");
 		data->exit_status = 1;
 		return (1);
 	}

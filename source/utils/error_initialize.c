@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 20:21:00 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 16:00:16 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:14:04 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	handle_error_in(void)
 	code = error->code;
 	if (error->initialize.msg && error->initialize.function)
 	{
-		ft_printf_error("Error: %s in function: %s\n", error->initialize.msg,
+		ft_printf_fd(2,"Error: %s in function: %s\n", error->initialize.msg,
 			error->initialize.function);
 	}
 	return (code);

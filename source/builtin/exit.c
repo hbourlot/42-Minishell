@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:43:23 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 17:08:57 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:09:59 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	builtin_exit(t_shell *data, t_cmd *cmd)
 	printf("exit\n");
 	if (len > 2)
 	{
-		ft_printf_error("bash: exit: too many arguments\n");
+		ft_printf_fd(2,"bash: exit: too many arguments\n");
 		data->exit_status = 1;
 		return ;
 	}
@@ -55,7 +55,7 @@ void	builtin_exit(t_shell *data, t_cmd *cmd)
 	{
 		if (!is_numeric(cmd->args[1]))
 		{
-			printf("bash: exit: %s: numeric argument required\n", cmd->args[1]);
+			ft_printf_fd(2,"bash: exit: %s: numeric argument required\n", cmd->args[1]);
 			cleanup_shell(data);
 			exit(2);
 		}

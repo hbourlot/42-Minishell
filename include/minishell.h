@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 19:53:51 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:49:11 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,11 +127,11 @@ void		builtin_pwd(t_shell *data);
 void		set_builtin_flag(t_cmd *last_node);
 void		builtin_exit(t_shell *data, t_cmd *cmd);
 int			builtin_cd(t_shell *data, char **command_args);
-int			process_builtin(t_shell *data, t_cmd *command);
-void		builtin_env(t_shell *data, char **command_args);
+int			process_builtin(t_shell *data, t_cmd *command, int fd);
+void		builtin_env(t_shell *data, t_cmd *command, int fd);
 void		builtin_echo(t_shell *data, char **command_args);
 int			builtin_unset(t_shell *data, char **command_args);
-int			builtin_export(t_shell *data, char **command_args);
+int			builtin_export(t_shell *data, t_cmd *commad, int fd);
 
 // ***************************************************************************
 // **						Signal Functions								**
