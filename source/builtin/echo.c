@@ -3,27 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 15:27:48 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/11 15:59:35 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/18 10:23:50 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	is_valid_flag(char *command_arg, bool *remove_nl, bool *printable)
+static bool	is_valid_flag(char **command_arg, bool *remove_nl, int *idx)
 {
 	int	j;
+	int i;
 
-	j = 1;
-	while (command_arg[j] == 'n')
-		j++;
-	if (command_arg[j] == '\0')
+	i = *idx;
+	while(command_arg[i])
 	{
-		*remove_nl = true;
-		*printable = false;
+		j = 0;
+		if (command_arg[i][j++] != '-')
+			 break;
+		while (command_arg[i][j] == 'n')
+			j++;
+		if (command_arg[i][j] == '\0')
+			*remove_nl = true;
+		else if (command_arg[i][j] != '\0')
+			break;
+		i++;
 	}
+	*idx = i;
+	return (*remove_nl);
 }
 
 /// @brief Handles `echo` to print arguments.
@@ -35,22 +44,15 @@ void	builtin_echo(t_shell *data, char **command_args)
 {
 	int		idx;
 	bool	remove_nl;
-	bool	printable;
 
 	idx = 1;
 	remove_nl = false;
 	while (command_args[idx])
 	{
-		printable = true;
-		if (command_args[idx][0] == '-')
-			is_valid_flag(command_args[idx], &remove_nl, &printable);
-		if (printable)
-		{
-			if (!command_args[idx + 1])
-				printf("%s", command_args[idx]);
-			else
-				printf("%s ", command_args[idx]);
-		}
+		if (!remove_nl && idx == 1 && is_valid_flag(command_args, &remove_nl, &idx))
+			continue;
+		write(1, command_args[idx], ft_strlen(command_args[idx]));
+		write(1, " ", (command_args[idx + 1] != NULL));
 		idx++;
 	}
 	if (remove_nl == false)
