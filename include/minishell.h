@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/18 16:49:11 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 19:13:03 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ int			hashmap_insert(t_hashmap *map, char *key, char *value);
 char		*handle_command_elements(char **elements, bool *expanded);
 void		add_command(t_cmd **command, char *rl_splitted, t_shell *data,
 				t_token id);
-int			initialize_file_list(char *input, const char *redirects[],
-				t_file **rf);
+int			initialize_file_list(t_cmd *command, const char *redirects[]);
 
 // ***************************************************************************
 // **						Execution Functions								**
@@ -79,7 +78,7 @@ int			initialize_file_list(char *input, const char *redirects[],
 int			do_fork(pid_t *pid);
 void		run_commands(t_shell *data);
 void		set_last_status(t_shell *data);
-int			run_eof(t_shell *data, pid_t *pid);
+int			run_eof(t_shell *data, t_cmd *command);
 int			here_doc(int *pipe_id, t_file *current);
 void		here_doc_fail(t_shell *data, t_file *current);
 char		*get_path(char *input, char **env_paths);

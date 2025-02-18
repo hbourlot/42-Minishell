@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   eof.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 10:46:44 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 20:11:31 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:53:06 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	allocate_eof(t_shell *data, int i)
 	replace_characters(new->eof, REP_PIPE, '|');
 	replace_characters(new->eof, REP_PIPE, '&');
 	while (data->rl[i + j] && data->rl[i + j] == REP_SPACE)
-		j++;
+	j++;
 	if (data->rl[i + j] == REP_SQ || data->rl[i + j] == REP_DQ)
 		new->in_quotes = true;
 	add_rf_to_list(data, new);

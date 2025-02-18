@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_cleanup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/18 17:05:11 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 19:33:53 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ static void	free_command(t_cmd **command)
 	while (command && *command)
 	{
 		tmp = *command;
-		free_files(tmp->rf);
-		tmp->rf = NULL;
+		free_files(tmp->io_rf);
+		free_files(tmp->eof);
+		tmp->eof = NULL;
+		tmp->io_rf = NULL;
 		if (tmp->input)
 			free(tmp->input);
 		if (tmp->args)

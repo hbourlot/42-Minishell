@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/18 17:47:32 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 20:18:28 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ int	command_loop(t_shell *data, t_cmd *command)
 	while (command)
 	{
 
+		// run_eof(data, command);
 		run_builting_separately(data, command);
-		
 		if (command->delimiter != AND_DOUBLE && command->next
 			&& pipe(data->pipe_id) == -1)
 			return (handle_error(E_EOF, NULL, __func__), -1);
@@ -100,13 +100,13 @@ void	run_commands(t_shell *data)
 {
 	data->prev_fd = -1;
 	ft_memset(data->pipe_id, -1, sizeof(int) * 2);
-	if ((data->rf))
-	{
-		if (run_eof(data, &data->pid))
-			return ;
-		if (data->exit_status == 130 || data->exit_status == 131)
-			return ;
-	}
+	// if ((data->rf))
+	// {
+	// 	if (run_eof(data, &data->pid))
+	// 		return ;
+	// 	if (data->exit_status == 130 || data->exit_status == 131)
+	// 		return ;
+	// }
 	command_loop(data, data->command);
 	set_last_status(data);
 }

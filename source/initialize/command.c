@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 16:37:11 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:21:06 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	init_command(t_shell *data)
 {
 	const char	*delimiters[] = {"||", "|", "&&", NULL};
 
-	handle_eof(data);
+	// handle_eof(data);
 	if (data->rl)
 	{
 		split_command_input(data, delimiters);

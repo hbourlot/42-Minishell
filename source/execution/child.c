@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/18 18:05:17 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 20:17:31 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	execute_only_tokens(t_cmd *command)
 	int	code_parsing;
 
 	code_parsing = 0;
-	code_parsing = validate_file_read_execution(command->rf);
+	code_parsing = validate_file_read_execution(command->io_rf);
 	if (code_parsing)
 		handle_error(E_VFRE, NULL, NULL);
 	return ;
@@ -49,8 +49,8 @@ void	child_process(t_shell *data, t_cmd *command)
 
 	if (command->settings.only_tokens)
 		execute_only_tokens(command);
-	open_folders_safety(command->io, command->rf);
-	do_dup2(command->io, data->pipe_id, &data->prev_fd);
+	open_folders_safety(command->io, command->io_rf);
+		do_dup2(command->io, data->pipe_id, &data->prev_fd);
 	if (is_safe_to_execve(command))
 	{
 		execve(command->path, command->args, data->envp);

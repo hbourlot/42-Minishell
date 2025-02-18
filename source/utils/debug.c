@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:18:25 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 16:07:23 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 19:23:07 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ void	debug_command_file_list(t_shell *data)
 		printf("Command %d:\n", cmd_num++);
 		if (tmp->input)
 			printf("  Input: %s\n", tmp->input);
-		if (tmp->rf)
-			debug_files(tmp->rf);
+		if (tmp->io_rf)
+			debug_files(tmp->io_rf);
 		else
 			printf("  No files associated.\n");
 		tmp = tmp->next;

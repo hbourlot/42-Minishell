@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   definitions.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 14:26:46 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 19:21:18 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ typedef struct s_file
 
 typedef struct s_rules
 {
-	char				**eof;
 	bool				expansion;
 	bool				only_tokens;
 	bool				is_builtin;
@@ -94,7 +93,8 @@ typedef struct s_rules
 typedef struct s_cmd
 {
 	t_token				delimiter;
-	t_file				*rf;
+	t_file				*io_rf;
+	t_file				*eof;
 	t_rules				settings;
 	bool				expansion;
 	char				*input;
