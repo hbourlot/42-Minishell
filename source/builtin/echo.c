@@ -15,20 +15,20 @@
 static bool	is_valid_flag(char **command_arg, bool *remove_nl, int *idx)
 {
 	int	j;
-	int i;
+	int	i;
 
 	i = *idx;
-	while(command_arg[i])
+	while (command_arg[i])
 	{
 		j = 0;
 		if (command_arg[i][j++] != '-')
-			 break;
+			break ;
 		while (command_arg[i][j] == 'n')
 			j++;
 		if (command_arg[i][j] == '\0')
 			*remove_nl = true;
 		else if (command_arg[i][j] != '\0')
-			break;
+			break ;
 		i++;
 	}
 	*idx = i;
@@ -49,8 +49,9 @@ void	builtin_echo(t_shell *data, char **command_args)
 	remove_nl = false;
 	while (command_args[idx])
 	{
-		if (!remove_nl && idx == 1 && is_valid_flag(command_args, &remove_nl, &idx))
-			continue;
+		if (!remove_nl && idx == 1 && is_valid_flag(command_args, &remove_nl,
+				&idx))
+			continue ;
 		write(1, command_args[idx], ft_strlen(command_args[idx]));
 		write(1, " ", (command_args[idx + 1] != NULL));
 		idx++;
