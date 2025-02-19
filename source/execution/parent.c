@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:16:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/18 19:58:35 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/19 20:50:22 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,32 @@ int	print_command_on_terminal(t_shell *data)
 	return (0);
 }
 
+int	handle_eof_signal(t_shell *data, t_cmd **command_ref)
+{
+	int ws;
+	
+	ws = 0;
+	if ((*command_ref)->eof_rf)
+		wait(&ws);
+	if (WIFEXITED(ws))
+		data->exit_status = WEXITSTATUS(ws);
+	return 0;
+}
+
+
 int	parent_process(t_shell *data, t_cmd **command_ref)
 {
+	if (handle_eof_signal(data, command_ref))
+		return -1;
 	data->commands_ran += 1;
 	data->last_cmd_executed = (*command_ref);
 	if ((*command_ref)->delimiter != AND_DOUBLE && (*command_ref)->next)
 	{
 		if ((*command_ref)->settings.is_builtin)
 			wait(NULL);
-		close(data->pipe_id[1]);
+		close_fd_safe(data->pipe_id[1]);
 	}
-	if (data->prev_fd != -1)
-		close(data->prev_fd);
+	close_fd_safe(data->prev_fd);
 	if ((*command_ref)->next)
 		data->prev_fd = data->pipe_id[0];
 	if ((*command_ref)->delimiter == PIPE_DOUBLE)

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/19 14:21:36 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/19 17:41:34 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ typedef enum e_builtin
 
 typedef struct s_file
 {
-	char				*eof;
 	bool				in_quotes;
 	char				*read;
 	char				*write;

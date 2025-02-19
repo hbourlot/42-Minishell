@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:23:56 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/18 16:05:46 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/19 20:51:25 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void	set_last_status(t_shell *data)
 	if (data->last_cmd_executed->settings.is_builtin
 		&& data->last_cmd_executed->settings.builtin_id != ECHO)
 		return ;
-	data->exit_status = status;
+	if (data->exit_status != 130)
+		data->exit_status = status;
 }
 
 int	do_fork(pid_t *pid)
@@ -72,10 +73,9 @@ void	here_doc_fail(t_shell *data, t_file *current)
 {
 	int	size;
 
-	size = ft_strlen(current->eof);
+	size = ft_strlen(current->read);
 	get_error_context()->exit = true;
-	truncate_range(current->eof, size - 1, 1);
 	ft_printf_fd(2, "\nbash: warning: here-document at line ");
 	ft_printf_fd(2, "%d delimited by end-of-file (wanted `%s')\n",
-		data->nbr_of_lines, current->eof);
+		data->nbr_of_lines, current->read);
 }

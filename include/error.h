@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 16:35:41 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 18:41:20 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:56:18 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # define E_SHELL_SUPPORT -3
 # define E_EOF -4
 # define E_MALLOC -5
-# define E_PF -6
-# define E_VFRE -7
+# define E_PF -6 // Pipe fork
+# define E_VFRE -7 // Validate File Read Execution
 # define E_FILE_DIR -8
 # define E_VCPA -9
 

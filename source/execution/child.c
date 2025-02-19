@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/19 14:26:29 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/19 20:52:23 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,36 @@ void	exec_builtin(t_shell *data, t_cmd *command)
 		handle_error(E_MALLOC, NULL, __func__);
 }
 
+static void exec_heredoc(t_shell *data, t_cmd *command)
+{
+	if (command->eof_rf)
+	{
+		close_fd_safe(data->pipe_id[0]);
+		close_fd_safe(data->pipe_id[1]);
+		close_fd_safe(data->prev_fd);
+		run_eof(data, command);
+		if (data->exit_status == 130 || data->exit_status == 131)
+		{
+			cleanup_shell(data);
+			exit(data->exit_status);
+		}
+		if (!command->io_rf && command->next)
+		{
+			if (pipe(data->pipe_id) < 0)
+				handle_error(E_PF, NULL, __func__);
+			close_fd_safe(data->pipe_id[0]);
+			dup2(data->pipe_id[1], STDOUT_FILENO);
+			close_fd_safe(data->pipe_id[1]);
+		}
+	}
+}
+
 void	child_process(t_shell *data, t_cmd *command)
 {
 	int	code;
-	if (command->path)
-		ft_printf_fd(2, "command->path: %s\n", command->path);
+	
 	restore_signals(0);
+	exec_heredoc(data, command);
 	if (command->settings.only_tokens)
 		execute_only_tokens(command);
 	open_folders_safety(command->io, command->io_rf);

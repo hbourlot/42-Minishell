@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/19 14:22:50 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:30:59 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ void	free_files(t_file *file_list)
 	while (file_list)
 	{
 		tmp = file_list;
-		if (tmp->eof)
-			free(tmp->eof);
 		if (tmp->read)
 			free(tmp->read);
 		if (tmp->write)
@@ -60,11 +58,11 @@ static void	free_command(t_cmd **command)
 
 void	close_fds_and_pipes(t_shell *data)
 {
-	// if (data->prev_fd != -1)
-	// 	close(data->prev_fd);
-	// if (data->pipe_id[0] != -1)
-	// 	close(data->pipe_id[0]);
-	// if (data->pipe_id[1] != -1)
+	if (data->prev_fd != -1)
+		close(data->prev_fd);
+	if (data->pipe_id[0] != -1)
+		close(data->pipe_id[0]);
+	if (data->pipe_id[1] != -1)
 		close(data->pipe_id[1]);
 }
 
@@ -100,7 +98,7 @@ void	refresh_shell_data(t_shell *data)
 // * so just need to free input_splitted.
 void	cleanup_shell(t_shell *data)
 {
-	// close_fds_and_pipes(data);
+	close_fds_and_pipes(data);
 	if (data->rl)
 		free(data->rl);
 	if (data->rl_splitted)

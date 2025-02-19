@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/19 14:21:57 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/19 20:38:01 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,11 @@ bool	run_builting_separately(t_shell *data, t_cmd *command)
 	return (false);
 }
 
-int	command_loop(t_shell *data, t_cmd *command)
+static int	execute_cmd(t_shell *data, t_cmd *command)
 {
-	signal(SIGINT, SIG_IGN);
 	while (command)
 	{
-		run_eof(data, command);
-		if (command->eof_rf && !command->settings.iste && !command->io_rf)
-		{
-			command = command->next;
-			continue;
-		}
+		signal(SIGINT, SIG_IGN);
 		run_builting_separately(data, command);
 		if (command->delimiter != AND_DOUBLE && command->next
 			&& pipe(data->pipe_id) == -1)
@@ -87,7 +81,7 @@ int	command_loop(t_shell *data, t_cmd *command)
 			return (handle_error(E_PF, NULL, __func__), -1);
 		else if (data->pid == 0)
 			child_process(data, command);
-		else
+		else if (data->pid != 0)
 		{
 			if (parent_process(data, &command))
 				break ;
@@ -101,13 +95,6 @@ void	run_commands(t_shell *data)
 {
 	data->prev_fd = -1;
 	ft_memset(data->pipe_id, -1, sizeof(int) * 2);
-	// if ((data->rf))
-	// {
-	// 	if (run_eof(data, &data->pid))
-	// 		return ;
-	// 	if (data->exit_status == 130 || data->exit_status == 131)
-	// 		return ;
-	// }
-	command_loop(data, data->command);
+	execute_cmd(data, data->command);
 	set_last_status(data);
 }

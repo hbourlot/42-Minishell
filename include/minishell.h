@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/18 19:13:03 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/19 20:17:01 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@
 // ***************************************************************************
 
 int			parsing_syntax(t_shell *data);
+int			validate_file_read_execution(t_file *rf);
 int			check_access_fok(const char *path, int code);
 int			check_access_xok(const char *path, int code);
-int			check_is_directory(const char *path, int code);
-int			validate_file_read_execution(t_file *rf);
 void		identify_and_replace_sqpa_tokens(char *input);
+int			check_is_directory(const char *path, int code);
 int			validate_command_path_access(char *command_path);
 void		strip_redirects(char *input, const char *redirects[]);
 
@@ -50,21 +50,19 @@ size_t		hash(char *key);
 t_shell		*get_shell(void);
 t_hashmap	*create_map(void);
 int			init_command(t_shell *data);
+int			initialize_eof(t_shell *data);
 int			main_shell_loop(t_shell *data);
 bool		is_quotes_matching(char *input);
-char		*expand_command_input(char *input, bool *expanded);
 void		update_envp_and_envpath(t_shell *data);
-char		**process_command_input_expanded(t_cmd *command);
-void		initialize_environment_paths(t_shell *data);
 void		hashmap_delete(t_hashmap *map, char *key);
 char		*hashmap_search(t_hashmap *map, char *key);
+void		initialize_environment_paths(t_shell *data);
+char		**process_command_input_expanded(t_cmd *command);
 void		prepare_parameters(t_cmd *command, t_shell *data);
 t_shell		*init_shell(int argc, char *argv[], char *envp[]);
+char		*expand_command_input(char *input, bool *expanded);
 void		hashmap_to_env_array(t_shell *data, t_hashmap *map);
 void		import_env_to_hashmap(t_hashmap *map, char *envp[]);
-// int			initialize_eof(char *data_readline, char ***data_eof);
-int			initialize_eof(t_shell *data);
-
 int			hashmap_insert(t_hashmap *map, char *key, char *value);
 char		*handle_command_elements(char **elements, bool *expanded);
 void		add_command(t_cmd **command, char *rl_splitted, t_shell *data,
@@ -76,16 +74,17 @@ int			initialize_file_list(t_cmd *command, const char *redirects[]);
 // ***************************************************************************
 
 int			do_fork(pid_t *pid);
+void 		close_fd_safe(int fd);
 void		run_commands(t_shell *data);
 void		set_last_status(t_shell *data);
+void		duplicate_fd(int fd1, int fd2);
 int			run_eof(t_shell *data, t_cmd *command);
 int			here_doc(int *pipe_id, t_file *current);
-void		here_doc_fail(t_shell *data, t_file *current);
 char		*get_path(char *input, char **env_paths);
 void		open_folders_safety(int *io, t_file *rf);
-int			command_loop(t_shell *data, t_cmd *command);
 void		do_dup2(int *io, int *pipe_id, int *prev_fd);
 void		child_process(t_shell *data, t_cmd *command);
+void		here_doc_fail(t_shell *data, t_file *current);
 int			parent_process(t_shell *data, t_cmd **command_ref);
 
 // ***************************************************************************
@@ -126,11 +125,11 @@ void		builtin_pwd(t_shell *data);
 void		set_builtin_flag(t_cmd *last_node);
 void		builtin_exit(t_shell *data, t_cmd *cmd);
 int			builtin_cd(t_shell *data, char **command_args);
-int			process_builtin(t_shell *data, t_cmd *command, int fd);
-void		builtin_env(t_shell *data, t_cmd *command, int fd);
 void		builtin_echo(t_shell *data, char **command_args);
 int			builtin_unset(t_shell *data, char **command_args);
-int			builtin_export(t_shell *data, t_cmd *commad, int fd);
+void		builtin_env(t_shell *data, t_cmd *command, int fd);
+int			builtin_export(t_shell *data, t_cmd *command, int fd);
+int			process_builtin(t_shell *data, t_cmd *command, int fd);
 
 // ***************************************************************************
 // **						Signal Functions								**
