@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/18 20:04:32 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:26:54 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,14 @@ int	here_doc(int *pipe_id, t_file *current)
 			continue ;
 		}
 		if (!ft_strcmp(current->read, text))
-			break ;
+			return (free(text), 0);
 		if (!ft_strchr(text, '\n') && !ft_strncmp(text, current->read,
 				ft_strlen(text)))
 			return (free(text), -1);
 		expand_in_pipe(current, &text);
-		ft_putstr_fd(text, pipe_id[1]);
-		ft_putstr_fd("\n", pipe_id[1]);
+		ft_printf_fd(pipe_id[1], "%s\n", text);
 		free(text);
 	}
-	if (text)
-		free(text);
 	return (0);
 }
 
@@ -66,12 +63,19 @@ static void	handle_child_process(t_shell *data, t_file *current)
 
 static void	handle_parent_process(t_shell *data, t_cmd *command, t_file *current, int *ws)
 {
-	if (!current->next && command->settings.is_safe_to_execve)
+	if (!current->next && command->settings.iste)
 		data->prev_fd = data->pipe_id[0];
 	else
 		close(data->pipe_id[0]);
 	wait(ws);
 	close(data->pipe_id[1]);
+	if (!current->next && command->next && command->next->settings.iste)
+	{
+		if (pipe(data->pipe_id) < 0)
+			handle_error(E_PF, NULL, NULL);
+		close(data->pipe_id[1]);
+		data->prev_fd = data->pipe_id[0];
+	}
 }
 
 int	run_eof(t_shell *data, t_cmd *command)
@@ -81,7 +85,7 @@ int	run_eof(t_shell *data, t_cmd *command)
 	t_file	*current;
 
 	i = 0;
-	current = command->eof;
+	current = command->eof_rf;
 	while (current)
 	{
 		if (current->redirect == REDIRECT_LEFT_DOUBLE)
@@ -97,6 +101,7 @@ int	run_eof(t_shell *data, t_cmd *command)
 				handle_parent_process(data, command, current, &wait_status);
 			if (WIFEXITED(wait_status))
 			{
+				ft_printf_fd(2, "AQUIIIIIIIIIII\n");
 				data->exit_status = WEXITSTATUS(wait_status);
 				if (data->exit_status)
 					return (-1);

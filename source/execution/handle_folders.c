@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 08:00:37 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/18 19:44:57 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/19 13:09:15 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,7 @@ void	open_folders_safety(int *io, t_file *rf)
 
 			io[0] = open(rf->read, O_RDONLY);
 			if (io[0] < 0)
-			{
-			ft_printf_fd(2, "AQUI AQUI\n\n");
-				
 				handle_error(E_FILE_DIR, rf->read, NULL);
-			}
 		}
 		handle_right_folders_safety(io, rf);
 		if (rf->next)

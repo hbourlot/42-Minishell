@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/18 19:21:18 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:21:36 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ typedef struct s_rules
 	bool				expansion;
 	bool				only_tokens;
 	bool				is_builtin;
-	bool				is_safe_to_execve;
-	bool				is_safe_to_builtin;
+	bool				iste;
+	bool				istb;
 	t_builtin			builtin_id;
 }						t_rules;
 
@@ -94,7 +94,7 @@ typedef struct s_cmd
 {
 	t_token				delimiter;
 	t_file				*io_rf;
-	t_file				*eof;
+	t_file				*eof_rf;
 	t_rules				settings;
 	bool				expansion;
 	char				*input;

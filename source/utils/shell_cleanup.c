@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/18 19:33:53 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:22:50 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ static void	free_command(t_cmd **command)
 	{
 		tmp = *command;
 		free_files(tmp->io_rf);
-		free_files(tmp->eof);
-		tmp->eof = NULL;
+		free_files(tmp->eof_rf);
+		tmp->eof_rf = NULL;
 		tmp->io_rf = NULL;
 		if (tmp->input)
 			free(tmp->input);

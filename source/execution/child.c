@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/18 20:17:31 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:26:29 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ static bool	is_safe_to_execve(t_cmd *command)
 		return (false);
 	if (command->settings.is_builtin)
 		return (false);
-	if (command->settings.is_safe_to_execve == false)
+	if (command->settings.iste == false)
 		return (false);
 	return (true);
 }
 
 void	exec_builtin(t_shell *data, t_cmd *command)
 {
-	if (command->settings.is_safe_to_builtin && process_builtin(data,
+	if (command->settings.istb && process_builtin(data,
 			command, 1) < 0)
 		handle_error(E_MALLOC, NULL, __func__);
 }
@@ -46,11 +46,13 @@ void	exec_builtin(t_shell *data, t_cmd *command)
 void	child_process(t_shell *data, t_cmd *command)
 {
 	int	code;
-
+	if (command->path)
+		ft_printf_fd(2, "command->path: %s\n", command->path);
+	restore_signals(0);
 	if (command->settings.only_tokens)
 		execute_only_tokens(command);
 	open_folders_safety(command->io, command->io_rf);
-		do_dup2(command->io, data->pipe_id, &data->prev_fd);
+	do_dup2(command->io, data->pipe_id, &data->prev_fd);
 	if (is_safe_to_execve(command))
 	{
 		execve(command->path, command->args, data->envp);
@@ -59,5 +61,5 @@ void	child_process(t_shell *data, t_cmd *command)
 	}
 	exec_builtin(data, command);
 	cleanup_shell(data);
-	exit(0);
+	exit(EXIT_SUCCESS);
 }

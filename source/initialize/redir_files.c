@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/18 19:47:17 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:22:24 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	add_file(t_cmd *command, char *input, int *pos, t_token token)
 	if (init_file(new, input, pos, token))
 		return (free(new), -1);
 	if (new->redirect == REDIRECT_LEFT_DOUBLE)
-		add_file_to_list(&command->eof, new);
+		add_file_to_list(&command->eof_rf, new);
 	else
 		add_file_to_list(&command->io_rf, new);
 	return (0);

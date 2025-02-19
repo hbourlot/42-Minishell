@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/18 20:18:28 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:21:57 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,17 @@ static bool	is_safe_to_run_builtin(t_cmd *command)
 	cond_2 = command->settings.is_builtin;
 	if (command->settings.builtin_id == ECHO)
 	{
-		command->settings.is_safe_to_builtin = true;
+		command->settings.istb = true;
 		return (false);
 	}
 	if (cond_1 && cond_2)
 	{
-		command->settings.is_safe_to_execve = false;
-		command->settings.is_safe_to_builtin = false;
+		command->settings.iste = false;
+		command->settings.istb = false;
 		return (true);
 	}
 	if (command->delimiter == PIPE_SINGLE)
-		command->settings.is_safe_to_builtin = true;
+		command->settings.istb = true;
 	return (false);
 }
 
@@ -73,19 +73,20 @@ int	command_loop(t_shell *data, t_cmd *command)
 	signal(SIGINT, SIG_IGN);
 	while (command)
 	{
-
-		// run_eof(data, command);
+		run_eof(data, command);
+		if (command->eof_rf && !command->settings.iste && !command->io_rf)
+		{
+			command = command->next;
+			continue;
+		}
 		run_builting_separately(data, command);
 		if (command->delimiter != AND_DOUBLE && command->next
 			&& pipe(data->pipe_id) == -1)
-			return (handle_error(E_EOF, NULL, __func__), -1);
+			return (handle_error(E_PF, NULL, __func__), -1);
 		if (do_fork(&data->pid))
-			return (handle_error(E_EOF, NULL, __func__), -1);
+			return (handle_error(E_PF, NULL, __func__), -1);
 		else if (data->pid == 0)
-		{
-			restore_signals(0);
 			child_process(data, command);
-		}
 		else
 		{
 			if (parent_process(data, &command))
