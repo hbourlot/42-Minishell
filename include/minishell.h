@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/19 20:17:01 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:35:00 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <unistd.h>
+#include <dirent.h>
 
 // ***************************************************************************
 // **						Parsing Functions								**
@@ -74,7 +75,7 @@ int			initialize_file_list(t_cmd *command, const char *redirects[]);
 // ***************************************************************************
 
 int			do_fork(pid_t *pid);
-void 		close_fd_safe(int fd);
+void		close_fd_safe(int fd);
 void		run_commands(t_shell *data);
 void		set_last_status(t_shell *data);
 void		duplicate_fd(int fd1, int fd2);
@@ -137,5 +138,7 @@ int			process_builtin(t_shell *data, t_cmd *command, int fd);
 
 void		restore_signals(int code);
 void		setup_parent_signals(void);
+
+void		expand_wildcard(char *patern);
 
 #endif

@@ -27,8 +27,8 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_tokens parsing/strip_redirects pars
 					parsing/syntax_quotes_matching																	\
 					 																								\
 					initialize/command initialize/command_aux initialize/shell initialize/redir_files 				\
-					initialize/env_paths initialize/handle_expansion		 							\
-					initialize/input_expansion	initialize/hashmap initialize/hashmap_aux	initialize/process_input_expanded \
+					initialize/env_paths initialize/handle_expansion initialize/process_input_expanded		 		\
+					initialize/input_expansion	initialize/hashmap initialize/hashmap_aux	 initialize/wildcard	\
 																							             			\
 					execution/parent	execution/utils																\
 					execution/get_path execution/handle_folders execution/here_doc execution/child					\

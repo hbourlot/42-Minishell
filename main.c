@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:58:02 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/09 20:13:47 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:09:30 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,3 +23,6 @@ int	main(int argc, char *argv[], char *envp[])
 	cleanup_shell(data);
 	return (0);
 }
+
+
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/19 13:18:54 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/20 18:32:04 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ static void	initialize_command_struct(t_cmd **command, char *rl_splitted,
 static void	handle_file_tokens(t_cmd *command)
 {
 	const char	*file_tokens[] = {">>", ">", "<", "<<", NULL};
-	sort_strings_by_length_desc((char **)file_tokens);
 
+	sort_strings_by_length_desc((char **)file_tokens);
 	if (initialize_file_list(command, file_tokens))
 		handle_error(E_MALLOC, NULL, __func__);
 	strip_redirects(command->input_expanded, file_tokens);
@@ -68,10 +68,13 @@ void	prepare_parameters(t_cmd *command, t_shell *data)
 {
 	command->input_expanded = expand_command_input(command->input,
 			&command->settings.expansion);
+	
 	handle_file_tokens(command);
 	if (command->settings.iste == false)
 		return ;
-	command->args = process_command_input_expanded(command);
+		command->args = process_command_input_expanded(command);
+	if (ft_strchr(command->args[0], '*'))
+		expand_wildcard(command->args[0]);
 	command->path = get_path(command->args[0], data->env_paths);
 	if (!command->path && command->settings.expansion == false)
 		handle_error(E_MALLOC, NULL, __func__);
