@@ -7,7 +7,7 @@ CYAN 			= \033[1;36m
 RESET 			= \033[0m
 
 CC				= cc
-CFLAGS			=  -g -Wall -Wextra -Werror #-pthread #-fsanitize=address,undefined 
+CFLAGS			=  -g #-Wall -Wextra -Werror #-pthread #-fsanitize=address,undefined 
 LIB				= minishell.a
 INCLUDE 		= include/
 HEADER_MINI		= $(INCLUDE)minishell.h
@@ -26,8 +26,8 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_tokens parsing/strip_redirects pars
 					parsing/command_token_execution	parsing/command_path_execution 									\
 					parsing/syntax_quotes_matching																	\
 					 																								\
-					initialize/command initialize/command_aux initialize/shell initialize/file_list 				\
-					initialize/eof initialize/env_paths initialize/handle_expansion		 							\
+					initialize/command initialize/command_aux initialize/shell initialize/redir_files 				\
+					initialize/env_paths initialize/handle_expansion		 							\
 					initialize/input_expansion	initialize/hashmap initialize/hashmap_aux	initialize/process_input_expanded \
 																							             			\
 					execution/parent	execution/utils																\
@@ -43,7 +43,7 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_tokens parsing/strip_redirects pars
 					utils/error_initialize utils/error_execution utils/useful_functions utils/useful_functions2 utils/hashmap_free
 # -L./ -lminishell
 # VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes
-VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes #--suppressions=readline.supp
+VALGRIND		= valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=readline.supp
 LINK			= ./minishell.a -L./lib/library/ -lft -lreadline
 SRC_FILES 		= $(addprefix $(SRC_DIR), $(C_FUNCTIONS:=.c))
 OBJS_SRC 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:%.c=%.o))

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 10:46:44 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 16:29:34 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:53:06 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,14 @@ static int	allocate_eof(t_shell *data, int i)
 	if (!new)
 		return (-1);
 	new->eof = ft_substr(&data->rl[i], p[0], p[1] - p[0]);
+	if (!new->eof)
+		return (free(new), -1);
 	truncate_character(new->eof, REP_DQ);
 	truncate_character(new->eof, REP_SQ);
 	replace_characters(new->eof, REP_PIPE, '|');
 	replace_characters(new->eof, REP_PIPE, '&');
-	new->eof = ft_append_and_free(new->eof, "\n");
-	if (!new->eof)
-		return (free(new), -1);
 	while (data->rl[i + j] && data->rl[i + j] == REP_SPACE)
-		j++;
+	j++;
 	if (data->rl[i + j] == REP_SQ || data->rl[i + j] == REP_DQ)
 		new->in_quotes = true;
 	add_rf_to_list(data, new);

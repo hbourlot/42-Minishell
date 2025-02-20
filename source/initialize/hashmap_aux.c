@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:52:16 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/10 16:52:11 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:39:53 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	update_shell_lvl(t_hashmap *map)
 
 	temp = hashmap_search(map, "SHLVL");
 	if (!temp)
-		handle_error(E_MALLOC, NULL, __func__);
+		temp = "0";
 	temp_lvl = ft_atoi(temp);
 	temp_lvl++;
 	temp_value = ft_itoa(temp_lvl);

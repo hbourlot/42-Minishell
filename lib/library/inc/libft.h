@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/01/30 15:40:35 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:10:39 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ t_list				*ft_lst_map(t_list *lst, void *(*f)(void *),
 
 // * Added functions in "/UPD_SRC/"
 int					ft_putchar(char c);
+int					ft_isspaces(int c);
 int					ft_putstr(char *c);
 int					ft_nbr_len(long nbr);
 char				*get_next_line(int fd);
@@ -85,13 +86,14 @@ int					char_cmp(char a, char b);
 void				free_split(char **split);
 int					is_greater(int a, int b);
 long				ft_atol(const char *nptr);
+bool				all_spaces(const char *src);
 int					ft_printf(const char *fmt, ...);
 void				free_pointers(size_t count, ...);
 int					ft_check_duplicate(t_list **lst);
 int					stack_value(t_list **node, int idx);
 int					stack_idx(t_list **node, int value);
 int					is_str_longer(char *src1, char *src2);
-void				ft_printf_error(const char *fmt, ...);
+void				ft_printf_fd(int fd, const char *fmt, ...);
 bool				all_same_char(const char *src, char c);
 char				*ft_strcpy(char *dest, const char *src);
 char				*ft_strcat(char *dest, const char *src);
@@ -102,7 +104,6 @@ int					truncate_range(char *src, int start, int bytes);
 size_t				get_offset(void *struct_ptr, void *member_ptr);
 void				*get_last_node(void *node, size_t next_offset);
 int					ft_strcmps(const char *s1, const char *compers[]);
-char				**ft_split_keep_charset(char *str, char *charset);
 char				*ft_strncpy(char *dest, const char *src, size_t n);
 int					truncate_character(char *src, const char character);
 char				*ft_strstr(const char *haystack, const char *needle);
@@ -110,6 +111,8 @@ char				*insert_string(char *dest, char *src, int idx_to_add);
 char				*remove_substring(const char *source, char *to_remove);
 char				*ft_strjoin_char(char const *s1, char const *s2, char c);
 char				*ft_strstr_any(const char *haystack, const char **needles);
+void				init_prev(void *node, size_t prev_offset,
+						size_t next_offset);
 char				**split_by_multiple_tokens(char *src, const char *tokens[]);
 int					find_string_match(const char *s1, const char *compers[],
 						int *idx_found);

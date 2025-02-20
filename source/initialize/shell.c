@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 12:21:28 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:13:07 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static void	verify_and_prepare_input(t_shell *data)
 		add_history(data->rl);
 		data->nbr_of_lines += 1;
 	}
-	identify_and_replace_sqpa_tokens(data->rl);
-	if (all_same_char(data->rl, REP_SPACE))
+	if (all_spaces(data->rl))
 		return (free_pointers(1, &data->rl));
+	identify_and_replace_sqpa_tokens(data->rl);
 	if (parsing_syntax(data) == -1)
 		return ;
 	if (init_command(data) == -1)

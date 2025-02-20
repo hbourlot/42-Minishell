@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 16:37:11 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:51:41 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,6 @@ static void	split_command_input(t_shell *data, const char *delimiters[])
 	data->rl_splitted = split_by_multiple_tokens(data->rl, delimiters);
 	if (!data->rl_splitted)
 		handle_error(E_MALLOC, NULL, __func__);
-}
-
-static bool	there_is_no_command(t_shell *data)
-{
-	const char	*tokens[] = {"||", "|", "&&", ">>", "<<", "<", ">", NULL};
-	int			i;
-	int			idx;
-	int			match;
-
-	i = 0;
-	while (data->rl[i])
-	{
-		while (data->rl[i] == REP_SPACE)
-			i++;
-		match = find_string_match(&data->rl[i], tokens, &idx);
-		if (data->rl[i] && match == -1)
-			return (false);
-		if (match != -1)
-		{
-			i += ft_strlen(tokens[idx]);
-			if (!data->rl[i])
-				break ;
-		}
-	}
-	return (true);
 }
 
 static int	create_command_list(t_shell *data, const char *delimiters[])
@@ -73,26 +48,20 @@ static int	create_command_list(t_shell *data, const char *delimiters[])
 	return (SUCCESS);
 }
 
-static void	handle_eof(t_shell *data)
-{
-	const char	*eof_token[] = {"<<", NULL};
-
-	if (initialize_eof(data) < 0)
-		handle_error(E_MALLOC, NULL, __func__);
-	strip_redirects(data->rl, eof_token);
-	if (there_is_no_command(data))
-		free_pointers(1, &data->rl);
-}
 
 int	init_command(t_shell *data)
 {
 	const char	*delimiters[] = {"||", "|", "&&", NULL};
+	size_t 		next_offset;
+	size_t		prev_offset;
 
-	handle_eof(data);
 	if (data->rl)
 	{
 		split_command_input(data, delimiters);
 		create_command_list(data, delimiters);
+		next_offset = get_offset(data->command, &data->command->next);
+		prev_offset = get_offset(data->command, &data->command->prev);
+		init_prev(data->command, prev_offset, next_offset);
 	}
 	return (0);
 }

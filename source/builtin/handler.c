@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:41:34 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 14:28:36 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:48:51 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	set_builtin_flag(t_cmd *command)
 /// @details Calls the function for the set built-in.
 ///          Returns ERROR on failure. Handles:
 ///          `cd`, `pwd`, `echo`, `unset`, `env`, `exit`.
-int	process_builtin(t_shell *data, t_cmd *command)
+int	process_builtin(t_shell *data, t_cmd *command, int fd)
 {
 	if (command->settings.builtin_id == CD)
 	{
@@ -65,10 +65,10 @@ int	process_builtin(t_shell *data, t_cmd *command)
 			return (ERROR);
 	}
 	else if (command->settings.builtin_id == ENV)
-		builtin_env(data, command->args);
+		builtin_env(data, command, fd);
 	else if (command->settings.builtin_id == EXPORT)
 	{
-		if (builtin_export(data, command->args) == ERROR)
+		if (builtin_export(data, command, fd) == ERROR)
 			return (ERROR);
 	}
 	else if (command->settings.builtin_id == EXIT)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   definitions.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 14:26:46 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:47:19 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ typedef enum e_builtin
 
 typedef struct s_file
 {
-	char				*eof;
 	bool				in_quotes;
 	char				*read;
 	char				*write;
@@ -82,19 +81,19 @@ typedef struct s_file
 
 typedef struct s_rules
 {
-	char				**eof;
 	bool				expansion;
 	bool				only_tokens;
 	bool				is_builtin;
-	bool				is_safe_to_execve;
-	bool				is_safe_to_builtin;
+	bool				iste;
+	bool				istb;
 	t_builtin			builtin_id;
 }						t_rules;
 
 typedef struct s_cmd
 {
 	t_token				delimiter;
-	t_file				*rf;
+	t_file				*io_rf;
+	t_file				*eof_rf;
 	t_rules				settings;
 	bool				expansion;
 	char				*input;
@@ -106,6 +105,7 @@ typedef struct s_cmd
 	char				**args;
 	char				*path;
 	struct s_cmd		*next;
+	struct s_cmd		*prev;
 }						t_cmd;
 
 typedef struct s_hashnode

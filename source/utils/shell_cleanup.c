@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 11:38:26 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:30:59 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ void	free_files(t_file *file_list)
 	while (file_list)
 	{
 		tmp = file_list;
-		if (tmp->eof)
-			free(tmp->eof);
 		if (tmp->read)
 			free(tmp->read);
 		if (tmp->write)
@@ -37,8 +35,10 @@ static void	free_command(t_cmd **command)
 	while (command && *command)
 	{
 		tmp = *command;
-		free_files(tmp->rf);
-		tmp->rf = NULL;
+		free_files(tmp->io_rf);
+		free_files(tmp->eof_rf);
+		tmp->eof_rf = NULL;
+		tmp->io_rf = NULL;
 		if (tmp->input)
 			free(tmp->input);
 		if (tmp->args)
@@ -72,7 +72,7 @@ void	close_fds_and_pipes(t_shell *data)
 */
 void	refresh_shell_data(t_shell *data)
 {
-	close_fds_and_pipes(data);
+	// close_fds_and_pipes(data);
 	data->commands_ran = 0;
 	data->nbr_of_commands = 0;
 	data->pid = -1;
