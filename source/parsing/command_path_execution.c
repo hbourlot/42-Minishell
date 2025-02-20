@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 10:09:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 18:53:51 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:06:26 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@ int	check_access_fok(const char *path, int code)
 	if (access(path, F_OK) == OK)
 		return (0);
 	if (code == ENV)
-		return (ft_printf_error("env: '%s': No such file or directory\n", path),
-			127);
-	return (ft_printf_error("bash: %s: No such file or directory\n", path),
+		return (127);
+	return (ft_printf_fd(2,"bash: %s: No such file or directory\n", path),
 		127);
 }
 
@@ -28,8 +27,8 @@ int	check_access_xok(const char *path, int code)
 	if (access(path, X_OK) == OK)
 		return (0);
 	if (code == ENV)
-		return (ft_printf_error("env: '%s': Permission denied\n", path), 126);
-	return (ft_printf_error("bash: %s: Permission denied\n", path), 126);
+		return (126);
+	return (ft_printf_fd(2,"bash: %s: Permission denied\n", path), 126);
 }
 
 int	check_is_directory(const char *path, int code)
@@ -41,8 +40,8 @@ int	check_is_directory(const char *path, int code)
 	if (S_ISDIR(stat_path.st_mode))
 	{
 		if (code == ENV)
-			return (ft_printf_error("env: '%s': is a directory\n", path), 127);
-		return (ft_printf_error("bash: %s: is a directory\n", path), 127);
+			return (127);
+		return (ft_printf_fd(2,"bash: %s: is a directory\n", path), 127);
 	}
 	return (0);
 }
@@ -69,7 +68,7 @@ int	validate_command_path_access(char *command_path)
 		}
 	}
 	else
-		return (ft_printf_error("bash: %s: command not found\n", command_path),
+		return (ft_printf_fd(2,"bash: %s: command not found\n", command_path),
 			127);
 	return (0);
 }

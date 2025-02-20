@@ -6,13 +6,13 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:43:23 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 17:08:57 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:34:07 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_numeric(char *str)
+static int	is_numeric(char *str, long *ret)
 {
 	int	i;
 
@@ -25,9 +25,24 @@ static int	is_numeric(char *str)
 	{
 		if (!ft_isdigit(str[i]))
 			return (0);
+		if (i > 19 && (str[0] != '+' || str[0] != '-'))
+			return (0);
+		if (i > 20 && (str[0] == '+' || str[0] == '-'))
+			return (0);
 		i++;
 	}
+	*ret = ft_atol(str);
+	printf("%ld\n", *ret);
+	if (*ret < LONG_MIN || *ret > LONG_MAX)
+		return (0);
 	return (1);
+}
+
+static void	exit_with_error(t_shell *data, const char *arg)
+{
+	ft_printf_fd(2, "bash: exit: %s: numeric argument required\n", arg);
+	cleanup_shell(data);
+	exit(2);
 }
 
 /// @brief Handles `exit` to terminate the shell.
@@ -37,30 +52,27 @@ static int	is_numeric(char *str)
 ///          - Multiple args set `exit_status` to 1 and return.
 ///          - Non-numeric args print an error, clean up, and exit with 2.
 ///          - Otherwise, exits with the given code or 0.
-
 void	builtin_exit(t_shell *data, t_cmd *cmd)
 {
-	int	len;
-	int	ret;
+	int		len;
+	long	ret;
 
 	len = array_length(cmd->args);
 	printf("exit\n");
 	if (len > 2)
 	{
-		ft_printf_error("bash: exit: too many arguments\n");
+		if (!is_numeric(cmd->args[1], &ret))
+			exit_with_error(data, cmd->args[1]);
+		ft_printf_fd(2, "bash: exit: too many arguments\n");
 		data->exit_status = 1;
 		return ;
 	}
 	else if (len == 2)
 	{
-		if (!is_numeric(cmd->args[1]))
-		{
-			printf("bash: exit: %s: numeric argument required\n", cmd->args[1]);
-			cleanup_shell(data);
-			exit(2);
-		}
-		ret = ft_atoi(cmd->args[1]);
+		if (!is_numeric(cmd->args[1], &ret))
+			exit_with_error(data, cmd->args[1]);
 		cleanup_shell(data);
+		printf("%ld\n", ret);
 		exit(ret);
 	}
 	cleanup_shell(data);

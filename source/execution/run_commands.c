@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 11:33:01 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/19 20:38:01 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,17 @@ static bool	is_safe_to_run_builtin(t_cmd *command)
 	cond_2 = command->settings.is_builtin;
 	if (command->settings.builtin_id == ECHO)
 	{
-		command->settings.is_safe_to_builtin = true;
+		command->settings.istb = true;
 		return (false);
 	}
 	if (cond_1 && cond_2)
 	{
-		command->settings.is_safe_to_execve = false;
-		command->settings.is_safe_to_builtin = false;
+		command->settings.iste = false;
+		command->settings.istb = false;
 		return (true);
 	}
+	if (command->delimiter == PIPE_SINGLE)
+		command->settings.istb = true;
 	return (false);
 }
 
@@ -57,7 +59,7 @@ bool	run_builting_separately(t_shell *data, t_cmd *command)
 {
 	if (is_safe_to_run_builtin(command))
 	{
-		if (process_builtin(data, command) < 0)
+		if (process_builtin(data, command, STDOUT_FILENO) < 0)
 			handle_error(E_MALLOC, NULL, __func__);
 		if (command->settings.builtin_id == EXPORT)
 			refresh_command_parameters(data, command->next);
@@ -66,23 +68,20 @@ bool	run_builting_separately(t_shell *data, t_cmd *command)
 	return (false);
 }
 
-int	command_loop(t_shell *data, t_cmd *command)
+static int	execute_cmd(t_shell *data, t_cmd *command)
 {
-	signal(SIGINT, SIG_IGN);
 	while (command)
 	{
+		signal(SIGINT, SIG_IGN);
 		run_builting_separately(data, command);
 		if (command->delimiter != AND_DOUBLE && command->next
 			&& pipe(data->pipe_id) == -1)
-			return (handle_error(E_EOF, NULL, __func__), -1);
+			return (handle_error(E_PF, NULL, __func__), -1);
 		if (do_fork(&data->pid))
-			return (handle_error(E_EOF, NULL, __func__), -1);
+			return (handle_error(E_PF, NULL, __func__), -1);
 		else if (data->pid == 0)
-		{
-			restore_signals();
 			child_process(data, command);
-		}
-		else
+		else if (data->pid != 0)
 		{
 			if (parent_process(data, &command))
 				break ;
@@ -96,14 +95,6 @@ void	run_commands(t_shell *data)
 {
 	data->prev_fd = -1;
 	ft_memset(data->pipe_id, -1, sizeof(int) * 2);
-	if ((data->rf))
-	{
-		if (run_eof(data, &data->pid))
-			return ;
-		set_last_status(data);
-		if (data->exit_status == 130 || data->exit_status == 131)
-			return ;
-	}
-	command_loop(data, data->command);
+	execute_cmd(data, data->command);
 	set_last_status(data);
 }

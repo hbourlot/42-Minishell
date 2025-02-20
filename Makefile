@@ -7,7 +7,7 @@ CYAN 			= \033[1;36m
 RESET 			= \033[0m
 
 CC				= cc
-CFLAGS			=  -g -Wall -Wextra -Werror #-pthread #-fsanitize=address,undefined 
+CFLAGS			=  -g #-Wall -Wextra -Werror #-pthread #-fsanitize=address,undefined 
 LIB				= minishell.a
 INCLUDE 		= include/
 HEADER_MINI		= $(INCLUDE)minishell.h
@@ -26,8 +26,8 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_tokens parsing/strip_redirects pars
 					parsing/command_token_execution	parsing/command_path_execution 									\
 					parsing/syntax_quotes_matching																	\
 					 																								\
-					initialize/command initialize/command_aux initialize/shell initialize/file_list 				\
-					initialize/eof initialize/env_paths initialize/handle_expansion		 							\
+					initialize/command initialize/command_aux initialize/shell initialize/redir_files 				\
+					initialize/env_paths initialize/handle_expansion		 							\
 					initialize/input_expansion	initialize/hashmap initialize/hashmap_aux	initialize/process_input_expanded \
 																							             			\
 					execution/parent	execution/utils																\
@@ -95,6 +95,7 @@ fclean: 		clean
 
 re: 			fclean all
 
+bonus:			all
 
 TEST =			test_minishell
 
@@ -111,3 +112,73 @@ r:
 v:
 	@make -s
 	@$(VALGRIND) ./minishell
+
+
+
+# 	{
+#     leak readline
+#     Memcheck:Leak
+#     ...
+#     fun:readline
+# }
+# {
+#     leak add_history
+#     Memcheck:Leak
+#     ...
+#     fun:add_history
+# }
+# {
+#     leak readline
+#     Memcheck:Leak
+#     ...
+#     fun:readline
+# }
+# {
+#     leak add_history
+#     Memcheck:Leak
+#     ...
+#     fun:add_history
+# }
+# {
+#     still_reachable xrealloc
+#     Memcheck:Leak
+#     ...
+#     fun:realloc
+# }
+# {
+#     still_reachable rl_extend_line_buffer
+#     Memcheck:Leak
+#     ...
+#     fun:rl_extend_line_buffer
+# }
+# {
+#     still_reachable rl_insert_text
+#     Memcheck:Leak
+#     ...
+#     fun:rl_insert_text
+# }
+# {
+#     still_reachable rl_bracketed_paste_begin
+#     Memcheck:Leak
+#     ...
+#     fun:rl_bracketed_paste_begin
+# }
+# {
+#     still_reachable _rl_dispatch_subseq
+#     Memcheck:Leak
+#     ...
+#     fun:_rl_dispatch_subseq
+# }
+# {
+#     still_reachable readline_internal_char
+#     Memcheck:Leak
+#     ...
+#     fun:readline_internal_char
+# }
+# {
+#     readline_leak
+#     Memcheck:Leak
+#     ...
+#     fun:malloc
+#     obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+# }

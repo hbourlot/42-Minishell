@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_isspaces.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/27 17:23:22 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/02 23:02:08 by joralves         ###   ########.fr       */
+/*   Created: 2025/02/20 14:44:12 by joralves          #+#    #+#             */
+/*   Updated: 2025/02/20 15:12:21 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
+#include <stdio.h>
 
-/// @brief Implements the `pwd` built-in command.
-/// @param data The shell structure with environment and state.
-/// @details Retrieves the current directory with `getcwd` and prints it.
-///          Sets `exit_status` to 0 on success.
-void	builtin_pwd(t_shell *data)
+int	ft_isspaces(int c)
 {
-	char	cwd[PATH_MAX + 1];
-
-	getcwd(cwd, PATH_MAX);
-	printf("%s\n", cwd);
-	data->exit_status = 0;
+	if (c == 32 || (c >= 9 && c <= 13))
+		return (1);
+	return (0);
 }

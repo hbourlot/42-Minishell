@@ -6,12 +6,11 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 10:46:44 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 14:04:25 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:53:06 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 static void	add_rf_to_list(t_shell *data, t_file *rf_new)
 {
@@ -28,11 +27,11 @@ static void	add_rf_to_list(t_shell *data, t_file *rf_new)
 	}
 }
 
-static int allocate_eof(t_shell *data, int  i)
+static int	allocate_eof(t_shell *data, int i)
 {
-	int			j;
-	t_file	 	*new;
-	int 		p[2];
+	int		j;
+	t_file	*new;
+	int		p[2];
 
 	j = 2;
 	get_redirect_complement(&data->rl[i], &p[0], &p[1], 2);
@@ -42,24 +41,24 @@ static int allocate_eof(t_shell *data, int  i)
 	if (!new)
 		return (-1);
 	new->eof = ft_substr(&data->rl[i], p[0], p[1] - p[0]);
-	truncate_character(new->eof, REP_DQ);
-	truncate_character(new->eof, REP_SQ);
-	new->eof = ft_append_and_free(new->eof, "\n");
 	if (!new->eof)
 		return (free(new), -1);
-	while(data->rl[i + j] && data->rl[i + j] == REP_SPACE)
-		j++;
+	truncate_character(new->eof, REP_DQ);
+	truncate_character(new->eof, REP_SQ);
+	replace_characters(new->eof, REP_PIPE, '|');
+	replace_characters(new->eof, REP_PIPE, '&');
+	while (data->rl[i + j] && data->rl[i + j] == REP_SPACE)
+	j++;
 	if (data->rl[i + j] == REP_SQ || data->rl[i + j] == REP_DQ)
 		new->in_quotes = true;
 	add_rf_to_list(data, new);
 	return (0);
-
 }
 
 int	initialize_eof(t_shell *data)
 {
-	int i;
-	int idx;
+	int	i;
+	int	idx;
 	int	in_quotes;
 
 	i = 0;
@@ -76,5 +75,5 @@ int	initialize_eof(t_shell *data)
 		}
 		i++;
 	}
-	return 0;
+	return (0);
 }

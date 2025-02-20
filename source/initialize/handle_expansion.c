@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:59:48 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 11:54:51 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:44:37 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char	*process_expansion(bool *expanded, char *element, int i,
 	char	*result;
 
 	j = i + 1;
-	if (element[j] == '$' || element[j] == '?')
+	if (element[j] == '$' || element[j] == '?' || ft_isdigit(element[j]))
 		j++;
 	else
 		while (element[j] && (ft_isalnum(element[j]) || element[j] == '_'))
@@ -84,8 +84,8 @@ static char	*handle_variable_expansion(char *element, bool *expanded)
 		if (!element[i])
 			break ;
 		i++;
-		if (element[i] == 1 || element[i] == 2 || element[i] == 3
-			|| element[i] == ' ' || element[i] == '\0')
+		if (!(element[i] == '$' || element[i] == '?')
+			&& !(ft_isalnum(element[i]) || element[i] == '_'))
 			continue ;
 		element = process_expansion(expanded, element, i - 1, double_quotes);
 		if (!element)
@@ -93,6 +93,29 @@ static char	*handle_variable_expansion(char *element, bool *expanded)
 		i = 0;
 	}
 	return (element);
+}
+
+static void	filter_special_quotes(char *result)
+{
+	int		i;
+	bool	in_quotes;
+
+	i = 0;
+	in_quotes = false;
+	while (result[i])
+	{
+		if (result[i] == REP_SQ || result[i] == REP_DQ)
+			in_quotes = !in_quotes;
+		else if (!in_quotes && result[i] == '$'
+			&& (result[i + 1] == REP_SQ || result[i + 1] == REP_DQ))
+		{
+			truncate_range(result, i, 1);
+			in_quotes = false;
+			i = 0;
+			continue ;
+		}
+		i++;
+	}
 }
 
 char	*handle_command_elements(char **elements, bool *expanded)
@@ -115,5 +138,6 @@ char	*handle_command_elements(char **elements, bool *expanded)
 			return (free_split(elements), NULL);
 		i++;
 	}
+	filter_special_quotes(result);
 	return (free_split(elements), result);
 }

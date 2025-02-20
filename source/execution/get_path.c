@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:38:12 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 15:58:59 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:04:54 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,16 @@ char	*get_path(char *command_str, char **env_paths)
 	only_executable = false;
 	executable = ft_strdup(command_str);
 	if (!executable && command_str)
-	{
-		set_error_in(1, "Malloc", __func__, true);
-		return (NULL);
-	}
-	if (!env_paths || !*env_paths || ft_strlen(executable) == 0)
+		handle_error(E_MALLOC, NULL, __func__);
+	if (!env_paths || !*env_paths || (ft_strlen(executable) == 0 && executable))
 		return (executable);
 	if (ft_strlen(executable) > 0 && ft_strchr(executable, '/'))
 		return (executable);
 	path = find_executable_path(executable, env_paths, &only_executable);
 	if (only_executable)
+	{
 		return (executable);
+	}
 	free(executable);
 	return (path);
 }

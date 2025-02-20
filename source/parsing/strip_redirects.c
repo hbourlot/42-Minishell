@@ -14,8 +14,7 @@
 
 static void	toggle_quotes(char *input, bool *in_quotes, int i)
 {
-	if (input[i] && (input[i] == REP_SQ
-			|| input[i] == REP_DQ))
+	if (input[i] && (input[i] == REP_SQ || input[i] == REP_DQ))
 		*in_quotes = !*in_quotes;
 }
 

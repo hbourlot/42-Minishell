@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:11:13 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/11 00:03:49 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:50:30 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	duplicate(t_hashmap *map, t_hashnode **temp)
 	return (0);
 }
 
-static void	print_key_value_sorted(t_hashnode **temp)
+static void	print_key_value_sorted(t_hashnode **temp, int fd)
 {
 	t_hashnode	*current;
 
@@ -49,37 +49,33 @@ static void	print_key_value_sorted(t_hashnode **temp)
 	current = *temp;
 	while (current)
 	{
-		printf("declare -x %s", current->key);
+		ft_printf_fd(fd, "declare -x %s", current->key);
 		if (current->value)
-			printf("=\"%s\"", current->value);
-		printf("\n");
+			ft_printf_fd(fd, "\"%s\"", current->value);
+		ft_printf_fd(fd, "\n");
 		current = current->next;
 	}
 }
 
-static int	is_valid_key(t_shell *data, char *temp_key)
+static int	is_valid_key(t_shell *data, char *temp_key, char *str)
 {
 	int		i;
 	bool	valid;
-	bool	only_digits;
 
 	valid = true;
-	only_digits = true;
 	i = -1;
 	while (temp_key && temp_key[++i])
 	{
-		if (!ft_isalnum(temp_key[i]) && temp_key[i] != '_')
+		if ((!ft_isalnum(temp_key[i]) && temp_key[i] != '_')
+			|| ft_isdigit(temp_key[0]))
 		{
 			valid = false;
 			break ;
 		}
-		if (!ft_isdigit(temp_key[i]))
-			only_digits = false;
 	}
-	if (valid == false || only_digits == true)
+	if (valid == false)
 	{
-		ft_printf_error("bash: export: '%s': not a valid identifier\n",
-			temp_key);
+		ft_printf_fd(2, "bash: export: '%s': not a valid identifier\n", str);
 		data->exit_status = 1;
 		return (1);
 	}
@@ -95,7 +91,7 @@ static int	add_new_variable_on_hashmap(t_shell *data, char *command_arg)
 	value = ft_strchr(command_arg, '=');
 	if (!value)
 	{
-		if (is_valid_key(data, command_arg))
+		if (is_valid_key(data, command_arg, command_arg))
 			return (1);
 		if (hashmap_insert(data->map, command_arg, NULL) == ERROR)
 			return (ERROR);
@@ -107,7 +103,7 @@ static int	add_new_variable_on_hashmap(t_shell *data, char *command_arg)
 	temp_key = ft_substr(command_arg, 0, len);
 	if (!temp_key)
 		return (ERROR);
-	if (is_valid_key(data, temp_key))
+	if (is_valid_key(data, temp_key, command_arg))
 		return (free(temp_key), 1);
 	if (hashmap_insert(data->map, temp_key, value + 1) == ERROR)
 		return (free(temp_key), ERROR);
@@ -120,7 +116,7 @@ static int	add_new_variable_on_hashmap(t_shell *data, char *command_arg)
 /// @param command_args The arguments array.
 /// @details Prints variables if no args are given. Otherwise, adds new ones
 ///          and updates the environment. Returns 0 or ERROR.
-int	builtin_export(t_shell *data, char **command_args)
+int	builtin_export(t_shell *data, t_cmd *command, int fd)
 {
 	int			idx;
 	int			length;
@@ -128,19 +124,19 @@ int	builtin_export(t_shell *data, char **command_args)
 
 	temp = NULL;
 	idx = 1;
-	length = array_length(command_args);
+	length = array_length(command->args);
 	if (length == 1)
 	{
 		if (duplicate(data->map, &temp) == ERROR)
 			return (hashnode_free(temp), ERROR);
-		print_key_value_sorted(&temp);
+		print_key_value_sorted(&temp, fd);
 		hashnode_free(temp);
 		data->exit_status = 0;
 		return (0);
 	}
 	while (idx < length)
 	{
-		if (add_new_variable_on_hashmap(data, command_args[idx]) == ERROR)
+		if (add_new_variable_on_hashmap(data, command->args[idx]) == ERROR)
 			return (ERROR);
 		idx++;
 	}

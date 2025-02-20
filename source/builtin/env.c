@@ -6,45 +6,43 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:44:28 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/10 18:53:41 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:07:45 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_key_value(t_hashnode *current)
+static void	print_key_value(t_hashnode *current, int fd)
 {
+	// fd = 1;
 	while (current)
 	{
 		if (current->value)
-		{
-			printf("%s", current->key);
-			printf("=%s", current->value);
-			printf("\n");
-		}
+			ft_printf_fd(fd, "%s=%s\n", current->key, current->value);
 		current = current->next;
 	}
 }
 
 static int	handle_env_errors(char *command_arg)
 {
-	int								i;
-	int								result;
-	const t_access_check_function	checks_with_path[] = {check_access_xok,
-		check_access_fok, check_is_directory, NULL};
+	int	i;
+	int	result;
 
 	i = 0;
 	result = 0;
 	if (!command_arg)
 		return (0);
-	while (checks_with_path[i] != NULL)
+	if (ft_strchr(command_arg, '/'))
 	{
-		result = checks_with_path[i](command_arg, ENV);
-		if (result)
-			return (result);
-		i++;
+		result = check_is_directory(command_arg, ENV);
+		if (!result)
+			return (ft_printf_fd(2, "env: '%s': Not a directory\n",
+					command_arg), 126);
+		return (ft_printf_fd(2, "env: %s: Permission denied\n", command_arg),
+			126);
 	}
-	return (0);
+	return (ft_printf_fd(2, "env: '%s': No such file or directory\n",
+			command_arg), 127);
 }
 
 /// @brief Displays shell environment variables.
@@ -52,7 +50,7 @@ static int	handle_env_errors(char *command_arg)
 /// @param command_args The arguments array.
 /// @details Prints all key-value pairs. Extra args cause an error (exit 126).
 ///          On success, exit status is 0.
-void	builtin_env(t_shell *data, char **command_args)
+void	builtin_env(t_shell *data, t_cmd *command, int fd)
 {
 	int			idx;
 	int			length;
@@ -60,21 +58,21 @@ void	builtin_env(t_shell *data, char **command_args)
 
 	if (!data->env_paths)
 	{
-		ft_printf_error("bash: env: No such file or directory\n");
+		ft_printf_fd(2, "bash: env: No such file or directory\n");
 		data->exit_status = 127;
 		return ;
 	}
-	length = array_length(command_args);
+	length = array_length(command->args);
 	if (length > 1)
 	{
-		data->exit_status = handle_env_errors(command_args[1]);
+		data->exit_status = handle_env_errors(command->args[1]);
 		return ;
 	}
 	idx = 0;
 	while (idx < HASHMAP_SIZE)
 	{
 		current = data->map->slots[idx];
-		print_key_value(current);
+		print_key_value(current, fd);
 		idx++;
 	}
 	data->exit_status = 0;
