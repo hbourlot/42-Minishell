@@ -68,7 +68,8 @@ static void	ft_format(const char *fmt, va_list *ap, int fd)
 	else if (fmt[0] == 's')
 		ft_putstr_fd(va_arg(*ap, char *), fd);
 	else if (fmt[0] == 'p')
-		handle_flags((long)va_arg(*ap, unsigned long), 'p', "0123456789abcdef", fd);
+		handle_flags((long)va_arg(*ap, unsigned long), 'p', "0123456789abcdef",
+			fd);
 	else if (fmt[0] == 'd' || fmt[0] == 'i')
 		handle_flags(va_arg(*ap, int), 'i', "0123456789", fd);
 	else if (fmt[0] == 'u')

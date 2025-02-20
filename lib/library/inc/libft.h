@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/20 14:51:55 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:10:39 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ char				*insert_string(char *dest, char *src, int idx_to_add);
 char				*remove_substring(const char *source, char *to_remove);
 char				*ft_strjoin_char(char const *s1, char const *s2, char c);
 char				*ft_strstr_any(const char *haystack, const char **needles);
+void				init_prev(void *node, size_t prev_offset,
+						size_t next_offset);
 char				**split_by_multiple_tokens(char *src, const char *tokens[]);
 int					find_string_match(const char *s1, const char *compers[],
 						int *idx_found);
