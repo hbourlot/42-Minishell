@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 18:10:52 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 15:59:56 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 00:04:31 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	reset_error_context(t_error *error)
 	ft_memset(error, 0, sizeof(t_error));
 }
 
-static int	set_error(int error, const char *token, const char *func)
+static void	set_error(int error, const char *token, const char *func)
 {
 	if (error == E_SYNTAX_NEWLINE)
 		set_error_pa(2, SYNTAX_ERROR_MSG, "newline");

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 17:30:22 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:55:54 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ static int	cleanup_and_exit(char *text, int error_code)
 	return (error_code);
 }
 
-int	here_doc(int *pipe_id, char *limiter)
+int	here_doc(int *pipe_id, t_file *current)
 {
 	char	*text;
+	char	*expanded;
 
 	while (true)
 	{
@@ -29,31 +30,37 @@ int	here_doc(int *pipe_id, char *limiter)
 		text = get_next_line(STDIN_FILENO);
 		if (!text)
 			return (cleanup_and_exit(NULL, -1));
-		if (!ft_strcmp(limiter, text))
+		if (!ft_strcmp(current->eof, text))
 			break ;
 		if (ft_strlen(text) == 0)
 			return (cleanup_and_exit(text, -1));
-		if (!ft_strchr(text, '\n') && !ft_strncmp(text, limiter, ft_strlen(text)
+		if (!ft_strchr(text, '\n') && !ft_strncmp(text, current->eof, ft_strlen(text)
 				- 1))
 			return (cleanup_and_exit(text, -1));
+		if (!current->in_quotes)
+		{
+			expanded = expand_command_input(text, NULL);
+			free(text);
+			text = expanded;
+		}
 		ft_putstr_fd(text, pipe_id[1]);
 		free(text);
 	}
 	return (cleanup_and_exit(text, 0));
 }
 
-static void	handle_child_process(t_shell *data, int i)
+static void	handle_child_process(t_shell *data, t_file *current)
 {
 	restore_signals();
-	if (here_doc(data->pipe_id, data->eof[i]) == -1)
-		here_doc_fail(data, data->eof[i]);
+	if (here_doc(data->pipe_id, current) == -1)
+		here_doc_fail(data, current);
 	cleanup_shell(data);
 	exit(EXIT_SUCCESS);
 }
 
-static void	handle_parent_process(t_shell *data, int i, int *ws)
+static void	handle_parent_process(t_shell *data, t_file *current, int *ws)
 {
-	if (!data->eof[i + 1] && data->command)
+	if (!current->next && data->command)
 		data->prev_fd = data->pipe_id[0];
 	else
 		close(data->pipe_id[0]);
@@ -65,24 +72,26 @@ int	run_eof(t_shell *data, pid_t *pid)
 {
 	int	i;
 	int	wait_status;
+	t_file	*current;
 
 	i = 0;
-	while (data->eof[i])
+	current = data->rf;
+	while (current)
 	{
 		signal(SIGINT, SIG_IGN);
 		if (pipe(data->pipe_id) == -1 || do_fork(&data->pid))
 			return (handle_error(E_PF, NULL, NULL), -1);
 		else if (*pid == 0)
-			handle_child_process(data, i);
+			handle_child_process(data, current);
 		else
-			handle_parent_process(data, i, &wait_status);
+			handle_parent_process(data, current, &wait_status);
 		if (WIFEXITED(wait_status))
 		{
 			data->exit_status = WEXITSTATUS(wait_status);
 			if (data->exit_status)
 				return (-1);
 		}
-		i++;
+		current = current->next;
 	}
 	return (0);
 }

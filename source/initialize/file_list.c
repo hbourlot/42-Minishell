@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   file_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 15:51:06 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:02:04 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 static int	add_file(char *input, int *position, t_token token, t_file **rf)
 {
@@ -29,6 +30,9 @@ static int	add_file(char *input, int *position, t_token token, t_file **rf)
 		new->read = src;
 	else if (token == REDIRECT_RIGHT_SINGLE || token == REDIRECT_RIGHT_DOUBLE)
 		new->write = src;
+
+	truncate_character(src, REP_DQ);
+	truncate_character(src, REP_SQ);
 	current = *rf;
 	if (!current)
 		*rf = new;
@@ -51,8 +55,8 @@ int	initialize_file_list(char *input, const char *redirects[], t_file **rf)
 	in_quotes = false;
 	while (input && *input)
 	{
-		if (*input && (*input == REP_DOUBLE_QUOTE
-				|| *input == REP_SINGLE_QUOTE))
+		if (*input && (*input == REP_DQ
+				|| *input == REP_SQ))
 			in_quotes = !in_quotes;
 		else if (!in_quotes && find_string_match(input, redirects, &idx) == OK)
 		{

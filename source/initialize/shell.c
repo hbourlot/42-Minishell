@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:31:29 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/10 16:55:40 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/11 12:21:28 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	main_shell_loop(t_shell *data)
 		if (!data->rl)
 			return (printf("exit\n"), 0);
 		verify_and_prepare_input(data);
-		if (data->command || data->eof)
+		if (data->command || data->rf)
 			run_commands(data);
 		refresh_shell_data(data);
 	}
