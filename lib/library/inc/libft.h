@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/18 16:01:54 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:23:00 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ int					truncate_range(char *src, int start, int bytes);
 size_t				get_offset(void *struct_ptr, void *member_ptr);
 void				*get_last_node(void *node, size_t next_offset);
 int					ft_strcmps(const char *s1, const char *compers[]);
-char				**ft_split_keep_charset(char *str, char *charset);
 char				*ft_strncpy(char *dest, const char *src, size_t n);
 int					truncate_character(char *src, const char character);
 char				*ft_strstr(const char *haystack, const char *needle);
