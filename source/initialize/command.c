@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/19 16:33:35 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:51:41 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,16 @@ static int	create_command_list(t_shell *data, const char *delimiters[])
 int	init_command(t_shell *data)
 {
 	const char	*delimiters[] = {"||", "|", "&&", NULL};
+	size_t 		next_offset;
+	size_t		prev_offset;
 
-	// handle_eof(data);
 	if (data->rl)
 	{
 		split_command_input(data, delimiters);
 		create_command_list(data, delimiters);
+		next_offset = get_offset(data->command, &data->command->next);
+		prev_offset = get_offset(data->command, &data->command->prev);
+		init_prev(data->command, prev_offset, next_offset);
 	}
 	return (0);
 }

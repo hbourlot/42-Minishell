@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/19 17:41:34 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:47:19 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct s_cmd
 	char				**args;
 	char				*path;
 	struct s_cmd		*next;
+	struct s_cmd		*prev;
 }						t_cmd;
 
 typedef struct s_hashnode
