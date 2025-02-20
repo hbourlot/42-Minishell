@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/20 14:23:00 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:51:55 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ t_list				*ft_lst_map(t_list *lst, void *(*f)(void *),
 
 // * Added functions in "/UPD_SRC/"
 int					ft_putchar(char c);
+int					ft_isspaces(int c);
 int					ft_putstr(char *c);
 int					ft_nbr_len(long nbr);
 char				*get_next_line(int fd);
@@ -85,13 +86,14 @@ int					char_cmp(char a, char b);
 void				free_split(char **split);
 int					is_greater(int a, int b);
 long				ft_atol(const char *nptr);
+bool				all_spaces(const char *src);
 int					ft_printf(const char *fmt, ...);
 void				free_pointers(size_t count, ...);
 int					ft_check_duplicate(t_list **lst);
 int					stack_value(t_list **node, int idx);
 int					stack_idx(t_list **node, int value);
 int					is_str_longer(char *src1, char *src2);
-void				ft_printf_fd(int fd,const char *fmt, ...);
+void				ft_printf_fd(int fd, const char *fmt, ...);
 bool				all_same_char(const char *src, char c);
 char				*ft_strcpy(char *dest, const char *src);
 char				*ft_strcat(char *dest, const char *src);
