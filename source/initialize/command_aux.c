@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 11:27:34 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:29:40 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void	prepare_parameters(t_cmd *command, t_shell *data)
 	
 	handle_file_tokens(command);
 	expand_wildcard(&command->input_expanded);
-	print_execve_parameters(command->input_expanded);
 	if (command->settings.iste == false)
 		return ;
 		command->args = process_command_input_expanded(command);

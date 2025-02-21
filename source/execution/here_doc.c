@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/19 19:07:33 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:53:24 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	here_doc(int *pipe_id, t_file *current)
 	return (0);
 }
 
-static void	handle_child_process(t_shell *data, t_file *current)
+static void	handle_grand_child_process(t_shell *data, t_file *current)
 {
 	restore_signals(EOF);
 	if (here_doc(data->pipe_id, current) == -1)
@@ -85,7 +85,6 @@ static int	handle_parent_process(t_shell *data, t_cmd *command, t_file *current)
 	return 0;
 }
 
-
 int	run_eof(t_shell *data, t_cmd *command)
 {
 	int		i;
@@ -102,7 +101,7 @@ int	run_eof(t_shell *data, t_cmd *command)
 			if (pipe(data->pipe_id) < 0 || do_fork(&pid))
 				return (handle_error(E_PF, NULL, NULL), -1);
 			if (pid == 0)
-				handle_child_process(data, current);
+				handle_grand_child_process(data, current);
 			else
 			{
 				if (handle_parent_process(data, command, current))
