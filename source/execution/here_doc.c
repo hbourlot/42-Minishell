@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/20 17:53:24 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:56:17 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,11 @@ static void	handle_grand_child_process(t_shell *data, t_file *current)
 	exit(EXIT_SUCCESS);
 }
 
-static int	handle_parent_process(t_shell *data, t_cmd *command, t_file *current)
+static int	handle_parent_process(t_shell *data, t_cmd *command,
+		t_file *current)
 {
-	int ws;
-	
+	int	ws;
+
 	if (!current->next && command->settings.iste)
 		data->prev_fd = data->pipe_id[0];
 	else
@@ -74,7 +75,7 @@ static int	handle_parent_process(t_shell *data, t_cmd *command, t_file *current)
 	if (WIFSIGNALED(ws))
 	{
 		data->exit_status = WTERMSIG(ws) + 128;
-		return -1;
+		return (-1);
 	}
 	if (WIFEXITED(ws))
 	{
@@ -82,7 +83,7 @@ static int	handle_parent_process(t_shell *data, t_cmd *command, t_file *current)
 		if (data->exit_status)
 			return (-1);
 	}
-	return 0;
+	return (0);
 }
 
 int	run_eof(t_shell *data, t_cmd *command)
@@ -96,7 +97,7 @@ int	run_eof(t_shell *data, t_cmd *command)
 	while (current)
 	{
 		if (current->redirect == REDIRECT_LEFT_DOUBLE)
-		{	
+		{
 			signal(SIGINT, SIG_IGN);
 			if (pipe(data->pipe_id) < 0 || do_fork(&pid))
 				return (handle_error(E_PF, NULL, NULL), -1);
@@ -105,7 +106,7 @@ int	run_eof(t_shell *data, t_cmd *command)
 			else
 			{
 				if (handle_parent_process(data, command, current))
-					return -1;
+					return (-1);
 			}
 		}
 		current = current->next;

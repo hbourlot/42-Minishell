@@ -21,10 +21,10 @@ int	handle_error_ex(void)
 	error = get_error_context();
 	code = error->code;
 	if (error->execution.folder && error->execution.msg)
-		ft_printf_fd(2,"bash: %s: %s\n", error->execution.folder,
+		ft_printf_fd(2, "bash: %s: %s\n", error->execution.folder,
 			error->execution.msg);
 	else if (error->execution.msg)
-		ft_printf_fd(2,"bash: %s: Initialization failed\n",
+		ft_printf_fd(2, "bash: %s: Initialization failed\n",
 			error->execution.msg);
 	return (code);
 }

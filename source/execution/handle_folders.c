@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_folders.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 08:00:37 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/19 18:51:59 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:55:55 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	open_folders_safety(int *io, t_file *rf)
 	}
 }
 
-void close_fd_safe(int fd)
+void	close_fd_safe(int fd)
 {
 	if (fd != -1)
 		close(fd);
