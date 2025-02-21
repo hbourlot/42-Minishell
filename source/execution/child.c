@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/20 14:57:51 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 11:21:47 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	child_process(t_shell *data, t_cmd *command)
 		code = validate_command_path_access(command->path);
 		handle_error(code, NULL, NULL);
 	}
+	exit(EXIT_SUCCESS);
 	exec_builtin(data, command);
 	cleanup_shell(data);
-	exit(EXIT_SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/20 17:35:00 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/21 10:45:37 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,6 @@ int			process_builtin(t_shell *data, t_cmd *command, int fd);
 void		restore_signals(int code);
 void		setup_parent_signals(void);
 
-void		expand_wildcard(char *patern);
+void		expand_wildcard(char **input_expanded);
 
 #endif
