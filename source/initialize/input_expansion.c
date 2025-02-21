@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 17:39:46 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/21 16:22:51 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:10:58 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,9 @@ char	*expand_command_input(char *input, bool *expanded)
 {
 	char	*expand_input;
 	char	**elements;
-	if(!*input)
-		return(ft_strdup(input));
+
+	if (!*input)
+		return (ft_strdup(input));
 	elements = tokenize_element(input);
 	if (!elements)
 		return (NULL);
