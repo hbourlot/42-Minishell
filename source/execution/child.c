@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/20 14:57:51 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:56:28 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,11 @@ static bool	is_safe_to_execve(t_cmd *command)
 
 void	exec_builtin(t_shell *data, t_cmd *command)
 {
-	if (command->settings.istb && process_builtin(data,
-			command, 1) < 0)
+	if (command->settings.istb && process_builtin(data, command, 1) < 0)
 		handle_error(E_MALLOC, NULL, __func__);
 }
 
-static void exec_heredoc(t_shell *data, t_cmd *command)
+static void	exec_heredoc(t_shell *data, t_cmd *command)
 {
 	if (command->eof_rf)
 	{
@@ -70,7 +69,7 @@ static void exec_heredoc(t_shell *data, t_cmd *command)
 void	child_process(t_shell *data, t_cmd *command)
 {
 	int	code;
-	
+
 	restore_signals(0);
 	exec_heredoc(data, command);
 	if (command->settings.only_tokens)

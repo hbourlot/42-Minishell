@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 12:43:53 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:55:03 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "../lib/library/inc/libft.h"
 # include "definitions.h"
 # include "error.h"
+# include <dirent.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
@@ -27,7 +28,6 @@
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
-# include <dirent.h>
 # include <unistd.h>
 
 // ***************************************************************************
@@ -77,7 +77,7 @@ int			initialize_file_list(t_cmd *command, const char *redirects[]);
 // ***************************************************************************
 
 int			do_fork(pid_t *pid);
-void 		close_fd_safe(int fd);
+void		close_fd_safe(int fd);
 void		run_commands(t_shell *data);
 void		set_last_status(t_shell *data);
 void		duplicate_fd(int fd1, int fd2);
@@ -140,7 +140,5 @@ int			process_builtin(t_shell *data, t_cmd *command, int fd);
 
 void		restore_signals(int code);
 void		setup_parent_signals(void);
-
-
 
 #endif

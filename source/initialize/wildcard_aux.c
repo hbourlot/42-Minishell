@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_aux.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:28 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 12:42:19 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:54:40 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool is_pattern_done(const char *pattern, int p)
+static bool	is_pattern_done(const char *pattern, int p)
 {
-
 	while (pattern[p] == '*')
 		p++;
 	return (pattern[p] == '\0');
 }
 
-static int match_wd_aux(const char *pattern, const char *filename, int p, int f)
-{	
-	int sm_pos[2];
+static int	match_wd_aux(const char *pattern, const char *filename, int p,
+		int f)
+{
+	int	sm_pos[2];
 
 	ft_memset(sm_pos, -1, 8);
 	while (filename[f])
@@ -50,13 +50,12 @@ static int match_wd_aux(const char *pattern, const char *filename, int p, int f)
 
 int	match_wildcard(const char *pattern, const char *filename)
 {
-	int p;
-	int f;
+	int	p;
+	int	f;
 
 	p = 0;
 	f = 0;
 	if (match_wd_aux(pattern, filename, p, f))
-		return 1;
-	return 0;
+		return (1);
+	return (0);
 }
-

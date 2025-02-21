@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:05:21 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/20 14:51:41 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:56:38 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,10 @@ static int	create_command_list(t_shell *data, const char *delimiters[])
 	return (SUCCESS);
 }
 
-
 int	init_command(t_shell *data)
 {
 	const char	*delimiters[] = {"||", "|", "&&", NULL};
-	size_t 		next_offset;
+	size_t		next_offset;
 	size_t		prev_offset;
 
 	if (data->rl)

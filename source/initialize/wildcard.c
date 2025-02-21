@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:59:42 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/21 12:46:08 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:54:36 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static int	identify_match_pattern(char *input, int *pos, int start_pos)
 {
-	int		i;
-	int		j;
-	int		in_quotes;
+	int	i;
+	int	j;
+	int	in_quotes;
 
 	i = start_pos;
 	in_quotes = false;
@@ -33,58 +33,64 @@ static int	identify_match_pattern(char *input, int *pos, int start_pos)
 			while (input[i] && input[i] != REP_SPACE)
 				i++;
 			pos[1] = i;
-			return 1;	
+			return (1);
 		}
 		i++;
 	}
-	return 0;
+	return (0);
 }
 
-static void insert_wildcard(char **input_expanded, struct dirent *entry, int  *add_pos)
+static void	insert_wildcard(char **input_expanded, struct dirent *entry,
+		int *add_pos)
 {
-	char			*tmp;
+	char	*tmp;
 
-	tmp = insert_string(*input_expanded, entry->d_name,  *add_pos);
+	tmp = insert_string(*input_expanded, entry->d_name, *add_pos);
 	free(*input_expanded);
 	if (!tmp)
 		handle_error(E_MALLOC, NULL, __func__);
 	*add_pos += ft_strlen(entry->d_name);
 	*input_expanded = insert_string(tmp, "\003", *add_pos);
 	free(tmp);
-	if(!*input_expanded)
+	if (!*input_expanded)
 		handle_error(E_MALLOC, NULL, __func__);
 	*add_pos += 1;
 }
 
-static void expand_wildcard_aux(char **input_expanded, char *pattern, int *pos, int pos_to_add)
+static void	expand_wildcard_aux(char **input_expanded, char *pattern, int *pos,
+		int pos_to_add)
 {
-	struct dirent 	*entry;
+	struct dirent	*entry;
 	DIR				*directory;
-	
+
 	directory = opendir(".");
-	entry	=	readdir(directory);
+	entry = readdir(directory);
 	while (entry != NULL)
 	{
 		if (match_wildcard(pattern, entry->d_name))
-			insert_wildcard(input_expanded, entry, &pos_to_add);
+		{
+			if ((pattern[0] != '.' && entry->d_name[0] != '.'))
+				insert_wildcard(input_expanded, entry, &pos_to_add);
+			else if (pattern[0] == '.')
+				insert_wildcard(input_expanded, entry, &pos_to_add);
+		}
 		entry = readdir(directory);
-		if (!entry && pos_to_add !=  pos[1])
+		if (!entry && pos_to_add != pos[1])
 		{
 			truncate_range(*input_expanded, pos[0], pos[1] - pos[0]);
-			truncate_range(*input_expanded, ft_strlen(*input_expanded) -1, 1);
+			truncate_range(*input_expanded, ft_strlen(*input_expanded) - 1, 1);
 		}
 	}
-	closedir(directory);	
+	closedir(directory);
 }
-
 
 void	expand_wildcard(char **input_expanded)
 {
-	int				pos[2];
-	int				start_pos;
-	char 			*pattern;
-	int				pos_to_add;
-	
+	int		pos[2];
+	int		start_pos;
+	char	*pattern;
+	int		pos_to_add;
+
 	start_pos = 0;
 	while (identify_match_pattern(*input_expanded, pos, start_pos))
 	{
@@ -93,7 +99,7 @@ void	expand_wildcard(char **input_expanded)
 		if (!pattern)
 			handle_error(E_MALLOC, NULL, __func__);
 		expand_wildcard_aux(input_expanded, pattern, pos, pos_to_add);
-		start_pos = pos[1];		
+		start_pos = pos[1];
 		free(pattern);
 	}
 }

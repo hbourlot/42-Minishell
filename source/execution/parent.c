@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parent.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:16:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/19 20:50:22 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:56:07 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,20 @@ int	print_command_on_terminal(t_shell *data)
 
 int	handle_eof_signal(t_shell *data, t_cmd **command_ref)
 {
-	int ws;
-	
+	int	ws;
+
 	ws = 0;
 	if ((*command_ref)->eof_rf)
 		wait(&ws);
 	if (WIFEXITED(ws))
 		data->exit_status = WEXITSTATUS(ws);
-	return 0;
+	return (0);
 }
-
 
 int	parent_process(t_shell *data, t_cmd **command_ref)
 {
 	if (handle_eof_signal(data, command_ref))
-		return -1;
+		return (-1);
 	data->commands_ran += 1;
 	data->last_cmd_executed = (*command_ref);
 	if ((*command_ref)->delimiter != AND_DOUBLE && (*command_ref)->next)
