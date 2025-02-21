@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 13:57:04 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/21 14:27:58 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,33 +61,38 @@ static int	add_file(t_cmd *command, char *input, int *pos, t_token token)
 	return (0);
 }
 
-int	initialize_file_list(t_cmd *command, const char *redirects[])
+int	token_aux(t_cmd *cmd, const char *redirects[], int *i, int *idx)
+{
+	t_token	token;
+	int		pos[2];
+
+	token = get_t_token(&cmd->input_expanded[*i], ft_strlen(redirects[*idx]));
+	get_redirect_complement(&cmd->input_expanded[*i], &pos[0], &pos[1],
+		ft_strlen(redirects[*idx]));
+	if (add_file(cmd, &cmd->input_expanded[*i], pos, token) < 0)
+		return (-1);
+	*i += ft_strlen(redirects[*idx]);
+}
+
+int	initialize_file_list(t_cmd *cmd, const char *redirects[])
 {
 	int		i;
-	int		idx;
-	int		pos[2];
-	t_token	token;
 	bool	in_quotes;
+	int		idx;
 
 	i = 0;
 	in_quotes = false;
 	sort_strings_by_length_desc((char **)redirects);
-	while (command->input_expanded && command->input_expanded[i])
+	while (cmd->input_expanded && cmd->input_expanded[i])
 	{
-		if (command->input_expanded[i] && (command->input_expanded[i] == REP_DQ
-				|| command->input_expanded[i] == REP_SQ))
+		if (cmd->input_expanded[i] && (cmd->input_expanded[i] == REP_DQ
+				|| cmd->input_expanded[i] == REP_SQ))
 			in_quotes = !in_quotes;
-		else if (!in_quotes && find_string_match(&command->input_expanded[i],
+		else if (!in_quotes && find_string_match(&cmd->input_expanded[i],
 				redirects, &idx) == OK)
 		{
-			token = get_t_token(&command->input_expanded[i],
-					ft_strlen(redirects[idx]));
-			get_redirect_complement(&command->input_expanded[i], &pos[0],
-				&pos[1], ft_strlen(redirects[idx]));
-			if (add_file(command, &command->input_expanded[i], pos, token) < 0)
-				return (-1);
-			i += ft_strlen(redirects[idx]);
-			if (command->input_expanded[i] == '\0')
+			token_aux(cmd, redirects, &i, &idx);
+			if (cmd->input_expanded[i] == '\0')
 				break ;
 		}
 		i++;

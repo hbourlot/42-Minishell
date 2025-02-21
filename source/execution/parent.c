@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parent.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:16:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 14:08:33 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 14:28:15 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	handle_eof_signal(t_shell *data, t_cmd **command_ref)
 	{
 		data->exit_status = WEXITSTATUS(ws);
 		if (data->exit_status == 130)
-			return -1;
+			return (-1);
 	}
 	return (0);
 }
