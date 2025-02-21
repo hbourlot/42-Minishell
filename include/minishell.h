@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/19 20:17:01 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:43:53 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
+# include <dirent.h>
 # include <unistd.h>
 
 // ***************************************************************************
@@ -53,6 +54,7 @@ int			init_command(t_shell *data);
 int			initialize_eof(t_shell *data);
 int			main_shell_loop(t_shell *data);
 bool		is_quotes_matching(char *input);
+void		expand_wildcard(char **input_expanded);
 void		update_envp_and_envpath(t_shell *data);
 void		hashmap_delete(t_hashmap *map, char *key);
 char		*hashmap_search(t_hashmap *map, char *key);
@@ -65,6 +67,7 @@ void		hashmap_to_env_array(t_shell *data, t_hashmap *map);
 void		import_env_to_hashmap(t_hashmap *map, char *envp[]);
 int			hashmap_insert(t_hashmap *map, char *key, char *value);
 char		*handle_command_elements(char **elements, bool *expanded);
+int			match_wildcard(const char *pattern, const char *filename);
 void		add_command(t_cmd **command, char *rl_splitted, t_shell *data,
 				t_token id);
 int			initialize_file_list(t_cmd *command, const char *redirects[]);
@@ -137,5 +140,7 @@ int			process_builtin(t_shell *data, t_cmd *command, int fd);
 
 void		restore_signals(int code);
 void		setup_parent_signals(void);
+
+
 
 #endif

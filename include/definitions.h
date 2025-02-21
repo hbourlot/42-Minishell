@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/20 14:47:19 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:53:00 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 // ***********************************************************************
 
 // sqpa_tokens: space and quotes and pipes and &&
+// iste: is_safe_to_execve
+// istb: is_safe_to_builting
 
 // File Descriptors
 # define READ 0
