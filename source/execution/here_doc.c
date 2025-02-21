@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 17:37:41 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:39:05 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,12 @@ static int	handle_parent_process(t_shell *data, t_cmd *command,
 {
 	int	ws;
 
+	wait(&ws);
 	if (!current->next && command->settings.iste)
 		data->prev_fd = data->pipe_id[0];
 	else
 		close_fd_safe(data->pipe_id[0]);
 	close_fd_safe(data->pipe_id[1]);
-	wait(&ws);
 	if (WIFSIGNALED(ws))
 	{
 		data->exit_status = WTERMSIG(ws) + 128;
