@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 16:28:30 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:03:00 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,26 +49,28 @@ int	here_doc(int *pipe_id, t_file *current)
 
 static void	handle_grand_child_process(t_shell *data, t_file *current)
 {
-	restore_signals(EOF);
-	if (here_doc(data->pipe_id, current) == -1)
-		here_doc_fail(data, current);
+	while (current)
+	{
+		restore_signals(EOF);
+		if (here_doc(data->pipe_id, current) == -1)
+			here_doc_fail(data, current);
+		current = current->next;
+	}
 	cleanup_shell(data);
 	close(data->pipe_id[0]);
 	close(data->pipe_id[1]);
 	exit(EXIT_SUCCESS);
 }
 
-static int	handle_parent_process(t_shell *data, t_cmd *command,
-		t_file *current)
+static int	handle_parent_process(t_shell *data, t_cmd *command)
 {
 	int	ws;
-
-	if (!current->next && command->settings.iste)
+	wait(&ws);
+	if (command->settings.iste)
 		data->prev_fd = data->pipe_id[0];
 	else
 		close_fd_safe(data->pipe_id[0]);
 	close_fd_safe(data->pipe_id[1]);
-	wait(&ws);
 	if (WIFSIGNALED(ws))
 	{
 		data->exit_status = WTERMSIG(ws) + 128;
@@ -91,22 +93,15 @@ int	run_eof(t_shell *data, t_cmd *command)
 
 	i = 0;
 	current = command->eof_rf;
-	while (current)
+	if (pipe(data->pipe_id) < 0 || do_fork(&pid))
+		return (handle_error(E_PF, NULL, NULL), -1);
+	signal(SIGINT, SIG_IGN);
+	if (pid == 0)
+		handle_grand_child_process(data, current);
+	else
 	{
-		if (current->redirect == REDIRECT_LEFT_DOUBLE)
-		{
-			signal(SIGINT, SIG_IGN);
-			if (pipe(data->pipe_id) < 0 || do_fork(&pid))
-				return (handle_error(E_PF, NULL, NULL), -1);
-			if (pid == 0)
-				handle_grand_child_process(data, current);
-			else
-			{
-				if (handle_parent_process(data, command, current))
-					return (-1);
-			}
-		}
-		current = current->next;
+		if (handle_parent_process(data, command))
+			return (-1);
 	}
 	return (0);
 }
