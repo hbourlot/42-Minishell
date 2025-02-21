@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:43:23 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/20 14:34:07 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:06:22 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static int	is_numeric(char *str, long *ret)
 		i++;
 	}
 	*ret = ft_atol(str);
-	printf("%ld\n", *ret);
 	if (*ret < LONG_MIN || *ret > LONG_MAX)
 		return (0);
 	return (1);

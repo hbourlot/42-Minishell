@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/20 17:53:00 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:53:11 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 # define REP_AND 5
 // # define REP_ENV 1
 
-# define PROMPT "\033[1;32m[Chitaozinho&Xororo\033[1;31m@localhost ~]$ \033[0m"
+# define PROMPT "[Chitaozinho&Xororo@localhost ~]$ "
 # define HASHMAP_SIZE 10
 
 // ***************************************************************************
