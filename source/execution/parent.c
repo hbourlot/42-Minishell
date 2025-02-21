@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:16:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 14:28:15 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:22:23 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	handle_eof_signal(t_shell *data, t_cmd **command_ref)
 	ws = 0;
 	if ((*command_ref)->eof_rf)
 		wait(&ws);
-	if (WIFEXITED(ws))
+	if (WIFEXITED(ws) && (*command_ref)->eof_rf)
 	{
 		data->exit_status = WEXITSTATUS(ws);
 		if (data->exit_status == 130)

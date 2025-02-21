@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:23:56 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/19 20:51:25 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:17:22 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ void	set_last_status(t_shell *data)
 	}
 	if (data->last_cmd_executed->settings.is_builtin
 		&& data->last_cmd_executed->settings.builtin_id != ECHO)
+	{
 		return ;
+	}
 	if (data->exit_status != 130)
 		data->exit_status = status;
 }
