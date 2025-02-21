@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 14:27:58 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/21 14:36:33 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static int	init_file(t_file *rf, char *input, int *pos, t_token token)
 static int	add_file(t_cmd *command, char *input, int *pos, t_token token)
 {
 	t_file	*new;
-	char	*src;
 
 	new = ft_calloc(1, sizeof(t_file));
 	if (!new)
@@ -72,6 +71,7 @@ int	token_aux(t_cmd *cmd, const char *redirects[], int *i, int *idx)
 	if (add_file(cmd, &cmd->input_expanded[*i], pos, token) < 0)
 		return (-1);
 	*i += ft_strlen(redirects[*idx]);
+	return (0);
 }
 
 int	initialize_file_list(t_cmd *cmd, const char *redirects[])
@@ -91,7 +91,8 @@ int	initialize_file_list(t_cmd *cmd, const char *redirects[])
 		else if (!in_quotes && find_string_match(&cmd->input_expanded[i],
 				redirects, &idx) == OK)
 		{
-			token_aux(cmd, redirects, &i, &idx);
+			if (token_aux(cmd, redirects, &i, &idx))
+				return(-1);
 			if (cmd->input_expanded[i] == '\0')
 				break ;
 		}
