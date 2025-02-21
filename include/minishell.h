@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 13:55:03 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:31:27 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,10 @@ void		import_env_to_hashmap(t_hashmap *map, char *envp[]);
 int			hashmap_insert(t_hashmap *map, char *key, char *value);
 char		*handle_command_elements(char **elements, bool *expanded);
 int			match_wildcard(const char *pattern, const char *filename);
+int			initialize_file_list(t_cmd *command, char *src,
+				const char *redirects[]);
 void		add_command(t_cmd **command, char *rl_splitted, t_shell *data,
 				t_token id);
-int			initialize_file_list(t_cmd *command, const char *redirects[]);
 
 // ***************************************************************************
 // **						Execution Functions								**
@@ -117,7 +118,7 @@ void		restore_original_characters(char **src);
 void		skip_character_by_idx(char *src, char c, int *i);
 void		skip_character_diff_by_idx(char *src, char c, int *i);
 void		replace_characters(char *src, char to_take, char to_put);
-void		get_redirect_complement(char *src, int *start, int *end,
+void		get_redir_segment(char *src, int *start, int *end,
 				int redirect_size);
 
 // ***************************************************************************

@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 14:36:33 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:31:27 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,40 +60,28 @@ static int	add_file(t_cmd *command, char *input, int *pos, t_token token)
 	return (0);
 }
 
-int	token_aux(t_cmd *cmd, const char *redirects[], int *i, int *idx)
-{
-	t_token	token;
-	int		pos[2];
-
-	token = get_t_token(&cmd->input_expanded[*i], ft_strlen(redirects[*idx]));
-	get_redirect_complement(&cmd->input_expanded[*i], &pos[0], &pos[1],
-		ft_strlen(redirects[*idx]));
-	if (add_file(cmd, &cmd->input_expanded[*i], pos, token) < 0)
-		return (-1);
-	*i += ft_strlen(redirects[*idx]);
-	return (0);
-}
-
-int	initialize_file_list(t_cmd *cmd, const char *redirects[])
+int	initialize_file_list(t_cmd *command, char *src, const char *redir[])
 {
 	int		i;
-	bool	in_quotes;
 	int		idx;
+	int		pos[2];
+	t_token	token;
+	bool	in_quotes;
 
 	i = 0;
 	in_quotes = false;
-	sort_strings_by_length_desc((char **)redirects);
-	while (cmd->input_expanded && cmd->input_expanded[i])
+	while (src && src[i])
 	{
-		if (cmd->input_expanded[i] && (cmd->input_expanded[i] == REP_DQ
-				|| cmd->input_expanded[i] == REP_SQ))
+		if (src[i] && (src[i] == REP_DQ || src[i] == REP_SQ))
 			in_quotes = !in_quotes;
-		else if (!in_quotes && find_string_match(&cmd->input_expanded[i],
-				redirects, &idx) == OK)
+		else if (!in_quotes && find_string_match(&src[i], redir, &idx) == OK)
 		{
-			if (token_aux(cmd, redirects, &i, &idx))
-				return(-1);
-			if (cmd->input_expanded[i] == '\0')
+			token = get_t_token(&src[i], ft_strlen(redir[idx]));
+			get_redir_segment(&src[i], &pos[0], &pos[1], ft_strlen(redir[idx]));
+			if (add_file(command, &src[i], pos, token) < 0)
+				return (-1);
+			i += ft_strlen(redir[idx]);
+			if (src[i] == '\0')
 				break ;
 		}
 		i++;
