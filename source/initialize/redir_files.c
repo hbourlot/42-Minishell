@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 15:31:27 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:05:47 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,27 @@ static void	add_file_to_list(t_file **file, t_file *new_file)
 		last->next = new_file;
 	}
 }
+static void	heredoc_expansion(t_file *rf, char *src)
+{
+	int		start;
+	int		end;
+	int		j;
+	char	*temp;
+
+	j = 2;
+	while (src[j] == REP_SPACE)
+		j++;
+	start = j;
+	while (src[j] && src[j] != REP_SPACE)
+		j++;
+	end = j;
+	temp = ft_substr(src, start, end - start);
+	if (!temp)
+		handle_error(E_MALLOC, NULL, __func__);
+	if (ft_strchr(temp, REP_DQ) || ft_strchr(temp, REP_SQ))
+		rf->in_quotes = true;
+	free(temp);
+}
 
 static int	init_file(t_file *rf, char *input, int *pos, t_token token)
 {
@@ -39,19 +60,21 @@ static int	init_file(t_file *rf, char *input, int *pos, t_token token)
 		rf->read = src;
 	else
 		rf->write = src;
+	if (token == REDIRECT_LEFT_DOUBLE)
+		heredoc_expansion(rf, input);
 	truncate_character(src, REP_DQ);
 	truncate_character(src, REP_SQ);
 	return (0);
 }
 
-static int	add_file(t_cmd *command, char *input, int *pos, t_token token)
+static int	add_file(t_cmd *command, char *src, int *pos, t_token token)
 {
 	t_file	*new;
 
 	new = ft_calloc(1, sizeof(t_file));
 	if (!new)
 		return (-1);
-	if (init_file(new, input, pos, token))
+	if (init_file(new, src, pos, token))
 		return (free(new), -1);
 	if (new->redirect == REDIRECT_LEFT_DOUBLE)
 		add_file_to_list(&command->eof_rf, new);
