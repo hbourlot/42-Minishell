@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 17:03:00 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:10:48 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ static void	handle_grand_child_process(t_shell *data, t_file *current)
 static int	handle_parent_process(t_shell *data, t_cmd *command)
 {
 	int	ws;
+
 	wait(&ws);
 	if (command->settings.iste)
 		data->prev_fd = data->pipe_id[0];

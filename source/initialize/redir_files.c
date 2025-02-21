@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 17:05:47 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:10:33 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	add_file_to_list(t_file **file, t_file *new_file)
 		last->next = new_file;
 	}
 }
+
 static void	heredoc_expansion(t_file *rf, char *src)
 {
 	int		start;
