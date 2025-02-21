@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 13:56:17 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:28:30 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,6 @@ int	here_doc(int *pipe_id, t_file *current)
 		}
 		if (!ft_strcmp(current->read, text))
 			return (free(text), 0);
-		if (!ft_strchr(text, '\n') && !ft_strncmp(text, current->read,
-				ft_strlen(text)))
-			return (free(text), -1);
 		expand_in_pipe(current, &text);
 		ft_printf_fd(pipe_id[1], "%s\n", text);
 		free(text);

@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:59:42 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/21 13:54:36 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:19:02 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	identify_match_pattern(char *input, int *pos, int start_pos)
 
 	i = start_pos;
 	in_quotes = false;
-	while (input[i])
+	while (input && input[i])
 	{
 		if (input[i] == REP_DQ || input[i] == REP_SQ)
 			in_quotes = !in_quotes;

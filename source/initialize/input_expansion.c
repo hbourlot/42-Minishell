@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 17:39:46 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/11 11:45:07 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:22:51 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,8 @@ char	*expand_command_input(char *input, bool *expanded)
 {
 	char	*expand_input;
 	char	**elements;
-
+	if(!*input)
+		return(ft_strdup(input));
 	elements = tokenize_element(input);
 	if (!elements)
 		return (NULL);
