@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/19 16:30:59 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 14:10:58 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,9 @@ void	close_fds_and_pipes(t_shell *data)
 		close(data->pipe_id[1]);
 }
 
-/*
-	TODO: Still need to implement this function which dont free
-	TODO: 	all sources on data ⬇️
-*/
 void	refresh_shell_data(t_shell *data)
 {
-	// close_fds_and_pipes(data);
+	close_fds_and_pipes(data);
 	data->commands_ran = 0;
 	data->nbr_of_commands = 0;
 	data->pid = -1;
