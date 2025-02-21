@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 13:57:18 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:23:47 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,25 +50,37 @@ static void	initialize_command_struct(t_cmd **command, char *rl_splitted,
 	add_command_to_list(command, new_command);
 }
 
-static void	handle_file_tokens(t_cmd *command)
+static void	handle_file_tokens(t_cmd *command, bool here_doc)
 {
-	const char	*file_tokens[] = {">>", ">", "<", "<<", NULL};
+	const char	*file_tokens[] = {">>", ">", "<", NULL};
+	const char	*file_doc[] = {"<<", NULL};
+	char		*input;
 
-	sort_strings_by_length_desc((char **)file_tokens);
-	if (initialize_file_list(command, file_tokens))
-		handle_error(E_MALLOC, NULL, __func__);
-	strip_redirects(command->input_expanded, file_tokens);
-	if ((ft_strlen(command->input_expanded) == 0
-			|| all_same_char(command->input_expanded, REP_SPACE))
+	if (here_doc)
+	{
+		input = command->input;
+		if (initialize_file_list(command, command->input, file_doc))
+			handle_error(E_MALLOC, NULL, __func__);
+		strip_redirects(command->input, file_doc);
+	}
+	else
+	{
+		input = command->input_expanded;
+		if (initialize_file_list(command, command->input_expanded, file_tokens))
+			handle_error(E_MALLOC, NULL, __func__);
+		strip_redirects(command->input_expanded, file_tokens);
+	}
+	if ((ft_strlen(input) == 0 || all_same_char(input, REP_SPACE))
 		&& command->settings.expansion == false)
 		command->settings.iste = false;
 }
 
 void	prepare_parameters(t_cmd *command, t_shell *data)
 {
+	handle_file_tokens(command, true);
 	command->input_expanded = expand_command_input(command->input,
 			&command->settings.expansion);
-	handle_file_tokens(command);
+	handle_file_tokens(command, false);
 	expand_wildcard(&command->input_expanded);
 	if (command->settings.iste == false)
 		return ;

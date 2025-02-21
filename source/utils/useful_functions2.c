@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   useful_functions2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:33:57 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 16:22:30 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:31:27 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static bool	toggle_quotes(char *src, bool *in_quotes, int i)
 	return (false);
 }
 
-void	get_redirect_complement(char *src, int *start, int *end,
+void	get_redir_segment(char *src, int *start, int *end,
 		int redirect_size)
 {
 	int			i;

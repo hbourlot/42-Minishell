@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 10:46:44 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 13:56:48 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:31:27 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	allocate_eof(t_shell *data, int i)
 	int		p[2];
 
 	j = 2;
-	get_redirect_complement(&data->rl[i], &p[0], &p[1], 2);
+	get_redir_segment(&data->rl[i], &p[0], &p[1], 2);
 	if (p[0] == -1 || p[1] == -1)
 		return (0);
 	new = ft_calloc(1, sizeof(t_file));
