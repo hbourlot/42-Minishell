@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   definitions.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/23 14:57:17 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/23 16:36:01 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_file
 	bool				in_quotes;
 	char				*read;
 	char				*write;
+	char				*ambiguos;
 	t_token				redirect;
 	struct s_file		*next;
 }						t_file;
@@ -101,7 +102,6 @@ typedef struct s_cmd
 	char				*input;
 	char				*input_expanded;
 	char				*file;
-	int					heredoc_fd; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	int					fd_in;
 	int					fd_out;
 	int					io[2];
@@ -149,6 +149,3 @@ typedef struct s_data
 typedef int				(*t_access_check_function)(const char *path, int code);
 
 #endif
-
-// * [] it_ends_with_delimiter and it_ends_with_double_pipe
-// * [X] exit_status prob is working
