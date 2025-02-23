@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 12:00:01 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/19 18:38:15 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/23 16:02:14 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ void	do_dup2(int *io, int *pipe_id, int *prev_fd)
 		duplicate_fd(io[1], STDOUT_FILENO);
 	else
 		duplicate_fd(pipe_id[1], STDOUT_FILENO);
-	close_fd_safe(pipe_id[1]);
-	close_fd_safe(pipe_id[0]);
+	close_fd_safe(&pipe_id[1]);
+	close_fd_safe(&pipe_id[0]);
 }

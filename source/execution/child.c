@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 13:56:28 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/23 16:06:34 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,36 +42,11 @@ void	exec_builtin(t_shell *data, t_cmd *command)
 		handle_error(E_MALLOC, NULL, __func__);
 }
 
-static void	exec_heredoc(t_shell *data, t_cmd *command)
-{
-	if (command->eof_rf)
-	{
-		close_fd_safe(data->pipe_id[0]);
-		close_fd_safe(data->pipe_id[1]);
-		close_fd_safe(data->prev_fd);
-		run_eof(data, command);
-		if (data->exit_status == 130 || data->exit_status == 131)
-		{
-			cleanup_shell(data);
-			exit(data->exit_status);
-		}
-		if (!command->io_rf && command->next)
-		{
-			if (pipe(data->pipe_id) < 0)
-				handle_error(E_PF, NULL, __func__);
-			close_fd_safe(data->pipe_id[0]);
-			dup2(data->pipe_id[1], STDOUT_FILENO);
-			close_fd_safe(data->pipe_id[1]);
-		}
-	}
-}
-
 void	child_process(t_shell *data, t_cmd *command)
 {
 	int	code;
 
 	restore_signals(0);
-	exec_heredoc(data, command);
 	if (command->settings.only_tokens)
 		execute_only_tokens(command);
 	open_folders_safety(command->io, command->io_rf);

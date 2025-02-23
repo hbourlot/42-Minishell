@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/20 17:53:00 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/23 14:57:17 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_cmd
 	char				*input;
 	char				*input_expanded;
 	char				*file;
+	int					heredoc_fd; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	int					fd_in;
 	int					fd_out;
 	int					io[2];

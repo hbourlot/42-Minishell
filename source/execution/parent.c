@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parent.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:16:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 14:28:15 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/23 16:01:58 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ int	parent_process(t_shell *data, t_cmd **command_ref)
 	{
 		if ((*command_ref)->settings.is_builtin)
 			wait(NULL);
-		close_fd_safe(data->pipe_id[1]);
+		close_fd_safe(&data->pipe_id[1]);
 	}
-	close_fd_safe(data->prev_fd);
+	close_fd_safe(&data->prev_fd);
 	if ((*command_ref)->next)
 		data->prev_fd = data->pipe_id[0];
 	if ((*command_ref)->delimiter == PIPE_DOUBLE)

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/19 20:38:01 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/23 16:06:58 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ static int	execute_cmd(t_shell *data, t_cmd *command)
 	while (command)
 	{
 		signal(SIGINT, SIG_IGN);
+		if (run_eof(data, command))
+			break ;
 		run_builting_separately(data, command);
 		if (command->delimiter != AND_DOUBLE && command->next
 			&& pipe(data->pipe_id) == -1)

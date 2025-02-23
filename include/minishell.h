@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:50:06 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 15:31:27 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/23 16:01:32 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void		add_command(t_cmd **command, char *rl_splitted, t_shell *data,
 // ***************************************************************************
 
 int			do_fork(pid_t *pid);
-void		close_fd_safe(int fd);
+void		close_fd_safe(int *fd);
 void		run_commands(t_shell *data);
 void		set_last_status(t_shell *data);
 void		duplicate_fd(int fd1, int fd2);
