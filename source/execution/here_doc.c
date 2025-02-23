@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 17:39:05 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/23 16:07:38 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,35 +47,37 @@ int	here_doc(int *pipe_id, t_file *current)
 	return (0);
 }
 
-static void	handle_grand_child_process(t_shell *data, t_file *current)
+static void	handle_cprocess(t_shell *data, t_file *current)
 {
 	restore_signals(EOF);
 	if (here_doc(data->pipe_id, current) == -1)
 		here_doc_fail(data, current);
 	cleanup_shell(data);
-	close(data->pipe_id[0]);
-	close(data->pipe_id[1]);
+	close_fd_safe(&data->pipe_id[0]);
+	close_fd_safe(&data->pipe_id[1]);
 	exit(EXIT_SUCCESS);
 }
 
-static int	handle_parent_process(t_shell *data, t_cmd *command,
-		t_file *current)
+static int	handle_pprocess(t_shell *data, t_cmd *command)
 {
 	int	ws;
 
-	wait(&ws);
-	if (!current->next && command->settings.iste)
+	waitpid(data->pid, &ws, 0);
+	if (command->settings.iste)
 		data->prev_fd = data->pipe_id[0];
 	else
-		close_fd_safe(data->pipe_id[0]);
-	close_fd_safe(data->pipe_id[1]);
-	if (WIFSIGNALED(ws))
+		close_fd_safe(&data->pipe_id[0]);
+	close_fd_safe(&data->pipe_id[1]);
+	if (WIFSIGNALED(ws) && WIFEXITED(ws))
 	{
+		close_fd_safe(&data->pipe_id[0]);
+		close_fd_safe(&data->pipe_id[1]);
 		data->exit_status = WTERMSIG(ws) + 128;
 		return (-1);
 	}
 	if (WIFEXITED(ws))
 	{
+		close_fd_safe(&data->pipe_id[1]);
 		data->exit_status = WEXITSTATUS(ws);
 		if (data->exit_status)
 			return (-1);
@@ -87,22 +89,22 @@ int	run_eof(t_shell *data, t_cmd *command)
 {
 	int		i;
 	t_file	*current;
-	pid_t	pid;
 
 	i = 0;
 	current = command->eof_rf;
 	while (current)
 	{
+		close_fd_safe(&data->prev_fd);
 		if (current->redirect == REDIRECT_LEFT_DOUBLE)
 		{
 			signal(SIGINT, SIG_IGN);
-			if (pipe(data->pipe_id) < 0 || do_fork(&pid))
+			if (pipe(data->pipe_id) < 0 || do_fork(&data->pid))
 				return (handle_error(E_PF, NULL, NULL), -1);
-			if (pid == 0)
-				handle_grand_child_process(data, current);
+			if (data->pid == 0)
+				handle_cprocess(data, current);
 			else
 			{
-				if (handle_parent_process(data, command, current))
+				if (handle_pprocess(data, command))
 					return (-1);
 			}
 		}

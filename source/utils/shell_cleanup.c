@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 14:10:58 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/23 16:03:02 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,9 @@ static void	free_command(t_cmd **command)
 
 void	close_fds_and_pipes(t_shell *data)
 {
-	if (data->prev_fd != -1)
-		close(data->prev_fd);
-	if (data->pipe_id[0] != -1)
-		close(data->pipe_id[0]);
-	if (data->pipe_id[1] != -1)
-		close(data->pipe_id[1]);
+	close_fd_safe(&data->prev_fd);
+	close_fd_safe(&data->pipe_id[0]);
+	close_fd_safe(&data->pipe_id[1]);
 }
 
 void	refresh_shell_data(t_shell *data)
