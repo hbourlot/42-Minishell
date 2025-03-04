@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 22:32:09 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/23 16:06:58 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/03/04 21:02:49 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,19 +68,19 @@ bool	run_builting_separately(t_shell *data, t_cmd *command)
 	return (false);
 }
 
-static int	execute_cmd(t_shell *data, t_cmd *command)
+static void	execute_cmd(t_shell *data, t_cmd *command)
 {
+	if (run_eof(data, command))
+		return ;
 	while (command)
 	{
 		signal(SIGINT, SIG_IGN);
-		if (run_eof(data, command))
-			break ;
 		run_builting_separately(data, command);
 		if (command->delimiter != AND_DOUBLE && command->next
 			&& pipe(data->pipe_id) == -1)
-			return (handle_error(E_PF, NULL, __func__), -1);
+			return ((void)handle_error(E_PF, NULL, __func__));
 		if (do_fork(&data->pid))
-			return (handle_error(E_PF, NULL, __func__), -1);
+			return ((void)handle_error(E_PF, NULL, __func__));
 		else if (data->pid == 0)
 			child_process(data, command);
 		else if (data->pid != 0)
@@ -90,7 +90,7 @@ static int	execute_cmd(t_shell *data, t_cmd *command)
 			command = command->next;
 		}
 	}
-	return (0);
+	return ;
 }
 
 void	run_commands(t_shell *data)

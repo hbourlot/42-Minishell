@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_folders.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 08:00:37 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/23 16:33:02 by joralves         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:34:54 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ void	open_folders_safety(int *io, t_file *rf)
 {
 	while (rf)
 	{
-		if (rf->ambiguos)
+		if (rf->ambiguous)
 		{
-			ft_printf_fd(2, "bash: %s: ambiguous redirect\n", rf->ambiguos);
+			ft_printf_fd(2, "bash: %s: ambiguous redirect\n", rf->ambiguous);
 			cleanup_shell(get_shell());
 			exit(EXIT_FAILURE);
 		}

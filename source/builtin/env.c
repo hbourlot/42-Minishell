@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:44:28 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/21 13:55:41 by joralves         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:26:37 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,8 @@ static void	print_key_value(t_hashnode *current, int fd)
 
 static int	handle_env_errors(char *command_arg)
 {
-	int	i;
 	int	result;
 
-	i = 0;
 	result = 0;
 	if (!command_arg)
 		return (0);

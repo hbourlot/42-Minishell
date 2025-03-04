@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 14:06:50 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/23 16:07:38 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/03/04 18:04:51 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,18 @@ int	here_doc(int *pipe_id, t_file *current)
 	return (0);
 }
 
-static void	handle_cprocess(t_shell *data, t_file *current)
+static void	handle_cprocess(t_shell *data, t_cmd *command, t_file *current)
 {
 	restore_signals(EOF);
+	(void)command;
+	t_cmd	*tmp;
+
+	tmp = data->command;
+	while (tmp)
+	{
+		close_fd_safe(&tmp->fd_eof);
+		tmp = tmp->next;
+	}
 	if (here_doc(data->pipe_id, current) == -1)
 		here_doc_fail(data, current);
 	cleanup_shell(data);
@@ -58,13 +67,16 @@ static void	handle_cprocess(t_shell *data, t_file *current)
 	exit(EXIT_SUCCESS);
 }
 
-static int	handle_pprocess(t_shell *data, t_cmd *command)
+static void	handle_pprocess(t_shell *data, t_cmd *command)
 {
 	int	ws;
 
 	waitpid(data->pid, &ws, 0);
 	if (command->settings.iste)
-		data->prev_fd = data->pipe_id[0];
+	{
+		close_fd_safe(&command->fd_eof);
+		command->fd_eof = data->pipe_id[0];
+	}
 	else
 		close_fd_safe(&data->pipe_id[0]);
 	close_fd_safe(&data->pipe_id[1]);
@@ -73,42 +85,43 @@ static int	handle_pprocess(t_shell *data, t_cmd *command)
 		close_fd_safe(&data->pipe_id[0]);
 		close_fd_safe(&data->pipe_id[1]);
 		data->exit_status = WTERMSIG(ws) + 128;
-		return (-1);
+		return ;
 	}
 	if (WIFEXITED(ws))
 	{
 		close_fd_safe(&data->pipe_id[1]);
 		data->exit_status = WEXITSTATUS(ws);
-		if (data->exit_status)
-			return (-1);
+			return ;
 	}
-	return (0);
 }
 
 int	run_eof(t_shell *data, t_cmd *command)
 {
-	int		i;
 	t_file	*current;
 
-	i = 0;
-	current = command->eof_rf;
-	while (current)
+	while (command)
 	{
-		close_fd_safe(&data->prev_fd);
-		if (current->redirect == REDIRECT_LEFT_DOUBLE)
+		current = command->eof_rf;
+		while (current)
 		{
-			signal(SIGINT, SIG_IGN);
-			if (pipe(data->pipe_id) < 0 || do_fork(&data->pid))
-				return (handle_error(E_PF, NULL, NULL), -1);
-			if (data->pid == 0)
-				handle_cprocess(data, current);
-			else
+			close_fd_safe(&data->prev_fd);
+			if (current->redirect == REDIRECT_LEFT_DOUBLE)
 			{
-				if (handle_pprocess(data, command))
-					return (-1);
+				signal(SIGINT, SIG_IGN);
+				if (pipe(data->pipe_id) < 0 || do_fork(&data->pid))
+					return (handle_error(E_PF, NULL, NULL), -1);
+				if (data->pid == 0)
+					handle_cprocess(data, command, current);
+				else
+				{
+					handle_pprocess(data, command);
+					if (data->exit_status)
+						return (-1);
+				}
 			}
+			current = current->next;
 		}
-		current = current->next;
+		command = command->next;
 	}
 	return (0);
 }

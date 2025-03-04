@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   useful_functions2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:33:57 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 15:31:27 by joralves         ###   ########.fr       */
+/*   Updated: 2025/03/04 17:27:05 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,16 @@ t_token	get_t_token(char *src, size_t size)
 	return (NO_TOKEN);
 }
 
-static bool	toggle_quotes(char *src, bool *in_quotes, int i)
+static void	toggle_quotes(char *src, bool *in_quotes, int *i)
 {
-	if (src[i] && (src[i] == REP_SQ || src[i] == REP_DQ))
+	while (src[*i] && (src[*i] == REP_SQ || src[*i] == REP_DQ))
 	{
 		*in_quotes = !*in_quotes;
-		return (true);
+		(*i)++;
 	}
-	return (false);
 }
-
+// echo>>txt.txt<<EOF'A'"|">OUT
+// ls"-l"|wc|grep|echo>>txt.txt<<EOF'A'"|">OUT
 void	get_redir_segment(char *src, int *start, int *end,
 		int redirect_size)
 {
@@ -95,13 +95,12 @@ void	get_redir_segment(char *src, int *start, int *end,
 	i += redirect_size;
 	while (src[i] && src[i] == REP_SPACE)
 		i++;
-	if (toggle_quotes(src, &in_quotes, i))
-		i++;
-	if (toggle_quotes(src, &in_quotes, i))
-		i++;
+	toggle_quotes(src, &in_quotes, &i);
 	*start = i;
 	while (src[i] && src[i] != REP_SPACE)
 	{
+		if (src[i] == REP_SQ || src[i] == REP_DQ)
+			in_quotes = !in_quotes;
 		if (!in_quotes && find_string_match(&src[i], tokens, &idx) == OK)
 			break ;
 		i++;
