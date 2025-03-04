@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 17:10:33 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/23 16:33:47 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,21 @@ static void	heredoc_expansion(t_file *rf, char *src)
 static int	init_file(t_file *rf, char *input, int *pos, t_token token)
 {
 	char	*src;
+	char	*tmp;
 
 	src = ft_substr(input, pos[0], pos[1] - pos[0]);
 	if (!src)
 		return (-1);
 	rf->redirect = token;
+	if (ft_strchr(src, '*'))
+	{
+		tmp = ft_strdup(src);
+		expand_wildcard(&src);
+		if (ft_strchr(src, REP_SPACE))
+			rf->ambiguos = tmp;
+		else
+			free(tmp);
+	}
 	if (token == REDIRECT_LEFT_DOUBLE || token == REDIRECT_LEFT_SINGLE)
 		rf->read = src;
 	else
@@ -68,20 +78,22 @@ static int	init_file(t_file *rf, char *input, int *pos, t_token token)
 	return (0);
 }
 
-static int	add_file(t_cmd *command, char *src, int *pos, t_token token)
+static void	add_file(t_cmd *command, char *src, int *pos, t_token token)
 {
 	t_file	*new;
 
 	new = ft_calloc(1, sizeof(t_file));
 	if (!new)
-		return (-1);
+		handle_error(E_MALLOC, NULL, __func__);
 	if (init_file(new, src, pos, token))
-		return (free(new), -1);
+	{
+		free(new);
+		handle_error(E_MALLOC, NULL, __func__);
+	}
 	if (new->redirect == REDIRECT_LEFT_DOUBLE)
 		add_file_to_list(&command->eof_rf, new);
 	else
 		add_file_to_list(&command->io_rf, new);
-	return (0);
 }
 
 int	initialize_file_list(t_cmd *command, char *src, const char *redir[])
@@ -102,11 +114,11 @@ int	initialize_file_list(t_cmd *command, char *src, const char *redir[])
 		{
 			token = get_t_token(&src[i], ft_strlen(redir[idx]));
 			get_redir_segment(&src[i], &pos[0], &pos[1], ft_strlen(redir[idx]));
-			if (add_file(command, &src[i], pos, token) < 0)
-				return (-1);
+			add_file(command, &src[i], pos, token);
 			i += ft_strlen(redir[idx]);
 			if (src[i] == '\0')
 				break ;
+			continue ;
 		}
 		i++;
 	}

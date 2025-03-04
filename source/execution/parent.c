@@ -59,7 +59,7 @@ int	handle_eof_signal(t_shell *data, t_cmd **command_ref)
 	ws = 0;
 	if ((*command_ref)->eof_rf)
 		wait(&ws);
-	if (WIFEXITED(ws))
+	if (WIFEXITED(ws) && (*command_ref)->eof_rf)
 	{
 		data->exit_status = WEXITSTATUS(ws);
 		if (data->exit_status == 130)

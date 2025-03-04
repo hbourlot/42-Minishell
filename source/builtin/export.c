@@ -6,7 +6,7 @@
 /*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:11:13 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/18 16:50:30 by joralves         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:25:22 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	print_key_value_sorted(t_hashnode **temp, int fd)
 	{
 		ft_printf_fd(fd, "declare -x %s", current->key);
 		if (current->value)
-			ft_printf_fd(fd, "\"%s\"", current->value);
+			ft_printf_fd(fd, "=\"%s\"", current->value);
 		ft_printf_fd(fd, "\n");
 		current = current->next;
 	}

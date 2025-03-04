@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:58:02 by joralves          #+#    #+#             */
-/*   Updated: 2025/02/09 20:13:47 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/02/23 16:36:05 by joralves         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Todo: Need to fix case of cat then CTRL+C :  undefined behavior
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_shell	*data;
