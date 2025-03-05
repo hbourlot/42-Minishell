@@ -59,7 +59,7 @@ static void	handle_file_tokens(t_cmd *command, bool here_doc)
 	{
 		input = command->input;
 		if (initialize_file_list(command, command->input, file_doc))
-		handle_error(E_MALLOC, NULL, __func__);
+			handle_error(E_MALLOC, NULL, __func__);
 		strip_redirects(command->input, file_doc);
 	}
 	else

@@ -27,11 +27,11 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_tokens parsing/strip_redirects pars
 					initialize/command initialize/command_aux initialize/shell initialize/redir_files 				\
 					initialize/env_paths initialize/handle_expansion initialize/process_input_expanded 	 			\
 					initialize/input_expansion initialize/hashmap initialize/hashmap_aux initialize/wildcard		\
-					initialize/wildcard_aux 																		\
+					initialize/wildcard_aux																			\
 																							             			\
 					execution/parent	execution/utils																\
 					execution/get_path execution/handle_folders execution/here_doc execution/child					\
-					execution/run_commands execution/child_aux	 													\
+					execution/run_commands execution/child_aux	execution/here_doc_aux 								\
 																													\
 					builtin/cd builtin/echo builtin/env builtin/exit builtin/export builtin/handler builtin/pwd     \
 					builtin/unset																					\

@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/03/04 21:10:10 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/03/05 17:57:43 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ void	exec_builtin(t_shell *data, t_cmd *command)
 void	close_duplicate_fd(t_shell *data, t_cmd *command)
 {
 	t_cmd	*tmp;
-	
+
 	tmp = data->command;
 	while (tmp)
 	{
 		if ((tmp == command) && tmp->fd_eof != -1)
 		{
 			tmp = tmp->next;
-			continue;
+			continue ;
 		}
 		close_fd_safe(&tmp->fd_eof);
 		tmp = tmp->next;
@@ -49,7 +49,7 @@ void	close_duplicate_fd(t_shell *data, t_cmd *command)
 void	child_process(t_shell *data, t_cmd *command)
 {
 	int		code;
-	
+
 	restore_signals(0);
 	close_duplicate_fd(data, command);
 	if (command->fd_eof != -1)
@@ -71,6 +71,3 @@ void	child_process(t_shell *data, t_cmd *command)
 	cleanup_shell(data);
 	exit(EXIT_SUCCESS);
 }
-
-
-// echo oi << file << file1 <<file2"a" >> file

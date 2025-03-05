@@ -106,8 +106,8 @@ static void	filter_special_quotes(char *result)
 	{
 		if (result[i] == REP_SQ || result[i] == REP_DQ)
 			in_quotes = !in_quotes;
-		else if (!in_quotes && result[i] == '$'
-			&& (result[i + 1] == REP_SQ || result[i + 1] == REP_DQ))
+		else if (!in_quotes && result[i] == '$' && (result[i + 1] == REP_SQ
+				|| result[i + 1] == REP_DQ))
 		{
 			truncate_range(result, i, 1);
 			in_quotes = false;

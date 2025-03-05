@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:33:57 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/03/04 17:27:05 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/03/05 17:32:56 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,9 @@ static void	toggle_quotes(char *src, bool *in_quotes, int *i)
 		(*i)++;
 	}
 }
-// echo>>txt.txt<<EOF'A'"|">OUT
-// ls"-l"|wc|grep|echo>>txt.txt<<EOF'A'"|">OUT
+
 void	get_redir_segment(char *src, int *start, int *end,
-		int redirect_size)
+		int redir_length)
 {
 	int			i;
 	int			idx;
@@ -92,7 +91,7 @@ void	get_redir_segment(char *src, int *start, int *end,
 	in_quotes = false;
 	if (!src)
 		return ;
-	i += redirect_size;
+	i += redir_length;
 	while (src[i] && src[i] == REP_SPACE)
 		i++;
 	toggle_quotes(src, &in_quotes, &i);
