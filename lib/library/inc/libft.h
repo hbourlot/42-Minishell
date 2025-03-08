@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:49:30 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/20 16:10:39 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/03/08 15:23:11 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdbool.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
 
 typedef struct s_list
 {
@@ -86,6 +87,7 @@ int					char_cmp(char a, char b);
 void				free_split(char **split);
 int					is_greater(int a, int b);
 long				ft_atol(const char *nptr);
+long long			ft_atoll(const char *nptr);
 bool				all_spaces(const char *src);
 int					ft_printf(const char *fmt, ...);
 void				free_pointers(size_t count, ...);

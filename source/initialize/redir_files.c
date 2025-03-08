@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 15:31:14 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/03/04 17:21:46 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/03/08 14:58:01 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	init_file(t_file *rf, char *input, int *pos, t_token token)
 	if (!src)
 		return (-1);
 	rf->redirect = token;
-	if (ft_strchr(src, '*'))
+	if (ft_strchr(src, '*') && token != REDIRECT_LEFT_DOUBLE)
 	{
 		tmp = ft_strdup(src);
 		expand_wildcard(&src);
