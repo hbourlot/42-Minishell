@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 21:36:23 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/11 10:40:04 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/03/04 17:19:26 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	print_execve_parameters(char *input)
 	int	i;
 
 	i = 0;
-	while (input[i])
+	while (input && input[i])
 	{
 		if (input[i] == REP_DQ)
 			printf("(%d - %c)", input[i], input[i]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_cleanup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:40:31 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/23 16:26:57 by joralves         ###   ########.fr       */
+/*   Updated: 2025/03/04 18:00:40 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	free_files(t_file *file_list)
 			free(tmp->read);
 		if (tmp->write)
 			free(tmp->write);
-		if (tmp->ambiguos)
-			free(tmp->ambiguos);
+		if (tmp->ambiguous)
+			free(tmp->ambiguous);
 		file_list = file_list->next;
 		free(tmp);
 	}
@@ -39,6 +39,7 @@ static void	free_command(t_cmd **command)
 		tmp = *command;
 		free_files(tmp->io_rf);
 		free_files(tmp->eof_rf);
+		close_fd_safe(&(*command)->fd_eof);
 		tmp->eof_rf = NULL;
 		tmp->io_rf = NULL;
 		if (tmp->input)

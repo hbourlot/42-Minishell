@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   definitions.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:42:07 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/23 16:36:01 by joralves         ###   ########.fr       */
+/*   Updated: 2025/03/04 21:06:53 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef struct s_file
 	bool				in_quotes;
 	char				*read;
 	char				*write;
-	char				*ambiguos;
+	char				*ambiguous;
 	t_token				redirect;
 	struct s_file		*next;
 }						t_file;
@@ -85,7 +85,6 @@ typedef struct s_file
 typedef struct s_rules
 {
 	bool				expansion;
-	bool				only_tokens;
 	bool				is_builtin;
 	bool				iste;
 	bool				istb;
@@ -104,6 +103,7 @@ typedef struct s_cmd
 	char				*file;
 	int					fd_in;
 	int					fd_out;
+	int					fd_eof;
 	int					io[2];
 	char				**args;
 	char				*path;

@@ -6,27 +6,14 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:00:26 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/23 16:06:34 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/03/05 17:57:43 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	execute_only_tokens(t_cmd *command)
-{
-	int	code_parsing;
-
-	code_parsing = 0;
-	code_parsing = validate_file_read_execution(command->io_rf);
-	if (code_parsing)
-		handle_error(E_VFRE, NULL, NULL);
-	return ;
-}
-
 static bool	is_safe_to_execve(t_cmd *command)
 {
-	if (command->settings.only_tokens)
-		return (false);
 	if (command->settings.expansion && ft_strlen(command->path) == 0)
 		return (false);
 	if (command->settings.is_builtin)
@@ -42,13 +29,36 @@ void	exec_builtin(t_shell *data, t_cmd *command)
 		handle_error(E_MALLOC, NULL, __func__);
 }
 
+void	close_duplicate_fd(t_shell *data, t_cmd *command)
+{
+	t_cmd	*tmp;
+
+	tmp = data->command;
+	while (tmp)
+	{
+		if ((tmp == command) && tmp->fd_eof != -1)
+		{
+			tmp = tmp->next;
+			continue ;
+		}
+		close_fd_safe(&tmp->fd_eof);
+		tmp = tmp->next;
+	}
+}
+
 void	child_process(t_shell *data, t_cmd *command)
 {
-	int	code;
+	int		code;
 
 	restore_signals(0);
-	if (command->settings.only_tokens)
-		execute_only_tokens(command);
+	close_duplicate_fd(data, command);
+	if (command->fd_eof != -1)
+	{
+		close_fd_safe(&data->prev_fd);
+		data->prev_fd = command->fd_eof;
+	}
+	if (validate_file_read_execution(command->io_rf))
+		handle_error(E_VFRE, NULL, NULL);
 	open_folders_safety(command->io, command->io_rf);
 	do_dup2(command->io, data->pipe_id, &data->prev_fd);
 	if (is_safe_to_execve(command))

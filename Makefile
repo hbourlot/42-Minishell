@@ -16,11 +16,9 @@ HEADER_DEF		= $(INCLUDE)definitions.h
 SRC_DIR 		= source/
 BONUS_DIR 		= bonus/
 OBJ_DIR 		= objects/
-TOTAL_FILES		= $(words $(OBJS_SRC))
+TOTAL_FILES		= $(shell echo $$(($(words $(SRC_FILES)) + 1)))
 COMPILED_FILES	= 0
 OS				= $(shell uname)
-MSG_MAC 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))%% ] $(ORANGE)Compiling... $<... $(RESET)"
-MSG_LINUX 		= "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))% ] $(ORANGE)Compiling... $<... $(RESET)"
 NAME			= minishell
 C_FUNCTIONS		= parsing/syntax parsing/syntax_tokens parsing/strip_redirects parsing/replace_sqpa_tokens 			\
 					parsing/command_token_execution	parsing/command_path_execution 									\
@@ -29,11 +27,11 @@ C_FUNCTIONS		= parsing/syntax parsing/syntax_tokens parsing/strip_redirects pars
 					initialize/command initialize/command_aux initialize/shell initialize/redir_files 				\
 					initialize/env_paths initialize/handle_expansion initialize/process_input_expanded 	 			\
 					initialize/input_expansion initialize/hashmap initialize/hashmap_aux initialize/wildcard		\
-					initialize/wildcard_aux 																		\
+					initialize/wildcard_aux																			\
 																							             			\
 					execution/parent	execution/utils																\
 					execution/get_path execution/handle_folders execution/here_doc execution/child					\
-					execution/run_commands execution/child_aux	 													\
+					execution/run_commands execution/child_aux	execution/here_doc_aux 								\
 																													\
 					builtin/cd builtin/echo builtin/env builtin/exit builtin/export builtin/handler builtin/pwd     \
 					builtin/unset																					\
@@ -52,13 +50,28 @@ OBJS_SRC 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:%.c=%.o))
 # -- INCLUDES LIBRARIES
 LIBFT_LIB = ./lib/library/libft.a
 
+ifeq ($(OS), Darwin)
+	PRINT_CMD = printf
+	MSG = "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))%% ] $(ORANGE)Compiling [$1] ... $(RESET)"
+else
+	PRINT_CMD = echo -n
+	MSG = "\r%100s\r[ $(COMPILED_FILES)/$(TOTAL_FILES) $$(($(COMPILED_FILES) * 100 / $(TOTAL_FILES)))% ] $(ORANGE)Compiling [$1]... $(RESET)"
+endif
+
+# Function to print the compilation message
+define print_compile_msg
+	$(eval COMPILED_FILES = $(shell echo $$(($(COMPILED_FILES) + 1))))
+	@$(PRINT_CMD) $(MSG)
+endef
+
+
 .PHONY: 		all clean fclean re bonus
 
 all:			$(NAME)
 
 $(NAME):		$(LIBFT_LIB) $(LIB) $(HEADER_MINI) $(HEADER_DEF) $(HEADER_ERROR) main.o
 				@$(CC) $(CFLAGS) main.o $(LINK) -o $@
-				@echo "$(GREEN)Executable '$(NAME)' created successfully!$(RESET) ✅"
+				@echo "$(GREEN)Executable '$(RED)$(NAME)$(GREEN)' created successfully!$(RESET) ✅"
 
 $(LIBFT_LIB):
 				@make -s -C lib/library/
@@ -69,15 +82,11 @@ $(LIB):			$(OBJS_SRC)
 
 $(OBJ_DIR)%.o:	%.c $(INCLUDE)
 				@mkdir -p $(dir $@)
-				$(eval COMPILED_FILES = $(shell echo $$(($(COMPILED_FILES) + 1))))
-ifeq ($(OS), Darwin)
-				@printf $(MSG_MAC)
-else
-				@echo -n $(MSG_LINUX)
-endif
+				$(call print_compile_msg, $<)
 				@$(CC) $(CFLAGS) -c $< -I./$(INCLUDE) -o $@
 
 main.o:			main.c $(INCLUDE)
+				$(call print_compile_msg, $<)
 				@$(CC) -c main.c $(CFLAGS) -I./$(INCLUDE) -o $@
 
 clean:
@@ -88,7 +97,7 @@ clean:
 				@echo " $(GREEN)Cleaned successfully.$(RESET) ✅"
 
 fclean: 		clean
-				@printf "$(CYAN)Cleaning up '$(NAME)' and *.a files...$(RESET)\b"
+				@printf "$(CYAN)Cleaning up '$(RED)$(NAME)$(CYAN)' and *.a files...$(RESET)\b"
 				@rm -f $(LIB)
 				@make fclean -s -C ./lib/library
 				@rm -rf	$(NAME)

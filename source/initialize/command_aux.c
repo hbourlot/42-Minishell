@@ -6,7 +6,7 @@
 /*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 17:40:08 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 18:50:56 by hbourlot         ###   ########.fr       */
+/*   Updated: 2025/03/08 15:02:49 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,9 @@ static void	initialize_command_struct(t_cmd **command, char *rl_splitted,
 	}
 	new_command->delimiter = id;
 	ft_memset(new_command->io, -1, 8);
+	new_command->fd_eof = -1;
 	new_command->settings.iste = true;
 	new_command->next = NULL;
-	if (ft_strlen(rl_splitted) == 0 || all_same_char(rl_splitted, REP_SPACE))
-		new_command->settings.only_tokens = true;
 	add_command_to_list(command, new_command);
 }
 

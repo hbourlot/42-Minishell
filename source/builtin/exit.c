@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joralves <joralves@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbourlot <hbourlot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:43:23 by hbourlot          #+#    #+#             */
-/*   Updated: 2025/02/21 18:22:48 by joralves         ###   ########.fr       */
+/*   Updated: 2025/03/08 15:25:54 by hbourlot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_numeric(char *str, long *ret)
+static int	is_numeric(char *str, long long *ret)
 {
 	int	i;
 
@@ -31,7 +31,7 @@ static int	is_numeric(char *str, long *ret)
 			return (0);
 		i++;
 	}
-	*ret = ft_atol(str);
+	*ret = ft_atoll(str);
 	if (*ret < LONG_MIN || *ret > LONG_MAX)
 		return (0);
 	return (1);
@@ -53,8 +53,8 @@ static void	exit_with_error(t_shell *data, const char *arg)
 ///          - Otherwise, exits with the given code or 0.
 void	builtin_exit(t_shell *data, t_cmd *cmd)
 {
-	int		len;
-	long	ret;
+	int			len;
+	long long	ret;
 
 	len = array_length(cmd->args);
 	printf("exit\n");
@@ -71,7 +71,6 @@ void	builtin_exit(t_shell *data, t_cmd *cmd)
 		if (!is_numeric(cmd->args[1], &ret))
 			exit_with_error(data, cmd->args[1]);
 		cleanup_shell(data);
-		printf("%ld\n", ret);
 		exit(ret);
 	}
 	cleanup_shell(data);
