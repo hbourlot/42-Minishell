@@ -74,27 +74,28 @@ The Minishell project develops a deep understanding of:
 ##	Shell Features
 
 Key features implemented in Minishell:
+
 	•	Prompt: A dynamic shell prompt that waits for user input.
 	•	Built-in Commands:
-		•	echo
-		•	cd
-		•	pwd
-		•	export
-		•	unset
-		•	env
-		•	exit
+	•	echo
+	•	cd
+	•	pwd
+	•	export
+	•	unset
+	•	env
+	•	exit
 	•	Pipes (|): Chain multiple commands through standard output/input.
 	•	Redirections:
-		•	>: Redirect output
-		•	>>: Append output
-		•	<: Read from a file
-		•	<<: Here-document support
+	•	>: Redirect output
+	•	>>: Append output
+	•	<: Read from a file
+	•	<<: Here-document support
 	•	Environment Variable Expansion:
-		•	echo $HOME prints the value of $HOME.
+	•	echo $HOME prints the value of $HOME.
 	•	Quotes Handling:
-		•	Supports single ' and double " quotes.
+	•	Supports single ' and double " quotes.
 	•	Signal Handling:
-		•	Custom handlers for Ctrl+C, Ctrl+\, etc., mimicking Bash behavior.
+	•	Custom handlers for Ctrl+C, Ctrl+\, etc., mimicking Bash behavior.
 	•	WildCards (*): A expansion complementing the matches file's names.
 
 ## Conclusion ✅
