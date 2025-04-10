@@ -77,7 +77,7 @@ Key features implemented in Minishell:
 
 	•	Prompt: A dynamic shell prompt that waits for user input.
 	•	Built-in Commands:
-	•	echo
+	•		echo
 	•	cd
 	•	pwd
 	•	export
